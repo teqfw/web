@@ -1,27 +1,26 @@
 {
-  "name": "@teqfw/plugin",
+  "name": "@teqfw/web",
   "version": "0.1.0",
-  "description": "TeqFW: plugin description.",
+  "description": "Web servers for TeqFW apps (HTTP and HTTP/2).",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/teqfw/plugin.git"
+    "url": "git+https://github.com/teqfw/web.git"
   },
   "keywords": [
-    "hobby",
-    "pet-project",
+    "teqfw",
     "pwa",
     "web-apps"
   ],
   "author": "Alex Gusev <alex@flancer64.com>",
   "license": "AGPL-3.0-only",
   "bugs": {
-    "url": "https://github.com/teqfw/plugin/issues"
+    "url": "https://github.com/teqfw/web/issues"
   },
-  "homepage": "https://github.com/teqfw/plugin#readme",
+  "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
-    "@teqfw/core-app": "github:teqfw/core-app"
+    "@teqfw/core": "github:teqfw/core"
   }
 }

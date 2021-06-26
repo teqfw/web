@@ -1,16 +1,18 @@
 /**
  * Application level constants (hardcoded configuration).
  */
-export default class TeqFw_Plugin_Defaults {
-    BACK_REALM = 'plugin';  // realm for API services ('/api/project/...') and CLI commands ('project-...')
+export default class TeqFw_Web_Defaults {
+    BACK_REALM = 'web';
 
-    /** @type {TeqFw_Core_App_Defaults} */
-    MOD_CORE;
+    MOD = {
+        /** @type {TeqFw_Core_Defaults} */
+        CORE: null
+    };
 
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_App_Defaults} */
-        this.MOD_CORE = spec['TeqFw_Core_App_Defaults$']; // instance singleton
+        /** @type {TeqFw_Core_Defaults} */
+        this.MOD.CORE = spec['TeqFw_Core_Defaults$']; // singleton
 
         // MAIN FUNCTIONALITY
         Object.freeze(this);

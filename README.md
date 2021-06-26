@@ -1,3 +1,3 @@
-# @teqfw/plugin
+# @teqfw/web
 
-Template repository to create repos for Tequila plugins.
+Web servers for TeqFW apps (HTTP and HTTP/2).
