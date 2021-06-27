@@ -2,5 +2,19 @@
   "autoload": {
     "ns": "TeqFw_Web",
     "path": "./src"
+  },
+  "commands": [
+    "TeqFw_Web_Back_Cli_Http1_Start",
+    "TeqFw_Web_Back_Cli_Http1_Stop",
+    "TeqFw_Web_Back_Cli_Http2_Start",
+    "TeqFw_Web_Back_Cli_Http2_Stop"
+  ],
+  "web": {
+    "handlers": [
+      {
+        "factoryId": "TeqFw_Web_Plugin_Web_Handler_Static",
+        "weight": 10
+      }
+    ]
   }
 }
