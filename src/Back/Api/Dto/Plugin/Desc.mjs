@@ -7,11 +7,30 @@ const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc';
 
 // MODULE'S CLASSES
 class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
+    /**
+     * Application frontend entrance points ('pub', 'admin', 'sign', ...).
+     * This property is used in application level descriptors only.
+     *
+     * @type {string[]}
+     */
+    doors;
     /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
     handlers;
+    /** @type {string} */
+    root;
+    /** @type {string[]} */
+    spaces;
     /** @type {Object<string, string>} */
     statics;
 }
+
+
+// attributes names to use as aliases in queries to object props
+TeqFw_Web_Back_Api_Dto_Plugin_Desc.DOORS = 'doors';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc.HANDLERS = 'handlers';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc.ROOT = 'root';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc.SPACES = 'spaces';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
 
 /**
  * Factory to create new DTO instances.
@@ -31,9 +50,12 @@ class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc();
+            res.doors = Array.isArray(data?.doors) ? data.doors : [];
             res.handlers = Array.isArray(data?.handlers)
                 ? data.handlers.map((one) => (one instanceof DHandler) ? one : fHandler.create(one))
                 : [];
+            res.root = data?.root;
+            res.spaces = Array.isArray(data?.spaces) ? data.spaces : [];
             res.statics = data?.statics || {};
             return res;
         }

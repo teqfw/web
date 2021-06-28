@@ -20,7 +20,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
         // DEFINE INSTANCE METHODS
 
         this.init = async function () {
-            /** @type {TeqFw_Core_Back_Scan_Plugin_Dto_Item[]} */
+            /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
             const items = registry.items();
             for (const item of items) {
                 const data = item.teqfw?.[DEF.REALM];

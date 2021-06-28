@@ -35,8 +35,8 @@ function Factory(spec) {
     const bootstrap = spec['TeqFw_Core_Back_App#Bootstrap$'];
     /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
     const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-    /** @type {TeqFw_Http2_Back_Model_Realm_Registry} */
-    const regAreas = spec['TeqFw_Http2_Back_Model_Realm_Registry$']; // TODO: remove it
+    /** @type {TeqFw_Web_Model_Address} */
+    const mAddress = spec['TeqFw_Web_Model_Address$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload.Factory} */
     const fDescAutoload = spec['TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload#Factory$'];
 
@@ -67,20 +67,26 @@ function Factory(spec) {
         function getPath(url) {
 
             // DEFINE INNER FUNCTIONS
+            /**
+             * Recombine path parts to use as key in URL mapping.
+             *
+             * @param {string} path
+             * @returns {string}
+             */
             function normalize(path) {
-                let result = path;
-                const addr = regAreas.parseAddress(path);
-                if (addr.zone !== undefined) {
-                    result = `/${addr.zone}${addr.route}`;
-                } else if (addr.area !== undefined) {
-                    result = `/${addr.area}${addr.route}`;
+                let result;
+                const address = mAddress.parsePath(path);
+                if (address.space !== undefined) {
+                    result = `/${address.space}${address.route}`;
+                } else if (address.door !== undefined) {
+                    result = `/${address.door}${address.route}`;
                 } else {
-                    result = `${addr.route}`;
+                    result = `${address.route}`;
                 }
                 // add 'index.html' for 'web' area
                 if (
-                    (addr.zone !== DEF.ZONE.API) &&
-                    (addr.zone !== DEF.ZONE.SRC) &&
+                    (address.space !== DEF.ZONE.API) &&
+                    (address.space !== DEF.ZONE.SRC) &&
                     (result.slice(-1) === '/')
                 ) {
                     result += INDEX_NAME;
@@ -88,6 +94,12 @@ function Factory(spec) {
                 return result;
             }
 
+            /**
+             * Map URL to filesystem.
+             *
+             * @param url
+             * @returns {string}
+             */
             function pathMap(url) {
                 let result = url;
                 for (const key in routes) {
