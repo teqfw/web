@@ -27,8 +27,8 @@ function Factory(spec) {
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
-    /** @type {TeqFw_Web_Back_Api_Request_Context.Factory} */
-    const fContext = spec['TeqFw_Web_Back_Api_Request_Context#Factory$'];
+    /** @type {TeqFw_Web_Back_Http1_Request_Context.Factory} */
+    const fContext = spec['TeqFw_Web_Back_Http1_Request_Context#Factory$'];
 
     // PARSE INPUT & DEFINE WORKING VARS
 
@@ -112,7 +112,7 @@ function Factory(spec) {
         if (hasValidMethod(req)) {
             try {
                 const context = fContext.create();
-                context.setHttp1Context(req, res);
+                context.setRequestContext({req, res});
                 const all = handlers.items();
                 for (const handler of all) {
                     await handler(context);
@@ -124,8 +124,8 @@ function Factory(spec) {
                         respond404(res);
                     } else {
                         // there is data to return in response
-                        const headers = context.getOutHeaders();
-                        const file = context.getOutFilePath();
+                        const headers = context.getResponseHeaders();
+                        const file = context.getResponseFilePath();
                         if (file) {
                             res.writeHead(H2.HTTP_STATUS_OK, headers);
                             const rs = $fs.createReadStream(file);
@@ -134,7 +134,7 @@ function Factory(spec) {
                             });
                         } else {
                             res.writeHead(H2.HTTP_STATUS_OK, headers);
-                            res.end(context.getOutBody());
+                            res.end(context.getResponseBody());
                         }
                     }
                 }

@@ -16,7 +16,7 @@ export default class TeqFw_Web_Back_Http1_Server {
         /** @type {Function|TeqFw_Web_Back_Http1_Request_Processor.action} */
         const process = spec['TeqFw_Web_Back_Http1_Request_Processor$'];
         /** @type {TeqFw_Web_Back_Handler_Registry} */
-        const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
+        const registryHndl = spec['TeqFw_Web_Back_Handler_Registry$'];
 
         // PARSE INPUT & DEFINE WORKING VARS
         /** @type {http.Server} */
@@ -37,7 +37,7 @@ export default class TeqFw_Web_Back_Http1_Server {
             }
 
             // MAIN FUNCTIONALITY
-            await handlers.init(); // create all handlers (static, api, etc.)
+            await registryHndl.init(); // create all handlers (static, api, etc.)
             server.on('error', onErrorHndl);
             server.on('request', process);
         }

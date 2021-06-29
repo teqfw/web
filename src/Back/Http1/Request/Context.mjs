@@ -1,15 +1,20 @@
 /**
  * Request context model shared between HTTP/1 & HTTP/2 servers.
  *
- * @namespace TeqFw_Web_Back_Api_Request_Context
+ * @namespace TeqFw_Web_Back_Http1_Request_Context
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Api_Request_Context';
+const NS = 'TeqFw_Web_Back_Http1_Request_Context';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Back_Api_Request_Context {
+/**
+ * @implements TeqFw_Web_Back_Api_Request_IContext
+ */
+class TeqFw_Web_Back_Http1_Request_Context {
+    /** @type {Object} */
+    handlersShare;
     /** @type {IncomingMessage} */
     http1Request;
     /** @type {ServerResponse} */
@@ -22,28 +27,36 @@ class TeqFw_Web_Back_Api_Request_Context {
     http2Headers;
     /** @type {ServerHttp2Stream} */
     http2Stream;
-    /** @type {string} */
-    outBody;
-    /** @type {string} */
-    outFilePath;
-    /** @type {Object<string, string>} */
-    outHeaders = {};
     /**
      * HTTP request is completely processed by handler (all data is sent to client).
      * @type {boolean}
      */
-    requestComplete = false;
+    requestComplete;
     /**
      * HTTP request is processed (response data is created) but response is not sent to client.
      * @type {boolean}
      */
-    requestProcessed = false;
+    requestProcessed;
+    /** @type {string} */
+    responseBody;
+    /** @type {string} */
+    responseFilePath;
+    /** @type {Object<string, string>} */
+    responseHeaders;
 
     // DEFINE PROTO METHODS
     /**
+     * Get object that is shared between all handlers.
+     * @return {Object}
+     */
+    getHandlersShare() {
+        return this.handlersShare;
+    }
+
+    /**
      * @returns {Object<string, string>}
      */
-    getInHeaders() {
+    getRequestHeaders() {
         if (this.http1Request) {
             return this.http1Request.headers;
         }
@@ -52,22 +65,22 @@ class TeqFw_Web_Back_Api_Request_Context {
     /**
      * @returns {string}
      */
-    getOutBody() {
-        return this.outBody;
+    getResponseBody() {
+        return this.responseBody;
     }
 
     /**
      * @returns {string}
      */
-    getOutFilePath() {
-        return this.outFilePath;
+    getResponseFilePath() {
+        return this.responseFilePath;
     }
 
     /**
      * @returns {Object<string, string>}
      */
-    getOutHeaders() {
-        return this.outHeaders;
+    getResponseHeaders() {
+        return this.responseHeaders;
     }
 
     /**
@@ -90,16 +103,6 @@ class TeqFw_Web_Back_Api_Request_Context {
     }
 
     /**
-     * Init context with HTTP/1 data.
-     * @param {IncomingMessage} req
-     * @param {ServerResponse} res
-     */
-    setHttp1Context(req, res) {
-        this.http1Request = req;
-        this.http1Response = res;
-    }
-
-    /**
      * Init context with HTTP/2 data.
      * @param {ServerHttp2Stream} stream
      * @param {Object<string, string>} headers
@@ -114,11 +117,22 @@ class TeqFw_Web_Back_Api_Request_Context {
     }
 
     /**
+     * Init request context with HTTP/1 data.
+     *
+     * @param {IncomingMessage} req
+     * @param {ServerResponse} res
+     */
+    setRequestContext({req, res}) {
+        this.http1Request = req;
+        this.http1Response = res;
+    }
+
+    /**
      * Set path to file to return in response.
      * @param {string} path
      */
-    setOutFilePath(path) {
-        this.outFilePath = path;
+    setResponseFilePath(path) {
+        this.responseFilePath = path;
     }
 
     /**
@@ -126,8 +140,8 @@ class TeqFw_Web_Back_Api_Request_Context {
      * @param {string} key
      * @param {string} value
      */
-    setOutHeader(key, value) {
-        this.outHeaders[key] = value;
+    setResponseHeader(key, value) {
+        this.responseHeaders[key] = value;
     }
 
     setRequestComplete() {
@@ -141,24 +155,37 @@ class TeqFw_Web_Back_Api_Request_Context {
 
 /**
  * Factory to create new instances.
- * @memberOf TeqFw_Web_Back_Api_Request_Context
+ * @memberOf TeqFw_Web_Back_Http1_Request_Context
  */
 class Factory {
     constructor() {
         /**
-         * @param {TeqFw_Web_Back_Api_Request_Context|null} data
-         * @return {TeqFw_Web_Back_Api_Request_Context}
+         * @param {TeqFw_Web_Back_Http1_Request_Context|null} data
+         * @return {TeqFw_Web_Back_Http1_Request_Context}
          */
         this.create = function (data = null) {
-            return new TeqFw_Web_Back_Api_Request_Context();
+            const res = new TeqFw_Web_Back_Http1_Request_Context();
+            res.handlersShare = (typeof data?.handlersShare === 'object') ? data.handlersShare : {};
+            res.http1Request = data?.http1Request;
+            res.http1Response = data?.http1Response;
+            res.http2Body = data?.http2Body;
+            res.http2Flags = data?.http2Flags;
+            res.http2Headers = (typeof data?.http2Headers === 'object') ? data.http2Headers : {};
+            res.http2Stream = data?.http2Stream;
+            res.requestComplete = data?.requestComplete ?? false;
+            res.requestProcessed = data?.requestProcessed ?? false;
+            res.responseBody = data?.responseBody;
+            res.responseFilePath = data?.responseFilePath;
+            res.responseHeaders = (typeof data?.responseHeaders === 'object') ? data.responseHeaders : {};
+            return res;
         }
     }
 }
 
 // freeze class to deny attributes changes then export class
-Object.freeze(TeqFw_Web_Back_Api_Request_Context);
+Object.freeze(TeqFw_Web_Back_Http1_Request_Context);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 export {
-    TeqFw_Web_Back_Api_Request_Context as default,
+    TeqFw_Web_Back_Http1_Request_Context as default,
     Factory
 };

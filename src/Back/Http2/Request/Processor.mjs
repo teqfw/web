@@ -25,8 +25,8 @@ function Factory(spec) {
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
-    /** @type {TeqFw_Web_Back_Api_Request_Context.Factory} */
-    const fContext = spec['TeqFw_Web_Back_Api_Request_Context#Factory$'];
+    /** @type {TeqFw_Web_Back_Http1_Request_Context.Factory} */
+    const fContext = spec['TeqFw_Web_Back_Http1_Request_Context#Factory$'];
 
     // PARSE INPUT & DEFINE WORKING VARS
 
@@ -131,14 +131,14 @@ function Factory(spec) {
                         respond404(stream);
                     } else {
                         // there is data to return in response
-                        const headers = context.getOutHeaders();
+                        const headers = context.getResponseHeaders();
                         headers[H2.HTTP2_HEADER_STATUS] = H2.HTTP_STATUS_OK;
-                        const file = context.getOutFilePath();
+                        const file = context.getResponseFilePath();
                         if (file) {
                             stream.respondWithFile(file, headers);
                         } else {
                             stream.respond(headers);
-                            stream.end(context.getOutBody());
+                            stream.end(context.getResponseBody());
                         }
                     }
                 }

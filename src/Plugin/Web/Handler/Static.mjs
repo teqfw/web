@@ -1,5 +1,5 @@
 /**
- * Web request handler for static files.
+ * Web request handler for static files used in HTTP/1 server processor.
  *
  * @namespace TeqFw_Web_Plugin_Web_Handler_Static
  */
@@ -49,7 +49,7 @@ function Factory(spec) {
     /**
      * Action to process web request for static files.
      *
-     * @param {TeqFw_Web_Back_Api_Request_Context} context
+     * @param {TeqFw_Web_Back_Api_Request_IContext} context
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Plugin_Web_Handler_Static
      */
@@ -130,7 +130,7 @@ function Factory(spec) {
 
         // MAIN FUNCTIONALITY
 
-        /** @type {TeqFw_Web_Back_Api_Request_Context} */
+        /** @type {TeqFw_Web_Back_Http1_Request_Context} */
         const ctx = context; // IDEA is failed with context help (suggestions on Ctrl+Space)
         if (!ctx.isRequestProcessed()) {
             // process only unprocessed requests
@@ -139,8 +139,8 @@ function Factory(spec) {
             if ($fs.existsSync(path) && $fs.statSync(path).isFile()) {
                 const mimeType = $mimeTypes.lookup(path);
                 if (mimeType) {
-                    ctx.setOutFilePath(path);
-                    ctx.setOutHeader(H2.HTTP2_HEADER_CONTENT_TYPE, mimeType)
+                    ctx.setResponseFilePath(path);
+                    ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, mimeType)
                     ctx.setRequestProcessed();
                 }
             }
@@ -200,7 +200,7 @@ function Factory(spec) {
 // MODULE'S FUNCTIONALITY
 
 // MODULE'S EXPORT
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
+Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
 export {
     Factory as default,
 };
