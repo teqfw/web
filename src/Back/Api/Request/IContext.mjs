@@ -9,6 +9,18 @@ export default class TeqFw_Web_Back_Api_Request_IContext {
      */
     getHandlersShare() {}
 
+    /**
+     * Get request data been read from input stream.
+     * @return {Buffer[]}
+     */
+    getInputData() {}
+
+    /**
+     * Get requested path (/root/door/space/route).
+     * @returns {string}
+     */
+    getPath() {}
+
     /** @return {string} */
     getResponseBody() {}
 
@@ -36,8 +48,43 @@ export default class TeqFw_Web_Back_Api_Request_IContext {
     isRequestProcessed() {}
 
     /**
+     * Set 'Request Complete' flag in request context.
+     */
+    markRequestComplete() {}
+
+    /**
+     * Set 'Request Processed' flag in request context.
+     */
+    markRequestProcessed() {}
+
+    /**
+     * Set request data been read from input stream to context.
+     * @param {Buffer[]} chunks
+     */
+    setInputData(chunks) {}
+
+    /**
      * Save current request data to context.
      * @param {Object} data
      */
     setRequestContext(data) {}
+
+    /**
+     * Set response body as string.
+     * @param {string} data
+     */
+    setResponseBody(data) {}
+
+    /**
+     * Set path to file to return in response.
+     * @param {string} path
+     */
+    setResponseFilePath(path) {}
+
+    /**
+     * Add/replace response headers.
+     * @param {string} key
+     * @param {string} value
+     */
+    setResponseHeader(key, value) {}
 }

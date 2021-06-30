@@ -17,7 +17,7 @@ export default class TeqFw_Web_Defaults {
 
     REALM = 'web';
 
-    ZONE = { // URL prefix for API requests: https://.../area/zone/...
+    SPACE = { // URL prefix for API requests: https://.../door/space/...
         API: 'api',
         SRC: 'src',
         WEB: 'web',
@@ -26,7 +26,7 @@ export default class TeqFw_Web_Defaults {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Core_Defaults} */
-        this.MOD.CORE = spec['TeqFw_Core_Defaults$']; // singleton
+        this.MOD.CORE = spec['TeqFw_Core_Defaults$'];
 
         // MAIN FUNCTIONALITY
         Object.freeze(this);

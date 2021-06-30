@@ -6,9 +6,6 @@
 // MODULE'S IMPORT
 import http from 'http';
 
-// MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Http1_Server';
-
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Http1_Server {
     constructor(spec) {
@@ -25,7 +22,6 @@ export default class TeqFw_Web_Back_Http1_Server {
         // DEFINE THIS INSTANCE METHODS
         this.init = async function () {
             // DEFINE INNER FUNCTIONS
-
             /**
              * Unhandled server error ('server is down').
              *

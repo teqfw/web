@@ -27,6 +27,8 @@ class TeqFw_Web_Back_Http1_Request_Context {
     http2Headers;
     /** @type {ServerHttp2Stream} */
     http2Stream;
+    /** @type {Buffer[]} */
+    inputData;
     /**
      * HTTP request is completely processed by handler (all data is sent to client).
      * @type {boolean}
@@ -51,6 +53,10 @@ class TeqFw_Web_Back_Http1_Request_Context {
      */
     getHandlersShare() {
         return this.handlersShare;
+    }
+
+    getInputData() {
+        return this.inputData;
     }
 
     /**
@@ -83,9 +89,6 @@ class TeqFw_Web_Back_Http1_Request_Context {
         return this.responseHeaders;
     }
 
-    /**
-     * @returns {string}
-     */
     getPath() {
         if (this.http1Request) {
             return this.http1Request.url;
@@ -116,6 +119,18 @@ class TeqFw_Web_Back_Http1_Request_Context {
         this.http2Body = body;
     }
 
+    setInputData(chunks) {
+        this.inputData = chunks;
+    }
+
+    markRequestComplete() {
+        this.requestComplete = true;
+    }
+
+    markRequestProcessed() {
+        this.requestProcessed = true;
+    }
+
     /**
      * Init request context with HTTP/1 data.
      *
@@ -127,29 +142,16 @@ class TeqFw_Web_Back_Http1_Request_Context {
         this.http1Response = res;
     }
 
-    /**
-     * Set path to file to return in response.
-     * @param {string} path
-     */
+    setResponseBody(data) {
+        this.responseBody = data;
+    }
+
     setResponseFilePath(path) {
         this.responseFilePath = path;
     }
 
-    /**
-     * Add/replace response headers.
-     * @param {string} key
-     * @param {string} value
-     */
     setResponseHeader(key, value) {
         this.responseHeaders[key] = value;
-    }
-
-    setRequestComplete() {
-        this.requestComplete = true;
-    }
-
-    setRequestProcessed() {
-        this.requestProcessed = true;
     }
 }
 

@@ -12,6 +12,11 @@
   "web": {
     "handlers": [
       {
+        "factoryId": "TeqFw_Web_Plugin_Web_Handler_Service",
+        "before": "TeqFw_Web_Plugin_Web_Handler_Static",
+        "weight": 100
+      },
+      {
         "factoryId": "TeqFw_Web_Plugin_Web_Handler_Static",
         "weight": 10
       }

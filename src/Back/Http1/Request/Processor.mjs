@@ -27,8 +27,8 @@ function Factory(spec) {
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
-    /** @type {TeqFw_Web_Back_Http1_Request_Context.Factory} */
-    const fContext = spec['TeqFw_Web_Back_Http1_Request_Context#Factory$'];
+    /** @type {TeqFw_Web_Back_Api_Request_IContext.Factory} */
+    const fContext = spec['TeqFw_Web_Back_Api_Request_IContext#Factory$'];
 
     // PARSE INPUT & DEFINE WORKING VARS
 
@@ -62,6 +62,47 @@ function Factory(spec) {
             const method = req.method;
             const path = req.url;
             logger.debug(`${method} ${path}`);
+        }
+
+        /**
+         *
+         * @param {TeqFw_Web_Back_Api_Request_IContext} context
+         * @param {Buffer[]} chunks
+         * @return {Promise<void>}
+         */
+        async function onInputEnd(context, chunks) {
+            try {
+                // save input to context
+                context.setInputData(chunks);
+                // process all handlers in a loop
+                const all = handlers.items();
+                for (const handler of all) {
+                    await handler(context);
+                }
+                // if any handler did not completely processed the request by itself
+                if (!context.isRequestComplete()) {
+                    if (!context.isRequestProcessed()) {
+                        // no one handler process the request
+                        respond404(res);
+                    } else {
+                        // there is data to return in response
+                        const headers = context.getResponseHeaders();
+                        const file = context.getResponseFilePath();
+                        if (file) {
+                            res.writeHead(H2.HTTP_STATUS_OK, headers);
+                            const rs = $fs.createReadStream(file);
+                            pipeline(rs, res, (err) => {
+                                if (err) logger.error(err);
+                            });
+                        } else {
+                            res.writeHead(H2.HTTP_STATUS_OK, headers);
+                            res.end(context.getResponseBody());
+                        }
+                    }
+                }
+            } catch (e) {
+                respond500(res, e);
+            }
         }
 
         /**
@@ -113,31 +154,13 @@ function Factory(spec) {
             try {
                 const context = fContext.create();
                 context.setRequestContext({req, res});
-                const all = handlers.items();
-                for (const handler of all) {
-                    await handler(context);
-                }
-                // if any handler did not completely processed the request by itself
-                if (!context.isRequestComplete()) {
-                    if (!context.isRequestProcessed()) {
-                        // no one handler process the request
-                        respond404(res);
-                    } else {
-                        // there is data to return in response
-                        const headers = context.getResponseHeaders();
-                        const file = context.getResponseFilePath();
-                        if (file) {
-                            res.writeHead(H2.HTTP_STATUS_OK, headers);
-                            const rs = $fs.createReadStream(file);
-                            pipeline(rs, res, (err, val) => {
-                                if (err) logger.error(err);
-                            });
-                        } else {
-                            res.writeHead(H2.HTTP_STATUS_OK, headers);
-                            res.end(context.getResponseBody());
-                        }
-                    }
-                }
+                // buffer to collect input data for POSTs
+                /** @type {Buffer[]} */
+                const chunks = [];
+                // set event handlers to input stream
+                req.on('data', (chunk) => chunks.push(chunk));
+                req.on('error', (err) => respond500(res, err));
+                req.on('end', () => onInputEnd(context, chunks));
             } catch (e) {
                 respond500(res, e);
             }

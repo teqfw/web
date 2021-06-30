@@ -8,6 +8,8 @@ export default class TeqFw_Web_Back_Handler_Registry {
         const DEF = spec['TeqFw_Web_Defaults$'];
         /** @type {TeqFw_Di_Container} */
         const container = spec['TeqFw_Di_Container$'];
+        /** @type {TeqFw_Core_Logger} */
+        const logger = spec['TeqFw_Core_Logger$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc.Factory} */
@@ -20,6 +22,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
         // DEFINE INSTANCE METHODS
 
         this.init = async function () {
+            logger.debug('Collect web requests handlers.');
             /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
             const items = registry.items();
             for (const item of items) {
@@ -32,6 +35,8 @@ export default class TeqFw_Web_Back_Handler_Registry {
                     }
                 }
             }
+            const total = Object.values(store).length;
+            logger.debug(`Total ${total} web requests handlers are created.`);
         };
 
         this.items = function () {

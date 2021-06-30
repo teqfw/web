@@ -9,23 +9,19 @@ import $mimeTypes from 'mime-types';
 import $path from 'path';
 import {constants as H2} from 'http2';
 
-
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Plugin_Web_Handler_Static';
 const INDEX_NAME = 'index.html';
-
-// MODULE'S CLASSES
-
 
 // MODULE'S FUNCTIONS
 /**
  * Factory to setup execution context and to create handler to process static files.
  *
  * @param {TeqFw_Di_SpecProxy} spec
- * @constructor
+ * @return {function(TeqFw_Web_Back_Api_Request_IContext): Promise<void>}
  * @memberOf TeqFw_Web_Plugin_Web_Handler_Static
  */
-function Factory(spec) {
+export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Defaults} */
     const DEF = spec['TeqFw_Web_Defaults$'];
@@ -35,8 +31,8 @@ function Factory(spec) {
     const bootstrap = spec['TeqFw_Core_Back_App#Bootstrap$'];
     /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
     const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Model_Address} */
-    const mAddress = spec['TeqFw_Web_Model_Address$'];
+    /** @type {TeqFw_Web_Back_Model_Address} */
+    const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload.Factory} */
     const fDescAutoload = spec['TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload#Factory$'];
 
@@ -64,7 +60,7 @@ function Factory(spec) {
          * @param {String} url
          * @returns {String}
          */
-        function getPath(url) {
+        function getFilesystemPath(url) {
 
             // DEFINE INNER FUNCTIONS
             /**
@@ -83,10 +79,11 @@ function Factory(spec) {
                 } else {
                     result = `${address.route}`;
                 }
-                // add 'index.html' for 'web' area
-                if (
-                    (address.space !== DEF.ZONE.API) &&
-                    (address.space !== DEF.ZONE.SRC) &&
+                // add 'index.html' for 'web' space
+                if ((
+                        (address.space === DEF.SPACE.WEB) ||
+                        (address.space === undefined)
+                    ) &&
                     (result.slice(-1) === '/')
                 ) {
                     result += INDEX_NAME;
@@ -130,18 +127,18 @@ function Factory(spec) {
 
         // MAIN FUNCTIONALITY
 
-        /** @type {TeqFw_Web_Back_Http1_Request_Context} */
+        /** @type {TeqFw_Web_Back_Api_Request_IContext} */
         const ctx = context; // IDEA is failed with context help (suggestions on Ctrl+Space)
         if (!ctx.isRequestProcessed()) {
             // process only unprocessed requests
             const webPath = ctx.getPath();
-            const path = getPath(webPath);
+            const path = getFilesystemPath(webPath);
             if ($fs.existsSync(path) && $fs.statSync(path).isFile()) {
                 const mimeType = $mimeTypes.lookup(path);
                 if (mimeType) {
                     ctx.setResponseFilePath(path);
                     ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, mimeType)
-                    ctx.setRequestProcessed();
+                    ctx.markRequestProcessed();
                 }
             }
         }
@@ -150,7 +147,7 @@ function Factory(spec) {
     /**
      * Process plugins descriptions and setup static resources mapping.
      */
-    function initMapping() {
+    function initHandler() {
         logger.debug('Map plugins folders for static resources:');
         const items = regPlugins.items();
         for (const item of items) {
@@ -160,7 +157,7 @@ function Factory(spec) {
                 /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload} */
                 const desc = fDescAutoload.create(data);
                 const path = $path.join(item.path, desc.path);
-                const url = $path.join('/', DEF.ZONE.SRC, item.name);
+                const url = $path.join('/', DEF.SPACE.SRC, item.name);
                 logger.debug(`    ${url} => ${path}`);
                 routes[url] = path;
 
@@ -169,7 +166,7 @@ function Factory(spec) {
             // map URLs to filesystem for web resources (styles, images, etc.)
             const pathWeb = $path.join(item.path, DEF.FS_STATIC_ROOT);
             if ($fs.existsSync(pathWeb) && $fs.statSync(pathWeb).isDirectory()) {
-                const url = $path.join('/', DEF.ZONE.WEB, item.name);
+                const url = $path.join('/', DEF.SPACE.WEB, item.name);
                 routes[url] = pathWeb;
                 logger.debug(`    ${url} => ${pathWeb}`);
             }
@@ -179,7 +176,7 @@ function Factory(spec) {
                 const map = item.teqfw[DEF.REALM].statics;
                 for (const key in map) {
                     const path = $path.join(rootFs, 'node_modules', map[key]);
-                    const url = $path.join('/', DEF.ZONE.SRC, key);
+                    const url = $path.join('/', DEF.SPACE.SRC, key);
                     routes[url] = path;
                     logger.debug(`    ${url} => ${path}`);
                 }
@@ -190,17 +187,12 @@ function Factory(spec) {
     }
 
     // MAIN FUNCTIONALITY
-    initMapping();
+    initHandler();
 
     // COMPOSE RESULT
     Object.defineProperty(handle, 'name', {value: `${NS}.${handle.name}`});
     return handle;
 }
 
-// MODULE'S FUNCTIONALITY
-
-// MODULE'S EXPORT
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
-export {
-    Factory as default,
-};
+

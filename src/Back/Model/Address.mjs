@@ -1,7 +1,7 @@
 /**
  * Model to parse web addresses according to TeqFw_Web_Back_Api_Dto_Address structure.
  */
-export default class TeqFw_Web_Model_Address {
+export default class TeqFw_Web_Back_Model_Address {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Defaults} */
@@ -82,5 +82,4 @@ export default class TeqFw_Web_Model_Address {
             }
         }
     }
-
 }

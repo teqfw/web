@@ -44,6 +44,12 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
     weight;
 }
 
+// attributes names to use as aliases in queries to object props
+TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.AFTER = 'after';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.BEFORE = 'before';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.FACTORY_ID = 'factoryId';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
+
 /**
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler
