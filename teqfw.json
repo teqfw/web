@@ -10,6 +10,13 @@
     "TeqFw_Web_Back_Cli_Http2_Stop"
   ],
   "web": {
+    "api": {
+      "realm": "web",
+      "services": [
+        "TeqFw_Web_Back_Service_Load_Config",
+        "TeqFw_Web_Back_Service_Load_Namespaces"
+      ]
+    },
     "handlers": [
       {
         "factoryId": "TeqFw_Web_Plugin_Web_Handler_Service",

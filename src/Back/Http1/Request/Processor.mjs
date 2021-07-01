@@ -11,8 +11,6 @@ import {pipeline} from 'stream';
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Http1_Request_Processor';
 
-// MODULE'S CLASSES
-
 // MODULE'S FUNCTIONS
 /**
  * Factory to setup execution context and to create the processor.
@@ -23,14 +21,14 @@ const NS = 'TeqFw_Web_Back_Http1_Request_Processor';
  */
 function Factory(spec) {
     // EXTRACT DEPS
+    /** @type {TeqFw_Web_Defaults} */
+    const DEF = spec['TeqFw_Web_Defaults$'];
     /** @type {TeqFw_Core_Logger} */
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
     /** @type {TeqFw_Web_Back_Api_Request_IContext.Factory} */
     const fContext = spec['TeqFw_Web_Back_Api_Request_IContext#Factory$'];
-
-    // PARSE INPUT & DEFINE WORKING VARS
 
     // DEFINE INNER FUNCTIONS
     /**
@@ -88,14 +86,15 @@ function Factory(spec) {
                         // there is data to return in response
                         const headers = context.getResponseHeaders();
                         const file = context.getResponseFilePath();
+                        const status = headers[DEF.HTTP.HEADER.STATUS] ?? H2.HTTP_STATUS_OK;
                         if (file) {
-                            res.writeHead(H2.HTTP_STATUS_OK, headers);
+                            res.writeHead(status, headers);
                             const rs = $fs.createReadStream(file);
                             pipeline(rs, res, (err) => {
                                 if (err) logger.error(err);
                             });
                         } else {
-                            res.writeHead(H2.HTTP_STATUS_OK, headers);
+                            res.writeHead(status, headers);
                             res.end(context.getResponseBody());
                         }
                     }
@@ -170,8 +169,6 @@ function Factory(spec) {
         }
 
     }
-
-    // MAIN FUNCTIONALITY
 
     // COMPOSE RESULT
     Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});

@@ -10,6 +10,10 @@ export default class TeqFw_Web_Defaults {
 
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
 
+    HTTP = {
+        HEADER: {STATUS: 'status'}
+    };
+
     MOD = {
         /** @type {TeqFw_Core_Defaults} */
         CORE: null

@@ -83,8 +83,25 @@ async function Factory(spec) {
      * @memberOf TeqFw_Web_Plugin_Web_Handler_Service
      */
     async function handle(context) {
-        // MAIN FUNCTIONALITY
+        // DEFINE INNER FUNCTIONS
 
+        /**
+         *
+         * @param {TeqFw_Web_Back_Api_Request_IContext} context
+         * @param {TeqFw_Web_Back_Api_Service_Factory_IReqRes} factory
+         */
+        function composeInput(context, factory) {
+            let res = {};
+            const chunks = context.getInputData();
+            const txt = Array.isArray(chunks) ? Buffer.concat(chunks).toString() : '';
+            if (txt.length > 0) {
+                const parsed = JSON.parse(txt);
+                res = factory.createReq(parsed?.data);
+            }
+            return res;
+        }
+
+        // MAIN FUNCTIONALITY
         /** @type {TeqFw_Web_Back_Http1_Request_Context} */
         const ctx = context; // IDEA is failed with context help (suggestions on Ctrl+Space)
         if (!ctx.isRequestProcessed()) {
@@ -99,28 +116,35 @@ async function Factory(spec) {
                     const serviceCtx = fContext.create();
                     serviceCtx.setRequestContext(context);
                     // parse request input and put in to service context
-                    const chunks = ctx.getInputData();
-                    const txt = Array.isArray(chunks) ? Buffer.concat(chunks).toString() : '';
-                    const parsed = JSON.parse(txt);
-                    const inData = serviceDesc.dtoFactory?.createReq(parsed?.data);
-                    serviceCtx.setInData(inData);
-                    // create output object for requested service
-                    const outData = serviceDesc.dtoFactory?.createRes();
-                    serviceCtx.setOutData(outData);
-                    // run service function
-                    await serviceDesc.service(serviceCtx);
-                    // compose result from outData been put into service context before service was run
-                    const outTxt = JSON.stringify({data: outData});
-                    ctx.setResponseBody(outTxt);
-                    // merge service out headers into response headers
-                    const headersSrv = serviceCtx.getOutHeaders();
-                    for (const key of Object.keys(headersSrv))
-                        ctx.setResponseHeader(key, headersSrv[key]);
-                    const headersRes = ctx.getResponseHeaders();
-                    if (!headersRes[H2.HTTP2_HEADER_CONTENT_TYPE]) {
-                        ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                    // const chunks = ctx.getInputData();
+                    // const txt = Array.isArray(chunks) ? Buffer.concat(chunks).toString() : '';
+                    // const parsed = JSON.parse(txt);
+                    // const inData = serviceDesc.dtoFactory?.createReq(parsed?.data);
+                    try {
+                        const inData = composeInput(context, serviceDesc.dtoFactory);
+                        serviceCtx.setInData(inData);
+                        // create output object for requested service
+                        const outData = serviceDesc.dtoFactory?.createRes();
+                        serviceCtx.setOutData(outData);
+                        // run service function
+                        await serviceDesc.service(serviceCtx);
+                        // compose result from outData been put into service context before service was run
+                        const outTxt = JSON.stringify({data: outData});
+                        ctx.setResponseBody(outTxt);
+                        // merge service out headers into response headers
+                        const headersSrv = serviceCtx.getOutHeaders();
+                        for (const key of Object.keys(headersSrv))
+                            ctx.setResponseHeader(key, headersSrv[key]);
+                        const headersRes = ctx.getResponseHeaders();
+                        if (!headersRes[H2.HTTP2_HEADER_CONTENT_TYPE]) {
+                            ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                        }
+                        ctx.markRequestProcessed();
+                    } catch (e) {
+                        ctx.setResponseHeader(DEF.HTTP.HEADER.STATUS, H2.HTTP_STATUS_BAD_REQUEST);
+                        ctx.setResponseBody(e.message);
+                        ctx.markRequestProcessed();
                     }
-                    ctx.markRequestProcessed();
                 }
             }
         }
