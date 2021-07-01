@@ -1,5 +1,5 @@
 /**
- * Request and response to load configuration to the front.
+ * Route data for service to load app configuration to the front.
  *
  * @namespace TeqFw_Web_Shared_Service_Route_Load_Config
  */
@@ -22,9 +22,15 @@ class Response {}
 /**
  * Factory to create new DTOs.
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
+ * @implements TeqFw_Web_Back_Api_Service_Factory_IRoute
  */
 class Factory {
-    constructor() {
+    constructor(spec) {
+        // EXTRACT DEPS
+        /** @type {TeqFw_Web_Shared_Defaults} */
+        const DEF = spec['TeqFw_Web_Shared_Defaults$'];
+
+        // DEFINE INSTANCE METHODS
         /**
          * @param {Request|Object|null} data
          * @return {TeqFw_Web_Shared_Service_Route_Load_Config.Request}
@@ -40,7 +46,10 @@ class Factory {
         this.createRes = function (data = null) {
             return new Response();
         }
+
+        this.getRoute = () => DEF.API.LOAD.CONFIG;
     }
+
 }
 
 // MODULE'S EXPORT

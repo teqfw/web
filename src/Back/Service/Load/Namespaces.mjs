@@ -15,8 +15,8 @@ const NS = 'TeqFw_Web_Back_Service_Load_Namespaces';
 export default class TeqFw_Web_Back_Service_Load_Namespaces {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Defaults} */
-        const DEF = spec['TeqFw_Web_Defaults$'];
+        /** @type {TeqFw_Web_Back_Defaults} */
+        const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {typeof TeqFw_Core_Back_Api_Dto_Plugin_Desc} */
         const DescCore = spec['TeqFw_Core_Back_Api_Dto_Plugin_Desc#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */

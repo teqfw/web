@@ -20,8 +20,8 @@ const NS = 'TeqFw_Web_Back_Cli_Http1_Start';
  */
 function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Web_Defaults} */
-    const DEF = spec['TeqFw_Web_Defaults$']; // singleton
+    /** @type {TeqFw_Web_Back_Defaults} */
+    const DEF = spec['TeqFw_Web_Back_Defaults$']; // singleton
     /** @type {TeqFw_Core_Back_App.Bootstrap} */
     const cfg = spec['TeqFw_Core_Back_App#Bootstrap$']; // singleton
     /** @type {TeqFw_Di_Container} */
@@ -69,7 +69,7 @@ function Factory(spec) {
 
     // COMPOSE RESULT
     const res = fCommand.create();
-    res.realm = DEF.REALM;
+    res.realm = DEF.SHARED.REALM;
     res.name = 'http1-start';
     res.desc = 'Start the HTTP/1 server.';
     res.action = action;

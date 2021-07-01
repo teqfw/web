@@ -23,8 +23,8 @@ const INDEX_NAME = 'index.html';
  */
 export default function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Web_Defaults} */
-    const DEF = spec['TeqFw_Web_Defaults$'];
+    /** @type {TeqFw_Web_Back_Defaults} */
+    const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Logger} */
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Core_Back_App.Bootstrap} */
@@ -172,8 +172,8 @@ export default function Factory(spec) {
             }
 
             // map additional sources mapping
-            if (typeof item.teqfw[DEF.REALM]?.statics === 'object') {
-                const map = item.teqfw[DEF.REALM].statics;
+            if (typeof item.teqfw[DEF.SHARED.REALM]?.statics === 'object') {
+                const map = item.teqfw[DEF.SHARED.REALM].statics;
                 for (const key in map) {
                     const path = $path.join(rootFs, 'node_modules', map[key]);
                     const url = $path.join('/', DEF.SPACE.SRC, key);

@@ -1,5 +1,5 @@
 /**
- * Request and response to load DI namespaces to the front.
+ * Route data for service to load DI namespaces to the front.
  *
  * @namespace TeqFw_Web_Shared_Service_Route_Load_Namespaces
  */
@@ -23,15 +23,19 @@ class Response {
 /**
  * Factory to create new DTOs.
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Namespaces
+ * @implements TeqFw_Web_Back_Api_Service_Factory_IRoute
  */
 class Factory {
     constructor(spec) {
         // EXTRACT DEPS
+        /** @type {TeqFw_Web_Shared_Defaults} */
+        const DEF = spec['TeqFw_Web_Shared_Defaults$'];
         /** @type {typeof TeqFw_Web_Shared_Service_Dto_Namespace_Item} */
         const DItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item.Factory} */
         const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
 
+        // DEFINE INSTANCE METHODS
         /**
          * @param {Request|Object|null} data
          * @return {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Request}
@@ -51,7 +55,10 @@ class Factory {
                 : [];
             return res;
         }
+
+        this.getRoute = () => DEF.API.LOAD.NAMESPACES;
     }
+
 }
 
 // MODULE'S EXPORT

@@ -1,7 +1,7 @@
 /**
- * Application level constants (hardcoded configuration).
+ * Plugin constants (hardcoded configuration) for backend code.
  */
-export default class TeqFw_Web_Defaults {
+export default class TeqFw_Web_Back_Defaults {
     DATA = {
         FILE_PID_HTTP1: './var/http1.pid', // PID file to stop running server.
         FILE_PID_HTTP2: './var/http2.pid', // PID file to stop running server.
@@ -14,12 +14,10 @@ export default class TeqFw_Web_Defaults {
         HEADER: {STATUS: 'status'}
     };
 
-    MOD = {
-        /** @type {TeqFw_Core_Defaults} */
-        CORE: null
-    };
-
     REALM = 'web';
+
+    /** @type {TeqFw_Web_Shared_Defaults} */
+    SHARED = null;
 
     SPACE = { // URL prefix for API requests: https://.../door/space/...
         API: 'api',
@@ -29,8 +27,8 @@ export default class TeqFw_Web_Defaults {
 
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_Defaults} */
-        this.MOD.CORE = spec['TeqFw_Core_Defaults$'];
+        /** @type {TeqFw_Web_Shared_Defaults} */
+        this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 
         // MAIN FUNCTIONALITY
         Object.freeze(this);

@@ -24,8 +24,8 @@ const NS = 'TeqFw_Web_Plugin_Web_Handler_Service';
  */
 async function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Web_Defaults} */
-    const DEF = spec['TeqFw_Web_Defaults$'];
+    /** @type {TeqFw_Web_Back_Defaults} */
+    const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Di_Container} */
     const container = spec['TeqFw_Di_Container$'];
     /** @type {TeqFw_Core_Logger} */
@@ -52,7 +52,7 @@ async function Factory(spec) {
     async function initHandler() {
         const items = regPlugin.items();
         for (const one of items) {
-            const data = one.teqfw?.[DEF.REALM];
+            const data = one.teqfw?.[DEF.SHARED.REALM];
             if (data) {
                 const desc = fDesc.create(data);
                 const realm = desc.api.realm;
@@ -65,7 +65,7 @@ async function Factory(spec) {
                         const item = fItem.create();
                         item.dtoFactory = factory.getDtoFactory();
                         item.service = factory.getService();
-                        const tail = factory.getRoute();
+                        const tail = item.dtoFactory.getRoute();
                         const route = $path.join(prefix, tail);
                         router[route] = item;
                         logger.debug(`    ${route} => ${moduleId}`);
@@ -88,7 +88,7 @@ async function Factory(spec) {
         /**
          *
          * @param {TeqFw_Web_Back_Api_Request_IContext} context
-         * @param {TeqFw_Web_Back_Api_Service_Factory_IReqRes} factory
+         * @param {TeqFw_Web_Back_Api_Service_Factory_IRoute} factory
          */
         function composeInput(context, factory) {
             let res = {};

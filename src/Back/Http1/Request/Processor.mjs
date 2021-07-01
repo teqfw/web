@@ -21,8 +21,8 @@ const NS = 'TeqFw_Web_Back_Http1_Request_Processor';
  */
 function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Web_Defaults} */
-    const DEF = spec['TeqFw_Web_Defaults$'];
+    /** @type {TeqFw_Web_Back_Defaults} */
+    const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Logger} */
     const logger = spec['TeqFw_Core_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */

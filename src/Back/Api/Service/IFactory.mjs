@@ -3,11 +3,11 @@
  * @interface
  */
 export default class TeqFw_Web_Back_Api_Service_IFactory {
-    /** @return {TeqFw_Web_Back_Api_Service_Factory_IReqRes} */
+    /**
+     * Get factory to create DTO for request & response
+     * @return {TeqFw_Web_Back_Api_Service_Factory_IRoute}
+     */
     getDtoFactory() {}
-
-    /** @return {string} */
-    getRoute() {}
 
     /**
      * Get service function.

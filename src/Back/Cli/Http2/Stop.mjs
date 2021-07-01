@@ -20,8 +20,8 @@ const NS = 'TeqFw_Web_Back_Cli_Http2_Stop';
  */
 function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Web_Defaults} */
-    const DEF = spec['TeqFw_Web_Defaults$'];
+    /** @type {TeqFw_Web_Back_Defaults} */
+    const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_App.Bootstrap} */
     const cfg = spec['TeqFw_Core_Back_App#Bootstrap$'];
     /** @type {Function|TeqFw_Core_Back_Api_Dto_Command.Factory} */
@@ -48,7 +48,7 @@ function Factory(spec) {
 
     // COMPOSE RESULT
     const res = fCommand.create();
-    res.realm = DEF.REALM;
+    res.realm = DEF.SHARED.REALM;
     res.name = 'http2-stop';
     res.desc = 'Stop the HTTP/2 server.';
     res.action = action;

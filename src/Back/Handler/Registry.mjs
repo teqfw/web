@@ -4,8 +4,8 @@
 export default class TeqFw_Web_Back_Handler_Registry {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Defaults} */
-        const DEF = spec['TeqFw_Web_Defaults$'];
+        /** @type {TeqFw_Web_Back_Defaults} */
+        const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Di_Container} */
         const container = spec['TeqFw_Di_Container$'];
         /** @type {TeqFw_Core_Logger} */
@@ -26,7 +26,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
             /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
             const items = registry.items();
             for (const item of items) {
-                const data = item.teqfw?.[DEF.REALM];
+                const data = item.teqfw?.[DEF.SHARED.REALM];
                 if (data) {
                     const desc = fDesc.create(data);
                     for (const one of desc.handlers) {

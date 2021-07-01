@@ -4,8 +4,8 @@
 export default class TeqFw_Web_Back_Model_Address {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Defaults} */
-        const DEF = spec['TeqFw_Web_Defaults$'];
+        /** @type {TeqFw_Web_Back_Defaults} */
+        const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {typeof TeqFw_Web_Back_Api_Dto_Plugin_Desc} */
         const Desc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
@@ -60,7 +60,7 @@ export default class TeqFw_Web_Back_Model_Address {
         const items = regPlugins.items();
         for (const item of items) {
             // one only 'web/root' is allowed in application
-            const iRoot = item?.teqfw?.[DEF.REALM]?.[Desc.ROOT];
+            const iRoot = item?.teqfw?.[DEF.SHARED.REALM]?.[Desc.ROOT];
             if (iRoot) {
                 if (!root) {
                     root = iRoot;
@@ -69,13 +69,13 @@ export default class TeqFw_Web_Back_Model_Address {
                 }
             }
             // find all doors in the app
-            const iDoors = item?.teqfw?.[DEF.REALM]?.[Desc.DOORS];
+            const iDoors = item?.teqfw?.[DEF.SHARED.REALM]?.[Desc.DOORS];
             if (Array.isArray(iDoors)) {
                 const allied = doors.concat(iDoors);
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
-            const iSpace = item?.teqfw?.[DEF.REALM]?.[Desc.SPACES];
+            const iSpace = item?.teqfw?.[DEF.SHARED.REALM]?.[Desc.SPACES];
             if (Array.isArray(iSpace)) {
                 const allied = spaces.concat(iSpace);
                 spaces = [...new Set(allied)]; // make items unique
