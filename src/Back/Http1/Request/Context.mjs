@@ -59,6 +59,14 @@ class TeqFw_Web_Back_Http1_Request_Context {
         return this.inputData;
     }
 
+    getPath() {
+        if (this.http1Request) {
+            return this.http1Request.url;
+        } else if (this.http2Headers[H2.HTTP2_HEADER_PATH]) {
+            return this.http2Headers[H2.HTTP2_HEADER_PATH];
+        }
+    }
+
     /**
      * @returns {Object<string, string>}
      */
@@ -87,14 +95,6 @@ class TeqFw_Web_Back_Http1_Request_Context {
      */
     getResponseHeaders() {
         return this.responseHeaders;
-    }
-
-    getPath() {
-        if (this.http1Request) {
-            return this.http1Request.url;
-        } else if (this.http2Headers[H2.HTTP2_HEADER_PATH]) {
-            return this.http2Headers[H2.HTTP2_HEADER_PATH];
-        }
     }
 
     isRequestComplete() {

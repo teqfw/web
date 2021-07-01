@@ -6,6 +6,12 @@
  */
 export default class TeqFw_Web_Back_Api_Service_IContext {
     /**
+     * Get object that is shared between all handlers from request context.
+     * @return {Object}
+     */
+    getHandlersShare() {}
+
+    /**
      * Get service input data extracted from the POSTed JSON.
      * @return {Object}
      */

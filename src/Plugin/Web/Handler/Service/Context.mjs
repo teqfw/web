@@ -19,6 +19,10 @@ class TeqFw_Web_Plugin_Web_Handler_Service_Context {
     /** @type {TeqFw_Web_Back_Api_Request_IContext} */
     requestContext;
 
+    getHandlersShare() {
+        return this.requestContext.getHandlersShare();
+    }
+
     getInData() {
         return this.inData;
     }

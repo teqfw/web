@@ -63,9 +63,9 @@ async function Factory(spec) {
                         /** @type {TeqFw_Web_Back_Api_Service_IFactory} */
                         const factory = await container.get(`${moduleId}$`);
                         const item = fItem.create();
-                        item.dtoFactory = factory.getDtoFactory();
+                        item.routeFactory = factory.getRouteFactory();
                         item.service = factory.getService();
-                        const tail = item.dtoFactory.getRoute();
+                        const tail = item.routeFactory.getRoute();
                         const route = $path.join(prefix, tail);
                         router[route] = item;
                         logger.debug(`    ${route} => ${moduleId}`);
@@ -116,15 +116,11 @@ async function Factory(spec) {
                     const serviceCtx = fContext.create();
                     serviceCtx.setRequestContext(context);
                     // parse request input and put in to service context
-                    // const chunks = ctx.getInputData();
-                    // const txt = Array.isArray(chunks) ? Buffer.concat(chunks).toString() : '';
-                    // const parsed = JSON.parse(txt);
-                    // const inData = serviceDesc.dtoFactory?.createReq(parsed?.data);
                     try {
-                        const inData = composeInput(context, serviceDesc.dtoFactory);
+                        const inData = composeInput(context, serviceDesc.routeFactory);
                         serviceCtx.setInData(inData);
                         // create output object for requested service
-                        const outData = serviceDesc.dtoFactory?.createRes();
+                        const outData = serviceDesc.routeFactory?.createRes();
                         serviceCtx.setOutData(outData);
                         // run service function
                         await serviceDesc.service(serviceCtx);

@@ -21,6 +21,9 @@ export default class TeqFw_Web_Back_Api_Request_IContext {
      */
     getPath() {}
 
+    /** @return {Object<string, string>} */
+    getRequestHeaders() {}
+
     /** @return {string} */
     getResponseBody() {}
 

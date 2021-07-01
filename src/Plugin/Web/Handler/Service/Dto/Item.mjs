@@ -7,7 +7,7 @@ const NS = 'TeqFw_Web_Plugin_Web_Handler_Service_Dto_Item';
 // MODULE'S CLASSES
 class TeqFw_Web_Plugin_Web_Handler_Service_Dto_Item {
     /** @type {TeqFw_Web_Back_Api_Service_Factory_IRoute} */
-    dtoFactory;
+    routeFactory;
     /** @type {function(TeqFw_Web_Back_Api_Service_IContext): Promise<void>} */
     service;
 }

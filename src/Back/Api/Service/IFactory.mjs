@@ -4,10 +4,10 @@
  */
 export default class TeqFw_Web_Back_Api_Service_IFactory {
     /**
-     * Get factory to create DTO for request & response
+     * Get factory compose route (address & DTO for request & response).
      * @return {TeqFw_Web_Back_Api_Service_Factory_IRoute}
      */
-    getDtoFactory() {}
+    getRouteFactory() {}
 
     /**
      * Get service function.

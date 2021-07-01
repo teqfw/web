@@ -17,15 +17,11 @@ export default class TeqFw_Web_Back_Service_Load_Config {
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Config.Factory} */
-        const fRouteDto = spec['TeqFw_Web_Shared_Service_Route_Load_Config#Factory$'];
+        const fRoute = spec['TeqFw_Web_Shared_Service_Route_Load_Config#Factory$'];
 
         // DEFINE INSTANCE METHODS
-        this.getDtoFactory = function () {
-            return fRouteDto;
-        }
-
-        this.getRoute = function () {
-            return '/load/config';
+        this.getRouteFactory = function () {
+            return fRoute;
         }
 
         this.getService = function () {
