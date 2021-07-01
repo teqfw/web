@@ -12,17 +12,13 @@ const NS = 'TeqFw_Web_Back_Service_Load_Config';
 export default class TeqFw_Web_Back_Service_Load_Config {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Config.Factory} */
-        const fRoute = spec['TeqFw_Web_Shared_Service_Route_Load_Config#Factory$'];
+        const route = spec['TeqFw_Web_Shared_Service_Route_Load_Config#Factory$'];
 
         // DEFINE INSTANCE METHODS
-        this.getRouteFactory = function () {
-            return fRoute;
-        }
+        this.getRouteFactory = () => route;
 
         this.getService = function () {
             // DEFINE INNER FUNCTIONS

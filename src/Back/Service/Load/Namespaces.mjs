@@ -22,7 +22,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Factory} */
-        const fRoute = spec['TeqFw_Web_Shared_Service_Route_Load_Namespaces#Factory$'];
+        const route = spec['TeqFw_Web_Shared_Service_Route_Load_Namespaces#Factory$'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item.Factory} */
         const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
 
@@ -54,7 +54,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         }
 
         // DEFINE INSTANCE METHODS
-        this.getRouteFactory = () => fRoute;
+        this.getRouteFactory = () => route;
 
         this.getService = function () {
             // DEFINE INNER FUNCTIONS
