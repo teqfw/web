@@ -14,7 +14,6 @@ class Request {}
 
 /**
  * This response contains unstructured data.
- *
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
  */
 class Response {}
@@ -31,6 +30,8 @@ class Factory {
         const DEF = spec['TeqFw_Web_Shared_Defaults$'];
 
         // DEFINE INSTANCE METHODS
+        this.getRoute = () => `/${DEF.NAME}${DEF.SRV.LOAD.CONFIG}`;
+
         /**
          * @param {Request|Object|null} data
          * @return {TeqFw_Web_Shared_Service_Route_Load_Config.Request}
@@ -40,14 +41,13 @@ class Factory {
         }
 
         /**
+         * This response contains unstructured data.
          * @param {Response|Object|null} data
          * @return {TeqFw_Web_Shared_Service_Route_Load_Config.Response}
          */
         this.createRes = function (data = null) {
-            return new Response();
+            return Object.assign(new Response(), data);
         }
-
-        this.getRoute = () => DEF.API.LOAD.CONFIG;
     }
 
 }

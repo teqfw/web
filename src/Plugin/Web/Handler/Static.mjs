@@ -81,7 +81,7 @@ export default function Factory(spec) {
                 }
                 // add 'index.html' for 'web' space
                 if ((
-                        (address.space === DEF.SPACE.WEB) ||
+                        (address.space === DEF.SHARED.SPACE.WEB) ||
                         (address.space === undefined)
                     ) &&
                     (result.slice(-1) === '/')
@@ -157,7 +157,7 @@ export default function Factory(spec) {
                 /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload} */
                 const desc = fDescAutoload.create(data);
                 const path = $path.join(item.path, desc.path);
-                const url = $path.join('/', DEF.SPACE.SRC, item.name);
+                const url = $path.join('/', DEF.SHARED.SPACE.SRC, item.name);
                 logger.debug(`    ${url} => ${path}`);
                 routes[url] = path;
 
@@ -166,7 +166,7 @@ export default function Factory(spec) {
             // map URLs to filesystem for web resources (styles, images, etc.)
             const pathWeb = $path.join(item.path, DEF.FS_STATIC_ROOT);
             if ($fs.existsSync(pathWeb) && $fs.statSync(pathWeb).isDirectory()) {
-                const url = $path.join('/', DEF.SPACE.WEB, item.name);
+                const url = $path.join('/', DEF.SHARED.SPACE.WEB, item.name);
                 routes[url] = pathWeb;
                 logger.debug(`    ${url} => ${pathWeb}`);
             }
@@ -176,7 +176,7 @@ export default function Factory(spec) {
                 const map = item.teqfw[DEF.SHARED.REALM].statics;
                 for (const key in map) {
                     const path = $path.join(rootFs, 'node_modules', map[key]);
-                    const url = $path.join('/', DEF.SPACE.SRC, key);
+                    const url = $path.join('/', DEF.SHARED.SPACE.SRC, key);
                     routes[url] = path;
                     logger.debug(`    ${url} => ${path}`);
                 }

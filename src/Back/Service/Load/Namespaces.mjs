@@ -47,7 +47,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
                 const item = fItem.create();
                 item.ext = auto.ext;
                 item.ns = auto.ns;
-                item.path = $path.join('/', DEF.SPACE.SRC, one.name);
+                item.path = $path.join('/', DEF.SHARED.SPACE.SRC, one.name);
                 result.push(item);
             }
             return result;

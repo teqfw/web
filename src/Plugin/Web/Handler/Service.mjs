@@ -55,18 +55,16 @@ async function Factory(spec) {
             const data = one.teqfw?.[DEF.SHARED.REALM];
             if (data) {
                 const desc = fDesc.create(data);
-                const realm = desc.api.realm;
                 const services = desc.api.services;
-                if (realm && services?.length) {
-                    const prefix = $path.join('/', realm);
+                if (services?.length) {
+                    // const prefix = $path.join('/', realm);
                     for (const moduleId of services) {
                         /** @type {TeqFw_Web_Back_Api_Service_IFactory} */
                         const factory = await container.get(`${moduleId}$`);
                         const item = fItem.create();
                         item.routeFactory = factory.getRouteFactory();
                         item.service = factory.getService();
-                        const tail = item.routeFactory.getRoute();
-                        const route = $path.join(prefix, tail);
+                        const route = item.routeFactory.getRoute();
                         router[route] = item;
                         logger.debug(`    ${route} => ${moduleId}`);
                     }
@@ -108,7 +106,7 @@ async function Factory(spec) {
             // process only unprocessed requests
             const path = ctx.getPath();
             const address = mAddress.parsePath(path);
-            if (address.space === DEF.SPACE.API) {
+            if (address.space === DEF.SHARED.SPACE.API) {
                 // simple matching for routes is here
                 if (router[address.route]) {
                     // get service data and create service context object

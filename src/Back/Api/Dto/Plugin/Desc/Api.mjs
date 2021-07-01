@@ -7,7 +7,10 @@ const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc_Api';
 
 // MODULE'S CLASSES
 class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Api {
-    /** @type {string} */
+    /**
+     * @type {string}
+     * @deprecated use NPM package name as realm
+     */
     realm;
     /** @type {string[]} */
     services;

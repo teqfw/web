@@ -19,12 +19,6 @@ export default class TeqFw_Web_Back_Defaults {
     /** @type {TeqFw_Web_Shared_Defaults} */
     SHARED = null;
 
-    SPACE = { // URL prefix for API requests: https://.../door/space/...
-        API: 'api',
-        SRC: 'src',
-        WEB: 'web',
-    };
-
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
