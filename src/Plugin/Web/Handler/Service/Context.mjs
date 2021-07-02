@@ -3,6 +3,9 @@
  *
  * @namespace TeqFw_Web_Plugin_Web_Handler_Service_Context
  */
+// MODULE'S IMPORT
+import {constants as H2} from 'http2';
+
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Plugin_Web_Handler_Service_Context';
 
@@ -48,7 +51,17 @@ class TeqFw_Web_Plugin_Web_Handler_Service_Context {
     }
 
     setOutHeader(key, value) {
-        this.outHeaders[key] = value;
+        if (key === H2.HTTP2_HEADER_SET_COOKIE) {
+            if (this.outHeaders[key]) {
+                // merge cookies
+                this.outHeaders[key] += `;${value}`;
+            } else {
+                // add cookie
+                this.outHeaders[key] = value;
+            }
+        } else {
+            this.outHeaders[key] = value;
+        }
     }
 
     setRequestContext(data) {

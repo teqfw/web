@@ -151,7 +151,17 @@ class TeqFw_Web_Back_Http1_Request_Context {
     }
 
     setResponseHeader(key, value) {
-        this.responseHeaders[key] = value;
+        if (key === H2.HTTP2_HEADER_SET_COOKIE) {
+            if (this.responseHeaders[key]) {
+                // merge cookies
+                this.responseHeaders[key] += `;${value}`;
+            } else {
+                // add cookie
+                this.responseHeaders[key] = value;
+            }
+        } else {
+            this.responseHeaders[key] = value;
+        }
     }
 }
 

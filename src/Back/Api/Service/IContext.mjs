@@ -7,6 +7,7 @@
 export default class TeqFw_Web_Back_Api_Service_IContext {
     /**
      * Get object that is shared between all handlers from request context.
+     * TODO: should we return prop of the shared object for method param (getHandlersShare(name) => shared[name])?
      * @return {Object}
      */
     getHandlersShare() {}
