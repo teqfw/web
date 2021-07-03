@@ -44,7 +44,7 @@ export default class TeqFw_Web_Front_Service_Gate {
             let result = false;
             ajaxLed.on();
             try {
-                const URL = `${BASE}/${factory.getRoute()}`;
+                const URL = `${BASE}${factory.getRoute()}`;
                 const res = await fetch(URL, {
                     method: 'POST',
                     headers: {
