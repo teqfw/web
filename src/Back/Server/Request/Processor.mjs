@@ -1,7 +1,7 @@
 /**
  * Request processor for HTTP/1 server.
  *
- * @namespace TeqFw_Web_Back_Http1_Request_Processor
+ * @namespace TeqFw_Web_Back_Server_Request_Processor
  */
 // MODULE'S IMPORT
 import $fs from 'fs';
@@ -9,15 +9,14 @@ import {constants as H2} from 'http2';
 import {pipeline} from 'stream';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Http1_Request_Processor';
+const NS = 'TeqFw_Web_Back_Server_Request_Processor';
 
 // MODULE'S FUNCTIONS
 /**
  * Factory to setup execution context and to create the processor.
  *
  * @param {TeqFw_Di_SpecProxy} spec
- * @constructor
- * @memberOf TeqFw_Web_Back_Http1_Request_Processor
+ * @memberOf TeqFw_Web_Back_Server_Request_Processor
  */
 function Factory(spec) {
     // EXTRACT DEPS
@@ -34,7 +33,7 @@ function Factory(spec) {
     /**
      * Process one HTTP/1 request and populate response.
      * @returns {Promise<void>}
-     * @memberOf TeqFw_Web_Back_Http1_Request_Processor
+     * @memberOf TeqFw_Web_Back_Server_Request_Processor
      */
     async function action(req, res) {
         // DEFINE INNER FUNCTIONS

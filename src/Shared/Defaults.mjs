@@ -4,16 +4,10 @@
 export default class TeqFw_Web_Shared_Defaults {
     NAME = '@teqfw/web';
 
-    SRV = {
-        LOAD: {
-            CONFIG: '/load/config',
-            NAMESPACES: '/load/namespaces',
-        }
-    };
-
     /**
-     * @deprecated
+     * Used in CLI commands and 'teqfw.json' descriptors.
      * @type {string}
+     * TODO: move to back DEFs
      */
     REALM = 'web';
 
@@ -23,10 +17,14 @@ export default class TeqFw_Web_Shared_Defaults {
         WEB: 'web',
     };
 
-    constructor() {
-        // EXTRACT DEPS
+    SRV = {
+        LOAD: {
+            CONFIG: '/load/config',
+            NAMESPACES: '/load/namespaces',
+        }
+    };
 
-        // MAIN FUNCTIONALITY
+    constructor() {
         Object.freeze(this);
     }
 }

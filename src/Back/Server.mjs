@@ -1,17 +1,17 @@
 /**
  * HTTP/1 server to process web requests.
  *
- * @namespace TeqFw_Web_Back_Http1_Server
+ * @namespace TeqFw_Web_Back_Server
  */
 // MODULE'S IMPORT
 import http from 'http';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Http1_Server {
+export default class TeqFw_Web_Back_Server {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {Function|TeqFw_Web_Back_Http1_Request_Processor.action} */
-        const process = spec['TeqFw_Web_Back_Http1_Request_Processor$'];
+        /** @type {Function|TeqFw_Web_Back_Server_Request_Processor.action} */
+        const process = spec['TeqFw_Web_Back_Server_Request_Processor$'];
         /** @type {TeqFw_Web_Back_Handler_Registry} */
         const registryHndl = spec['TeqFw_Web_Back_Handler_Registry$'];
 

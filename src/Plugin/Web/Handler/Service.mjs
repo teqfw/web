@@ -4,7 +4,6 @@
  * @namespace TeqFw_Web_Plugin_Web_Handler_Service
  */
 // MODULE'S IMPORT
-import $path from 'path';
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
@@ -100,7 +99,7 @@ async function Factory(spec) {
         }
 
         // MAIN FUNCTIONALITY
-        /** @type {TeqFw_Web_Back_Http1_Request_Context} */
+        /** @type {TeqFw_Web_Back_Server_Request_Context} */
         const ctx = context; // IDEA is failed with context help (suggestions on Ctrl+Space)
         if (!ctx.isRequestProcessed()) {
             // process only unprocessed requests

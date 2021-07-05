@@ -1,13 +1,13 @@
 /**
  * Stop HTTP/1 server.
- * @namespace TeqFw_Web_Back_Cli_Http1_Stop
+ * @namespace TeqFw_Web_Back_Cli_Server_Stop
  */
 // MODULE'S IMPORT
 import $path from 'path';
 import $fs from 'fs';
 
 // DEFINE WORKING VARS
-const NS = 'TeqFw_Web_Back_Cli_Http1_Stop';
+const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 
 // DEFINE MODULE'S FUNCTIONS
 /**
@@ -15,23 +15,22 @@ const NS = 'TeqFw_Web_Back_Cli_Http1_Stop';
  *
  * @param {TeqFw_Di_SpecProxy} spec
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
- * @constructor
- * @memberOf TeqFw_Web_Back_Cli_Http1_Stop
+ * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
 function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];   // singleton
+    const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_App.Bootstrap} */
-    const cfg = spec['TeqFw_Core_Back_App#Bootstrap$']; // singleton
+    const cfg = spec['TeqFw_Core_Back_App#Bootstrap$'];
     /** @type {Function|TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$']; // singleton
+    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
 
     // DEFINE INNER FUNCTIONS
     /**
      * Stop the HTTP/2 server.
      * @returns {Promise<void>}
-     * @memberOf TeqFw_Web_Back_Cli_Http1_Stop
+     * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
     const action = async function () {
         try {
@@ -49,7 +48,7 @@ function Factory(spec) {
     // COMPOSE RESULT
     const res = fCommand.create();
     res.realm = DEF.SHARED.REALM;
-    res.name = 'http1-stop';
+    res.name = 'server-stop';
     res.desc = 'Stop the HTTP/1 server.';
     res.action = action;
     return res;

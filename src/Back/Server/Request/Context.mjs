@@ -1,18 +1,18 @@
 /**
  * Request context model shared between HTTP/1 & HTTP/2 servers.
  *
- * @namespace TeqFw_Web_Back_Http1_Request_Context
+ * @namespace TeqFw_Web_Back_Server_Request_Context
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Http1_Request_Context';
+const NS = 'TeqFw_Web_Back_Server_Request_Context';
 
 // MODULE'S CLASSES
 /**
  * @implements TeqFw_Web_Back_Api_Request_IContext
  */
-class TeqFw_Web_Back_Http1_Request_Context {
+class TeqFw_Web_Back_Server_Request_Context {
     /** @type {Object} */
     handlersShare;
     /** @type {IncomingMessage} */
@@ -167,16 +167,16 @@ class TeqFw_Web_Back_Http1_Request_Context {
 
 /**
  * Factory to create new instances.
- * @memberOf TeqFw_Web_Back_Http1_Request_Context
+ * @memberOf TeqFw_Web_Back_Server_Request_Context
  */
 class Factory {
     constructor() {
         /**
-         * @param {TeqFw_Web_Back_Http1_Request_Context|null} data
-         * @return {TeqFw_Web_Back_Http1_Request_Context}
+         * @param {TeqFw_Web_Back_Server_Request_Context|null} data
+         * @return {TeqFw_Web_Back_Server_Request_Context}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Http1_Request_Context();
+            const res = new TeqFw_Web_Back_Server_Request_Context();
             res.handlersShare = (typeof data?.handlersShare === 'object') ? data.handlersShare : {};
             res.http1Request = data?.http1Request;
             res.http1Response = data?.http1Response;
@@ -195,9 +195,9 @@ class Factory {
 }
 
 // freeze class to deny attributes changes then export class
-Object.freeze(TeqFw_Web_Back_Http1_Request_Context);
+Object.freeze(TeqFw_Web_Back_Server_Request_Context);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 export {
-    TeqFw_Web_Back_Http1_Request_Context as default,
+    TeqFw_Web_Back_Server_Request_Context as default,
     Factory
 };

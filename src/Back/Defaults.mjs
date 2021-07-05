@@ -14,7 +14,6 @@ export default class TeqFw_Web_Back_Defaults {
         HEADER: {STATUS: 'status'}
     };
 
-    REALM = 'web';
 
     /** @type {TeqFw_Web_Shared_Defaults} */
     SHARED = null;

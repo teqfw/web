@@ -1,5 +1,5 @@
 /**
- * Interface for request context used in 'TeqFw_Web_Back_Http1_Request_Processor'.
+ * Interface for request context used in 'TeqFw_Web_Back_Server_Request_Processor'.
  * @interface
  */
 export default class TeqFw_Web_Back_Api_Request_IContext {
