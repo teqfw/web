@@ -19,14 +19,6 @@ class TeqFw_Web_Back_Server_Request_Context {
     http1Request;
     /** @type {ServerResponse} */
     http1Response;
-    /** @type {string} */
-    http2Body;
-    /** @type {number} */
-    http2Flags;
-    /** @type {Object<string, string>} */
-    http2Headers;
-    /** @type {ServerHttp2Stream} */
-    http2Stream;
     /** @type {Buffer[]} */
     inputData;
     /**
@@ -105,20 +97,6 @@ class TeqFw_Web_Back_Server_Request_Context {
         return this.requestProcessed;
     }
 
-    /**
-     * Init context with HTTP/2 data.
-     * @param {ServerHttp2Stream} stream
-     * @param {Object<string, string>} headers
-     * @param {number} flags
-     * @param {string} body
-     */
-    setHttp2Context(stream, headers, flags, body) {
-        this.http2Stream = stream;
-        this.http2Headers = headers;
-        this.http2Flags = flags;
-        this.http2Body = body;
-    }
-
     setInputData(chunks) {
         this.inputData = chunks;
     }
@@ -167,6 +145,7 @@ class TeqFw_Web_Back_Server_Request_Context {
 
 /**
  * Factory to create new instances.
+ * @implements TeqFw_Web_Back_Api_Request_IContext.Factory
  * @memberOf TeqFw_Web_Back_Server_Request_Context
  */
 class Factory {
@@ -180,10 +159,7 @@ class Factory {
             res.handlersShare = (typeof data?.handlersShare === 'object') ? data.handlersShare : {};
             res.http1Request = data?.http1Request;
             res.http1Response = data?.http1Response;
-            res.http2Body = data?.http2Body;
-            res.http2Flags = data?.http2Flags;
-            res.http2Headers = (typeof data?.http2Headers === 'object') ? data.http2Headers : {};
-            res.http2Stream = data?.http2Stream;
+            res.inputData = Array.isArray(data?.inputData) ? data?.inputData : [];
             res.requestComplete = data?.requestComplete ?? false;
             res.requestProcessed = data?.requestProcessed ?? false;
             res.responseBody = data?.responseBody;

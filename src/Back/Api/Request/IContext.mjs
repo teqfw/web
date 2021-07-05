@@ -91,3 +91,15 @@ export default class TeqFw_Web_Back_Api_Request_IContext {
      */
     setResponseHeader(key, value) {}
 }
+
+/**
+ * Factory to create new context for web request.
+ * @interface
+ * @memberOf TeqFw_Web_Back_Api_Request_IContext
+ */
+export class Factory {
+    /**
+     * @return {TeqFw_Web_Back_Api_Request_IContext}
+     */
+    create() {}
+}

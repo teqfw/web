@@ -27,7 +27,7 @@ function Factory(spec) {
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
     /** @type {TeqFw_Web_Back_Api_Request_IContext.Factory} */
-    const fContext = spec['TeqFw_Web_Back_Api_Request_IContext#Factory$'];
+    const fContext = spec['TeqFw_Web_Back_Server_Request_Context#Factory$']; // use impl. for interface
 
     // DEFINE INNER FUNCTIONS
     /**
@@ -72,11 +72,12 @@ function Factory(spec) {
                 // save input to context
                 context.setInputData(chunks);
                 // process all handlers in a loop
+                /** @type {Array<Function|TeqFw_Web_Back_Api_Request_IHandler.handle>} */
                 const all = handlers.items();
                 for (const handler of all) {
                     await handler(context);
                 }
-                // if any handler did not completely processed the request by itself
+                // if some handler did not completely processed the request by itself
                 if (!context.isRequestComplete()) {
                     if (!context.isRequestProcessed()) {
                         // no one handler process the request
@@ -150,6 +151,7 @@ function Factory(spec) {
         // Analyze input and define type of the request (api or static)
         if (hasValidMethod(req)) {
             try {
+                /** @type {TeqFw_Web_Back_Api_Request_IContext} */
                 const context = fContext.create();
                 context.setRequestContext({req, res});
                 // buffer to collect input data for POSTs
