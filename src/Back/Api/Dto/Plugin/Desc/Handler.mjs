@@ -28,7 +28,7 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
      */
     before;
     /**
-     * Dependency ID for handler factory's module to create handler: "Fl32_Ap_User_Plugin_Http2_Handler_Session".
+     * Dependency ID for handler factory's module to create handler: "Fl32_Ap_User_Plugin_Web_Handler_Session".
      *
      *  @type {string}
      */

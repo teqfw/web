@@ -25,6 +25,7 @@
         "factoryId": "TeqFw_Web_Plugin_Web_Handler_Static",
         "weight": 10
       }
-    ]
+    ],
+    "spaces": ["api", "src", "web"]
   }
 }
