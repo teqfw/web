@@ -68,7 +68,7 @@ class Factory {
     }
 }
 
-// freeze class to deny attributes changes then export class
+// freeze DTO class to deny attributes changes and pin namespace
 Object.freeze(TeqFw_Web_Back_Api_Dto_Plugin_Desc);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 export {
