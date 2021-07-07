@@ -84,7 +84,7 @@ export default class Factory {
                         }
                         // add 'index.html' for 'web' space
                         if ((
-                                (address.space === DEF.SHARED.SPACE.WEB) ||
+                                (address.space === DEF.SHARED.SPACE_WEB) ||
                                 (address.space === undefined)
                             ) &&
                             (result.slice(-1) === '/')
@@ -160,7 +160,7 @@ export default class Factory {
                         /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload} */
                         const desc = fDescAutoload.create(data);
                         const path = $path.join(item.path, desc.path);
-                        const url = $path.join('/', DEF.SHARED.SPACE.SRC, item.name);
+                        const url = $path.join('/', DEF.SHARED.SPACE_SRC, item.name);
                         logger.debug(`    ${url} => ${path}`);
                         routes[url] = path;
 
@@ -169,17 +169,17 @@ export default class Factory {
                     // map URLs to filesystem for web resources (styles, images, etc.)
                     const pathWeb = $path.join(item.path, DEF.FS_STATIC_ROOT);
                     if ($fs.existsSync(pathWeb) && $fs.statSync(pathWeb).isDirectory()) {
-                        const url = $path.join('/', DEF.SHARED.SPACE.WEB, item.name);
+                        const url = $path.join('/', DEF.SHARED.SPACE_WEB, item.name);
                         routes[url] = pathWeb;
                         logger.debug(`    ${url} => ${pathWeb}`);
                     }
 
                     // map additional sources mapping
-                    if (typeof item.teqfw[DEF.SHARED.REALM]?.statics === 'object') {
-                        const map = item.teqfw[DEF.SHARED.REALM].statics;
+                    if (typeof item.teqfw[DEF.DESC_NODE]?.statics === 'object') {
+                        const map = item.teqfw[DEF.DESC_NODE].statics;
                         for (const key in map) {
                             const path = $path.join(rootFs, 'node_modules', map[key]);
-                            const url = $path.join('/', DEF.SHARED.SPACE.SRC, key);
+                            const url = $path.join('/', DEF.SHARED.SPACE_SRC, key);
                             routes[url] = path;
                             logger.debug(`    ${url} => ${path}`);
                         }

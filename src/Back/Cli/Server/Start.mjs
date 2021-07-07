@@ -52,9 +52,9 @@ function Factory(spec) {
             // TODO: add DTO for local config
             // collect startup configuration then compose path to PID file
             const portCfg = config.get('local/server/port');
-            const port = portCfg || DEF.DATA.SERVER_PORT;
+            const port = portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
-            const pidPath = $path.join(cfg.root, DEF.DATA.FILE_PID_HTTP1);
+            const pidPath = $path.join(cfg.root, DEF.DATA_FILE_PID);
 
             // write PID to file then start the server
             $fs.writeFileSync(pidPath, pid);
@@ -69,7 +69,7 @@ function Factory(spec) {
 
     // COMPOSE RESULT
     const res = fCommand.create();
-    res.realm = DEF.SHARED.REALM;
+    res.realm = DEF.CLI_PREFIX;
     res.name = 'server-start';
     res.desc = 'Start the HTTP/1 server.';
     res.action = action;

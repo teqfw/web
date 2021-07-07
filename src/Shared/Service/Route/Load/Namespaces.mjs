@@ -56,7 +56,7 @@ class Factory {
             return res;
         }
 
-        this.getRoute = () => `/${DEF.NAME}${DEF.SRV.LOAD.NAMESPACES}`;
+        this.getRoute = () => `/${DEF.NAME}${DEF.WEB_LOAD_NAMESPACES}`;
     }
 
 }

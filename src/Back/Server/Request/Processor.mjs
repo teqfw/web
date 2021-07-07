@@ -86,7 +86,7 @@ function Factory(spec) {
                         // there is data to return in response
                         const headers = context.getResponseHeaders();
                         const file = context.getResponseFilePath();
-                        const status = headers[DEF.HTTP.HEADER.STATUS] ?? H2.HTTP_STATUS_OK;
+                        const status = headers[DEF.HTTP_HEADER_STATUS] ?? H2.HTTP_STATUS_OK;
                         if (file) {
                             res.writeHead(status, headers);
                             const rs = $fs.createReadStream(file);

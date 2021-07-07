@@ -34,7 +34,7 @@ function Factory(spec) {
      */
     const action = async function () {
         try {
-            const pidPath = $path.join(cfg.root, DEF.DATA.FILE_PID_HTTP1);
+            const pidPath = $path.join(cfg.root, DEF.DATA_FILE_PID);
             const data = $fs.readFileSync(pidPath);
             const pid = Number.parseInt(data.toString());
             console.info(`Stop HTTP/1 server (PID: ${pid}).`);
@@ -47,7 +47,7 @@ function Factory(spec) {
 
     // COMPOSE RESULT
     const res = fCommand.create();
-    res.realm = DEF.SHARED.REALM;
+    res.realm = DEF.CLI_PREFIX;
     res.name = 'server-stop';
     res.desc = 'Stop the HTTP/1 server.';
     res.action = action;

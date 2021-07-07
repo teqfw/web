@@ -78,7 +78,7 @@ export default class Factory {
                     // process only unprocessed requests
                     const path = ctx.getPath();
                     const address = mAddress.parsePath(path);
-                    if (address.space === DEF.SHARED.SPACE.API) {
+                    if (address.space === DEF.SHARED.SPACE_API) {
                         // simple matching for routes is here
                         if (router[address.route]) {
                             // get service data and create service context object
@@ -107,7 +107,7 @@ export default class Factory {
                                 }
                                 ctx.markRequestProcessed();
                             } catch (e) {
-                                ctx.setResponseHeader(DEF.HTTP.HEADER.STATUS, H2.HTTP_STATUS_BAD_REQUEST);
+                                ctx.setResponseHeader(DEF.HTTP_HEADER_STATUS, H2.HTTP_STATUS_BAD_REQUEST);
                                 ctx.setResponseBody(e.message);
                                 ctx.markRequestProcessed();
                             }
@@ -122,7 +122,7 @@ export default class Factory {
             async function initHandler() {
                 const items = regPlugin.items();
                 for (const one of items) {
-                    const data = one.teqfw?.[DEF.SHARED.REALM];
+                    const data = one.teqfw?.[DEF.DESC_NODE];
                     if (data) {
                         const desc = fDesc.create(data);
                         const services = desc.api.services;

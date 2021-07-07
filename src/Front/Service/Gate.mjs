@@ -25,7 +25,7 @@ export default class TeqFw_Web_Front_Service_Gate {
             const domain = config.urlBase;
             const root = (config.root) ? `/${config.root}` : '';
             const door = `/${config.door}`;
-            const space = `/${DEF.SHARED.SPACE.API}`;
+            const space = `/${DEF.SHARED.SPACE_API}`;
             return `${schema}${domain}${root}${door}${space}`;
         }
 

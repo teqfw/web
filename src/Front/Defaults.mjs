@@ -4,11 +4,10 @@
 export default class TeqFw_Web_Front_Defaults {
 
     /** @type {TeqFw_Web_Shared_Defaults} */
-    SHARED = null;
+    SHARED ;
 
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Shared_Defaults} */
         this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 
         // MAIN FUNCTIONALITY
