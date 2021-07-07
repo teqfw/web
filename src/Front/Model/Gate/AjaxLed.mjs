@@ -2,7 +2,7 @@
  * Default implementation for 'Ajax LED' indicator.
  * @implements TeqFw_Web_Front_Api_Gate_IAjaxLed
  */
-export default class TeqFw_Web_Front_Model_AjaxLed {
+export default class TeqFw_Web_Front_Model_Gate_AjaxLed {
     on() {
         console.log('Ajax LED On');
     }

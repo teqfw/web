@@ -3,9 +3,6 @@
  *
  * @namespace TeqFw_Web_Front_Service_Gate
  */
-// MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Service_Gate';
-
 // MODULE'S CLASSES
 export default class TeqFw_Web_Front_Service_Gate {
     constructor(spec) {
@@ -52,8 +49,13 @@ export default class TeqFw_Web_Front_Service_Gate {
                     },
                     body: JSON.stringify({data})
                 });
-                const json = await res.json();
-                result = factory.createRes(json.data);
+                const text = await res.text();
+                try {
+                    const json = JSON.parse(text);
+                    result = factory.createRes(json.data);
+                } catch (e) {
+                    errHndl.error(text);
+                }
             } catch (e) {
                 errHndl.error(e);
             } finally {
