@@ -13,7 +13,7 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 /**
  * Factory to create CLI command.
  *
- * @param {TeqFw_Di_SpecProxy} spec
+ * @param {TeqFw_Di_Shared_SpecProxy} spec
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */

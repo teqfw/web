@@ -15,7 +15,7 @@ const NS = 'TeqFw_Web_Back_Server_Request_Processor';
 /**
  * Factory to setup execution context and to create the processor.
  *
- * @param {TeqFw_Di_SpecProxy} spec
+ * @param {TeqFw_Di_Shared_SpecProxy} spec
  * @memberOf TeqFw_Web_Back_Server_Request_Processor
  */
 function Factory(spec) {

@@ -17,8 +17,6 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Core_Back_Api_Dto_Plugin_Desc} */
-        const DescCore = spec['TeqFw_Core_Back_Api_Dto_Plugin_Desc#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Factory} */
@@ -42,11 +40,11 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
             const result = [];
             const plugins = registry.items();
             for (const one of plugins) {
-                /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload} */
-                const auto = one.teqfw[DescCore.AUTOLOAD];
+                /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
+                const desc = one.teqfw[DEF.MOD_DI.DESC_NODE];
                 const item = fItem.create();
-                item.ext = auto.ext;
-                item.ns = auto.ns;
+                item.ext = desc.autoload.ext;
+                item.ns = desc.autoload.ns;
                 item.path = $path.join('/', DEF.SHARED.SPACE_SRC, one.name);
                 result.push(item);
             }

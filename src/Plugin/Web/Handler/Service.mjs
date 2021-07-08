@@ -21,8 +21,8 @@ export default class Factory {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Di_Container} */
-        const container = spec['TeqFw_Di_Container$'];
+        /** @type {TeqFw_Di_Shared_Container} */
+        const container = spec['TeqFw_Di_Shared_Container$'];
         /** @type {TeqFw_Core_Logger} */
         const logger = spec['TeqFw_Core_Logger$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */

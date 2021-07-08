@@ -13,7 +13,7 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Start';
 /**
  * Factory to create CLI command.
  *
- * @param {TeqFw_Di_SpecProxy} spec
+ * @param {TeqFw_Di_Shared_SpecProxy} spec
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Start
  */
@@ -23,8 +23,8 @@ function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_App.Bootstrap} */
     const cfg = spec['TeqFw_Core_Back_App#Bootstrap$'];
-    /** @type {TeqFw_Di_Container} */
-    const container = spec['TeqFw_Di_Container$'];
+    /** @type {TeqFw_Di_Shared_Container} */
+    const container = spec['TeqFw_Di_Shared_Container$'];
     /** @type {TeqFw_Core_Back_Config} */
     const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Logger} */

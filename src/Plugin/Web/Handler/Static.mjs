@@ -33,8 +33,6 @@ export default class Factory {
         const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload.Factory} */
-        const fDescAutoload = spec['TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         const rootFs = bootstrap.root; // path to project root
@@ -155,11 +153,10 @@ export default class Factory {
                 const items = regPlugins.items();
                 for (const item of items) {
                     // map URLs to filesystem for ES6/JS sources
-                    const data = item.teqfw?.autoload;
-                    if (data) {
-                        /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Desc_Autoload} */
-                        const desc = fDescAutoload.create(data);
-                        const path = $path.join(item.path, desc.path);
+                    /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
+                    const desc = item.teqfw?.[DEF.MOD_DI.DESC_NODE];
+                    if (desc?.autoload) {
+                        const path = $path.join(item.path, desc.autoload.path);
                         const url = $path.join('/', DEF.SHARED.SPACE_SRC, item.name);
                         logger.debug(`    ${url} => ${path}`);
                         routes[url] = path;
