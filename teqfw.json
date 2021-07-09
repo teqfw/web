@@ -5,8 +5,22 @@
       "path": "./src"
     },
     "replace": [
-      {"orig": "TeqFw_Web_Back_Api_Request_IContext", "alter": "TeqFw_Web_Back_Server_Request_Context"},
-      {"orig": "TeqFw_Web_Back_Api_Service_IContext", "alter": "TeqFw_Web_Plugin_Web_Handler_Service_Context"}
+      {
+        "orig": "TeqFw_Web_Back_Api_Request_IContext",
+        "alter": "TeqFw_Web_Back_Server_Request_Context",
+        "area": "back"
+      },
+      {
+        "orig": "TeqFw_Web_Back_Api_Service_IContext",
+        "alter": "TeqFw_Web_Plugin_Web_Handler_Service_Context",
+        "area": "back"
+      },
+      {"orig": "TeqFw_Web_Front_Api_Gate_IAjaxLed", "alter": "TeqFw_Web_Front_Model_Gate_AjaxLed", "area": "front"},
+      {
+        "orig": "TeqFw_Web_Front_Api_Gate_IErrorHandler",
+        "alter": "TeqFw_Web_Front_Model_Gate_ErrorHandler",
+        "area": "front"
+      }
     ]
   },
   "commands": [

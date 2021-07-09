@@ -18,6 +18,8 @@ class Request {}
 class Response {
     /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]} */
     items;
+    /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace[]} */
+    replaces;
 }
 
 /**
@@ -34,6 +36,10 @@ class Factory {
         const DItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item.Factory} */
         const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
+        /** @type {typeof TeqFw_Web_Shared_Service_Dto_Namespace_Replace} */
+        const DReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#'];
+        /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace.Factory} */
+        const fReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#Factory$'];
 
         // DEFINE INSTANCE METHODS
         /**
@@ -52,6 +58,9 @@ class Factory {
             const res = new Response();
             res.items = Array.isArray(data?.items)
                 ? data.items.map((one) => (one instanceof DItem) ? one : fItem.create(one))
+                : [];
+            res.replaces = Array.isArray(data?.replaces)
+                ? data.replaces.map((one) => (one instanceof DReplace) ? one : fReplace.create(one))
                 : [];
             return res;
         }
