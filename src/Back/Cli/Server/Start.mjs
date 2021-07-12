@@ -21,8 +21,8 @@ function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_App.Bootstrap} */
-    const cfg = spec['TeqFw_Core_Back_App#Bootstrap$'];
+    /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
+    const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
     /** @type {TeqFw_Di_Shared_Container} */
     const container = spec['TeqFw_Di_Shared_Container$'];
     /** @type {TeqFw_Core_Back_Config} */
@@ -54,7 +54,7 @@ function Factory(spec) {
             const portCfg = config.get('local/server/port');
             const port = portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
-            const pidPath = $path.join(cfg.root, DEF.DATA_FILE_PID);
+            const pidPath = $path.join(cfg.projectRoot, DEF.DATA_FILE_PID);
 
             // write PID to file then start the server
             $fs.writeFileSync(pidPath, pid);
