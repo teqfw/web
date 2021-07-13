@@ -23,10 +23,12 @@
       }
     ]
   },
-  "commands": [
-    "TeqFw_Web_Back_Cli_Server_Start",
-    "TeqFw_Web_Back_Cli_Server_Stop"
-  ],
+  "core": {
+    "commands": [
+      "TeqFw_Web_Back_Cli_Server_Start",
+      "TeqFw_Web_Back_Cli_Server_Stop"
+    ]
+  },
   "web": {
     "api": {
       "realm": "web",

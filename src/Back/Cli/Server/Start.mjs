@@ -39,6 +39,7 @@ function Factory(spec) {
      * @memberOf TeqFw_Web_Back_Cli_Server_Start
      */
     const action = async function () {
+        logger.pause(false);
         logger.info('Starting HTTP/1 server.');
         try {
             /**
