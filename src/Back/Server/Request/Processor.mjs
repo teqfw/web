@@ -22,8 +22,8 @@ function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Logger} */
-    const logger = spec['TeqFw_Core_Logger$'];
+    /** @type {TeqFw_Core_Shared_Logger} */
+    const logger = spec['TeqFw_Core_Shared_Logger$'];
     /** @type {TeqFw_Web_Back_Handler_Registry} */
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
     /** @type {TeqFw_Web_Back_Api_Request_IContext.Factory} */
@@ -58,7 +58,7 @@ function Factory(spec) {
         function logRequest(req) {
             const method = req.method;
             const path = req.url;
-            logger.debug(`${method} ${path}`);
+            logger.info(`${method} ${path}`);
         }
 
         /**

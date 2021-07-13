@@ -25,8 +25,8 @@ export default class Factory {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Logger} */
-        const logger = spec['TeqFw_Core_Logger$'];
+        /** @type {TeqFw_Core_Shared_Logger} */
+        const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
         const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
@@ -149,7 +149,7 @@ export default class Factory {
              * Process plugins descriptions and setup static resources mapping.
              */
             function initHandler() {
-                logger.debug('Map plugins folders for static resources:');
+                logger.info('Map plugins folders for static resources:');
                 const items = regPlugins.items();
                 for (const item of items) {
                     // map URLs to filesystem for ES6/JS sources
@@ -158,7 +158,7 @@ export default class Factory {
                     if (desc?.autoload) {
                         const path = $path.join(item.path, desc.autoload.path);
                         const url = $path.join('/', DEF.SHARED.SPACE_SRC, item.name);
-                        logger.debug(`    ${url} => ${path}`);
+                        logger.info(`    ${url} => ${path}`);
                         routes[url] = path;
 
                     }
@@ -168,7 +168,7 @@ export default class Factory {
                     if ($fs.existsSync(pathWeb) && $fs.statSync(pathWeb).isDirectory()) {
                         const url = $path.join('/', DEF.SHARED.SPACE_WEB, item.name);
                         routes[url] = pathWeb;
-                        logger.debug(`    ${url} => ${pathWeb}`);
+                        logger.info(`    ${url} => ${pathWeb}`);
                     }
 
                     // map additional sources mapping
@@ -178,12 +178,12 @@ export default class Factory {
                             const path = $path.join(rootFs, 'node_modules', map[key]);
                             const url = $path.join('/', DEF.SHARED.SPACE_SRC, key);
                             routes[url] = path;
-                            logger.debug(`    ${url} => ${path}`);
+                            logger.info(`    ${url} => ${path}`);
                         }
                     }
 
                 }
-                logger.debug('All static resources are mapped.');
+                logger.info('All static resources are mapped.');
             }
 
             // MAIN FUNCTIONALITY

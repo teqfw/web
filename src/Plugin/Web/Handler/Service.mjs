@@ -23,8 +23,8 @@ export default class Factory {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Di_Shared_Container} */
         const container = spec['TeqFw_Di_Shared_Container$'];
-        /** @type {TeqFw_Core_Logger} */
-        const logger = spec['TeqFw_Core_Logger$'];
+        /** @type {TeqFw_Core_Shared_Logger} */
+        const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const regPlugin = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
@@ -136,7 +136,7 @@ export default class Factory {
                                 item.service = factory.getService();
                                 const route = item.routeFactory.getRoute();
                                 router[route] = item;
-                                logger.debug(`    ${route} => ${moduleId}`);
+                                logger.info(`    ${route} => ${moduleId}`);
                             }
                         }
                     }
@@ -144,7 +144,7 @@ export default class Factory {
             }
 
             // MAIN FUNCTIONALITY
-            logger.debug('Create API services handler for web requests.');
+            logger.info('Create API services handler for web requests.');
             await initHandler();
 
             // COMPOSE RESULT
