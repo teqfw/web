@@ -23,7 +23,7 @@ function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
     const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
-    /** @type {Function|TeqFw_Core_Back_Api_Dto_Command.Factory} */
+    /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
 
     // DEFINE INNER FUNCTIONS
