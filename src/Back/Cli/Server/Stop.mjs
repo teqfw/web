@@ -21,8 +21,8 @@ function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
-    const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
+    /** @type {TeqFw_Core_Back_Config} */
+    const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
 
@@ -34,7 +34,7 @@ function Factory(spec) {
      */
     const action = async function () {
         try {
-            const pidPath = $path.join(cfg.projectRoot, DEF.DATA_FILE_PID);
+            const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
             const data = $fs.readFileSync(pidPath);
             const pid = Number.parseInt(data.toString());
             console.info(`Stop HTTP/1 server (PID: ${pid}).`);

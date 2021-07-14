@@ -1,6 +1,0 @@
-{
-  "string": "this is 'front:string' resource ('string' if 'front' is default namespace)",
-  "nested": {
-    "string": "this is 'front:nested.string' resource"
-  }
-}

@@ -27,15 +27,15 @@ export default class Factory {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
-        const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
+        /** @type {TeqFw_Core_Back_Config} */
+        const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
 
         // DEFINE WORKING VARS / PROPS
-        const rootFs = cfg.projectRoot; // path to project root
+        const rootFs = config.getBoot().projectRoot; // path to project root
         const rootWeb = $path.join(rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
 

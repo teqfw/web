@@ -8,6 +8,7 @@ import $fs from 'fs';
 
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Start';
+const OPT_PORT = 'port';
 
 // DEFINE MODULE'S FUNCTIONS
 /**
@@ -21,8 +22,6 @@ function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Api_Dto_App_Boot} */
-    const cfg = spec['TeqFw_Core_Back_Api_Dto_App_Boot$'];
     /** @type {TeqFw_Di_Shared_Container} */
     const container = spec['TeqFw_Di_Shared_Container$'];
     /** @type {TeqFw_Core_Back_Config} */
@@ -31,6 +30,8 @@ function Factory(spec) {
     const logger = spec['TeqFw_Core_Shared_Logger$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
+    /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
+    const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option#Factory$'];
 
     // DEFINE INNER FUNCTIONS
     /**
@@ -50,12 +51,13 @@ function Factory(spec) {
             const server = await container.get('TeqFw_Web_Back_Server$');
             await server.init();
 
-            // TODO: add DTO for local config
             // collect startup configuration then compose path to PID file
-            const portCfg = config.get('local/server/port');
+            /** @type {TeqFw_Web_Back_Api_Dto_Config} */
+            const cfgLocal = config.getLocal(DEF.DESC_NODE);
+            const portCfg = cfgLocal.server.port;
             const port = portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
-            const pidPath = $path.join(cfg.projectRoot, DEF.DATA_FILE_PID);
+            const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
 
             // write PID to file then start the server
             $fs.writeFileSync(pidPath, pid);
@@ -74,6 +76,11 @@ function Factory(spec) {
     res.name = 'server-start';
     res.desc = 'Start the HTTP/1 server.';
     res.action = action;
+    // add option --short
+    const optShort = fOpt.create();
+    optShort.flags = `-p, --${OPT_PORT}`;
+    optShort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
+    res.opts.push(optShort);
     return res;
 }
 
