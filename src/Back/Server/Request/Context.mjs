@@ -52,20 +52,14 @@ class TeqFw_Web_Back_Server_Request_Context {
     }
 
     getPath() {
-        if (this.http1Request) {
-            return this.http1Request.url;
-        } else if (this.http2Headers[H2.HTTP2_HEADER_PATH]) {
-            return this.http2Headers[H2.HTTP2_HEADER_PATH];
-        }
+        return this.http1Request?.url;
     }
 
     /**
      * @returns {Object<string, string>}
      */
     getRequestHeaders() {
-        if (this.http1Request) {
-            return this.http1Request.headers;
-        }
+        return this.http1Request?.headers;
     }
 
     /**
