@@ -1,7 +1,7 @@
 {
   "name": "@teqfw/web",
   "version": "0.1.0",
-  "description": "Web servers for TeqFW apps (HTTP and HTTP/2).",
+  "description": "Web servers for TeqFW apps (HTTP/1).",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
-    "@teqfw/core": "github:teqfw/core",
+    "@teqfw/core": "*",
     "mime-types": "*"
   }
 }
