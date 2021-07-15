@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
-    "@teqfw/core": "github:teqfw/core"
+    "@teqfw/core": "github:teqfw/core",
+    "mime-types": "*"
   }
 }
