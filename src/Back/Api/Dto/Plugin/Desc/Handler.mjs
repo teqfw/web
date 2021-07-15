@@ -34,6 +34,13 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
      */
     factoryId;
     /**
+     * Names of the spaces in URLs that processed by this handler.
+     * (@see TeqFw_Web_Back_Api_Dto_Address)
+     *
+     * @type {string[]}
+     */
+    spaces;
+    /**
      * Weight of the handler in the list of all handlers (more weight means closer to the beginning of the list).
      * This is temporary approach for quick organizing of the requests handlers. before/after options are more
      * flexible but is more complex.
@@ -48,6 +55,7 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.AFTER = 'after';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.BEFORE = 'before';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.FACTORY_ID = 'factoryId';
+TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
 
 /**
@@ -65,6 +73,7 @@ class Factory {
             res.after = Array.isArray(data?.after) ? data.after : [];
             res.before = Array.isArray(data?.before) ? data.before : [];
             res.factoryId = data?.factoryId;
+            res.spaces = Array.isArray(data?.spaces) ? data.spaces : [];
             res.weight = data?.weight ?? 0;
             return res;
         }

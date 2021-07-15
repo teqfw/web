@@ -9,7 +9,7 @@ export default class TeqFw_Web_Back_Model_Address {
         /** @type {typeof TeqFw_Web_Back_Api_Dto_Plugin_Desc} */
         const Desc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
-        const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
+        const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Api_Dto_Address.Factory} */
         const fAddr = spec['TeqFw_Web_Back_Api_Dto_Address#Factory$'];
 
@@ -57,7 +57,7 @@ export default class TeqFw_Web_Back_Model_Address {
 
         // MAIN FUNCTIONALITY
         /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
-        const items = regPlugins.items();
+        const items = registry.items();
         for (const item of items) {
             // one only 'web/root' is allowed in application
             const iRoot = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.ROOT];
@@ -75,11 +75,15 @@ export default class TeqFw_Web_Back_Model_Address {
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
-            const iSpace = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.SPACES];
-            if (Array.isArray(iSpace)) {
-                const allied = spaces.concat(iSpace);
-                spaces = [...new Set(allied)]; // make items unique
-            }
+            /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
+            const handlers = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.HANDLERS];
+            if (Array.isArray(handlers))
+                for (const hndl of handlers) {
+                    if (Array.isArray(hndl.spaces)) {
+                        const allied = spaces.concat(hndl.spaces);
+                        spaces = [...new Set(allied)]; // make items unique
+                    }
+                }
         }
     }
 }

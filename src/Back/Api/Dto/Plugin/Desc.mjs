@@ -20,8 +20,6 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
     handlers;
     /** @type {string} */
     root;
-    /** @type {string[]} */
-    spaces;
     /** @type {Object<string, string>} */
     statics;
 }
@@ -30,7 +28,6 @@ class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.DOORS = 'doors';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.HANDLERS = 'handlers';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.ROOT = 'root';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.SPACES = 'spaces';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
 
 /**
@@ -61,7 +58,6 @@ class Factory {
                 ? data.handlers.map((one) => (one instanceof DHandler) ? one : fHandler.create(one))
                 : [];
             res.root = data?.root;
-            res.spaces = Array.isArray(data?.spaces) ? data.spaces : [];
             res.statics = data?.statics || {};
             return res;
         }
