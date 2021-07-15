@@ -36,10 +36,12 @@ function Factory(spec) {
     // DEFINE INNER FUNCTIONS
     /**
      * Start the HTTP/1 server.
+     *
+     * @param {Object} opts command options
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Back_Cli_Server_Start
      */
-    const action = async function () {
+    const action = async function (opts) {
         logger.pause(false);
         logger.info('Starting HTTP/1 server.');
         try {
@@ -52,10 +54,14 @@ function Factory(spec) {
             await server.init();
 
             // collect startup configuration then compose path to PID file
+            // port from command option
+            const portOpt = opts[OPT_PORT];
+            // port from local configuration
             /** @type {TeqFw_Web_Back_Api_Dto_Config} */
             const cfgLocal = config.getLocal(DEF.DESC_NODE);
-            const portCfg = cfgLocal.server.port;
-            const port = portCfg || DEF.DATA_SERVER_PORT;
+            const portCfg = cfgLocal.server?.port;
+            // use port: command opt / local cfg / default
+            const port = portOpt || portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
             const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
 
@@ -76,9 +82,9 @@ function Factory(spec) {
     res.name = 'server-start';
     res.desc = 'Start the HTTP/1 server.';
     res.action = action;
-    // add option --short
+    // add option --port
     const optShort = fOpt.create();
-    optShort.flags = `-p, --${OPT_PORT}`;
+    optShort.flags = `-p, --${OPT_PORT} <port>`;
     optShort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
     res.opts.push(optShort);
     return res;
