@@ -59,7 +59,7 @@ function Factory(spec) {
             // port from local configuration
             /** @type {TeqFw_Web_Back_Api_Dto_Config} */
             const cfgLocal = config.getLocal(DEF.DESC_NODE);
-            const portCfg = cfgLocal.server?.port;
+            const portCfg = cfgLocal?.server?.port;
             // use port: command opt / local cfg / default
             const port = portOpt || portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
