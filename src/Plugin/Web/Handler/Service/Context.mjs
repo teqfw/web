@@ -21,6 +21,8 @@ class TeqFw_Web_Plugin_Web_Handler_Service_Context {
     outHeaders;
     /** @type {TeqFw_Web_Back_Api_Request_IContext} */
     requestContext;
+    /** @type {{string, string}} */
+    routeParams;
 
     getHandlersShare() {
         return this.requestContext.getHandlersShare();
@@ -40,6 +42,10 @@ class TeqFw_Web_Plugin_Web_Handler_Service_Context {
 
     getRequestContext() {
         return this.requestContext;
+    }
+
+    getRouteParams() {
+        return this.routeParams;
     }
 
     setInData(data) {
@@ -67,6 +73,10 @@ class TeqFw_Web_Plugin_Web_Handler_Service_Context {
     setRequestContext(data) {
         this.requestContext = data;
     }
+
+    setRouteParams(data) {
+        this.routeParams = data;
+    }
 }
 
 /**
@@ -84,6 +94,7 @@ class Factory {
         res.outData = data?.outData;
         res.outHeaders = data?.outHeaders ?? {};
         res.requestContext = data?.requestContext;
+        res.routeParams = data?.routeParams ?? {};
         return res;
     }
 }

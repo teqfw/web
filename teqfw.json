@@ -31,13 +31,6 @@
     ]
   },
   "web": {
-    "api": {
-      "realm": "web",
-      "services": [
-        "TeqFw_Web_Back_Service_Load_Config",
-        "TeqFw_Web_Back_Service_Load_Namespaces"
-      ]
-    },
     "handlers": [
       {
         "factoryId": "TeqFw_Web_Plugin_Web_Handler_Service",
@@ -49,6 +42,10 @@
         "spaces": ["src", "web"],
         "weight": 10
       }
+    ],
+    "services": [
+      "TeqFw_Web_Back_Service_Load_Config",
+      "TeqFw_Web_Back_Service_Load_Namespaces"
     ]
   }
 }

@@ -37,6 +37,12 @@ export default class TeqFw_Web_Back_Api_Service_IContext {
     getRequestContext() {}
 
     /**
+     * Get params for route (/post/:postId/comment/:commentId).
+     * @return {{string, string}} data
+     */
+    getRouteParams() {}
+
+    /**
      * Set service input data extracted from the POSTed JSON.
      * @param {Object} data
      */
@@ -60,6 +66,12 @@ export default class TeqFw_Web_Back_Api_Service_IContext {
      * @param {TeqFw_Web_Back_Api_Request_IContext} data
      */
     setRequestContext(data) {}
+
+    /**
+     * Set params for route (/post/:postId/comment/:commentId).
+     * @param {{string, string}} data
+     */
+    setRouteParams(data) {}
 }
 /**
  * Factory to create new instances.

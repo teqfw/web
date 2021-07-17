@@ -31,14 +31,14 @@ export default class Factory {
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc.Factory} */
         const fDesc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#Factory$'];
-        /** @type {TeqFw_Web_Plugin_Web_Handler_Service_Dto_Item.Factory} */
-        const fItem = spec['TeqFw_Web_Plugin_Web_Handler_Service_Dto_Item#Factory$'];
+        /** @type {typeof TeqFw_Web_Plugin_Web_Handler_Service_Item} */
+        const Item = spec['TeqFw_Web_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Api_Service_IContext.Factory} */
         const fContext = spec['TeqFw_Web_Back_Api_Service_IContext#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {Object<string, TeqFw_Web_Plugin_Web_Handler_Service_Dto_Item>} */
-        const router = {};
+        /** @type {TeqFw_Web_Plugin_Web_Handler_Service_Item[]} */
+        const router = [];
 
         // DEFINE INSTANCE METHODS
 
@@ -56,7 +56,6 @@ export default class Factory {
                 // DEFINE INNER FUNCTIONS
 
                 /**
-                 *
                  * @param {TeqFw_Web_Back_Api_Request_IContext} context
                  * @param {TeqFw_Web_Back_Api_Service_Factory_IRoute} factory
                  */
@@ -71,6 +70,26 @@ export default class Factory {
                     return res;
                 }
 
+                /**
+                 * Match request to all routes and extract route params (if exist).
+                 *
+                 * @param {string} pathRoute route path of the URL (http://.../root/door/space[/route])
+                 * @return {{routeItem: TeqFw_Web_Plugin_Web_Handler_Service_Item, params: {string, string}}}
+                 */
+                function findRoute(pathRoute) {
+                    let routeItem, params = {};
+                    for (const item of router) {
+                        const parts = item.regexp.exec(pathRoute);
+                        if (parts) {
+                            routeItem = item;
+                            // params start from second position in 'parts' array
+                            let i = 1;
+                            for (const one of item.params) params[one] = parts[i++];
+                        }
+                    }
+                    return {routeItem, params};
+                }
+
                 // MAIN FUNCTIONALITY
                 /** @type {TeqFw_Web_Back_Server_Request_Context} */
                 const ctx = context; // IDEA is failed with context help (suggestions on Ctrl+Space)
@@ -79,21 +98,23 @@ export default class Factory {
                     const path = ctx.getPath();
                     const address = mAddress.parsePath(path);
                     if (address.space === DEF.SHARED.SPACE_API) {
-                        // simple matching for routes is here
-                        if (router[address.route]) {
+                        // match address to route item and extract route params
+                        const {routeItem, params} = findRoute(address.route);
+                        if (routeItem) {
                             // get service data and create service context object
-                            const serviceDesc = router[address.route];
                             const serviceCtx = fContext.create();
                             serviceCtx.setRequestContext(context);
+                            serviceCtx.setRouteParams(params);
+
                             // parse request input and put in to service context
                             try {
-                                const inData = composeInput(context, serviceDesc.routeFactory);
+                                const inData = composeInput(context, routeItem.routeFactory);
                                 serviceCtx.setInData(inData);
                                 // create output object for requested service
-                                const outData = serviceDesc.routeFactory?.createRes();
+                                const outData = routeItem.routeFactory?.createRes();
                                 serviceCtx.setOutData(outData);
                                 // run service function
-                                await serviceDesc.service(serviceCtx);
+                                await routeItem.service(serviceCtx);
                                 // compose result from outData been put into service context before service was run
                                 const outTxt = JSON.stringify({data: outData});
                                 ctx.setResponseBody(outTxt);
@@ -125,17 +146,15 @@ export default class Factory {
                     const data = one.teqfw?.[DEF.DESC_NODE];
                     if (data) {
                         const desc = fDesc.create(data);
-                        const services = desc.api.services;
+                        const services = desc.services;
                         if (services?.length) {
                             // const prefix = $path.join('/', realm);
                             for (const moduleId of services) {
                                 /** @type {TeqFw_Web_Back_Api_Service_IFactory} */
                                 const factory = await container.get(`${moduleId}$`);
-                                const item = fItem.create();
-                                item.routeFactory = factory.getRouteFactory();
-                                item.service = factory.getService();
-                                const route = item.routeFactory.getRoute();
-                                router[route] = item;
+                                const item = new Item(factory);
+                                const route = item.route;
+                                router.push(item);
                                 logger.info(`    ${route} => ${moduleId}`);
                             }
                         }
