@@ -21,7 +21,7 @@ class Response {}
 /**
  * Factory to create new DTOs and get route address.
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
- * @implements TeqFw_Web_Back_Api_Service_Factory_IRoute
+ * @implements TeqFw_Web_Back_Api_Service_IRoute
  */
 class Factory {
     constructor(spec) {

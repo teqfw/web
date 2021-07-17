@@ -57,7 +57,7 @@ export default class Factory {
 
                 /**
                  * @param {TeqFw_Web_Back_Api_Request_IContext} context
-                 * @param {TeqFw_Web_Back_Api_Service_Factory_IRoute} factory
+                 * @param {TeqFw_Web_Back_Api_Service_IRoute} factory
                  */
                 function composeInput(context, factory) {
                     let res = {};

@@ -5,7 +5,7 @@
 export default class TeqFw_Web_Back_Api_Service_IFactory {
     /**
      * Get factory compose route (address & DTO for request & response).
-     * @return {TeqFw_Web_Back_Api_Service_Factory_IRoute}
+     * @return {TeqFw_Web_Back_Api_Service_IRoute}
      */
     getRouteFactory() {}
 

@@ -21,7 +21,7 @@ export default class TeqFw_Web_Plugin_Web_Handler_Service_Item {
      * @type {string}
      */
     route;
-    /** @type {TeqFw_Web_Back_Api_Service_Factory_IRoute} */
+    /** @type {TeqFw_Web_Back_Api_Service_IRoute} */
     routeFactory;
     /** @type {function(TeqFw_Web_Back_Api_Service_IContext): Promise<void>} */
     service;
