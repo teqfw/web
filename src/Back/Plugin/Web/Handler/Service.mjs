@@ -1,20 +1,20 @@
 /**
  * Web request handler for API services.
  *
- * @namespace TeqFw_Web_Plugin_Web_Handler_Service
+ * @namespace TeqFw_Web_Back_Plugin_Web_Handler_Service
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Plugin_Web_Handler_Service';
+const NS = 'TeqFw_Web_Back_Plugin_Web_Handler_Service';
 
 // MODULE'S CLASSES
 /**
  * Factory to setup execution context and to create handler.
  *
  * @implements TeqFw_Web_Back_Api_Request_IHandler.Factory
- * @memberOf TeqFw_Web_Plugin_Web_Handler_Service
+ * @memberOf TeqFw_Web_Back_Plugin_Web_Handler_Service
  */
 export default class Factory {
     constructor(spec) {
@@ -31,13 +31,13 @@ export default class Factory {
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc.Factory} */
         const fDesc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#Factory$'];
-        /** @type {typeof TeqFw_Web_Plugin_Web_Handler_Service_Item} */
-        const Item = spec['TeqFw_Web_Plugin_Web_Handler_Service_Item#'];
-        /** @type {TeqFw_Web_Back_Api_Service_IContext.Factory} */
-        const fContext = spec['TeqFw_Web_Back_Api_Service_IContext#Factory$'];
+        /** @type {typeof TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
+        const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
+        /** @type {TeqFw_Web_Back_Api_Service_Context.Factory} */
+        const fContext = spec['TeqFw_Web_Back_Api_Service_Context#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {TeqFw_Web_Plugin_Web_Handler_Service_Item[]} */
+        /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */
         const router = [];
 
         // DEFINE INSTANCE METHODS
@@ -50,7 +50,7 @@ export default class Factory {
              *
              * @param {TeqFw_Web_Back_Api_Request_IContext} context
              * @returns {Promise<void>}
-             * @memberOf TeqFw_Web_Plugin_Web_Handler_Service
+             * @memberOf TeqFw_Web_Back_Plugin_Web_Handler_Service
              */
             async function handle(context) {
                 // DEFINE INNER FUNCTIONS
@@ -74,7 +74,7 @@ export default class Factory {
                  * Match request to all routes and extract route params (if exist).
                  *
                  * @param {string} pathRoute route path of the URL (http://.../root/door/space[/route])
-                 * @return {{routeItem: TeqFw_Web_Plugin_Web_Handler_Service_Item, params: {string, string}}}
+                 * @return {{routeItem: TeqFw_Web_Back_Plugin_Web_Handler_Service_Item, params: {string, string}}}
                  */
                 function findRoute(pathRoute) {
                     let routeItem, params = {};
@@ -110,23 +110,29 @@ export default class Factory {
                             try {
                                 const inData = composeInput(context, routeItem.routeFactory);
                                 serviceCtx.setInData(inData);
-                                // create output object for requested service
-                                const outData = routeItem.routeFactory?.createRes();
-                                serviceCtx.setOutData(outData);
-                                // run service function
-                                await routeItem.service(serviceCtx);
-                                // compose result from outData been put into service context before service was run
-                                const outTxt = JSON.stringify({data: outData});
-                                ctx.setResponseBody(outTxt);
-                                // merge service out headers into response headers
-                                const headersSrv = serviceCtx.getOutHeaders();
-                                for (const key of Object.keys(headersSrv))
-                                    ctx.setResponseHeader(key, headersSrv[key]);
-                                const headersRes = ctx.getResponseHeaders();
-                                if (!headersRes[H2.HTTP2_HEADER_CONTENT_TYPE]) {
-                                    ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                                try {
+                                    // create output object for requested service
+                                    const outData = routeItem.routeFactory?.createRes();
+                                    serviceCtx.setOutData(outData);
+                                    // run service function
+                                    await routeItem.service(serviceCtx);
+                                    // compose result from outData been put into service context before service was run
+                                    const outTxt = JSON.stringify({data: outData});
+                                    ctx.setResponseBody(outTxt);
+                                    // merge service out headers into response headers
+                                    const headersSrv = serviceCtx.getOutHeaders();
+                                    for (const key of Object.keys(headersSrv))
+                                        ctx.setResponseHeader(key, headersSrv[key]);
+                                    const headersRes = ctx.getResponseHeaders();
+                                    if (!headersRes[H2.HTTP2_HEADER_CONTENT_TYPE]) {
+                                        ctx.setResponseHeader(H2.HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                                    }
+                                    ctx.markRequestProcessed();
+                                } catch (e) {
+                                    ctx.setResponseHeader(DEF.HTTP_HEADER_STATUS, H2.HTTP_STATUS_INTERNAL_SERVER_ERROR);
+                                    ctx.setResponseBody(e.message);
+                                    ctx.markRequestProcessed();
                                 }
-                                ctx.markRequestProcessed();
                             } catch (e) {
                                 ctx.setResponseHeader(DEF.HTTP_HEADER_STATUS, H2.HTTP_STATUS_BAD_REQUEST);
                                 ctx.setResponseBody(e.message);

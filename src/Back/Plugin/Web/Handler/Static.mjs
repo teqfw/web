@@ -1,7 +1,7 @@
 /**
  * Web request handler for static files.
  *
- * @namespace TeqFw_Web_Plugin_Web_Handler_Static
+ * @namespace TeqFw_Web_Back_Plugin_Web_Handler_Static
  */
 // MODULE'S IMPORT
 import $fs from 'fs';
@@ -10,7 +10,7 @@ import $path from 'path';
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Plugin_Web_Handler_Static';
+const NS = 'TeqFw_Web_Back_Plugin_Web_Handler_Static';
 const INDEX_NAME = 'index.html';
 
 // MODULE'S CLASSES
@@ -18,7 +18,7 @@ const INDEX_NAME = 'index.html';
  * Factory to setup execution context and to create handler.
  *
  * @implements TeqFw_Web_Back_Api_Request_IHandler.Factory
- * @memberOf TeqFw_Web_Plugin_Web_Handler_Static
+ * @memberOf TeqFw_Web_Back_Plugin_Web_Handler_Static
  */
 export default class Factory {
     constructor(spec) {
@@ -48,7 +48,7 @@ export default class Factory {
              *
              * @param {TeqFw_Web_Back_Api_Request_IContext} context
              * @returns {Promise<void>}
-             * @memberOf TeqFw_Web_Plugin_Web_Handler_Static
+             * @memberOf TeqFw_Web_Back_Plugin_Web_Handler_Static
              */
             async function handle(context) {
                 // DEFINE INNER FUNCTIONS

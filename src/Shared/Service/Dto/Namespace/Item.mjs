@@ -18,7 +18,7 @@ class TeqFw_Web_Shared_Service_Dto_Namespace_Item {
     ns;
     /**
      * Path to the sources in URL ('/src/@vendor/prj').
-     * (@see TeqFw_Web_Plugin_Web_Handler_Static)
+     * (@see TeqFw_Web_Back_Plugin_Web_Handler_Static)
      * @type {string}
      */
     path;
@@ -49,7 +49,7 @@ class Factory {
     }
 }
 
-// freeze class to deny attributes changes then export class
+// finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Shared_Service_Dto_Namespace_Item);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 export {

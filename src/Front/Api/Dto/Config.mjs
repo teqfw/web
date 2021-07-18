@@ -43,7 +43,7 @@ class Factory {
     }
 }
 
-// freeze class to deny attributes changes then export class
+// finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Front_Api_Dto_Config);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 export {

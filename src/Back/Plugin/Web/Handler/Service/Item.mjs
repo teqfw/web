@@ -5,7 +5,7 @@
 import {pathToRegexp} from 'path-to-regexp';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Plugin_Web_Handler_Service_Item {
+export default class TeqFw_Web_Back_Plugin_Web_Handler_Service_Item {
     /**
      * Parameters names for the route ('/post/:postId/comment/:commentId' => ['postId', 'commentId'])
      * @type {string[]}
@@ -23,7 +23,7 @@ export default class TeqFw_Web_Plugin_Web_Handler_Service_Item {
     route;
     /** @type {TeqFw_Web_Back_Api_Service_IRoute} */
     routeFactory;
-    /** @type {function(TeqFw_Web_Back_Api_Service_IContext): Promise<void>} */
+    /** @type {function(TeqFw_Web_Back_Api_Service_Context): Promise<void>} */
     service;
 
     /**
