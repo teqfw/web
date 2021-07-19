@@ -1,7 +1,7 @@
 {
   "name": "@teqfw/web",
-  "version": "0.1.0",
-  "description": "Web servers for TeqFW apps (HTTP/1).",
+  "version": "0.2.0",
+  "description": "TeqFW: web server (HTTP/1).",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
