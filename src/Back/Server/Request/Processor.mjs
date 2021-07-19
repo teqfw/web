@@ -47,7 +47,10 @@ function Factory(spec) {
             const method = req.method;
             return (method === H2.HTTP2_METHOD_HEAD) ||
                 (method === H2.HTTP2_METHOD_GET) ||
-                (method === H2.HTTP2_METHOD_POST);
+                (method === H2.HTTP2_METHOD_POST) ||
+                (method === H2.HTTP2_METHOD_PUT) ||
+                (method === H2.HTTP2_METHOD_PATCH) ||
+                (method === H2.HTTP2_METHOD_DELETE);
         }
 
         /**

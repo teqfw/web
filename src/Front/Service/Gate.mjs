@@ -21,10 +21,10 @@ export default class TeqFw_Web_Front_Service_Gate {
 
         // DEFINE INNER FUNCTIONS
         function makeUrl() {
-            const schema = 'https://';
+            const schema = '//';
             const domain = config.urlBase;
             const root = (config.root) ? `/${config.root}` : '';
-            const door = `/${config.door}`;
+            const door = (config.door) ? `/${config.door}` : '';
             const space = `/${DEF.SHARED.SPACE_API}`;
             return `${schema}${domain}${root}${door}${space}`;
         }
