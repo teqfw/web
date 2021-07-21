@@ -5,7 +5,7 @@
 const NS = 'TeqFw_Web_Front_Api_Dto_Config';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Front_Api_Dto_Config {
+export default class TeqFw_Web_Front_Api_Dto_Config {
     /**
      * Current frontend door (pub, admin, ...) is configured on frontend (index.html).
      * @type {string}
@@ -27,7 +27,7 @@ class TeqFw_Web_Front_Api_Dto_Config {
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Front_Api_Dto_Config
  */
-class Factory {
+export class Factory {
     constructor() {
         /**
          * @param {TeqFw_Web_Front_Api_Dto_Config|null} data
@@ -44,9 +44,4 @@ class Factory {
 }
 
 // finalize code components for this es6-module
-Object.freeze(TeqFw_Web_Front_Api_Dto_Config);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Front_Api_Dto_Config as default,
-    Factory
-} ;

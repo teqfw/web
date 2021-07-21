@@ -18,7 +18,7 @@ const NS = 'TeqFw_Web_Back_Server_Request_Processor';
  * @param {TeqFw_Di_Shared_SpecProxy} spec
  * @memberOf TeqFw_Web_Back_Server_Request_Processor
  */
-function Factory(spec) {
+export function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
@@ -179,8 +179,5 @@ function Factory(spec) {
     return action;
 }
 
-// MODULE'S EXPORT
+// finalize code components for this es6-module
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
-export {
-    Factory as default,
-};

@@ -6,7 +6,7 @@
 const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
+export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
     /**
      * List of handlers (namespaces only) followed by this handler:
      *   - ["Vendor1_Module1_Plugin_Http2_Handler", "Vendor2_Module2_Plugin_Http2_Handler"]
@@ -62,7 +62,7 @@ TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler
  */
-class Factory {
+export class Factory {
     constructor() {
         /**
          * @param {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler|null} data
@@ -83,7 +83,3 @@ class Factory {
 // finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler as default,
-    Factory
-} ;

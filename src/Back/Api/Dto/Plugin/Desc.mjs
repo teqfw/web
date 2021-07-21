@@ -6,7 +6,7 @@
 const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
+export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
     /**
      * Application frontend entrance points ('pub', 'admin', 'sign', ...).
      * This property is used in application level descriptors only.
@@ -35,7 +35,7 @@ TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc
  */
-class Factory {
+export class Factory {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {typeof TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler} */
@@ -64,7 +64,3 @@ class Factory {
 // freeze DTO class to deny attributes changes and pin namespace
 Object.freeze(TeqFw_Web_Back_Api_Dto_Plugin_Desc);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Back_Api_Dto_Plugin_Desc as default,
-    Factory
-} ;

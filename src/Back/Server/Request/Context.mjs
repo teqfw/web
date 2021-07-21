@@ -12,7 +12,7 @@ const NS = 'TeqFw_Web_Back_Server_Request_Context';
 /**
  * @implements TeqFw_Web_Back_Api_Request_IContext
  */
-class TeqFw_Web_Back_Server_Request_Context {
+export default class TeqFw_Web_Back_Server_Request_Context {
     /** @type {Object} */
     handlersShare;
     /** @type {IncomingMessage} */
@@ -142,7 +142,7 @@ class TeqFw_Web_Back_Server_Request_Context {
  * @implements TeqFw_Web_Back_Api_Request_IContext.Factory
  * @memberOf TeqFw_Web_Back_Server_Request_Context
  */
-class Factory {
+export class Factory {
     constructor() {
         /**
          * @param {TeqFw_Web_Back_Server_Request_Context|null} data
@@ -165,9 +165,4 @@ class Factory {
 }
 
 // finalize code components for this es6-module
-Object.freeze(TeqFw_Web_Back_Server_Request_Context);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Back_Server_Request_Context as default,
-    Factory
-};

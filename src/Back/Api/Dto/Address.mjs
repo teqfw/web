@@ -8,10 +8,10 @@
 const NS = 'TeqFw_Web_Back_Api_Dto_Address';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Back_Api_Dto_Address {
+export default class TeqFw_Web_Back_Api_Dto_Address {
     /** @type {string} frontend entrance point ('admin' or 'pub') */
     door;
-    /** @type {string} root folder (TODO: reserved) */
+    /** @type {string} root folder */
     root;
     /** @type {string} route to the resource (static or service) */
     route;
@@ -23,7 +23,7 @@ class TeqFw_Web_Back_Api_Dto_Address {
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Back_Api_Dto_Address
  */
-class Factory {
+export class Factory {
     constructor() {
 
         /**
@@ -42,9 +42,4 @@ class Factory {
 }
 
 // finalize code components for this es6-module
-Object.freeze(TeqFw_Web_Back_Api_Dto_Address);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Back_Api_Dto_Address as default,
-    Factory
-} ;

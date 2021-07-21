@@ -41,6 +41,6 @@ export class Factory {
     }
 }
 
-// freeze DTO class to deny attributes changes and pin namespace
+// finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Shared_Service_Dto_Namespace_Replace);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

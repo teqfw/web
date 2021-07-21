@@ -5,7 +5,7 @@
 const NS = 'TeqFw_Web_Shared_Service_Dto_Namespace_Item';
 
 // MODULE'S CLASSES
-class TeqFw_Web_Shared_Service_Dto_Namespace_Item {
+export default class TeqFw_Web_Shared_Service_Dto_Namespace_Item {
     /**
      * Extension for ES6 modules ('mjs' or 'js').
      * @type {string}
@@ -33,7 +33,7 @@ TeqFw_Web_Shared_Service_Dto_Namespace_Item.PATH = 'path';
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Shared_Service_Dto_Namespace_Item
  */
-class Factory {
+export class Factory {
     constructor() {
         /**
          * @param {TeqFw_Web_Shared_Service_Dto_Namespace_Item|null} data
@@ -52,7 +52,3 @@ class Factory {
 // finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Shared_Service_Dto_Namespace_Item);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
-export {
-    TeqFw_Web_Shared_Service_Dto_Namespace_Item as default,
-    Factory
-} ;

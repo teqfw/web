@@ -195,4 +195,6 @@ export default class Factory {
         }
     }
 }
+
+// finalize code components for this es6-module
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

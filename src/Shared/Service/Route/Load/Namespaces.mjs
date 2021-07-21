@@ -10,12 +10,12 @@ const NS = 'TeqFw_Web_Shared_Service_Route_Load_Namespaces';
 /**
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Namespaces
  */
-class Request {}
+export class Request {}
 
 /**
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Namespaces
  */
-class Response {
+export class Response {
     /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]} */
     items;
     /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace[]} */
@@ -27,7 +27,7 @@ class Response {
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_Namespaces
  * @implements TeqFw_Web_Back_Api_Service_IRoute
  */
-class Factory {
+export class Factory {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
@@ -70,12 +70,7 @@ class Factory {
 
 }
 
-// MODULE'S EXPORT
+// finalize code components for this es6-module
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 Object.defineProperty(Request, 'name', {value: `${NS}.${Request.constructor.name}`});
 Object.defineProperty(Response, 'name', {value: `${NS}.${Response.constructor.name}`});
-export {
-    Factory,
-    Request,
-    Response,
-};

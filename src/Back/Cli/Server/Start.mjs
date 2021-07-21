@@ -18,7 +18,7 @@ const OPT_PORT = 'port';
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Start
  */
-function Factory(spec) {
+export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
@@ -90,6 +90,5 @@ function Factory(spec) {
     return res;
 }
 
-// MODULE'S EXPORT
+// finalize code components for this es6-module
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
-export default Factory;

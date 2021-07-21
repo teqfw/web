@@ -17,7 +17,7 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
-function Factory(spec) {
+export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
@@ -28,7 +28,7 @@ function Factory(spec) {
 
     // DEFINE INNER FUNCTIONS
     /**
-     * Stop the HTTP/2 server.
+     * Stop the HTTP/1 server.
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
@@ -54,6 +54,5 @@ function Factory(spec) {
     return res;
 }
 
-// MODULE'S EXPORT
+// finalize code components for this es6-module
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
-export default Factory;

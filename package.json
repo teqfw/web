@@ -10,9 +10,13 @@
     "url": "git+https://github.com/teqfw/web.git"
   },
   "keywords": [
-    "teqfw",
+    "ecmascript 2015",
+    "es6+",
     "pwa",
-    "web-apps"
+    "spa",
+    "teqfw",
+    "tequila framework",
+    "web applications"
   ],
   "author": "Alex Gusev <alex@flancer64.com>",
   "license": "AGPL-3.0-only",
