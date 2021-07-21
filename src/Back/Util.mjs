@@ -2,6 +2,8 @@
  * Utilities related to HTTP2 server.
  * @namespace TeqFw_Web_Back_Util
  */
+// DEFINE WORKING VARS
+const NS = 'TeqFw_Web_Back_Util';
 
 /**
  * Compose expired HTTP cookie to remove existing cookie with the same name in the browser.
