@@ -23,10 +23,12 @@ export default class TeqFw_Web_Front_Service_Gate {
         function makeUrl() {
             const schema = '//';
             const domain = config.urlBase;
+            let port = location.port; // empty string for default ports (80 & 443)
+            if (port !== '') port = `:${port}`
             const root = (config.root) ? `/${config.root}` : '';
             const door = (config.door) ? `/${config.door}` : '';
             const space = `/${DEF.SHARED.SPACE_API}`;
-            return `${schema}${domain}${root}${door}${space}`;
+            return `${schema}${domain}${port}${root}${door}${space}`;
         }
 
         // DEFINE INSTANCE METHODS
