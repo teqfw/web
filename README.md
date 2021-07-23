@@ -27,7 +27,7 @@ Commands:
 
 ## `./cfg/local.json`
 
-[DTO](./src/Back/Api/Dto/Config.mjs) for `/web/` node.
+[DTO](src/Back/Api/Dto/Config/Local.mjs) for `/web/` node.
 
 ```json
 {

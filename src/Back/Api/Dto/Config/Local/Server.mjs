@@ -2,27 +2,27 @@
  * Configuration DTO for 'server' node of web plugin section.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Api_Dto_Config_Server';
+const NS = 'TeqFw_Web_Back_Api_Dto_Config_Local_Server';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Api_Dto_Config_Server {
+export default class TeqFw_Web_Back_Api_Dto_Config_Local_Server {
     /** @type {number} port to listening (3000) */
     port;
 }
 
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Api_Dto_Config_Server
+ * @memberOf TeqFw_Web_Back_Api_Dto_Config_Local_Server
  */
 export class Factory {
     constructor() {
 
         /**
-         * @param {TeqFw_Web_Back_Api_Dto_Config_Server|null} data
-         * @return {TeqFw_Web_Back_Api_Dto_Config_Server}
+         * @param {TeqFw_Web_Back_Api_Dto_Config_Local_Server|null} data
+         * @return {TeqFw_Web_Back_Api_Dto_Config_Local_Server}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Api_Dto_Config_Server();
+            const res = new TeqFw_Web_Back_Api_Dto_Config_Local_Server();
             res.port = data?.port;
             return res;
         }
