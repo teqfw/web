@@ -17,18 +17,21 @@ export default class TeqFw_Web_Front_Service_Gate {
         const errHndl = spec['TeqFw_Web_Front_Api_Gate_IErrorHandler$'];
 
         // DEFINE WORKING VARS / PROPS
-        const BASE = makeUrl();
+        let BASE;
 
         // DEFINE INNER FUNCTIONS
-        function makeUrl() {
-            const schema = '//';
-            const domain = config.urlBase;
-            let port = location.port; // empty string for default ports (80 & 443)
-            if (port !== '') port = `:${port}`
-            const root = (config.root) ? `/${config.root}` : '';
-            const door = (config.door) ? `/${config.door}` : '';
-            const space = `/${DEF.SHARED.SPACE_API}`;
-            return `${schema}${domain}${port}${root}${door}${space}`;
+        function getBaseUrl() {
+            if (!BASE) {
+                const schema = '//';
+                const domain = config.urlBase;
+                let port = location.port; // empty string for default ports (80 & 443)
+                if (port !== '') port = `:${port}`
+                const root = (config.root) ? `/${config.root}` : '';
+                const door = (config.door) ? `/${config.door}` : '';
+                const space = `/${DEF.SHARED.SPACE_API}`;
+                BASE = `${schema}${domain}${port}${root}${door}${space}`;
+            }
+            return BASE;
         }
 
         // DEFINE INSTANCE METHODS
@@ -43,7 +46,7 @@ export default class TeqFw_Web_Front_Service_Gate {
             let result = false;
             ajaxLed.on();
             try {
-                const URL = `${BASE}${factory.getRoute()}`;
+                const URL = `${getBaseUrl()}${factory.getRoute()}`;
                 const res = await fetch(URL, {
                     method: 'POST',
                     headers: {
