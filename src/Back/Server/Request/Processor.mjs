@@ -18,7 +18,7 @@ const NS = 'TeqFw_Web_Back_Server_Request_Processor';
  * @param {TeqFw_Di_Shared_SpecProxy} spec
  * @memberOf TeqFw_Web_Back_Server_Request_Processor
  */
-export function Factory(spec) {
+export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];

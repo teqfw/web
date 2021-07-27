@@ -3,8 +3,8 @@
  * @namespace TeqFw_Web_Back_Cli_Server_Start
  */
 // MODULE'S IMPORT
-import $path from 'path';
-import $fs from 'fs';
+import {join} from 'path';
+import {writeFileSync, mkdirSync, existsSync} from 'fs';
 
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Start';
@@ -63,10 +63,12 @@ export default function Factory(spec) {
             // use port: command opt / local cfg / default
             const port = portOpt || portCfg || DEF.DATA_SERVER_PORT;
             const pid = process.pid.toString();
-            const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
 
             // write PID to file then start the server
-            $fs.writeFileSync(pidPath, pid);
+            const pidPath = join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
+            const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
+            if (!existsSync(pidDir)) mkdirSync(pidDir);
+            writeFileSync(pidPath, pid);
             // PID is wrote => start the server
             await server.listen(port);
             logger.info(`HTTP/1 server is listening on port ${port}. PID: ${pid}.`);
