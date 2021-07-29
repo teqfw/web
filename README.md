@@ -12,9 +12,15 @@ This package adds web functionality to Tequila Framework based projects.
 $ npm i @teqfw/web --save 
 ```
 
+
+## Namespace
+
+This plugin uses `TeqFw_Web` namespace.
+
+
 ## CLI commands
 
-These command are in the web-plugin:
+These commands are in the `web`-plugin:
 
 ```shell
 $ node ./bin/tequila.mjs help
