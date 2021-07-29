@@ -23,7 +23,7 @@ export default class TeqFw_Web_Front_Service_Gate {
         function getBaseUrl() {
             if (!BASE) {
                 const schema = '//';
-                const domain = config.urlBase;
+                const domain = config.urlBase ?? location.hostname;
                 let port = location.port; // empty string for default ports (80 & 443)
                 if (port !== '') port = `:${port}`
                 const root = (config.root) ? `/${config.root}` : '';
