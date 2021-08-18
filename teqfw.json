@@ -1,5 +1,5 @@
 {
-  "di": {
+  "@teqfw/di": {
     "autoload": {
       "ns": "TeqFw_Web",
       "path": "./src"
@@ -16,13 +16,13 @@
       }
     ]
   },
-  "core": {
+  "@teqfw/core": {
     "commands": [
       "TeqFw_Web_Back_Cli_Server_Start",
       "TeqFw_Web_Back_Cli_Server_Stop"
     ]
   },
-  "web": {
+  "@teqfw/web": {
     "handlers": [
       {
         "factoryId": "TeqFw_Web_Back_Plugin_Web_Handler_Service",

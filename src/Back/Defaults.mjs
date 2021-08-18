@@ -8,8 +8,6 @@ export default class TeqFw_Web_Back_Defaults {
     DATA_FILE_PID = './var/http1.pid'; // PID file to stop running server.
     DATA_SERVER_PORT = 3000;
 
-    DESC_NODE = 'web'; // plugin's node in 'teqfw.json' & './cfg/local.json'
-
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
 
     HTTP_HEADER_STATUS = 'status';

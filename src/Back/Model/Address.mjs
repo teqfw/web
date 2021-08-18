@@ -60,7 +60,7 @@ export default class TeqFw_Web_Back_Model_Address {
         const items = registry.items();
         for (const item of items) {
             // one only 'web/root' is allowed in application
-            const iRoot = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.ROOT];
+            const iRoot = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.ROOT];
             if (iRoot) {
                 if (!root) {
                     root = iRoot;
@@ -69,14 +69,14 @@ export default class TeqFw_Web_Back_Model_Address {
                 }
             }
             // find all doors in the app
-            const iDoors = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.DOORS];
+            const iDoors = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.DOORS];
             if (Array.isArray(iDoors)) {
                 const allied = doors.concat(iDoors);
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
             /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
-            const handlers = item?.teqfw?.[DEF.DESC_NODE]?.[Desc.HANDLERS];
+            const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.HANDLERS];
             if (Array.isArray(handlers))
                 for (const hndl of handlers) {
                     if (Array.isArray(hndl.spaces)) {

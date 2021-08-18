@@ -34,7 +34,7 @@ export default class TeqFw_Web_Back_Service_Load_Config {
                 const out = context.getOutData();
                 // put web part of the local configuration to the out
                 /** @type {TeqFw_Web_Back_Api_Dto_Config_Local} */
-                const webCfg = config.getLocal(DEF.DESC_NODE);
+                const webCfg = config.getLocal(DEF.SHARED.NAME);
                 Object.assign(out, webCfg);
             }
 

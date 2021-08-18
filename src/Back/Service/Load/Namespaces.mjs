@@ -48,7 +48,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
             const plugins = registry.items();
             for (const one of plugins) {
                 /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
-                const desc = one.teqfw[DEF.MOD_DI.DESC_NODE];
+                const desc = one.teqfw[DEF.MOD_DI.NAME];
                 const item = fItem.create();
                 item.ext = desc.autoload.ext;
                 item.ns = desc.autoload.ns;
@@ -68,7 +68,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
             const result = [];
             const plugins = registry.items();
             const mapDiDesc = {}; // pluginName => {}
-            plugins.map((a) => {mapDiDesc[a.name] = a.teqfw[DEF.MOD_DI.DESC_NODE]});
+            plugins.map((a) => {mapDiDesc[a.name] = a.teqfw[DEF.MOD_DI.NAME]});
             const levels = registry.getLevels();
             const levelKeys = Object.keys(levels).map(key => parseInt(key)); // get keys as integers
             levelKeys.sort((a, b) => a - b); // sort as numbers

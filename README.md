@@ -37,7 +37,7 @@ Commands:
 
 ```json
 {
-  "web": {
+  "@teqfw/web": {
     "server": {"port": 3000},
     "urlBase": "domain.com"
   }
@@ -50,7 +50,7 @@ Commands:
 
 ```json
 {
-  "web": {
+  "@teqfw/web": {
     "doors": ["admin", "pub"],
     "handlers": [
       {

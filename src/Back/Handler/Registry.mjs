@@ -27,7 +27,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
             const items = registry.items();
             for (const item of items) {
                 // get '/web' node from 'teqfw.json'
-                const data = item.teqfw?.[DEF.DESC_NODE];
+                const data = item.teqfw?.[DEF.SHARED.NAME];
                 if (data) {
                     const desc = fDesc.create(data);
                     for (const one of desc.handlers) {

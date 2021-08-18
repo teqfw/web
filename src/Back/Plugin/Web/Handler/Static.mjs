@@ -154,7 +154,7 @@ export default class Factory {
                 for (const item of items) {
                     // map URLs to filesystem for ES6/JS sources
                     /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
-                    const desc = item.teqfw?.[DEF.MOD_DI.DESC_NODE];
+                    const desc = item.teqfw?.[DEF.MOD_DI.NAME];
                     if (desc?.autoload) {
                         const path = $path.join(item.path, desc.autoload.path);
                         const url = $path.join('/', DEF.SHARED.SPACE_SRC, item.name);
@@ -172,8 +172,8 @@ export default class Factory {
                     }
 
                     // map additional sources mapping
-                    if (typeof item.teqfw[DEF.DESC_NODE]?.statics === 'object') {
-                        const map = item.teqfw[DEF.DESC_NODE].statics;
+                    if (typeof item.teqfw[DEF.SHARED.NAME]?.statics === 'object') {
+                        const map = item.teqfw[DEF.SHARED.NAME].statics;
                         for (const key in map) {
                             const path = $path.join(rootFs, 'node_modules', map[key]);
                             const url = $path.join('/', DEF.SHARED.SPACE_SRC, key);

@@ -149,7 +149,7 @@ export default class Factory {
             async function initHandler() {
                 const items = regPlugin.items();
                 for (const one of items) {
-                    const data = one.teqfw?.[DEF.DESC_NODE];
+                    const data = one.teqfw?.[DEF.SHARED.NAME];
                     if (data) {
                         const desc = fDesc.create(data);
                         const services = desc.services;
