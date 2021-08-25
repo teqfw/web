@@ -14,7 +14,11 @@
         "alter": "TeqFw_Web_Front_Model_Gate_ErrorHandler",
         "area": "front"
       }
-    ]
+    ],
+    "replaceNew": {
+      "TeqFw_Web_Front_Api_Gate_IAjaxLed": {"ns": "TeqFw_Web_Front_Model_Gate_AjaxLed", "area": "front"},
+      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"ns": "TeqFw_Web_Front_Model_Gate_ErrorHandler", "area": "front"}
+    }
   },
   "@teqfw/core": {
     "commands": [
