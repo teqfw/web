@@ -132,6 +132,7 @@ export default class Factory {
                                     ctx.setResponseHeader(DEF.HTTP_HEADER_STATUS, H2.HTTP_STATUS_INTERNAL_SERVER_ERROR);
                                     ctx.setResponseBody(e.message);
                                     ctx.markRequestProcessed();
+                                    logger.error(`${e?.message}\n${e?.stack}`);
                                 }
                             } catch (e) {
                                 ctx.setResponseHeader(DEF.HTTP_HEADER_STATUS, H2.HTTP_STATUS_BAD_REQUEST);
