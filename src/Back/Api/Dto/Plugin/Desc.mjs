@@ -14,10 +14,8 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
      * @type {string[]}
      */
     doors;
-    /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
+    /** @type {Object<string, TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler>} */
     handlers;
-    /** @type {string} */
-    root;
     /** @type {string[]} */
     services;
     /** @type {Object<string, string>} */
@@ -27,7 +25,6 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
 // attributes names to use as aliases in queries to object props
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.DOORS = 'doors';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.HANDLERS = 'handlers';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.ROOT = 'root';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.SERVICES = 'services';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
 
@@ -38,8 +35,6 @@ TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
 export class Factory {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {typeof TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler} */
-        const DHandler = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler#'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.Factory} */
         const fHandler = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler#Factory$'];
 
@@ -48,14 +43,21 @@ export class Factory {
          * @return {TeqFw_Web_Back_Api_Dto_Plugin_Desc}
          */
         this.create = function (data = null) {
+            // DEFINE INNER FUNCTIONS
+            function parseHandlers(data) {
+                const res = {};
+                if (typeof data === 'object')
+                    for (const key of Object.keys(data))
+                        res[key] = fHandler.create(data[key]);
+                return res;
+            }
+
+            // MAIN FUNCTIONALITY
             const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc();
-            res.doors = Array.isArray(data?.doors) ? data.doors : [];
-            res.handlers = Array.isArray(data?.handlers)
-                ? data.handlers.map((one) => (one instanceof DHandler) ? one : fHandler.create(one))
-                : [];
-            res.root = data?.root;
-            res.services = Array.isArray(data?.services) ? data.services : [];
-            res.statics = data?.statics || {};
+            res.doors = Array.isArray(data?.doors) ? [...data.doors] : [];
+            res.handlers = parseHandlers(data?.handlers);
+            res.services = Array.isArray(data?.services) ? [...data.services] : [];
+            res.statics = Object.assign({}, data?.statics);
             return res;
         }
     }

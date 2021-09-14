@@ -77,8 +77,9 @@ export default class TeqFw_Web_Back_Model_Address {
             // find all spaces used by web requests handlers
             /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
             const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.HANDLERS];
-            if (Array.isArray(handlers))
-                for (const hndl of handlers) {
+            if (typeof handlers === 'object')
+                for (const key of Object.keys(handlers)) {
+                    const hndl = handlers[key];
                     if (Array.isArray(hndl.spaces)) {
                         const allied = spaces.concat(hndl.spaces);
                         spaces = [...new Set(allied)]; // make items unique

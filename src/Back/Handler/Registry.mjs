@@ -1,6 +1,18 @@
 /**
  * Registry to create and store web server handlers.
+ * @namespace TeqFw_Web_Back_Handler_Registry
  */
+
+/**
+ * @memberOf TeqFw_Web_Back_Handler_Registry
+ */
+class Entry {
+    /** @type {TeqFw_Web_Back_Api_Request_IHandler.handle} */
+    handler;
+    /** @type {number} */
+    weight;
+}
+
 export default class TeqFw_Web_Back_Handler_Registry {
     constructor(spec) {
         // EXTRACT DEPS
@@ -16,13 +28,16 @@ export default class TeqFw_Web_Back_Handler_Registry {
         const fDesc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {Object.<string, TeqFw_Web_Back_Api_Request_IHandler.handle>} */
-        const store = {};
+        /** @type {TeqFw_Web_Back_Api_Request_IHandler.handle[]} */
+        let _handles = [];
+
 
         // DEFINE INSTANCE METHODS
 
         this.init = async function () {
             logger.info('Collect web requests handlers.');
+            /** @type {TeqFw_Web_Back_Handler_Registry.Entry[]} */
+            const entries = [];
             /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
             const items = registry.items();
             for (const item of items) {
@@ -30,17 +45,23 @@ export default class TeqFw_Web_Back_Handler_Registry {
                 const data = item.teqfw?.[DEF.SHARED.NAME];
                 if (data) {
                     const desc = fDesc.create(data);
-                    for (const one of desc.handlers) {
+                    for (const depId of Object.keys(desc.handlers)) {
+                        const one = desc.handlers[depId];
                         // create handler factory...
-                        const depId = one.factoryId;
                         /** @type {TeqFw_Web_Back_Api_Request_IHandler.Factory} */
                         const factory = await container.get(`${depId}$`);
                         // ...then create handler itself
-                        store[depId] = await factory.create();
+                        const entry = new Entry();
+                        entry.handler = await factory.create();
+                        entry.weight = Number.parseInt(one.weight);
+                        entries.push(entry);
                     }
                 }
             }
-            const total = Object.values(store).length;
+            // sort handles by weight
+            entries.sort((a, b) => b.weight - a.weight); // reverse order: 100 => 10
+            _handles = entries.map((a) => a.handler);
+            const total = _handles.length;
             logger.info(`Total ${total} web requests handlers are created.`);
         };
 
@@ -48,7 +69,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
          * @return {TeqFw_Web_Back_Api_Request_IHandler.handle[]}
          */
         this.items = function () {
-            return Object.values(store);
+            return _handles;
         }
     }
 }

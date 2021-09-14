@@ -16,18 +16,16 @@
     ]
   },
   "@teqfw/web": {
-    "handlers": [
-      {
-        "factoryId": "TeqFw_Web_Back_Plugin_Web_Handler_Service",
+    "handlers": {
+      "TeqFw_Web_Back_Plugin_Web_Handler_Service": {
         "before": "TeqFw_Web_Back_Plugin_Web_Handler_Static",
         "spaces": ["api"],
         "weight": 100
-      }, {
-        "factoryId": "TeqFw_Web_Back_Plugin_Web_Handler_Static",
+      }, "TeqFw_Web_Back_Plugin_Web_Handler_Static": {
         "spaces": ["src", "web"],
         "weight": 10
       }
-    ],
+    },
     "services": [
       "TeqFw_Web_Back_Service_Load_Config",
       "TeqFw_Web_Back_Service_Load_Namespaces"

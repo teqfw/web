@@ -31,6 +31,7 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
      * Dependency ID for handler factory's module to create handler: "Fl32_Ap_User_Plugin_Web_Handler_Session".
      *
      *  @type {string}
+     *  @deprecated 'array-to-object' transformation, factoryId => object key
      */
     factoryId;
     /**
@@ -54,7 +55,6 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
 // attributes names to use as aliases in queries to object props
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.AFTER = 'after';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.BEFORE = 'before';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.FACTORY_ID = 'factoryId';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
 TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
 
@@ -70,11 +70,10 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler();
-            res.after = Array.isArray(data?.after) ? data.after : [];
-            res.before = Array.isArray(data?.before) ? data.before : [];
-            res.factoryId = data?.factoryId;
-            res.spaces = Array.isArray(data?.spaces) ? data.spaces : [];
-            res.weight = data?.weight ?? 0;
+            res.after = Array.isArray(data?.after) ? [...data.after] : [];
+            res.before = Array.isArray(data?.before) ? [...data.before] : [];
+            res.spaces = Array.isArray(data?.spaces) ? [...data.spaces] : [];
+            res.weight = Number.parseInt(data?.weight) ?? 0;
             return res;
         }
     }
