@@ -79,10 +79,12 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
                 for (const name of level) {
                     /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
                     const desc = mapDiDesc[name];
-                    if (Array.isArray(desc?.replace))
-                        for (const one of desc.replace)
+                    if (Array.isArray(Object.keys(desc?.replace)))
+                        for (const orig of Object.keys(desc.replace)) {
+                            const one = desc.replace[orig];
                             if ((one.area === DiReplace.DATA_AREA_FRONT) || (one.area === DiReplace.DATA_AREA_SHARED))
-                                mapReplace[one.orig] = one.alter;
+                                mapReplace[orig] = one.ns;
+                        }
                 }
             }
             // convert object to DTO
