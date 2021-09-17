@@ -34,7 +34,7 @@ TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
  */
 export class Factory {
     constructor(spec) {
-        // EXTRACT DEPS
+        const {castArray} = spec['TeqFw_Core_Shared_Util_Cast'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.Factory} */
         const fHandler = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler#Factory$'];
 
@@ -54,9 +54,9 @@ export class Factory {
 
             // MAIN FUNCTIONALITY
             const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc();
-            res.doors = Array.isArray(data?.doors) ? [...data.doors] : [];
+            res.doors = castArray(data?.doors);
             res.handlers = parseHandlers(data?.handlers);
-            res.services = Array.isArray(data?.services) ? [...data.services] : [];
+            res.services = castArray(data?.services);
             res.statics = Object.assign({}, data?.statics);
             return res;
         }

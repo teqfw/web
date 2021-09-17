@@ -24,7 +24,8 @@ export default class TeqFw_Web_Back_Api_Dto_Address {
  * @memberOf TeqFw_Web_Back_Api_Dto_Address
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
         /**
          * @param {TeqFw_Web_Back_Api_Dto_Address|null} data
@@ -32,10 +33,10 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Address();
-            res.door = data?.door;
-            res.root = data?.root;
-            res.route = data?.route;
-            res.space = data?.space;
+            res.door = castString(data?.door);
+            res.root = castString(data?.root);
+            res.route = castString(data?.route);
+            res.space = castString(data?.space);
             return res;
         }
     }

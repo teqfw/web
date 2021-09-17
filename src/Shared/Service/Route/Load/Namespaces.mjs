@@ -32,12 +32,10 @@ export class Factory {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
         const DEF = spec['TeqFw_Web_Shared_Defaults$'];
-        /** @type {typeof TeqFw_Web_Shared_Service_Dto_Namespace_Item} */
-        const DItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#'];
+        /** @type {Function|TeqFw_Core_Shared_Util_Cast.castArrayOfObj} */
+        const castArrayOfObj = spec['TeqFw_Core_Shared_Util_Cast#castArrayOfObj'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item.Factory} */
         const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
-        /** @type {typeof TeqFw_Web_Shared_Service_Dto_Namespace_Replace} */
-        const DReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace.Factory} */
         const fReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#Factory$'];
 
@@ -56,12 +54,8 @@ export class Factory {
          */
         this.createRes = function (data = null) {
             const res = new Response();
-            res.items = Array.isArray(data?.items)
-                ? data.items.map((one) => (one instanceof DItem) ? one : fItem.create(one))
-                : [];
-            res.replaces = Array.isArray(data?.replaces)
-                ? data.replaces.map((one) => (one instanceof DReplace) ? one : fReplace.create(one))
-                : [];
+            res.items = castArrayOfObj(data?.items, fItem.create);
+            res.replaces = castArrayOfObj(data?.replaces, fReplace.create);
             return res;
         }
 

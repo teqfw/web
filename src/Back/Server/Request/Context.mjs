@@ -143,22 +143,25 @@ export default class TeqFw_Web_Back_Server_Request_Context {
  * @memberOf TeqFw_Web_Back_Server_Request_Context
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castArray} = spec['TeqFw_Core_Shared_Util_Cast'];
+
+        // noinspection JSCheckFunctionSignatures
         /**
          * @param {TeqFw_Web_Back_Server_Request_Context|null} data
          * @return {TeqFw_Web_Back_Server_Request_Context}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Server_Request_Context();
-            res.handlersShare = (typeof data?.handlersShare === 'object') ? data.handlersShare : {};
+            res.handlersShare = Object.assign({}, data?.handlersShare);
             res.http1Request = data?.http1Request;
             res.http1Response = data?.http1Response;
-            res.inputData = Array.isArray(data?.inputData) ? data?.inputData : [];
+            res.inputData = castArray(data?.inputData);
             res.requestComplete = data?.requestComplete ?? false;
             res.requestProcessed = data?.requestProcessed ?? false;
             res.responseBody = data?.responseBody;
             res.responseFilePath = data?.responseFilePath;
-            res.responseHeaders = (typeof data?.responseHeaders === 'object') ? data.responseHeaders : {};
+            res.responseHeaders = Object.assign({}, data?.responseHeaders);
             return res;
         }
     }

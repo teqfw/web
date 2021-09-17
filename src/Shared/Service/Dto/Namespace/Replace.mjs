@@ -27,15 +27,17 @@ TeqFw_Web_Shared_Service_Dto_Namespace_Replace.ORIG = 'orig';
  * @memberOf TeqFw_Web_Shared_Service_Dto_Namespace_Replace
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
+
         /**
          * @param {TeqFw_Web_Shared_Service_Dto_Namespace_Replace|null} data
          * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Replace}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Shared_Service_Dto_Namespace_Replace();
-            res.alter = data?.alter;
-            res.orig = data?.orig;
+            res.alter = castString(data?.alter);
+            res.orig = castString(data?.orig);
             return res;
         }
     }

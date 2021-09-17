@@ -10,12 +10,14 @@ export default class TeqFw_Web_Back_Api_Dto_Config_Local_Server {
     port;
 }
 
+// noinspection JSCheckFunctionSignatures
 /**
  * Factory to create new DTO instances.
  * @memberOf TeqFw_Web_Back_Api_Dto_Config_Local_Server
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castInt} = spec['TeqFw_Core_Shared_Util_Cast'];
 
         /**
          * @param {TeqFw_Web_Back_Api_Dto_Config_Local_Server|null} data
@@ -23,7 +25,7 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Config_Local_Server();
-            res.port = data?.port;
+            res.port = castInt(data?.port);
             return res;
         }
     }

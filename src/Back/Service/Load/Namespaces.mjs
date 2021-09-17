@@ -17,6 +17,8 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
+        /** @type {typeof TeqFw_Di_Shared_Api_Enum_Area} */
+        const AREA = spec['TeqFw_Di_Shared_Api_Enum_Area#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Factory} */
@@ -25,8 +27,6 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace.Factory} */
         const fReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#Factory$'];
-        /** @type {typeof TeqFw_Di_Shared_Api_Dto_Plugin_Desc_Replace} */
-        const DiReplace = spec['TeqFw_Di_Shared_Api_Dto_Plugin_Desc_Replace#'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]} */
@@ -82,7 +82,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
                     if (Array.isArray(Object.keys(desc?.replace)))
                         for (const orig of Object.keys(desc.replace)) {
                             const one = desc.replace[orig];
-                            if ((one.area === DiReplace.DATA_AREA_FRONT) || (one.area === DiReplace.DATA_AREA_SHARED))
+                            if ((one.area === AREA.FRONT) || (one.area === AREA.SHARED))
                                 mapReplace[orig] = one.ns;
                         }
                 }

@@ -63,17 +63,18 @@ TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
  * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castArray, castInt} = spec['TeqFw_Core_Shared_Util_Cast'];
         /**
          * @param {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler|null} data
          * @return {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler();
-            res.after = Array.isArray(data?.after) ? [...data.after] : [];
-            res.before = Array.isArray(data?.before) ? [...data.before] : [];
-            res.spaces = Array.isArray(data?.spaces) ? [...data.spaces] : [];
-            res.weight = Number.parseInt(data?.weight) ?? 0;
+            res.after = castArray(data?.after);
+            res.before = castArray(data?.before);
+            res.spaces = castArray(data?.spaces);
+            res.weight = castInt(data?.weight) || 0;
             return res;
         }
     }

@@ -19,8 +19,8 @@ export default class TeqFw_Web_Back_Api_Dto_Config_Local {
  */
 export class Factory {
     constructor(spec) {
-        /** @type {typeof TeqFw_Web_Back_Api_Dto_Config_Local_Server} */
-        const DServer = spec['TeqFw_Web_Back_Api_Dto_Config_Local_Server#'];
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
+
         /** @type {TeqFw_Web_Back_Api_Dto_Config_Local_Server.Factory} */
         const fServer = spec['TeqFw_Web_Back_Api_Dto_Config_Local_Server#Factory$'];
         /**
@@ -29,8 +29,8 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Api_Dto_Config_Local();
-            res.server = (data?.server instanceof DServer) ? data.server : fServer.create(data?.server);
-            res.urlBase = data?.urlBase;
+            res.server = fServer.create(data?.server);
+            res.urlBase = castString(data?.urlBase);
             return res;
         }
     }

@@ -28,16 +28,18 @@ export default class TeqFw_Web_Front_Api_Dto_Config {
  * @memberOf TeqFw_Web_Front_Api_Dto_Config
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
+
         /**
          * @param {TeqFw_Web_Front_Api_Dto_Config|null} data
          * @return {TeqFw_Web_Front_Api_Dto_Config}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Front_Api_Dto_Config();
-            res.door = data?.door;
-            res.root = data?.root;
-            res.urlBase = data?.urlBase;
+            res.door = castString(data?.door);
+            res.root = castString(data?.root);
+            res.urlBase = castString(data?.urlBase);
             return res;
         }
     }

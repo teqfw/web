@@ -23,6 +23,8 @@ export default function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Config} */
     const config = spec['TeqFw_Core_Back_Config$'];
+    /** @type {Function} */
+    const castInt = spec['TeqFw_Core_Shared_Util_Cast#castInt'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
 
@@ -36,7 +38,7 @@ export default function Factory(spec) {
         try {
             const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
             const data = $fs.readFileSync(pidPath);
-            const pid = Number.parseInt(data.toString());
+            const pid = castInt(data);
             console.info(`Stop HTTP/1 server (PID: ${pid}).`);
             process.kill(pid, 'SIGINT');
         } catch (e) {

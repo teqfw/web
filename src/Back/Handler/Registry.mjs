@@ -22,6 +22,8 @@ export default class TeqFw_Web_Back_Handler_Registry {
         const container = spec['TeqFw_Di_Shared_Container$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {Function} */
+        const castInt = spec['TeqFw_Core_Shared_Util_Cast#castInt'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc.Factory} */
@@ -53,7 +55,7 @@ export default class TeqFw_Web_Back_Handler_Registry {
                         // ...then create handler itself
                         const entry = new Entry();
                         entry.handler = await factory.create();
-                        entry.weight = Number.parseInt(one.weight);
+                        entry.weight = castInt(one.weight) || 0;
                         entries.push(entry);
                     }
                 }

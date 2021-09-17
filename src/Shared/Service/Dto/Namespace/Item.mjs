@@ -34,16 +34,18 @@ TeqFw_Web_Shared_Service_Dto_Namespace_Item.PATH = 'path';
  * @memberOf TeqFw_Web_Shared_Service_Dto_Namespace_Item
  */
 export class Factory {
-    constructor() {
+    constructor(spec) {
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
+
         /**
          * @param {TeqFw_Web_Shared_Service_Dto_Namespace_Item|null} data
          * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Item}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Shared_Service_Dto_Namespace_Item();
-            res.ext = data?.ext;
-            res.ns = data?.ns;
-            res.path = data?.path;
+            res.ext = castString(data?.ext);
+            res.ns = castString(data?.ns);
+            res.path = castString(data?.path);
             return res;
         }
     }
