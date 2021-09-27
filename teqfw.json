@@ -28,6 +28,7 @@
     },
     "services": [
       "TeqFw_Web_Back_Service_Load_Config",
+      "TeqFw_Web_Back_Service_Load_FilesToCache",
       "TeqFw_Web_Back_Service_Load_Namespaces"
     ]
   }
