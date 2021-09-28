@@ -10,7 +10,13 @@ const NS = 'TeqFw_Web_Shared_Service_Route_Load_FilesToCache';
 /**
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
  */
-export class Request {}
+export class Request {
+    /**
+     * Door name to get statics for (entry point - 'pub', 'admin', ...).
+     * @type {string}
+     */
+    door;
+}
 
 /**
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
@@ -30,6 +36,7 @@ export class Factory {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
         const DEF = spec['TeqFw_Web_Shared_Defaults$'];
+        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
         // DEFINE INSTANCE METHODS
         /**
@@ -37,7 +44,9 @@ export class Factory {
          * @return {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Request}
          */
         this.createReq = function (data = null) {
-            return new Request();
+            const res = new Request();
+            res.door = castString(data?.door);
+            return res;
         }
 
         /**
