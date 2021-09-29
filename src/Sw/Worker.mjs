@@ -1,6 +1,9 @@
 /**
- * Service worker to use in TeqFW applications.
- * This is standard ES6 module w/o TeqFW DI support. Service workers don't allow dynamic `import()`.
+ * Main script to use service worker in TeqFW applications.
+ *
+ * This is standard ES6 module w/o TeqFW DI support (service workers don't allow dynamic `import()`).
+ *
+ * I suppose that SW files should be cached by browser itself, so these files are not under `./Front/` folder.
  */
 
 /**
@@ -26,7 +29,7 @@ const AREA_STATIC = 'web'; // marker for static resources (to be cached)
 const AREA_WORKER = 'sw'; // marker for Service Worker commands
 const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
 
-export default class TeqFw_Web_Front_Api_ServiceWorker {
+export default class TeqFw_Web_Sw_Worker {
 
     /**
      * ATTN: This is standard ES6 module w/o TeqFW DI support !!!
@@ -134,6 +137,20 @@ export default class TeqFw_Web_Front_Api_ServiceWorker {
             );
         }
 
+        /**
+         * @param {MessageEvent} event
+         */
+        function onMessage(event) {
+            /** @type {TeqFw_Web_Front_Model_Sw_Control.Message} */
+            const data = event.data;
+            const msg = data.msg;
+            const id = data.id;
+            // perform requested operation then return result
+            const res = {msg: `return: ${msg}`, id};
+            // noinspection JSCheckFunctionSignatures
+            event.source.postMessage(res);
+        }
+
         // DEFINE INSTANCE METHODS
 
         /**
@@ -143,9 +160,10 @@ export default class TeqFw_Web_Front_Api_ServiceWorker {
          */
         this.setup = function (context, door) {
             _door = door;
-            context.addEventListener('activate', onActivate);
-            context.addEventListener('fetch', onFetch);
-            context.addEventListener('install', onInstall);
+            context.addEventListener(EVT.ACTIVATE, onActivate);
+            context.addEventListener(EVT.FETCH, onFetch);
+            context.addEventListener(EVT.INSTALL, onInstall);
+            context.addEventListener(EVT.MESSAGE, onMessage);
             console.log(`[SW]: is registering for '${_door}' entry point.`);
         }
     }
