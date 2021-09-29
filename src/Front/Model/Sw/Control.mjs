@@ -1,5 +1,5 @@
 /**
- * Service Worker functionality controller.
+ * Service Worker functionality controller. Use this object on the front to communicate with Service Worker.
  */
 
 /**
@@ -7,43 +7,56 @@
  * @memberOf TeqFw_Web_Front_Model_Sw_Control
  */
 class Message {
-    /** @type {number} */
+    /** @type {string} */
     id;
     /** @type {*} */
-    msg;
+    payload;
+    /** @type {string} */
+    type;
 }
 
 export default class TeqFw_Web_Front_Model_Sw_Control {
     constructor(spec) {
+        /** @type {typeof TeqFw_Web_Front_Model_Sw_Enum_Message} */
+        const MSG = spec['TeqFw_Web_Front_Model_Sw_Enum_Message$'];
+
         const _queue = {};
 
+        const generateMsgId = () => `${(new Date()).getTime()}`;
+
+        /**
+         * Return SW response (payload) to consumer using callback function from queue.
+         * @param {MessageEvent} event
+         */
         function onMessage(event) {
-            // event is a MessageEvent object
-            console.log(`This is app. The service worker sent me a message: ${JSON.stringify(event.data)}`);
-            if (typeof _queue[event.data.id] === 'function') {
-                _queue[event.data.id](`${event.data.msg}.${event.data.id}`);
-            }
+            /** @type {Message} */
+            const msg = event.data;
+            if (typeof _queue[msg.id] === 'function') _queue[msg.id](msg.payload);
         }
 
 
-        this.sendMessage = async function () {
-            const worker = self.navigator.serviceWorker;
-            const reg = await worker.ready;
-            reg.active.postMessage("Hi service worker! It's app!");
-            return 32;
-        }
-
-        this.send = function (data) {
-            // generate message id
-            const id = `${(new Date()).getTime()}`;
-            return new Promise((resolve, reject) => {
+        this.getCacheStatus = function () {
+            const id = generateMsgId();
+            return new Promise((resolve) => {
                 _queue[id] = resolve;
-                self.navigator.serviceWorker.ready.then((reg) => {
-                    reg.active.postMessage({msg: data, id});
-                });
-                // debugger;
+                const msg = new Message();
+                msg.id = id;
+                msg.type = MSG.GET_CACHE_STATUS;
+                self.navigator.serviceWorker.ready.then((reg) => reg.active.postMessage(msg));
             });
-        }
+        };
+
+        this.setCacheStatus = function (enabled = true) {
+            const id = generateMsgId();
+            return new Promise((resolve) => {
+                _queue[id] = resolve;
+                const msg = new Message();
+                msg.id = id;
+                msg.type = MSG.SET_CACHE_STATUS;
+                msg.payload = !!enabled;
+                self.navigator.serviceWorker.ready.then((reg) => reg.active.postMessage(msg));
+            });
+        };
 
         self.navigator.serviceWorker.addEventListener('message', onMessage);
     }
