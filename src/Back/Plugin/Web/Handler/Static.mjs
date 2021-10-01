@@ -72,7 +72,8 @@ export default class Factory {
                      */
                     function normalize(path) {
                         let result;
-                        const address = mAddress.parsePath(path);
+                        const parts = path.split('?'); // cut off GET vars
+                        const address = mAddress.parsePath(parts[0]);
                         if (address.space !== undefined) {
                             result = `/${address.space}${address.route}`;
                         } else if (address.door !== undefined) {
