@@ -103,7 +103,8 @@ export default class Factory {
                         let result = url;
                         for (const key in routes) {
                             const one = routes[key];
-                            const regSrc = new RegExp(`(.*)(${key})(.*)`);
+                            const route = `${key}/`.replace('//', '/');
+                            const regSrc = new RegExp(`(.*)(${route})(.*)`);
                             const partsSrc = regSrc.exec(url);
                             if (Array.isArray(partsSrc)) {
                                 const tail = partsSrc[3];
