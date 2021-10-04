@@ -40,7 +40,7 @@ export default class TeqFw_Web_Front_Service_Gate {
          *
          * @param {Object} data JS-object to be sent as request
          * @param {TeqFw_Web_Back_Api_Service_IRoute} factory
-         * @returns {Promise<Object|Boolean>}
+         * @returns {Promise<*|boolean>}
          */
         this.send = async function (data, factory) {
             let result = false;
