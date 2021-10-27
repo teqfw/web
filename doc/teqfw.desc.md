@@ -2,7 +2,7 @@
 
 ## @teqfw/web
 
-`@teqfw/di` plugin can parse these options of `./teqfw.json` descriptors of teq-plugins:
+`@teqfw/web` plugin can parse these options of `./teqfw.json` descriptors of teq-plugins:
 
 ```json
 {
