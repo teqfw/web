@@ -157,6 +157,22 @@ export default class TeqFw_Web_Sw_Worker {
          * @param {MessageEvent} event
          */
         async function onMessage(event) {
+
+            // DEFINE INNER FUNCTIONS
+
+            async function cacheClean() {
+                try {
+                    const cache = await self.caches.open(CACHE_STATIC);
+                    const keys = await cache.keys();
+                    keys.forEach((one) => cache.delete(one));
+                } catch (e) {
+                    console.log('[SW] error: ');
+                    console.dir(e);
+                }
+            }
+
+            // MAIN FUNCTIONALITY
+
             /** @type {TeqFw_Web_Front_Model_Sw_Control.Message} */
             const data = event.data;
             const type = data.type;
@@ -170,7 +186,7 @@ export default class TeqFw_Web_Sw_Worker {
                 _cacheDisabled = !payload; // inversion for cache status
                 await _config.set(CFG_CACHE_DISABLED, _cacheDisabled);
             } else if (type === MSG.CACHE_CLEAN) {
-                debugger
+                await cacheClean();
             }
             // ... then return result
             const res = Object.assign({}, data);
