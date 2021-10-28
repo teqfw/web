@@ -163,12 +163,14 @@ export default class TeqFw_Web_Sw_Worker {
             const payload = data.payload;
             let out;
             // perform requested operation
-            if (type === MSG.GET_CACHE_STATUS) {
+            if (type === MSG.CACHE_STATUS_GET) {
                 _cacheDisabled = await _config.get(CFG_CACHE_DISABLED);
                 out = !_cacheDisabled; // inversion for cache status
-            } else if (type === MSG.SET_CACHE_STATUS) {
+            } else if (type === MSG.CACHE_STATUS_SET) {
                 _cacheDisabled = !payload; // inversion for cache status
                 await _config.set(CFG_CACHE_DISABLED, _cacheDisabled);
+            } else if (type === MSG.CACHE_CLEAN) {
+                debugger
             }
             // ... then return result
             const res = Object.assign({}, data);
