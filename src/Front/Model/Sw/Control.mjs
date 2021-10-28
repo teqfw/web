@@ -41,7 +41,7 @@ export default class TeqFw_Web_Front_Model_Sw_Control {
                 _queue[id] = resolve;
                 const msg = new Message();
                 msg.id = id;
-                msg.type = MSG.GET_CACHE_STATUS;
+                msg.type = MSG.CACHE_STATUS_GET;
                 self.navigator.serviceWorker.ready.then((reg) => reg.active.postMessage(msg));
             });
         };
@@ -52,8 +52,19 @@ export default class TeqFw_Web_Front_Model_Sw_Control {
                 _queue[id] = resolve;
                 const msg = new Message();
                 msg.id = id;
-                msg.type = MSG.SET_CACHE_STATUS;
+                msg.type = MSG.CACHE_STATUS_SET;
                 msg.payload = !!enabled;
+                self.navigator.serviceWorker.ready.then((reg) => reg.active.postMessage(msg));
+            });
+        };
+
+        this.cacheClean = function () {
+            const id = generateMsgId();
+            return new Promise((resolve) => {
+                _queue[id] = resolve;
+                const msg = new Message();
+                msg.id = id;
+                msg.type = MSG.CACHE_CLEAN;
                 self.navigator.serviceWorker.ready.then((reg) => reg.active.postMessage(msg));
             });
         };

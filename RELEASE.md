@@ -1,5 +1,9 @@
 # @teqfw/web: releases
 
+# 0.6.1
+
+* SW cache cleaning.
+
 # 0.6.0
 
 * Cast function for DTOs.

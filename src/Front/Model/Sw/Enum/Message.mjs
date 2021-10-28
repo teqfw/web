@@ -2,8 +2,9 @@
  * Enumeration for Service Worker messages.
  */
 const TeqFw_Web_Front_Model_Sw_Enum_Message = {
-    GET_CACHE_STATUS: 'GET_CACHE_STATUS',
-    SET_CACHE_STATUS: 'SET_CACHE_STATUS',
+    CACHE_CLEAN: 'CACHE_CLEAN',
+    CACHE_STATUS_GET: 'CACHE_STATUS_GET',
+    CACHE_STATUS_SET: 'CACHE_STATUS_SET',
 }
 Object.freeze(TeqFw_Web_Front_Model_Sw_Enum_Message);
 export default TeqFw_Web_Front_Model_Sw_Enum_Message;
