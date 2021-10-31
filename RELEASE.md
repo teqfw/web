@@ -1,8 +1,9 @@
 # @teqfw/web: releases
 
-# 0.6.1
+# x.x.x
 
 * SW cache cleaning.
+* IDB store for front objects.
 
 # 0.6.0
 
