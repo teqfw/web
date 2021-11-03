@@ -1,7 +1,8 @@
 /**
- * Request processor for HTTP/1 server.
+ * Handler to process HTTP/1 'request' events.
+ * (@see https://nodejs.org/api/http.html#event-request)
  *
- * @namespace TeqFw_Web_Back_Server_Request_Processor
+ * @namespace TeqFw_Web_Back_Server_Event_Request
  */
 // MODULE'S IMPORT
 import $fs from 'fs';
@@ -9,14 +10,14 @@ import {constants as H2} from 'http2';
 import {pipeline} from 'stream';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Request_Processor';
+const NS = 'TeqFw_Web_Back_Server_Event_Request';
 
 // MODULE'S FUNCTIONS
 /**
  * Factory to setup execution context and to create the processor.
  *
  * @param {TeqFw_Di_Shared_SpecProxy} spec
- * @memberOf TeqFw_Web_Back_Server_Request_Processor
+ * @memberOf TeqFw_Web_Back_Server_Event_Request
  */
 export default function Factory(spec) {
     // EXTRACT DEPS
@@ -28,12 +29,14 @@ export default function Factory(spec) {
     const handlers = spec['TeqFw_Web_Back_Handler_Registry$'];
     /** @type {TeqFw_Web_Back_Api_Request_IContext.Factory} */
     const fContext = spec['TeqFw_Web_Back_Server_Request_Context#Factory$']; // use impl. for interface
+    /** @type {TeqFw_Web_Back_Server_Context_Factory.create|(function(): Promise<TeqFw_Web_Back_Api_Request_IContext>)} */
+    const factory = spec['TeqFw_Web_Back_Server_Context_Factory$'];
 
     // DEFINE INNER FUNCTIONS
     /**
      * Process one HTTP/1 request and populate response.
      * @returns {Promise<void>}
-     * @memberOf TeqFw_Web_Back_Server_Request_Processor
+     * @memberOf TeqFw_Web_Back_Server_Event_Request
      */
     async function action(req, res) {
         // DEFINE INNER FUNCTIONS
@@ -154,6 +157,9 @@ export default function Factory(spec) {
         // Analyze input and define type of the request (api or static)
         if (hasValidMethod(req)) {
             try {
+
+                const contextNew = await factory({});
+
                 /** @type {TeqFw_Web_Back_Api_Request_IContext} */
                 const context = fContext.create();
                 context.setRequestContext({req, res});

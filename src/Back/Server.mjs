@@ -6,14 +6,53 @@
 // MODULE'S IMPORT
 import http from 'http';
 
+// MODULE'S FUNCTIONS
+/**
+ * Add handlers for server events.
+ * TODO: remove it before deploy
+ * @param {http.Server} server
+ */
+function traceEvents(server) {
+    // DEFINE INNER FUNCTIONS
+
+    // MAIN FUNCTIONALITY
+
+    // handlers to include in the code
+    // server.on('connection', evtConnection);
+    // handlers to trace server side events
+    server.on('checkContinue', () => console.log('checkContinue'));
+    server.on('checkExpectation', () => console.log('checkExpectation'));
+    server.on('clientError', () => console.log('clientError'));
+    server.on('close', () => console.log('close'));
+    server.on('connect', () => console.log('connect'));
+    // server.on('connection', () => console.log('connection'));
+    server.on('removeListener', () => console.log('removeListener'));
+    // useless events
+    // server.on('listening', () => console.log('listening'));
+    // server.on('newListener', () => console.log('newListener'));
+}
+
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Server {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {Function|TeqFw_Web_Back_Server_Request_Processor.action} */
-        const process = spec['TeqFw_Web_Back_Server_Request_Processor$'];
         /** @type {TeqFw_Web_Back_Handler_Registry} */
         const registry = spec['TeqFw_Web_Back_Handler_Registry$'];
+        /**
+         * Handler for HTTP/1 'connection' events.
+         * @type {TeqFw_Web_Back_Server_Event_Connection.handle|function}
+         */
+        const evtConnection = spec['TeqFw_Web_Back_Server_Event_Connection$'];
+        /**
+         * Handler for HTTP/1 'error' events.
+         * @type {TeqFw_Web_Back_Server_Event_Error.handle|function}
+         */
+        const evtError = spec['TeqFw_Web_Back_Server_Event_Error$'];
+        /**
+         * Handler for HTTP/1 'request' events.
+         * @type {Function|TeqFw_Web_Back_Server_Event_Request.action}
+         */
+        const evtRequest = spec['TeqFw_Web_Back_Server_Event_Request$'];
 
         // PARSE INPUT & DEFINE WORKING VARS
         /** @type {http.Server} */
@@ -21,21 +60,13 @@ export default class TeqFw_Web_Back_Server {
 
         // DEFINE THIS INSTANCE METHODS
         this.init = async function () {
-            // DEFINE INNER FUNCTIONS
-            /**
-             * Unhandled server error ('server is down').
-             *
-             * @param err
-             */
-            function onErrorHndl(err) {
-                console.log('Server error: ' + err);
-                // debugger;
-            }
-
-            // MAIN FUNCTIONALITY
-            await registry.init(); // create all handlers (static, api, etc.)
-            server.on('error', onErrorHndl);
-            server.on('request', process);
+            // create all processors (static, api, etc.)
+            await registry.init();
+            // add event handlers to the server
+            server.on('error', evtError);
+            server.on('connection', evtConnection);
+            server.on('request', evtRequest);
+            //traceEvents(server);
         }
 
         /**

@@ -37,6 +37,8 @@ export default class TeqFw_Web_Back_Server_Request_Context {
     responseFilePath;
     /** @type {Object<string, string>} */
     responseHeaders;
+    /** @type {ServerHttp2Stream} */
+    stream;
 
     // DEFINE PROTO METHODS
     /**
@@ -81,6 +83,10 @@ export default class TeqFw_Web_Back_Server_Request_Context {
      */
     getResponseHeaders() {
         return this.responseHeaders;
+    }
+
+    getStream() {
+        return this.http1Response;
     }
 
     isRequestComplete() {

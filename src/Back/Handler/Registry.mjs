@@ -54,7 +54,8 @@ export default class TeqFw_Web_Back_Handler_Registry {
                         const factory = await container.get(`${depId}$`);
                         // ...then create handler itself
                         const entry = new Entry();
-                        entry.handler = await factory.create();
+                        const handler = (typeof factory.create === 'function') ? await factory.create() : factory;
+                        entry.handler = handler;
                         entry.weight = castInt(one.weight) || 0;
                         entries.push(entry);
                     }
