@@ -4,7 +4,7 @@
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Front_Store';
 const IDB_VERSION = 1;
-const ENTITY = 'hash';
+const ENTITY = 'singleton';
 
 export default class TeqFw_Web_Front_Store {
     constructor(spec) {
