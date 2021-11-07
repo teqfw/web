@@ -5,6 +5,7 @@ const NS = 'TeqFw_Web_Front_Store_Connect';
 
 /**
  * Connector to IndexedDb to use with async/await in TeqFW apps.
+ * @deprecated use TeqFw_Web_Front_Store_IDB
  */
 export default class TeqFw_Web_Front_Store_Connect {
     constructor() {
