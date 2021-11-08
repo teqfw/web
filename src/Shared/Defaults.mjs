@@ -11,6 +11,7 @@ export default class TeqFw_Web_Shared_Defaults {
     // URL prefix for API requests: https://.../door/space/...
     SPACE_API = 'api';
     SPACE_SRC = 'src';
+    SPACE_SSE = 'sse';
     SPACE_WEB = 'web';
 
     WEB_LOAD_CONFIG = '/load/config';
