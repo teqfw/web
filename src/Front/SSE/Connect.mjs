@@ -13,6 +13,8 @@ export default class TeqFw_Web_Front_SSE_Connect {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
+        /** @type {TeqFw_Core_Shared_Util.isObject|function} */
+        const isObject = spec['TeqFw_Core_Shared_Util.isObject'];
         /** @type {TeqFw_Web_Front_Api_SSE_IState} */
         const state = spec['TeqFw_Web_Front_Api_SSE_IState$'];
 
@@ -29,10 +31,16 @@ export default class TeqFw_Web_Front_SSE_Connect {
             }
         }
 
-        this.open = async function (url, hndlMessage) {
+        /**
+         * Open SSE connection and set handlers for input data.
+         * @param {string} url
+         * @param {Object<string,function>|function}handlers
+         * @return {Promise<void>}
+         */
+        this.open = async function (url, handlers) {
             if ((_source === undefined) || (_source.readyState === SSE_STATE.CLOSED)) {
                 const me = this;
-                const promise = new Promise((resolve) => {
+                await new Promise((resolve) => {
                     _source = new EventSource(url);
                     _source.addEventListener('open', function () {
                         resolve();
@@ -41,21 +49,19 @@ export default class TeqFw_Web_Front_SSE_Connect {
                         state.error(e);
                         me.close();
                     });
-                    _source.addEventListener('message', function (e) {
-                        // put input message into the band
-                        // console.dir(e.data);
-                        const text = e.data;
-                        console.log(`SSE data is coming. State: ${_source.readyState}. Data: ${text}`);
-                        try {
-                            const json = JSON.parse(text);
-                            hndlMessage(json);
-                        } catch (e) {
-                            console.log(text);
+                    if (typeof handlers === 'function') {
+                        _source.addEventListener('message', handlers);
+                    } else if (isObject(handlers)) {
+                        for (const key of Object.keys(handlers)) {
+                            if (
+                                (typeof key === 'string') &&
+                                (typeof handlers[key] === 'function')
+                            )
+                                _source.addEventListener(key, handlers[key]);
                         }
+                    }
 
-                    });
                 });
-                await promise;
                 state.connected();
             }
         }
