@@ -77,6 +77,21 @@ class Store {
         const db = $db;
         const name = $name;
 
+        this.deleteByKey = function (key) {
+            return new Promise(function (resolve, reject) {
+                const trn = db.transaction(name, 'readwrite');
+                const store = trn.objectStore(name);
+                const req = store.delete(key);
+                req.onerror = function () {
+                    console.log('IDB Store error:' + req.error);
+                    reject(req.error);
+                }
+                req.onsuccess = function () {
+                    resolve(req.result);
+                }
+            });
+        }
+
         this.getByKey = function (key) {
             return new Promise(function (resolve, reject) {
                 const trn = db.transaction(name);

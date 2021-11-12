@@ -42,15 +42,14 @@ export default class TeqFw_Web_Front_Store {
         // DEFINE INSTANCE METHODS
 
         /**
-         * Put some object to the store with key.
+         * Delete some object from the store by key.
          * @param {string} key
-         * @param {Object} value
-         * @return {Promise<void>}
+         * @return {Promise<Object>}
          */
-        this.set = async function (key, value) {
+        this.delete = async function (key) {
             await init();
             const store = conn.store(ENTITY);
-            await store.put(value, key); // IDB can store objects with key inside, so "value, key"
+            return await store.deleteByKey(key);
         }
 
         /**
@@ -62,6 +61,18 @@ export default class TeqFw_Web_Front_Store {
             await init();
             const store = conn.store(ENTITY);
             return await store.getByKey(key);
+        }
+
+        /**
+         * Put some object to the store with key.
+         * @param {string} key
+         * @param {Object} value
+         * @return {Promise<void>}
+         */
+        this.set = async function (key, value) {
+            await init();
+            const store = conn.store(ENTITY);
+            await store.put(value, key); // IDB can store objects with key inside, so "value, key"
         }
     }
 
