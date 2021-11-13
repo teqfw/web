@@ -55,7 +55,7 @@ export default class TeqFw_Web_Front_Store {
         /**
          * Get some object from the store by key.
          * @param {string} key
-         * @return {Promise<Object>}
+         * @return {Promise<*>}
          */
         this.get = async function (key) {
             await init();
