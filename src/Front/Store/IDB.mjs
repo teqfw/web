@@ -1,10 +1,6 @@
 /**
  * Wrapper to IDBDatabase to use in TeqFW.
  */
-// MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Store_IDB';
-
-
 export default class TeqFw_Web_Front_Store_IDB {
     constructor(spec) {
 
@@ -22,25 +18,11 @@ export default class TeqFw_Web_Front_Store_IDB {
 
 
         // DEFINE INSTANCE METHODS
-        this.delete = function (dbName) {
-            return new Promise(function (resolve, reject) {
-                if (db) db.close();
-                const req = indexedDB.deleteDatabase(dbName);
-                req.onblocked = function () {
-                    console.log('IDB delete error:' + req);
-                    reject(req);
-                }
-                req.onerror = function () {
-                    console.log('IDB delete error:' + req.error);
-                    reject(req.error);
-                };
-                req.onsuccess = function () {
-                    resolve();
-                };
-            });
-        }
 
-
+        /**
+         * Drop current database.
+         * @return {Promise<void>}
+         */
         this.dropDb = async () => {
             if (_db) _db.close();
             const promise = new Promise(function (resolve, reject) {
@@ -69,7 +51,7 @@ export default class TeqFw_Web_Front_Store_IDB {
                 return new Promise(function (resolve, reject) {
                     /** @type {IDBOpenDBRequest} */
                     const req = indexedDB.open(name, version);
-                    req.onupgradeneeded = (e) => {
+                    req.onupgradeneeded = (event) => {
                         fnUpgrade(req.result);
                     };
                     req.onsuccess = () => {
@@ -115,6 +97,7 @@ export default class TeqFw_Web_Front_Store_IDB {
         }
 
         /**
+         * TODO: should be a CRUD notation (create)
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {*} data
@@ -143,6 +126,28 @@ export default class TeqFw_Web_Front_Store_IDB {
                 if (data[one] === undefined) delete data[one];
             // create promise and perform operation
             const res = await createPromise(store, data);
+            return res;
+        }
+
+        /**
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @param {IDBValidKey} key JS primitive for simple PK or object/array for complex PK or unique key
+         * @return {*}
+         */
+        this.readOne = async function (trx, meta, key) {
+            // DEFINE INNER FUNCTIONS
+
+            // MAIN FUNCTIONALITY
+            const storeName = meta.getEntityName();
+            const store = trx.objectStore(storeName);
+            const promise = new Promise((resolve, reject) => {
+                const req = store.get(key);
+                req.onerror = () => reject(req.error);
+                req.onsuccess = () => resolve(req.result);
+            });
+            const data = await promise;
+            const res = data ? meta.createDto(data) : null;
             return res;
         }
     }
