@@ -139,15 +139,18 @@ export default class TeqFw_Web_Front_Store_IDB {
             // DEFINE INNER FUNCTIONS
 
             // MAIN FUNCTIONALITY
-            const storeName = meta.getEntityName();
-            const store = trx.objectStore(storeName);
-            const promise = new Promise((resolve, reject) => {
-                const req = store.get(key);
-                req.onerror = () => reject(req.error);
-                req.onsuccess = () => resolve(req.result);
-            });
-            const data = await promise;
-            const res = data ? meta.createDto(data) : null;
+            let res = null;
+            if (key) { // key must be valid object or primitive
+                const storeName = meta.getEntityName();
+                const store = trx.objectStore(storeName);
+                const promise = new Promise((resolve, reject) => {
+                    const req = store.get(key);
+                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => resolve(req.result);
+                });
+                const data = await promise;
+                if (data) res = meta.createDto(data);
+            }
             return res;
         }
     }
