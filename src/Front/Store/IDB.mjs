@@ -78,7 +78,7 @@ export default class TeqFw_Web_Front_Store_IDB {
         /**
          * @param {TeqFw_Web_Front_Api_Store_IEntity[], TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {boolean} readwrite
-         * @return {IDBTransaction}
+         * @return {Promise<IDBTransaction>}
          */
         this.startTransaction = async (meta, readwrite = true) => {
             if (_db === undefined) await this.open();
@@ -150,6 +150,26 @@ export default class TeqFw_Web_Front_Store_IDB {
                 });
                 const data = await promise;
                 if (data) res = meta.createDto(data);
+            }
+            return res;
+        }
+
+        this.readSet = async function (trx, meta, indexName, query = null, count = null) {
+            const res = [];
+            const storeName = meta.getEntityName();
+            const store = trx.objectStore(storeName);
+            const index = store.index(indexName);
+            const promise = new Promise((resolve, reject) => {
+                const req = index.getAll(query, count);
+                req.onerror = () => reject(req.error);
+                req.onsuccess = () => resolve(req.result);
+            });
+            const data = await promise;
+            if (Array.isArray(data)) {
+                for (const one of data) {
+                    const dto = meta.createDto(one);
+                    res.push(dto);
+                }
             }
             return res;
         }
