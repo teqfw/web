@@ -31,6 +31,9 @@ export default class TeqFw_Web_Front_SSE_Connect {
                 _source.close();
                 state.closed();
                 logger.info(`SSE connection is closed.`);
+            } else {
+                logger.info(`Cannot close SSE connection. SSE state: ${_source.readyState}.`);
+                console.log(`Cannot close SSE connection. SSE state: ${_source.readyState}.`);
             }
         }
 
