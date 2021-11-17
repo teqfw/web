@@ -154,13 +154,13 @@ export default class TeqFw_Web_Front_Store_IDB {
             return res;
         }
 
-        this.readSet = async function (trx, meta, indexName, query = null, count = null) {
+        this.readSet = async function (trx, meta, indexName = null, query = null, count = null) {
             const res = [];
             const storeName = meta.getEntityName();
             const store = trx.objectStore(storeName);
-            const index = store.index(indexName);
             const promise = new Promise((resolve, reject) => {
-                const req = index.getAll(query, count);
+                const source = (indexName) ? store.index(indexName) : store;
+                const req = source.getAll(query, count);
                 req.onerror = () => reject(req.error);
                 req.onsuccess = () => resolve(req.result);
             });
