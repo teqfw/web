@@ -17,8 +17,6 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Di_Shared_Api_Enum_Area} */
-        const AREA = spec['TeqFw_Di_Shared_Api_Enum_Area#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Factory} */
@@ -82,8 +80,13 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
                     if (Array.isArray(Object.keys(desc?.replace)))
                         for (const orig of Object.keys(desc.replace)) {
                             const one = desc.replace[orig];
-                            if ((one.area === AREA.FRONT) || (one.area === AREA.SHARED))
-                                mapReplace[orig] = one.ns;
+                            if (typeof one === 'string') {
+                                mapReplace[orig] = one;
+                            } else if (typeof one === 'object') {
+                                if (typeof one[DEF.AREA] === 'string') {
+                                    mapReplace[orig] = one[DEF.AREA];
+                                }
+                            }
                         }
                 }
             }

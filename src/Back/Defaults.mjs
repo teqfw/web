@@ -3,6 +3,7 @@
  */
 export default class TeqFw_Web_Back_Defaults {
 
+    AREA = 'front'; // DI area for frontend
     CLI_PREFIX = 'web'; // prefix in CLI commands
 
     DATA_FILE_PID = './var/http1.pid'; // PID file to stop running server.
