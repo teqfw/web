@@ -3,10 +3,10 @@
  * that is related to 'web' node:
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc';
+const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
+export default class TeqFw_Web_Back_Dto_Plugin_Desc {
     /**
      * Application frontend entrance points ('pub', 'admin', 'sign', ...).
      * This property is used in application level descriptors only.
@@ -14,7 +14,7 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
      * @type {string[]}
      */
     doors;
-    /** @type {Object<string, TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler>} */
+    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler>} */
     handlers;
     /** @type {string[]} */
     services;
@@ -23,24 +23,24 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc {
 }
 
 // attributes names to use as aliases in queries to object props
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.DOORS = 'doors';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.HANDLERS = 'handlers';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.SERVICES = 'services';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc.STATICS = 'statics';
+TeqFw_Web_Back_Dto_Plugin_Desc.DOORS = 'doors';
+TeqFw_Web_Back_Dto_Plugin_Desc.HANDLERS = 'handlers';
+TeqFw_Web_Back_Dto_Plugin_Desc.SERVICES = 'services';
+TeqFw_Web_Back_Dto_Plugin_Desc.STATICS = 'statics';
 
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc
+ * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
  */
 export class Factory {
     constructor(spec) {
         const {castArray} = spec['TeqFw_Core_Shared_Util_Cast'];
-        /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.Factory} */
-        const fHandler = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler#Factory$'];
+        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory} */
+        const fHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler#Factory$'];
 
         /**
-         * @param {TeqFw_Web_Back_Api_Dto_Plugin_Desc|null} data
-         * @return {TeqFw_Web_Back_Api_Dto_Plugin_Desc}
+         * @param {TeqFw_Web_Back_Dto_Plugin_Desc|null} data
+         * @return {TeqFw_Web_Back_Dto_Plugin_Desc}
          */
         this.create = function (data = null) {
             // DEFINE INNER FUNCTIONS
@@ -53,7 +53,7 @@ export class Factory {
             }
 
             // MAIN FUNCTIONALITY
-            const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc();
+            const res = new TeqFw_Web_Back_Dto_Plugin_Desc();
             res.doors = castArray(data?.doors);
             res.handlers = parseHandlers(data?.handlers);
             res.services = castArray(data?.services);
@@ -64,5 +64,5 @@ export class Factory {
 }
 
 // freeze DTO class to deny attributes changes and pin namespace
-Object.freeze(TeqFw_Web_Back_Api_Dto_Plugin_Desc);
+Object.freeze(TeqFw_Web_Back_Dto_Plugin_Desc);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

@@ -1,17 +1,17 @@
 /**
- * Model to parse web addresses according to TeqFw_Web_Back_Api_Dto_Address structure.
+ * Model to parse web addresses according to TeqFw_Web_Back_Dto_Address structure.
  */
 export default class TeqFw_Web_Back_Model_Address {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Web_Back_Api_Dto_Plugin_Desc} */
-        const Desc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#'];
+        /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc} */
+        const Desc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Api_Dto_Address.Factory} */
-        const fAddr = spec['TeqFw_Web_Back_Api_Dto_Address#Factory$'];
+        /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
+        const fAddr = spec['TeqFw_Web_Back_Dto_Address#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {String[]} doors used in the app */
@@ -26,7 +26,7 @@ export default class TeqFw_Web_Back_Model_Address {
          * Parser to decompose URL path to the parts.
          *
          * @param {String} path (/root/door/space/route)
-         * @returns {TeqFw_Web_Back_Api_Dto_Address}
+         * @returns {TeqFw_Web_Back_Dto_Address}
          */
         this.parsePath = function (path) {
             const result = fAddr.create();
@@ -75,7 +75,7 @@ export default class TeqFw_Web_Back_Model_Address {
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
-            /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler[]} */
+            /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler[]} */
             const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.HANDLERS];
             if (typeof handlers === 'object')
                 for (const key of Object.keys(handlers)) {

@@ -29,8 +29,8 @@ export default class Factory {
         const regPlugin = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Api_Dto_Plugin_Desc.Factory} */
-        const fDesc = spec['TeqFw_Web_Back_Api_Dto_Plugin_Desc#Factory$'];
+        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
+        const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#Factory$'];
         /** @type {typeof TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
         const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Api_Service_Context.Factory} */

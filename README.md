@@ -33,7 +33,7 @@ Commands:
 
 ## `./cfg/local.json`
 
-[DTO](src/Back/Api/Dto/Config/Local.mjs) for `/web/` node.
+[DTO](src/Back/Dto/Config/Local.mjs) for `/web/` node.
 
 ```json
 {
@@ -46,7 +46,7 @@ Commands:
 
 ## `teqfw.json`
 
-[DTO](./src/Back/Api/Dto/Plugin/Desc.mjs) for `/web/` node.
+[DTO](src/Back/Dto/Plugin/Desc.mjs) for `/web/` node.
 
 ```json
 {

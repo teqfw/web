@@ -57,7 +57,7 @@ export default function Factory(spec) {
             // port from command option
             const portOpt = opts[OPT_PORT];
             // port from local configuration
-            /** @type {TeqFw_Web_Back_Api_Dto_Config_Local} */
+            /** @type {TeqFw_Web_Back_Dto_Config_Local} */
             const cfgLocal = config.getLocal(DEF.SHARED.NAME);
             const portCfg = cfgLocal?.server?.port;
             // use port: command opt / local cfg / default

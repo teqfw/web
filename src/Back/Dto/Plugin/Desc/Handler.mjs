@@ -3,10 +3,10 @@
  * that is related to 'web/handlers' node:
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler';
+const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc_Handler';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
+export default class TeqFw_Web_Back_Dto_Plugin_Desc_Handler {
     /**
      * List of handlers (namespaces only) followed by this handler:
      *   - ["Vendor1_Module1_Plugin_Http2_Handler", "Vendor2_Module2_Plugin_Http2_Handler"]
@@ -36,7 +36,7 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
     factoryId;
     /**
      * Names of the spaces in URLs that processed by this handler.
-     * (@see TeqFw_Web_Back_Api_Dto_Address)
+     * (@see TeqFw_Web_Back_Dto_Address)
      *
      * @type {string[]}
      */
@@ -53,24 +53,24 @@ export default class TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler {
 }
 
 // attributes names to use as aliases in queries to object props
-TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.AFTER = 'after';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.BEFORE = 'before';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
-TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.AFTER = 'after';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.BEFORE = 'before';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.WEIGHT = 'weight';
 
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler
+ * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc_Handler
  */
 export class Factory {
     constructor(spec) {
         const {castArray, castInt} = spec['TeqFw_Core_Shared_Util_Cast'];
         /**
-         * @param {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler|null} data
-         * @return {TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler}
+         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler|null} data
+         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler();
+            const res = new TeqFw_Web_Back_Dto_Plugin_Desc_Handler();
             res.after = castArray(data?.after);
             res.before = castArray(data?.before);
             res.spaces = castArray(data?.spaces);
@@ -81,5 +81,5 @@ export class Factory {
 }
 
 // finalize code components for this es6-module
-Object.freeze(TeqFw_Web_Back_Api_Dto_Plugin_Desc_Handler);
+Object.freeze(TeqFw_Web_Back_Dto_Plugin_Desc_Handler);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
