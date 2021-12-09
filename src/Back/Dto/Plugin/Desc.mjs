@@ -36,7 +36,7 @@ export class Factory {
     constructor(spec) {
         const {castArray} = spec['TeqFw_Core_Shared_Util_Cast'];
         /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory} */
-        const fHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler#Factory$'];
+        const fHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory$'];
 
         /**
          * @param {TeqFw_Web_Back_Dto_Plugin_Desc|null} data
