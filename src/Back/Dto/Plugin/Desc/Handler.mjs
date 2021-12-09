@@ -32,8 +32,8 @@ export class Factory {
         const fEvent = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event.Factory$'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler|null} data
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler}
+         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event|null} data
+         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event}
          */
         this.create = function (data = null) {
             // DEFINE INNER FUNCTIONS

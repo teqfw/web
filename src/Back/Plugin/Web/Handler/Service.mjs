@@ -177,6 +177,12 @@ export default class Factory {
             Object.defineProperty(handle, 'name', {value: `${NS}.${handle.name}`});
             return handle;
         }
+
+        this.getListener = function (event) {
+            return function serviceRequestListener() {
+                console.log(`Service is here...`);
+            }
+        }
     }
 }
 

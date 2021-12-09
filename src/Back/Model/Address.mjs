@@ -59,6 +59,7 @@ export default class TeqFw_Web_Back_Model_Address {
         /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
         const items = registry.items();
         for (const item of items) {
+            // TODO: we should have ROOT config in 'local.json', not in 'teqfw.json' (Desc.ROOT always is null for now)
             // one only 'web/root' is allowed in application
             const iRoot = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.ROOT];
             if (iRoot) {
