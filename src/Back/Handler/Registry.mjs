@@ -1,10 +1,12 @@
 /**
  * Registry to create and store web server handlers.
  * @namespace TeqFw_Web_Back_Handler_Registry
+ * @deprecated use TeqFw_Web_Back_Scan_Handler_Registry
  */
 
 /**
  * @memberOf TeqFw_Web_Back_Handler_Registry
+ * @deprecated use TeqFw_Web_Back_Scan_Handler_Registry
  */
 class Entry {
     /** @type {TeqFw_Web_Back_Api_Request_IHandler.handle} */
@@ -13,6 +15,9 @@ class Entry {
     weight;
 }
 
+/**
+ * @deprecated use TeqFw_Web_Back_Scan_Handler_Registry
+ */
 export default class TeqFw_Web_Back_Handler_Registry {
     constructor(spec) {
         // EXTRACT DEPS

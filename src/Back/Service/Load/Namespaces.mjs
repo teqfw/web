@@ -36,7 +36,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
 
         /**
          * Loop through all plugins and compose namespace-to-source mapping for DI container on the front.
-         * (@see TeqFw_Web_Back_Plugin_Web_Handler_Static)
+         * (@see TeqFw_Web_Back_Handler_Static)
          *
          * @param {TeqFw_Core_Back_Scan_Plugin_Registry} registry
          * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]}

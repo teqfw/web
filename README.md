@@ -55,7 +55,7 @@ Commands:
     "handlers": [
       {
         "factoryId": "Vnd_Prj_Plugin_Web_Handler_Name",
-        "before": "TeqFw_Web_Back_Plugin_Web_Handler_Static",
+        "before": "TeqFw_Web_Back_Handler_Static",
         "spaces": ["custom"],
         "weight": 1000
       }
