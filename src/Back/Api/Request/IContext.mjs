@@ -1,6 +1,7 @@
 /**
  * Interface for request context used in 'TeqFw_Web_Back_Server_Event_Request'.
  * @interface
+ * @deprecated we can use 'req' & 'res' objects as context ('req' contains 'res').
  */
 export default class TeqFw_Web_Back_Api_Request_IContext {
     /**

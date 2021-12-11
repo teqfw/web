@@ -18,39 +18,20 @@
   },
   "@teqfw/web": {
     "handlers": {
-      "TeqFw_Web_Back_Plugin_Web_Handler_Service": {
-        "events": {
-          "request": {
-            "before": ["TeqFw_Web_Back_Handler_Static"]
-          }
-        },
-        "before": "TeqFw_Web_Back_Handler_Static",
-        "spaces": ["api"],
-        "weight": 100
+      "TeqFw_Web_Back_Handler_WAPI": {
+        "before": ["TeqFw_Web_Back_Handler_Static"],
+        "spaces": ["api"]
       },
       "TeqFw_Web_Back_Handler_Static": {
-        "events": {
-          "request": {
-            "before": ["TeqFw_Web_Back_Handler_Final"]
-          }
-        },
-        "spaces": ["src", "web"],
-        "weight": 10
+        "before": ["TeqFw_Web_Back_Handler_Final"],
+        "spaces": ["src", "web"]
       },
       "TeqFw_Web_Back_Handler_Upload": {
-        "events": {
-          "request": {
-            "after": ["TeqFw_Web_Back_Plugin_Web_Handler_Service"],
-            "before": ["TeqFw_Web_Back_Handler_Static"]
-          }
-        }
+        "after": ["TeqFw_Web_Back_Handler_WAPI"],
+        "before": ["TeqFw_Web_Back_Handler_Static"],
+        "spaces": ["upload"]
       },
-      "TeqFw_Web_Back_Handler_Final": {
-        "events": {
-          "error": {},
-          "request": {}
-        }
-      }
+      "TeqFw_Web_Back_Handler_Final": {}
     },
     "services": [
       "TeqFw_Web_Back_Service_Load_Config",

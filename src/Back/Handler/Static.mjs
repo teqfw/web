@@ -21,7 +21,7 @@ const {
 
 // MODULE'S CLASSES
 /**
- * @implements TeqFw_Web_Back_Api_IHandler
+ * @implements TeqFw_Web_Back_Api_Request_INewHandler
  */
 export default class TeqFw_Web_Back_Handler_Static {
     constructor(spec) {
@@ -50,7 +50,7 @@ export default class TeqFw_Web_Back_Handler_Static {
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
-        function onRequest(req, res) {
+        function process(req, res) {
             // DEFINE INNER FUNCTIONS
             /**
              * Compose absolute path to requested resource:
@@ -138,6 +138,7 @@ export default class TeqFw_Web_Back_Handler_Static {
                         if (mimeType) {
                             // return file content
                             const readStream = createReadStream(path);
+                            // TODO: add content length header
                             res.writeHead(HTTP_STATUS_OK, {
                                 [HTTP2_HEADER_CONTENT_TYPE]: mimeType
                             });
@@ -189,14 +190,18 @@ export default class TeqFw_Web_Back_Handler_Static {
         }
 
         // DEFINE INSTANCE METHODS
-        this.createListeners = async function () {
+        this.getProcessor = () => process;
+
+        this.init = async function () {
             mapStatics();
-            _listeners['request'] = onRequest;
+            _listeners['request'] = process;
         }
 
-        this.getListener = (event) => _listeners[event];
+        this.requestIsMine = function ({method, address, headers} = {}) {
+            return (method === HTTP2_METHOD_GET);
+        }
 
         // MAIN FUNCTIONALITY
-        Object.defineProperty(onRequest, 'name', {value: `${NS}.${onRequest.name}`});
+        Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
     }
 }

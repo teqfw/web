@@ -2,6 +2,7 @@
  * HTTP/1 server to process web requests.
  *
  * @namespace TeqFw_Web_Back_Server
+ * @deprecated use united HTTP/1 & HTTP/2 approach
  */
 // MODULE'S IMPORT
 import http from 'http';

@@ -12,6 +12,7 @@ export default class TeqFw_Web_Shared_Defaults {
     SPACE_API = 'api';
     SPACE_SRC = 'src';
     SPACE_SSE = 'sse';
+    SPACE_UPLOAD = 'upload';
     SPACE_WEB = 'web';
 
     WEB_LOAD_CONFIG = '/load/config';

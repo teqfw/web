@@ -6,8 +6,22 @@ const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc_Handler';
 
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Dto_Plugin_Desc_Handler {
-    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event>} */
-    events;
+    /**
+     * List of handlers (namespaces only) followed by this handler's listener:
+     *   - [HandlerA, HandlerB]
+     *   - ThisHandler
+     *
+     * @type {string[]}
+     */
+    after;
+    /**
+     * List of handlers (namespaces only) that follow this handler's listener:
+     *   - ThisHandler
+     *   - [HandlerY, HandlerZ]
+     *
+     * @type {string[]}
+     */
+    before;
     /**
      * Names of the spaces in URLs that processed by this handler.
      * (@see TeqFw_Web_Back_Dto_Address)
@@ -18,7 +32,8 @@ export default class TeqFw_Web_Back_Dto_Plugin_Desc_Handler {
 }
 
 // attributes names to use as aliases in queries to object props
-TeqFw_Web_Back_Dto_Plugin_Desc_Handler.EVENTS = 'events';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.AFTER = 'after';
+TeqFw_Web_Back_Dto_Plugin_Desc_Handler.BEFORE = 'before';
 TeqFw_Web_Back_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
 
 /**
@@ -28,26 +43,15 @@ TeqFw_Web_Back_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
 export class Factory {
     constructor(spec) {
         const {castArrayOfStr} = spec['TeqFw_Core_Shared_Util_Cast'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event.Factory} */
-        const fEvent = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event.Factory$'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event|null} data
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler_Event}
+         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler|null} data
+         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler}
          */
         this.create = function (data = null) {
-            // DEFINE INNER FUNCTIONS
-            function parseEvents(data) {
-                const res = {};
-                if (typeof data === 'object')
-                    for (const key of Object.keys(data))
-                        res[key] = fEvent.create(data[key]);
-                return res;
-            }
-
-            // MAIN FUNCTIONALITY
             const res = new TeqFw_Web_Back_Dto_Plugin_Desc_Handler();
-            res.events = parseEvents(data?.events);
+            res.after = castArrayOfStr(data?.after);
+            res.before = castArrayOfStr(data?.before);
             res.spaces = castArrayOfStr(data?.spaces);
             return res;
         }

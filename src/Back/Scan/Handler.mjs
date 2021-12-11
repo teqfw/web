@@ -22,19 +22,26 @@ export default function (spec) {
     const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc.Factory$'];
     /** @type {TeqFw_Web_Back_Scan_Handler_Listener} */
     const metaListener = spec['TeqFw_Web_Back_Scan_Handler_Listener$'];
-
-    // DEFINE WORKING VARS / PROPS
+    /** @type {TeqFw_Core_Shared_Util_BeforeAfter} */
+    const utilSort = spec['TeqFw_Core_Shared_Util_BeforeAfter$$'];
+    /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
+    const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
 
     // DEFINE INNER FUNCTIONS
     /**
-     * @param {string} title
-     * @param {string} body
-     * @return {Promise<{msgId, code}>}
+     * @return {Promise<*>}
      * @memberOf TeqFw_Web_Back_Scan_Handler
      */
-    async function act({title, body}) {
+    async function act() {
         // DEFINE INNER FUNCTIONS
-        async function createHandlers() {
+
+        /**
+         * Create handlers and populate sort util with before-after data.
+         * @param utilSort
+         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Request_INewHandler>>}
+         */
+        async function createHandlers(utilSort) {
+            const res = {};
             const plugins = regPlugins.items();
             for (const plugin of plugins) {
                 /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
@@ -43,26 +50,28 @@ export default function (spec) {
                     logger.info(`Create Web handler: ${hName}`);
                     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
                     const dto = desc.handlers[hName];
-                    /** @type {TeqFw_Web_Back_Api_IHandler} */
+                    /** @type {TeqFw_Web_Back_Api_Request_INewHandler} */
                     const handler = await container.get(`${hName}$`);
-                    if (typeof handler.createListeners === 'function') await handler.createListeners();
-                    // for all available events
-                    for (const eName of Object.keys(dto.events)) {
-                        const event = dto.events[eName];
-                        // noinspection JSCheckFunctionSignatures
-                        const listener = metaListener.createDto(event);
-                        listener.event = eName.toLowerCase();
-                        listener.ns = hName;
-                        listener.listener = handler.getListener(eName);
-                        regHandlers.add(listener);
-                    }
+                    if (typeof handler.init === 'function') await handler.init();
+                    res[hName] = handler;
+                    const orderDto = new DtoSort();
+                    orderDto.id = hName;
+                    orderDto.after = dto.after;
+                    orderDto.before = dto.before;
+                    utilSort.addItem(orderDto);
                 }
             }
+            return res;
         }
 
         // MAIN FUNCTIONALITY
-        await createHandlers();
-        regHandlers.order();
+        utilSort.reset();
+        const handlers = await createHandlers(utilSort);
+        const ordered = utilSort.getOrdered();
+        const res = [];
+        for (const ns of ordered)
+            res.push(handlers[ns]);
+        return res;
     }
 
     // MAIN FUNCTIONALITY

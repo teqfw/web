@@ -3,6 +3,7 @@
  * (@see https://nodejs.org/api/http.html#event-request)
  *
  * @namespace TeqFw_Web_Back_Server_Event_Request
+ * @deprecated use united HTTP/1 & HTTP/2 approach
  */
 // MODULE'S IMPORT
 import $fs from 'fs';

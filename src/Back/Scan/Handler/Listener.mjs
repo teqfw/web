@@ -9,10 +9,9 @@ const NS = 'TeqFw_Web_Back_Scan_Handler_Listener';
  * @type {Object}
  */
 const ATTR = {
+    ACTION: 'action',
     AFTER: 'after',
     BEFORE: 'before',
-    EVENT: 'event',
-    LISTENER: 'listener',
     NS: 'ns',
 };
 
@@ -22,6 +21,11 @@ const ATTR = {
  */
 class Dto {
     static name = `${NS}.Dto`;
+    /**
+     * Function to process events.
+     * @type {function}
+     */
+    action;
     /**
      * List of handlers (namespaces only) followed by this handler's listener:
      *   - [HandlerA, HandlerB]
@@ -36,16 +40,6 @@ class Dto {
      * @type {string[]}
      */
     before;
-    /**
-     * Event name to listen.
-     * @type {string}
-     */
-    event;
-    /**
-     * Function to process events.
-     * @type {function}
-     */
-    listener;
     /**
      * Namespace for handler.
      * @type {string}
@@ -73,10 +67,10 @@ export default class TeqFw_Web_Back_Scan_Handler_Listener {
          */
         this.createDto = function (data = null) {
             const res = new Dto();
+            res.action = castFunction(data?.action);
             res.after = castArrayOfStr(data?.after);
             res.before = castArrayOfStr(data?.before);
-            res.event = castString(data?.event);
-            res.listener = castFunction(data?.listener);
+            res.ns = castString(data.ns);
             return res;
         }
 

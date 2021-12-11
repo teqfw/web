@@ -1,5 +1,5 @@
 /**
- * Interface for web server events handler.
+ * Interface for web server request handlers.
  * These handlers are used by `TeqFw_Web_Back_Scan_Handler.act`.
  *
  * @interface
