@@ -16,6 +16,11 @@ export default class TeqFw_Web_Back_Dto_Config_Local_Server {
      * @type {TeqFw_Web_Back_Dto_Config_Local_Server_Secure}
      */
     secure;
+    /**
+     * 'true' - use HTTP/1 server. Option is ignored if 'secure' node is set.
+     * @type {boolean}
+     */
+    useHttp1;
 }
 
 // noinspection JSCheckFunctionSignatures
@@ -25,7 +30,7 @@ export default class TeqFw_Web_Back_Dto_Config_Local_Server {
  */
 export class Factory {
     constructor(spec) {
-        const {castInt} = spec['TeqFw_Core_Shared_Util_Cast'];
+        const {castInt, castBoolean} = spec['TeqFw_Core_Shared_Util_Cast'];
         /** @type {TeqFw_Web_Back_Dto_Config_Local_Server_Secure.Factory} */
         const fSecure = spec['TeqFw_Web_Back_Dto_Config_Local_Server_Secure.Factory$'];
 
@@ -37,6 +42,7 @@ export class Factory {
             const res = new TeqFw_Web_Back_Dto_Config_Local_Server();
             res.port = castInt(data?.port);
             res.secure = fSecure.create(data?.secure);
+            res.useHttp1 = castBoolean(data?.useHttp1);
             return res;
         }
     }

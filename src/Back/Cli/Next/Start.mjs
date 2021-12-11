@@ -3,9 +3,6 @@
  * @namespace TeqFw_Web_Back_Cli_Next_Start
  */
 // MODULE'S IMPORT
-import {join} from 'path';
-import {existsSync, mkdirSync, writeFileSync} from 'fs';
-import {castBoolean} from "@teqfw/core/src/Shared/Util/Cast.mjs";
 
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Next_Start';
@@ -26,16 +23,14 @@ export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
-    const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
+    /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
+    const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
     /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
     const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
     /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
     const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
     /** @type {TeqFw_Di_Shared_Api_IProxy} */
     const proxyServer = spec['TeqFw_Web_Back_NextServer@'];
-    /** @type {TeqFw_Core_Back_Config} */
-    const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Shared_Logger} */
     const logger = spec['TeqFw_Core_Shared_Logger$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
@@ -59,7 +54,7 @@ export default function Factory(spec) {
             const cert = castString(opts[OPT_CERT]);
             const key = castString(opts[OPT_KEY]);
             const port = castInt(opts[OPT_PORT]);
-            const useHttp1 = castBoolean(opts[OPT_HTTP1]);
+            const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
             // create server from proxy then run it
             /** @type {TeqFw_Web_Back_NextServer} */
             const server = await proxyServer.create;
@@ -78,8 +73,8 @@ export default function Factory(spec) {
     res.action = action;
     // add option --http1
     const optHttp1 = fOpt.create();
-    optHttp1.flags = `-d, --${OPT_HTTP1}`;
-    optHttp1.description = `use (d)eprecated HTTP/1 server (default: HTTP/2)`;
+    optHttp1.flags = `-1, --${OPT_HTTP1}`;
+    optHttp1.description = `use HTTP/1 server (default: HTTP/2)`;
     res.opts.push(optHttp1);
     // add option --port
     const optPort = fOpt.create();
