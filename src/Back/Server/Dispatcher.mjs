@@ -23,8 +23,8 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Web_Back_Scan_Handler.act|function} */
-        const scan = spec['TeqFw_Web_Back_Scan_Handler$'];
+        /** @type {TeqFw_Web_Back_Server_Scan_Handler.act|function} */
+        const scan = spec['TeqFw_Web_Back_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
         /** @type {TeqFw_Web_Back_Server_Respond.respond405|function} */

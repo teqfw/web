@@ -1,6 +1,6 @@
 /**
  * Interface for web server request handlers.
- * These handlers are used by `TeqFw_Web_Back_Scan_Handler.act`.
+ * These handlers are used by `TeqFw_Web_Back_Server_Scan_Handler.act`.
  *
  * @interface
  */

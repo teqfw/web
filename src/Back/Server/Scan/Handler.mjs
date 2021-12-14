@@ -1,9 +1,9 @@
 /**
  * Action to scan for web requests handlers and to populate handlers registry.
- * @namespace TeqFw_Web_Back_Scan_Handler
+ * @namespace TeqFw_Web_Back_Server_Scan_Handler
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Scan_Handler';
+const NS = 'TeqFw_Web_Back_Server_Scan_Handler';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
@@ -16,12 +16,8 @@ export default function (spec) {
     const logger = spec['TeqFw_Core_Shared_Logger$'];
     /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
     const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Back_Scan_Handler_Registry} */
-    const regHandlers = spec['TeqFw_Web_Back_Scan_Handler_Registry$'];
     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
     const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc.Factory$'];
-    /** @type {TeqFw_Web_Back_Scan_Handler_Listener} */
-    const metaListener = spec['TeqFw_Web_Back_Scan_Handler_Listener$'];
     /** @type {TeqFw_Core_Shared_Util_BeforeAfter} */
     const utilSort = spec['TeqFw_Core_Shared_Util_BeforeAfter$$'];
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
@@ -30,7 +26,7 @@ export default function (spec) {
     // DEFINE INNER FUNCTIONS
     /**
      * @return {Promise<*>}
-     * @memberOf TeqFw_Web_Back_Scan_Handler
+     * @memberOf TeqFw_Web_Back_Server_Scan_Handler
      */
     async function act() {
         // DEFINE INNER FUNCTIONS

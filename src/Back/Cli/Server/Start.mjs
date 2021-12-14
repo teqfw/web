@@ -1,5 +1,5 @@
 /**
- * Start HTTP/1 server to process web requests.
+ * Start HTTP server to process web requests.
  * @namespace TeqFw_Web_Back_Cli_Server_Start
  */
 // MODULE'S IMPORT
@@ -8,6 +8,9 @@ import {existsSync, mkdirSync, writeFileSync} from 'fs';
 
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Start';
+const OPT_CERT = 'cert';
+const OPT_HTTP1 = 'http1';
+const OPT_KEY = 'key';
 const OPT_PORT = 'port';
 
 // DEFINE MODULE'S FUNCTIONS
@@ -22,12 +25,18 @@ export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Di_Shared_Container} */
-    const container = spec['TeqFw_Di_Shared_Container$'];
-    /** @type {TeqFw_Core_Back_Config} */
-    const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Shared_Logger} */
     const logger = spec['TeqFw_Core_Shared_Logger$'];
+    /** @type {TeqFw_Core_Back_Config} */
+    const config = spec['TeqFw_Core_Back_Config$'];
+    /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
+    const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
+    /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
+    const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
+    /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
+    const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
+    /** @type {TeqFw_Di_Shared_Api_IProxy} */
+    const proxyServer = spec['TeqFw_Web_Back_Server@'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
@@ -35,7 +44,7 @@ export default function Factory(spec) {
 
     // DEFINE INNER FUNCTIONS
     /**
-     * Start the HTTP/1 server.
+     * Parse command line options and start server in requested mode.
      *
      * @param {Object} opts command options
      * @returns {Promise<void>}
@@ -43,35 +52,24 @@ export default function Factory(spec) {
      */
     const action = async function (opts) {
         logger.pause(false);
-        logger.info('Starting HTTP/1 server.');
+        logger.info('Starting web server.');
         try {
-            /**
-             * TODO: We have not lazy loading for DI yet, so we need to use Container directly
-             * TODO: to prevent all deps loading.
-             */
-            /** @type {TeqFw_Web_Back_Server} */
-            const server = await container.get('TeqFw_Web_Back_Server$');
-            await server.init();
-
-            // collect startup configuration then compose path to PID file
-            // port from command option
-            const portOpt = opts[OPT_PORT];
-            // port from local configuration
-            /** @type {TeqFw_Web_Back_Dto_Config_Local} */
-            const cfgLocal = config.getLocal(DEF.SHARED.NAME);
-            const portCfg = cfgLocal?.server?.port;
-            // use port: command opt / local cfg / default
-            const port = portOpt || portCfg || DEF.DATA_SERVER_PORT;
+            // collect startup configuration from command option
+            const cert = castString(opts[OPT_CERT]);
+            const key = castString(opts[OPT_KEY]);
+            const port = castInt(opts[OPT_PORT]);
+            const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
+            // compose path to PID file and write PID to file
             const pid = process.pid.toString();
-
-            // write PID to file then start the server
             const pidPath = join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
             const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
             if (!existsSync(pidDir)) mkdirSync(pidDir);
             writeFileSync(pidPath, pid);
             // PID is wrote => start the server
-            await server.listen(port);
-            logger.info(`HTTP/1 server is listening on port ${port}. PID: ${pid}.`);
+            // create server from proxy then run it
+            /** @type {TeqFw_Web_Back_Server} */
+            const server = await proxyServer.create;
+            await server.run({port, useHttp1, cert, key});
         } catch (e) {
             console.error('%s', e);
         }
@@ -82,13 +80,28 @@ export default function Factory(spec) {
     const res = fCommand.create();
     res.realm = DEF.CLI_PREFIX;
     res.name = 'server-start';
-    res.desc = 'Start the HTTP/1 server.';
+    res.desc = 'Start web server (HTTP/1 or HTTP/2).';
     res.action = action;
+    // add option --http1
+    const optHttp1 = fOpt.create();
+    optHttp1.flags = `-1, --${OPT_HTTP1}`;
+    optHttp1.description = `use HTTP/1 server (default: HTTP/2)`;
+    res.opts.push(optHttp1);
     // add option --port
-    const optShort = fOpt.create();
-    optShort.flags = `-p, --${OPT_PORT} <port>`;
-    optShort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
-    res.opts.push(optShort);
+    const optPort = fOpt.create();
+    optPort.flags = `-p, --${OPT_PORT} <port>`;
+    optPort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
+    res.opts.push(optPort);
+    // add option --key
+    const optKey = fOpt.create();
+    optKey.flags = `-k, --${OPT_KEY} <path>`;
+    optKey.description = `private key in PEM format to secure HTTP/2 server.`;
+    res.opts.push(optKey);
+    // add option --cert
+    const optCert = fOpt.create();
+    optCert.flags = `-c, --${OPT_CERT} <path>`;
+    optCert.description = `certificates chain in PEM format to secure HTTP/2 server.`;
+    res.opts.push(optCert);
     return res;
 }
 

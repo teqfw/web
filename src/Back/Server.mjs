@@ -1,84 +1,94 @@
 /**
- * HTTP/1 server to process web requests.
+ * HTTP server to process web requests.
+ * Can start in HTTP/1, HTTP/2 & HTTPS modes.
  *
  * @namespace TeqFw_Web_Back_Server
- * @deprecated use united HTTP/1 & HTTP/2 approach
  */
 // MODULE'S IMPORT
-import http from 'http';
-
-// MODULE'S FUNCTIONS
-/**
- * Add handlers for server events.
- * TODO: remove it before deploy
- * @param {http.Server} server
- */
-function traceEvents(server) {
-    // DEFINE INNER FUNCTIONS
-
-    // MAIN FUNCTIONALITY
-
-    // handlers to include in the code
-    // server.on('connection', evtConnection);
-    // handlers to trace server side events
-    server.on('checkContinue', () => console.log('checkContinue'));
-    server.on('checkExpectation', () => console.log('checkExpectation'));
-    server.on('clientError', () => console.log('clientError'));
-    server.on('close', () => console.log('close'));
-    server.on('connect', () => console.log('connect'));
-    // server.on('connection', () => console.log('connection'));
-    server.on('removeListener', () => console.log('removeListener'));
-    // useless events
-    // server.on('listening', () => console.log('listening'));
-    // server.on('newListener', () => console.log('newListener'));
-}
+import {createServer as createHttp1Server} from 'http';
+import {createSecureServer, createServer} from 'http2';
+import {readFileSync} from 'fs';
 
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Server {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Back_Handler_Registry} */
-        const registry = spec['TeqFw_Web_Back_Handler_Registry$'];
-        /**
-         * Handler for HTTP/1 'connection' events.
-         * @type {TeqFw_Web_Back_Server_Event_Connection.handle|function}
-         */
-        const evtConnection = spec['TeqFw_Web_Back_Server_Event_Connection$'];
-        /**
-         * Handler for HTTP/1 'error' events.
-         * @type {TeqFw_Web_Back_Server_Event_Error.handle|function}
-         */
-        const evtError = spec['TeqFw_Web_Back_Server_Event_Error$'];
-        /**
-         * Handler for HTTP/1 'request' events.
-         * @type {Function|TeqFw_Web_Back_Server_Event_Request.action}
-         */
-        const evtRequest = spec['TeqFw_Web_Back_Server_Event_Request$'];
+        /** @type {TeqFw_Web_Back_Defaults} */
+        const DEF = spec['TeqFw_Web_Back_Defaults$'];
+        /** @type {TeqFw_Core_Shared_Logger} */
+        const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {TeqFw_Core_Back_Config} */
+        const config = spec['TeqFw_Core_Back_Config$'];
+        /** @type {TeqFw_Web_Back_Server_Dispatcher} */
+        const dispatcher = spec['TeqFw_Web_Back_Server_Dispatcher$'];
 
-        // PARSE INPUT & DEFINE WORKING VARS
-        /** @type {http.Server} */
-        const server = http.createServer();
+        // DEFINE WORKING VARS
+        let _serverType; // save type for logs (HTTP/1, HTTP/2, HTTPS)
 
         // DEFINE THIS INSTANCE METHODS
-        this.init = async function () {
-            // create all processors (static, api, etc.)
-            await registry.init();
-            // add event handlers to the server
-            server.on('error', evtError);
-            server.on('connection', evtConnection);
-            server.on('request', evtRequest);
-            //traceEvents(server);
+        this.run = async function ({port, useHttp1, key, cert} = {}) {
+            // DEFINE INNER FUNCTIONS
+
+            /**
+             * Extract server options from local config.
+             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number}}
+             */
+            function optionsFromConfig() {
+                /** @type {TeqFw_Web_Back_Dto_Config_Local} */
+                const cfgLocal = config.getLocal(DEF.SHARED.NAME);
+                const cfgPort = cfgLocal?.server?.port;
+                const cfgUseHttp1 = cfgLocal?.server?.useHttp1;
+                const cfgKey = cfgLocal?.server?.secure?.key;
+                const cfgCert = cfgLocal?.server?.secure?.cert;
+                return {cfgPort, cfgUseHttp1, cfgKey, cfgCert};
+            }
+
+            function initHttp1() {
+                _serverType = 'HTTP/1';
+                return createHttp1Server({});
+            }
+
+            function initHttp2() {
+                _serverType = 'HTTP/2';
+                return createServer({});
+            }
+
+            function initHttps(key, cert) {
+                _serverType = 'HTTPS';
+                return createSecureServer({
+                    key: readFileSync(key),
+                    cert: readFileSync(cert)
+                });
+            }
+
+            // MAIN FUNCTIONALITY
+            // get startup options from config
+            const {cfgPort, cfgUseHttp1, cfgKey, cfgCert} = optionsFromConfig();
+            port = port ?? (cfgPort) ?? DEF.DATA_SERVER_PORT;
+            useHttp1 = useHttp1 ?? cfgUseHttp1 ?? false;
+            key = key ?? cfgKey ?? null;
+            cert = cert ?? cfgCert ?? null;
+            if (useHttp1 && (key && cert))
+                logger.info(`Option 'useHttp1' is ignored because 'key' and 'cert' options are presented.`);
+
+            // create server
+            const server = useHttp1 ? initHttp1()
+                : (key && cert) ? initHttps(key, cert) : initHttp2();
+
+            // create request handlers, bind dispatcher to request event
+            await dispatcher.createHandlers();
+            const onRequest = dispatcher.getListener();
+            server.on('request', onRequest);
+            server.on('err', (err) => {
+                logger.error(`Web server is closed on error: ${JSON.stringify(err)}.`);
+                server.close();
+            });
+
+
+            // start server
+            server.listen(port);
+            logger.info(`Web server is started on port ${port} in ${_serverType} mode.`);
         }
 
-        /**
-         * Run HTTP/1 server.
-         *
-         * @param {number} port
-         */
-        this.listen = function (port) {
-            server.listen(port);
-        };
     }
 }
-
-

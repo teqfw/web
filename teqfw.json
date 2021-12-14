@@ -11,7 +11,6 @@
   },
   "@teqfw/core": {
     "commands": [
-      "TeqFw_Web_Back_Cli_Next_Start",
       "TeqFw_Web_Back_Cli_Server_Start",
       "TeqFw_Web_Back_Cli_Server_Stop"
     ]
