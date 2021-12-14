@@ -4,17 +4,14 @@
  * @namespace TeqFw_Web_Back_Handler_Static
  */
 // MODULE'S IMPORT
-import {existsSync, statSync, createReadStream} from 'fs';
-import {lookup} from 'mime-types';
+import {existsSync, statSync} from 'fs';
 import {join} from 'path';
 import {constants as H2} from 'http2';
-import {pipeline} from "stream";
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Handler_Static';
 const INDEX_NAME = 'index.html';
 const {
-    HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_GET,
     HTTP_STATUS_OK,
 } = H2;
@@ -38,8 +35,6 @@ export default class TeqFw_Web_Back_Handler_Static {
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {Object<string, function>} */
-        const _listeners = {};
         const _rootFs = config.getBoot().projectRoot; // path to project root
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
@@ -129,23 +124,9 @@ export default class TeqFw_Web_Back_Handler_Static {
             }
 
             // MAIN FUNCTIONALITY
-            if (!res.headersSent) {
-                const {method, url} = req;
-                if (method === HTTP2_METHOD_GET) {
-                    const path = getFilesystemPath(url);
-                    if (existsSync(path) && statSync(path).isFile()) {
-                        const mimeType = lookup(path);
-                        if (mimeType) {
-                            // return file content
-                            const readStream = createReadStream(path);
-                            // TODO: add content length header
-                            res.writeHead(HTTP_STATUS_OK, {
-                                [HTTP2_HEADER_CONTENT_TYPE]: mimeType
-                            });
-                            pipeline(readStream, res, (err) => {if (err) console.dir(err)});
-                        }
-                    }
-                }
+            if (!res.headersSent && !res[DEF.RES_STATUS]) {
+                res[DEF.RES_FILE] = getFilesystemPath(req.url);
+                res[DEF.RES_STATUS] = HTTP_STATUS_OK;
             }
         }
 
@@ -192,12 +173,10 @@ export default class TeqFw_Web_Back_Handler_Static {
         // DEFINE INSTANCE METHODS
         this.getProcessor = () => process;
 
-        this.init = async function () {
-            mapStatics();
-            _listeners['request'] = process;
-        }
+        this.init = mapStatics;
 
         this.requestIsMine = function ({method, address, headers} = {}) {
+            // TODO: add SSE exclude
             return (method === HTTP2_METHOD_GET);
         }
 

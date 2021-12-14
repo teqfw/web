@@ -26,7 +26,7 @@ export default class TeqFw_Web_Back_NextServer {
         const dispatcher = spec['TeqFw_Web_Back_Server_Dispatcher$'];
 
         // DEFINE WORKING VARS
-        let serverType;
+        let _serverType;
 
         // DEFINE THIS INSTANCE METHODS
         this.run = async function ({port, useHttp1, key, cert} = {}) {
@@ -43,17 +43,17 @@ export default class TeqFw_Web_Back_NextServer {
             }
 
             function initHttp1() {
-                serverType = 'HTTP/1';
+                _serverType = 'HTTP/1';
                 return createHttp1Server({});
             }
 
             function initHttp2() {
-                serverType = 'HTTP/2';
+                _serverType = 'HTTP/2';
                 return createServer({});
             }
 
             function initHttps(key, cert) {
-                serverType = 'HTTPS';
+                _serverType = 'HTTPS';
                 return createSecureServer({
                     key: readFileSync(key),
                     cert: readFileSync(cert)
@@ -68,7 +68,7 @@ export default class TeqFw_Web_Back_NextServer {
             key = key ?? cfgKey ?? null;
             cert = cert ?? cfgCert ?? null;
             if (useHttp1 && (key && cert))
-                logger.info(`Option 'useHttp1' is ignored cause 'key' and 'cert' options are presented.`);
+                logger.info(`Option 'useHttp1' is ignored because 'key' and 'cert' options are presented.`);
 
             // create server
             const server = useHttp1 ? initHttp1()
@@ -78,10 +78,15 @@ export default class TeqFw_Web_Back_NextServer {
             await dispatcher.createHandlers();
             const onRequest = dispatcher.getListener();
             server.on('request', onRequest);
+            server.on('err', (err) => {
+                logger.error(`Web server is closed on error: ${err}.`);
+                server.close();
+            });
+
 
             // start server
             server.listen(port);
-            logger.info(`Web server is started on port ${port} in ${serverType} mode.`);
+            logger.info(`Web server is started on port ${port} in ${_serverType} mode.`);
         }
 
     }

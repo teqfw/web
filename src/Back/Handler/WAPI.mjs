@@ -1,5 +1,5 @@
 /**
- * Web server handler to process POST requests to API.
+ * Web server handler to process requests to API.
  *
  * @namespace TeqFw_Web_Back_Handler_WAPI
  */
@@ -10,8 +10,9 @@ import {constants as H2} from 'http2';
 const NS = 'TeqFw_Web_Back_Handler_WAPI';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
-    HTTP2_METHOD_POST,
+    HTTP2_HEADER_STATUS,
     HTTP2_METHOD_GET,
+    HTTP2_METHOD_POST,
     HTTP_STATUS_OK,
 } = H2;
 
@@ -94,61 +95,48 @@ export default class TeqFw_Web_Back_Handler_WAPI {
             }
 
             // MAIN FUNCTIONALITY
-            if (!res.headersSent) {
-                const {method, url} = req;
-                if ((method === HTTP2_METHOD_GET) || (method === HTTP2_METHOD_POST)) {
-                    /** @type {TeqFw_Web_Back_Dto_Address} */
-                    const address = mAddress.parsePath(url);
-                    if (address?.space === DEF.SHARED.SPACE_API) {
-                        // match address to route item and extract route params
-                        const {
-                            /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
-                            routeItem, params
-                        } = findRoute(address.route);
-                        if (routeItem) {
-                            // read data from input stream, then parse JSON, then call endpoint service
-                            const chunks = [];
-                            req.on('data', (chunk) => chunks.push(chunk));
-                            req.on('end', async () => {
-                                try {
-                                    // get service data and create service context object
-                                    const serviceCtx = fContext.create();
-                                    const txt = Buffer.concat(chunks).toString();
-                                    if (txt.length > 0) {
-                                        const json = JSON.parse(txt);
-                                        const inData = routeItem.routeFactory.createReq(json?.data);
-                                        serviceCtx.setInData(inData);
-                                    }
-                                    try {
-                                        // create output object for requested service
-                                        const outData = routeItem.routeFactory?.createRes();
-                                        serviceCtx.setOutData(outData);
-                                        // run service function
-                                        await routeItem.service(serviceCtx);
-                                        debugger
-                                        // compose result from outData been put into service context before service was run
-                                        const outTxt = JSON.stringify({data: outData});
-                                        // merge service out headers into response headers
-                                        const headersSrv = serviceCtx.getOutHeaders();
-                                        for (const key of Object.keys(headersSrv)) {
-                                            res.setHeader(key, headersSrv[key]);
-                                        }
-                                        res.writeHead(HTTP_STATUS_OK, {
-                                            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain'
-                                        });
-                                        res.end(outTxt);
-                                    } catch (err) {
-                                        logger.error(err);
-                                        respond500(res, err?.message);
-                                    }
-                                    debugger
-                                } catch (err) {
-                                    logger.error(err);
-                                    respond400(req);
-                                }
-                            });
-                        } // else - do nothing, final handler will report 404.
-                    }
+            if (!res.headersSent && !res[DEF.RES_STATUS]) {
+                /** @type {TeqFw_Web_Back_Dto_Address} */
+                const address = mAddress.parsePath(req.url);
+                if (address?.space === DEF.SHARED.SPACE_API) {
+                    // match address to route item and extract route params
+                    const {
+                        /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
+                        routeItem, params
+                    } = findRoute(address.route);
+                    if (routeItem) { // call endpoint service
+                        try {
+                            // create service context object and put input data inside
+                            const serviceCtx = fContext.create();
+                            const json = req[DEF.REQ_BODY_JSON];
+                            if (json) {
+                                const inData = routeItem.routeFactory.createReq(json?.data);
+                                serviceCtx.setInData(inData);
+                            }
+                            try {
+                                // create output object for requested service
+                                const outData = routeItem.routeFactory?.createRes();
+                                serviceCtx.setOutData(outData);
+                                // run service function
+                                await routeItem.service(serviceCtx);
+                                // compose result from outData been put into service context before service was run
+                                res[DEF.RES_BODY] = JSON.stringify({data: outData});
+                                // merge service out headers into response headers
+                                const headersSrv = serviceCtx.getOutHeaders();
+                                for (const key of Object.keys(headersSrv))
+                                    res.setHeader(key, headersSrv[key]);
+                                res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                                res[DEF.RES_STATUS] = HTTP_STATUS_OK;
+                            } catch (err) {
+                                logger.error(err);
+                                respond500(res, err?.message);
+                            }
+                            debugger
+                        } catch (err) {
+                            logger.error(err);
+                            respond400(req);
+                        }
+                    } // else - do nothing, final handler will report 404.
                 }
             }
         }

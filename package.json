@@ -27,6 +27,7 @@
   "dependencies": {
     "@teqfw/core": "*",
     "mime-types": "*",
-    "path-to-regexp": "*"
+    "path-to-regexp": "*",
+    "stream-buffers": "*"
   }
 }

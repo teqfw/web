@@ -9,8 +9,13 @@ import {castArray} from "@teqfw/core/src/Shared/Util/Cast.mjs";
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Server_Respond';
 const {
+    HTTP2_HEADER_ALLOW,
     HTTP2_HEADER_CONTENT_TYPE,
+    HTTP2_METHOD_GET,
+    HTTP2_METHOD_HEAD,
+    HTTP2_METHOD_POST,
     HTTP_STATUS_BAD_REQUEST,
+    HTTP_STATUS_METHOD_NOT_ALLOWED,
     HTTP_STATUS_NOT_FOUND,
 } = H2;
 
@@ -41,6 +46,22 @@ function respond404(res) {
 }
 
 /**
+ * Respond
+ * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
+ * @memberOf TeqFw_Web_Back_Server_Respond
+ */
+function respond405(res) {
+    if (!res.headersSent) {
+        const allowed = `${HTTP2_METHOD_HEAD}, ${HTTP2_METHOD_GET}, ${HTTP2_METHOD_POST}`;
+        res.writeHead(HTTP_STATUS_METHOD_NOT_ALLOWED, {
+            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
+            [HTTP2_HEADER_ALLOW]: allowed,
+        });
+        res.end(`Requested method is not allowed. Allowed methods: ${allowed}.`);
+    }
+}
+
+/**
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
  * @param {string} err
  * @memberOf TeqFw_Web_Back_Server_Respond
@@ -61,11 +82,13 @@ function respond500(res, err) {
 // finalize code components for this es6-module
 Object.defineProperty(respond400, 'name', {value: `${NS}.${respond400.name}`});
 Object.defineProperty(respond404, 'name', {value: `${NS}.${respond404.name}`});
+Object.defineProperty(respond405, 'name', {value: `${NS}.${respond405.name}`});
 Object.defineProperty(respond500, 'name', {value: `${NS}.${respond500.name}`});
 
 
 export {
     respond400,
     respond404,
+    respond405,
     respond500,
 }

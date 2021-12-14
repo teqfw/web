@@ -2,6 +2,7 @@
  * Registry to store web requests handlers.
  * Registry orders all handlers in hierarchy taking into account their dependencies.
  * @namespace TeqFw_Web_Back_Scan_Handler_Registry
+ * @deprecated use Scan object
  */
 export default class TeqFw_Web_Back_Scan_Handler_Registry {
     constructor() {

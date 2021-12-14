@@ -18,6 +18,10 @@
   },
   "@teqfw/web": {
     "handlers": {
+      "TeqFw_Web_Back_Handler_SSE": {
+        "before": ["TeqFw_Web_Back_Handler_WAPI"],
+        "spaces": ["sse"]
+      },
       "TeqFw_Web_Back_Handler_WAPI": {
         "before": ["TeqFw_Web_Back_Handler_Static"],
         "spaces": ["api"]
