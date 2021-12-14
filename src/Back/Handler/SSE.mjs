@@ -23,7 +23,7 @@ const URL_SSE = '/sse/';
 const URL_UPLOAD = '/upload/';
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_INewHandler
+ * @implements TeqFw_Web_Back_Api_Request_IHandler
  */
 export default class TeqFw_Web_Back_Handler_SSE {
     constructor(spec) {

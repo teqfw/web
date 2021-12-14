@@ -10,7 +10,6 @@ import {constants as H2} from 'http2';
 const NS = 'TeqFw_Web_Back_Handler_WAPI';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
-    HTTP2_HEADER_STATUS,
     HTTP2_METHOD_GET,
     HTTP2_METHOD_POST,
     HTTP_STATUS_OK,
@@ -18,7 +17,7 @@ const {
 
 // MODULE'S CLASSES
 /**
- * @implements TeqFw_Web_Back_Api_Request_INewHandler
+ * @implements TeqFw_Web_Back_Api_Request_IHandler
  */
 export default class TeqFw_Web_Back_Handler_WAPI {
     constructor(spec) {
@@ -29,8 +28,6 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         const container = spec['TeqFw_Di_Shared_Container$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Core_Back_Config} */
-        const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Web_Back_Server_Respond.respond400|function} */
         const respond400 = spec['TeqFw_Web_Back_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_Server_Respond.respond500|function} */
@@ -58,21 +55,6 @@ export default class TeqFw_Web_Back_Handler_WAPI {
          */
         async function process(req, res) {
             // DEFINE INNER FUNCTIONS
-
-            /**
-             * @param {TeqFw_Web_Back_Api_Request_IContext} context
-             * @param {TeqFw_Web_Back_Api_Service_IRoute} factory
-             */
-            function composeInput(context, factory) {
-                let res = {};
-                const chunks = context.getInputData();
-                const txt = Array.isArray(chunks) ? Buffer.concat(chunks).toString() : '';
-                if (txt.length > 0) {
-                    const parsed = JSON.parse(txt);
-                    res = factory.createReq(parsed?.data);
-                }
-                return res;
-            }
 
             /**
              * Match request to all routes and extract route params (if exist).
@@ -166,7 +148,7 @@ export default class TeqFw_Web_Back_Handler_WAPI {
             }
         }
 
-        this.requestIsMine = function ({method, address, headers} = {}) {
+        this.requestIsMine = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_GET) || (method === HTTP2_METHOD_POST)
                 && (address?.space === DEF.SHARED.SPACE_API)

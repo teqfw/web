@@ -17,7 +17,7 @@ const {
 } = H2;
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_INewHandler
+ * @implements TeqFw_Web_Back_Api_Request_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Final {
     constructor(spec) {
@@ -36,8 +36,10 @@ export default class TeqFw_Web_Back_Handler_Final {
          */
         function process(req, res) {
             if (!res.headersSent) {
+                const headers = res.getHeaders();
                 const statusCode = res[DEF.RES_STATUS] ?? HTTP_STATUS_OK;
                 const file = res[DEF.RES_FILE];
+                const body = res[DEF.RES_BODY];
                 let stat;
                 if (file) {
                     if (existsSync(file) && (stat = statSync(file)) && stat.isFile()) {
@@ -46,17 +48,14 @@ export default class TeqFw_Web_Back_Handler_Final {
                         res.setHeader(HTTP2_HEADER_CONTENT_LENGTH, stat.size);
                         // return file content
                         const readStream = createReadStream(file);
-                        const headers = res.getHeaders();
                         res.writeHead(statusCode, headers);
-                        // TODO: add erroro hndl
+                        // TODO: add error hndl
                         pipeline(readStream, res, (err) => {if (err) console.dir(err)});
                     }
-                } else {
-                    const headers = res.getHeaders();
+                } else if (body) {
                     res.writeHead(statusCode, headers);
-                    res.end(res[DEF.RES_BODY]);
-                }
-                respond404(res);
+                    res.end(body);
+                } else respond404(res);
             }
         }
 

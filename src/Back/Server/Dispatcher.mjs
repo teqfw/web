@@ -31,7 +31,7 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
         const respond405 = spec['TeqFw_Web_Back_Server_Respond.respond405'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {TeqFw_Web_Back_Api_Request_INewHandler[]} */
+        /** @type {TeqFw_Web_Back_Api_Request_IHandler[]} */
         const handlers = [];
 
         // DEFINE INNER FUNCTIONS

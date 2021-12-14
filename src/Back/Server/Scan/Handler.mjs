@@ -34,7 +34,7 @@ export default function (spec) {
         /**
          * Create handlers and populate sort util with before-after data.
          * @param utilSort
-         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Request_INewHandler>>}
+         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Request_IHandler>>}
          */
         async function createHandlers(utilSort) {
             const res = {};
@@ -46,7 +46,7 @@ export default function (spec) {
                     logger.info(`Create Web handler: ${hName}`);
                     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
                     const dto = desc.handlers[hName];
-                    /** @type {TeqFw_Web_Back_Api_Request_INewHandler} */
+                    /** @type {TeqFw_Web_Back_Api_Request_IHandler} */
                     const handler = await container.get(`${hName}$`);
                     if (typeof handler.init === 'function') await handler.init();
                     res[hName] = handler;

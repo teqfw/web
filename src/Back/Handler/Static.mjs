@@ -18,7 +18,7 @@ const {
 
 // MODULE'S CLASSES
 /**
- * @implements TeqFw_Web_Back_Api_Request_INewHandler
+ * @implements TeqFw_Web_Back_Api_Request_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Static {
     constructor(spec) {
@@ -175,9 +175,13 @@ export default class TeqFw_Web_Back_Handler_Static {
 
         this.init = mapStatics;
 
-        this.requestIsMine = function ({method, address, headers} = {}) {
-            // TODO: add SSE exclude
-            return (method === HTTP2_METHOD_GET);
+        /**
+         * @param {string} method
+         * @param {TeqFw_Web_Back_Dto_Address} address
+         * @return {boolean}
+         */
+        this.requestIsMine = function ({method, address} = {}) {
+            return ((method === HTTP2_METHOD_GET) && (address.space !== DEF.SHARED.SPACE_SSE));
         }
 
         // MAIN FUNCTIONALITY

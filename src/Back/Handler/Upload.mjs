@@ -11,18 +11,13 @@ const NS = 'TeqFw_Web_Back_Handler_Upload';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_POST,
-    HTTP2_METHOD_GET,
     HTTP_STATUS_OK,
 } = H2;
 
 const HEAD_FILENAME = 'teq-upload-filename'; // HTTP header to get uploading filename
-const SSE_CLOSE = 'close'; // SSE marker that connection is closed
-const URL_REMOVE = '/remove/';
-const URL_SSE = '/sse/';
-const URL_UPLOAD = '/upload/';
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_INewHandler
+ * @implements TeqFw_Web_Back_Api_Request_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Upload {
     constructor(spec) {
@@ -74,7 +69,7 @@ export default class TeqFw_Web_Back_Handler_Upload {
             // there is not initialization for this handler
         }
 
-        this.requestIsMine = function ({method, address, headers} = {}) {
+        this.requestIsMine = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_POST)
                 && (address?.space === DEF.SHARED.SPACE_UPLOAD)
