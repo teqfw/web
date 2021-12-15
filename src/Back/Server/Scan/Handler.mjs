@@ -38,24 +38,45 @@ export default function (spec) {
          */
         async function createHandlers(utilSort) {
             const res = {};
+            /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler>} */
+            const includes = {};
+            const excludes = [];
+            // scan plugins and get all handlers and excludes
             const plugins = regPlugins.items();
             for (const plugin of plugins) {
                 /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
                 const desc = fDesc.create(plugin.teqfw[DEF.SHARED.NAME]);
-                for (const hName of Object.keys(desc.handlers)) {
+                for (const hName of Object.keys(desc.handlers))
+                    includes[hName] = desc.handlers[hName];
+                const excl = desc?.excludes?.handlers;
+                if (excl.length)
+                    Array.prototype.push.apply(excludes, excl);
+            }
+            // remove excludes
+            if (excludes.includes('TeqFw_Web_Back_Handler_Final'))
+                throw new Error(`Handler 'TeqFw_Web_Back_Handler_Final' cannot be excluded.`);
+            for (const hName of Object.keys(includes)) {
+                if (!excludes.includes(hName)) {
                     logger.info(`Create Web handler: ${hName}`);
                     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
-                    const dto = desc.handlers[hName];
+                    const dto = includes[hName];
                     /** @type {TeqFw_Web_Back_Api_Request_IHandler} */
-                    const handler = await container.get(`${hName}$`);
-                    if (typeof handler.init === 'function') await handler.init();
-                    res[hName] = handler;
+                    res[hName] = await container.get(`${hName}$`);
                     const orderDto = new DtoSort();
                     orderDto.id = hName;
                     orderDto.after = dto.after;
                     orderDto.before = dto.before;
                     utilSort.addItem(orderDto);
+                } else {
+                    logger.info(`Web handler '${hName}' is excluded and will not be created.`);
                 }
+            }
+            // init result handlers
+            logger.info(`Initialize web request handlers (total: ${Object.keys(res).length}).`);
+            for (const hName of Object.keys(res)) {
+                /** @type {TeqFw_Web_Back_Api_Request_IHandler} */
+                const handler = res[hName];
+                if (typeof handler.init === 'function') await handler.init();
             }
             return res;
         }

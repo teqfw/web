@@ -29,7 +29,7 @@ export class Response {
 /**
  * Factory to create new DTOs.
  * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
- * @implements TeqFw_Web_Back_Api_Service_IRoute
+ * @implements TeqFw_Web_Back_Api_WAPI_IRoute
  */
 export class Factory {
     constructor(spec) {

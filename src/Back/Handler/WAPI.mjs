@@ -40,8 +40,8 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Api_Service_Context.Factory} */
-        const fContext = spec['TeqFw_Web_Back_Api_Service_Context#Factory$'];
+        /** @type {TeqFw_Web_Back_Api_WAPI_Context.Factory} */
+        const fContext = spec['TeqFw_Web_Back_Api_WAPI_Context#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */
@@ -113,7 +113,6 @@ export default class TeqFw_Web_Back_Handler_WAPI {
                                 logger.error(err);
                                 respond500(res, err?.message);
                             }
-                            debugger
                         } catch (err) {
                             logger.error(err);
                             respond400(req);
@@ -127,16 +126,16 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         this.getProcessor = () => process;
 
         this.init = async function () {
-            const items = regPlugins.items();
-            for (const one of items) {
+            logger.info(`Initialize WAPI web requests handler:`);
+            const plugins = regPlugins.items();
+            for (const one of plugins) {
                 const data = one.teqfw?.[DEF.SHARED.NAME];
                 if (data) {
                     const desc = fDesc.create(data);
-                    const services = desc.services;
-                    if (services?.length) {
-                        // const prefix = $path.join('/', realm);
-                        for (const moduleId of services) {
-                            /** @type {TeqFw_Web_Back_Api_Service_IFactory} */
+                    const items = desc.services;
+                    if (items?.length) {
+                        for (const moduleId of items) {
+                            /** @type {TeqFw_Web_Back_Api_WAPI_IFactory} */
                             const factory = await container.get(`${moduleId}$`);
                             const item = new Item(factory);
                             const route = item.route;

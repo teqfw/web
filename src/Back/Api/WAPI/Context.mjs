@@ -2,15 +2,15 @@
  * Model to represent context for plugins services.
  * All plugins services use this context to interchange data with HTTP-server (and, through the server, with clients).
  *
- * @namespace TeqFw_Web_Back_Api_Service_Context
+ * @namespace TeqFw_Web_Back_Api_WAPI_Context
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Api_Service_Context';
+const NS = 'TeqFw_Web_Back_Api_WAPI_Context';
 
-export default class TeqFw_Web_Back_Api_Service_Context {
+export default class TeqFw_Web_Back_Api_WAPI_Context {
     /** @type {Object} */
     inData;
     /** @type {Object} */
@@ -125,15 +125,15 @@ export default class TeqFw_Web_Back_Api_Service_Context {
 
 /**
  * Factory to create new instances.
- * @memberOf TeqFw_Web_Back_Api_Service_Context
+ * @memberOf TeqFw_Web_Back_Api_WAPI_Context
  */
 export class Factory {
     /**
-     * @param {TeqFw_Web_Back_Api_Service_Context|null} data
-     * @return {TeqFw_Web_Back_Api_Service_Context}
+     * @param {TeqFw_Web_Back_Api_WAPI_Context|null} data
+     * @return {TeqFw_Web_Back_Api_WAPI_Context}
      */
     create(data = null) {
-        const res = new TeqFw_Web_Back_Api_Service_Context();
+        const res = new TeqFw_Web_Back_Api_WAPI_Context();
         res.inData = data?.inData;
         res.outData = data?.outData;
         res.outHeaders = data?.outHeaders ?? {};

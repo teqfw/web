@@ -39,7 +39,7 @@ export default class TeqFw_Web_Front_Service_Gate {
          * Send API service request to backend.
          *
          * @param {Object} data JS-object to be sent as request
-         * @param {TeqFw_Web_Back_Api_Service_IRoute} factory
+         * @param {TeqFw_Web_Back_Api_WAPI_IRoute} factory
          * @returns {Promise<*|boolean>}
          */
         this.send = async function (data, factory) {

@@ -10,7 +10,7 @@ import $path from 'path';
 const NS = 'TeqFw_Web_Back_Service_Load_Namespaces';
 
 /**
- * @implements TeqFw_Web_Back_Api_Service_IFactory
+ * @implements TeqFw_Web_Back_Api_WAPI_IFactory
  */
 export default class TeqFw_Web_Back_Service_Load_Namespaces {
     constructor(spec) {
@@ -108,7 +108,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
             // DEFINE INNER FUNCTIONS
             /**
              *
-             * @param {TeqFw_Web_Back_Api_Service_Context} context
+             * @param {TeqFw_Web_Back_Api_WAPI_Context} context
              */
             async function service(context) {
                 /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Response} */

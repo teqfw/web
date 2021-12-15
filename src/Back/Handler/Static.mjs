@@ -130,11 +130,11 @@ export default class TeqFw_Web_Back_Handler_Static {
             }
         }
 
-        /**
-         * Process plugins descriptions and setup static resources mapping.
-         */
-        function mapStatics() {
-            logger.info('Map plugins folders for static resources:');
+        // DEFINE INSTANCE METHODS
+        this.getProcessor = () => process;
+
+        this.init = async function () {
+            logger.info('Initialize Statics web requests handler:');
             const items = regPlugins.items();
             for (const item of items) {
                 // map URLs to filesystem for ES6/JS sources
@@ -167,13 +167,7 @@ export default class TeqFw_Web_Back_Handler_Static {
                 }
 
             }
-            logger.info('All static resources are mapped.');
-        }
-
-        // DEFINE INSTANCE METHODS
-        this.getProcessor = () => process;
-
-        this.init = mapStatics;
+        };
 
         /**
          * @param {string} method
