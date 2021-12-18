@@ -7,7 +7,7 @@ export default class TeqFw_Web_Back_Defaults {
     CLI_PREFIX = 'web'; // prefix in CLI commands
 
     DATA_DIR_UPLOAD = './var/store/upload/'; // folder to save uploaded files.
-    DATA_FILE_PID = './var/http1.pid'; // PID file to stop running server.
+    DATA_FILE_PID = './var/web-server.pid'; // PID file to stop running server.
     DATA_SERVER_PORT = 3000;
 
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins

@@ -4,13 +4,14 @@
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 import {join} from 'path';
-import {createWriteStream} from 'fs';
+import {createWriteStream, existsSync, mkdirSync} from 'fs';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Handler_Upload';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_POST,
+    HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_OK,
 } = H2;
 
@@ -31,6 +32,7 @@ export default class TeqFw_Web_Back_Handler_Upload {
 
         // DEFINE WORKING VARS / PROPS
         const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
+        if (!existsSync(_root)) mkdirSync(_root, {recursive: true});
 
         // DEFINE INNER FUNCTIONS
 
@@ -52,14 +54,36 @@ export default class TeqFw_Web_Back_Handler_Upload {
                 const filename = Buffer.from(encoded, 'base64').toString();
                 const fullPath = join(_root, filename);
                 if (fullPath.startsWith(_root)) {
-                    const ws = createWriteStream(fullPath);
-                    req.pipe(ws);
+                    return new Promise((resolve) => {
+
+                        const ws = createWriteStream(fullPath);
+                        req.pipe(ws);
+                        ws.on('error', (e) => {
+                            // respond with error and resolve the promise
+                            res.writeHead(HTTP_STATUS_INTERNAL_SERVER_ERROR, {
+                                [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain'
+                            });
+                            res.write(`Upload is failed. Reason: ${e}`);
+                            res.end();
+                            resolve();
+                        });
+                        ws.on('close', () => {
+                            // respond with error and resolve the promise
+                            res.writeHead(HTTP_STATUS_OK, {
+                                [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain'
+                            });
+                            res.write(`Upload is done.`);
+                            res.end();
+                            resolve();
+                        });
+                    });
+
                 }
-                res.writeHead(HTTP_STATUS_OK, {
-                    [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain'
-                });
-                res.end('Upload is done.');
+
+                // res.end('Upload is done.');
             }
+
+
         }
 
         // DEFINE INSTANCE METHODS

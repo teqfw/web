@@ -140,7 +140,7 @@ export default class TeqFw_Web_Back_Handler_Static {
                 // map URLs to filesystem for ES6/JS sources
                 /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
                 const desc = item.teqfw?.[DEF.MOD_DI.NAME];
-                if (desc?.autoload) {
+                if (desc?.autoload && desc.autoload.ns) {
                     const path = join(item.path, desc.autoload.path);
                     const url = join('/', DEF.SHARED.SPACE_SRC, item.name);
                     logger.info(`    ${url} => ${path}`);
