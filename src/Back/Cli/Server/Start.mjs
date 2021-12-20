@@ -12,6 +12,7 @@ const OPT_CERT = 'cert';
 const OPT_HTTP1 = 'http1';
 const OPT_KEY = 'key';
 const OPT_PORT = 'port';
+const OPT_SKIP_PID = 'skipPid';
 
 // DEFINE MODULE'S FUNCTIONS
 /**
@@ -58,13 +59,16 @@ export default function Factory(spec) {
             const cert = castString(opts[OPT_CERT]);
             const key = castString(opts[OPT_KEY]);
             const port = castInt(opts[OPT_PORT]);
+            const skipPID = castBooleanIfExists(opts[OPT_SKIP_PID]);
             const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
-            // compose path to PID file and write PID to file
-            const pid = process.pid.toString();
-            const pidPath = join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
-            const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
-            if (!existsSync(pidDir)) mkdirSync(pidDir);
-            writeFileSync(pidPath, pid);
+            if (!skipPID) {
+                // compose path to PID file and write PID to file
+                const pid = process.pid.toString();
+                const pidPath = join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
+                const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
+                if (!existsSync(pidDir)) mkdirSync(pidDir, {recursive: true});
+                writeFileSync(pidPath, pid);
+            }
             // PID is wrote => start the server
             // create server from proxy then run it
             /** @type {TeqFw_Web_Back_Server} */
@@ -80,28 +84,33 @@ export default function Factory(spec) {
     const res = fCommand.create();
     res.realm = DEF.CLI_PREFIX;
     res.name = 'server-start';
-    res.desc = 'Start web server (HTTP/1 or HTTP/2).';
+    res.desc = 'start web server';
     res.action = action;
+    // add option --cert
+    const optCert = fOpt.create();
+    optCert.flags = `-c, --${OPT_CERT} <path>`;
+    optCert.description = `certificates chain in PEM format to secure HTTP/2 server`;
+    res.opts.push(optCert);
     // add option --http1
     const optHttp1 = fOpt.create();
     optHttp1.flags = `-1, --${OPT_HTTP1}`;
     optHttp1.description = `use HTTP/1 server (default: HTTP/2)`;
     res.opts.push(optHttp1);
+    // add option --key
+    const optKey = fOpt.create();
+    optKey.flags = `-k, --${OPT_KEY} <path>`;
+    optKey.description = `private key in PEM format to secure HTTP/2 server`;
+    res.opts.push(optKey);
+    // add option --skip-pid
+    const optSkipPID = fOpt.create();
+    optSkipPID.flags = `-s, --${OPT_SKIP_PID}`;
+    optSkipPID.description = `don't save PID file (used for read-only filesystems like Google AppEngine)`;
+    res.opts.push(optSkipPID);
     // add option --port
     const optPort = fOpt.create();
     optPort.flags = `-p, --${OPT_PORT} <port>`;
     optPort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
     res.opts.push(optPort);
-    // add option --key
-    const optKey = fOpt.create();
-    optKey.flags = `-k, --${OPT_KEY} <path>`;
-    optKey.description = `private key in PEM format to secure HTTP/2 server.`;
-    res.opts.push(optKey);
-    // add option --cert
-    const optCert = fOpt.create();
-    optCert.flags = `-c, --${OPT_CERT} <path>`;
-    optCert.description = `certificates chain in PEM format to secure HTTP/2 server.`;
-    res.opts.push(optCert);
     return res;
 }
 

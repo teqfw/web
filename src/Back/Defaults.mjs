@@ -8,11 +8,9 @@ export default class TeqFw_Web_Back_Defaults {
 
     DATA_DIR_UPLOAD = './var/store/upload/'; // folder to save uploaded files.
     DATA_FILE_PID = './var/web-server.pid'; // PID file to stop running server.
-    DATA_SERVER_PORT = 3000;
+    DATA_SERVER_PORT = 8080;
 
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
-
-    HTTP_HEADER_STATUS = 'status';
 
     /** @type {TeqFw_Di_Back_Defaults} */
     MOD_DI;

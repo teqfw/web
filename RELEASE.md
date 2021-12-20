@@ -1,7 +1,8 @@
 # @teqfw/web: releases
 
-# x.x.x
+# 0.7.0
 
+* Ability to start in HTTP/1.1, HTTP/2 and HTTPS over HTTP/2 modes.
 * SW cache cleaning.
 * IDB store for front objects.
 

@@ -27,12 +27,9 @@ export default class TeqFw_Web_Back_Handler_Upload {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
-        /** @type {TeqFw_Web_Back_Model_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
 
         // DEFINE WORKING VARS / PROPS
         const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
-        if (!existsSync(_root)) mkdirSync(_root, {recursive: true});
 
         // DEFINE INNER FUNCTIONS
 
@@ -42,20 +39,14 @@ export default class TeqFw_Web_Back_Handler_Upload {
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function process(req, res) {
-            // TODO: use address model here
-            const {method, url} = req;
-            const address = mAddress.parsePath(url);
-            if (!res.headersSent
-                && (method === HTTP2_METHOD_POST)
-                && (address?.space === DEF.SHARED.SPACE_UPLOAD)
-            ) {
+            if (!res.headersSent) {
                 /** @type {string} */
                 const encoded = req.headers[HEAD_FILENAME];
                 const filename = Buffer.from(encoded, 'base64').toString();
                 const fullPath = join(_root, filename);
                 if (fullPath.startsWith(_root)) {
                     return new Promise((resolve) => {
-
+                        if (!existsSync(_root)) mkdirSync(_root, {recursive: true});
                         const ws = createWriteStream(fullPath);
                         req.pipe(ws);
                         ws.on('error', (e) => {
@@ -79,11 +70,7 @@ export default class TeqFw_Web_Back_Handler_Upload {
                     });
 
                 }
-
-                // res.end('Upload is done.');
             }
-
-
         }
 
         // DEFINE INSTANCE METHODS
