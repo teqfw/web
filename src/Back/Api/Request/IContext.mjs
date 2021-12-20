@@ -1,6 +1,7 @@
 /**
- * Interface for request context used in 'TeqFw_Web_Back_Server_Request_Processor'.
+ * Interface for request context used in 'TeqFw_Web_Back_Server_Event_Request'.
  * @interface
+ * @deprecated we can use 'req' & 'res' objects as context ('req' contains 'res').
  */
 export default class TeqFw_Web_Back_Api_Request_IContext {
     /**
@@ -35,6 +36,11 @@ export default class TeqFw_Web_Back_Api_Request_IContext {
 
     /** @return {Object<string, string>} */
     getResponseHeaders() {}
+
+    /**
+     * @return {ServerHttp2Stream}
+     */
+    getStream() {}
 
     /**
      * 'true' - if some handler completely processed request.

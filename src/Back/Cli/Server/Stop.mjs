@@ -1,5 +1,5 @@
 /**
- * Stop HTTP/1 server.
+ * Stop web server.
  * @namespace TeqFw_Web_Back_Cli_Server_Stop
  */
 // MODULE'S IMPORT
@@ -30,7 +30,7 @@ export default function Factory(spec) {
 
     // DEFINE INNER FUNCTIONS
     /**
-     * Stop the HTTP/1 server.
+     * Stop web server.
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
@@ -39,10 +39,10 @@ export default function Factory(spec) {
             const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
             const data = $fs.readFileSync(pidPath);
             const pid = castInt(data);
-            console.info(`Stop HTTP/1 server (PID: ${pid}).`);
+            console.info(`Stop web server (PID: ${pid}).`);
             process.kill(pid, 'SIGINT');
         } catch (e) {
-            console.error('Cannot kill HTTP/1 server process.');
+            console.error('Cannot kill web server process.');
         }
     };
     Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});
@@ -51,7 +51,7 @@ export default function Factory(spec) {
     const res = fCommand.create();
     res.realm = DEF.CLI_PREFIX;
     res.name = 'server-stop';
-    res.desc = 'Stop the HTTP/1 server.';
+    res.desc = 'stop web server';
     res.action = action;
     return res;
 }

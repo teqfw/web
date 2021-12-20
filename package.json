@@ -1,8 +1,12 @@
 {
   "name": "@teqfw/web",
-  "version": "0.6.1",
-  "description": "TeqFW: web server (HTTP/1).",
+  "version": "0.7.0",
+  "description": "TeqFW: web server.",
   "scripts": {
+    "help": "node ./bin/tequila.mjs help",
+    "http1": "node ./bin/tequila.mjs web-server-start -1",
+    "http2": "node ./bin/tequila.mjs web-server-start",
+    "stop": "node ./bin/tequila.mjs web-server-stop",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,6 +31,11 @@
   "dependencies": {
     "@teqfw/core": "*",
     "mime-types": "*",
-    "path-to-regexp": "*"
+    "path-to-regexp": "*",
+    "stream-buffers": "*"
+  },
+  "devDependencies": {
+    "@teqfw/core": "github:teqfw/core",
+    "@teqfw/di": "github:teqfw/di"
   }
 }

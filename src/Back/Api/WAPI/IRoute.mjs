@@ -2,7 +2,7 @@
  * Interface for factory to serve route needs: create requests and responses DTOs and get route's address.
  * @interface
  */
-export default class TeqFw_Web_Back_Api_Service_IRoute {
+export default class TeqFw_Web_Back_Api_WAPI_IRoute {
     /**
      * @param {Object|null} data
      * @return {Object}

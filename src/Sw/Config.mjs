@@ -1,8 +1,7 @@
 /**
- * SW configuration options saved in IDB.
+ * SW configuration options saved in IDB as key-values pairs.
+ * Contains all functionality to work with IDB.
  */
-import Connect from './src/@teqfw/db/Front/Idb/Connect.mjs';
-
 const IDB_NAME = 'TeqFw_Web_Sw_Config';
 const IDB_VERSION = 1;
 const ENTITY = 'option';
@@ -10,39 +9,95 @@ const ENTITY = 'option';
 export default class TeqFw_Web_Sw_Config {
 
     constructor() {
-        /** @type {TeqFw_Db_Front_Idb_Connect} */
-        const conn = new Connect();
         /** @type {IDBDatabase} */
-        let db;
+        let _db;
 
-        this.init = async function () {
+        // DEFINE INNER FUNCTIONS
+
+        /**
+         * Open connection to IDB.
+         * @return {Promise<void>}
+         */
+        async function open() {
             // DEFINE INNER FUNCTIONS
             /**
-             * Function to run on 'IDBOpenDBRequest.onupgradeneeded'
+             * Upgrade IDB schema.
+             * @param {IDBDatabase} db
              */
-            function fnUpgrade() {
-                /** @type {IDBOpenDBRequest} */
-                const me = this;
-                const db = me.result;
-                if (!db.objectStoreNames.contains(ENTITY)) {
+            function fnUpgrade(db) {
+                if (!db.objectStoreNames.contains(ENTITY))
                     db.createObjectStore(ENTITY);
-                }
             }
 
             // MAIN FUNCTIONALITY
-            if (db === undefined) db = await conn.openDb(IDB_NAME, IDB_VERSION, fnUpgrade);
+            if (_db === undefined) {
+                const promise = new Promise(function (resolve, reject) {
+                    /** @type {IDBOpenDBRequest} */
+                    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+                    req.onupgradeneeded = () => fnUpgrade(req.result);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+                try {
+                    _db = await promise;
+                    // reset variable on IDB close
+                    _db.onclose = () => _db = undefined;
+                } catch (e) {
+                    console.log(`Error on IDB opening. ${e}`);
+                    _db = undefined;
+                    throw e;
+                }
+            }
         }
 
+        // DEFINE INSTANCE METHODS
+
+        /**
+         * Set configuration option by key.
+         * @param {string} key
+         * @param {*} value
+         * @return {Promise<void>}
+         */
         this.set = async function (key, value) {
-            await this.init();
-            const store = conn.store(ENTITY);
-            await store.put(value, key); // IDB can store objects with key inside, so "value, key"
+            await open();
+            const data = JSON.parse(JSON.stringify(value)); // save DTO w/o Proxy
+            /** @type {IDBTransaction} */
+            const trx = _db.transaction(ENTITY, 'readwrite');
+            try {
+                const store = trx.objectStore(ENTITY);
+                const promise = new Promise((resolve, reject) => {
+                    const req = store.put(data, key);
+                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => resolve(req.result);
+                });
+                await promise;
+            } catch (e) {
+                trx.abort();
+            }
         }
 
+        /**
+         * Get configuration option by key.
+         * @param {string} key
+         * @return {Promise<*>}
+         */
         this.get = async function (key) {
-            await this.init();
-            const store = conn.store(ENTITY);
-            return await store.getByKey(key);
+            let res = null;
+            await open();
+            /** @type {IDBTransaction} */
+            const trx = _db.transaction(ENTITY, 'readonly');
+            try {
+                const store = trx.objectStore(ENTITY);
+                const promise = new Promise((resolve, reject) => {
+                    const req = store.get(key);
+                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => resolve(req.result);
+                });
+                res = await promise;
+            } catch (e) {
+                trx.abort();
+            }
+            return res;
         }
     }
 

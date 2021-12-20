@@ -1,3 +1,4 @@
+/**/*.pid
 /.idea/
 /.nyc_output/
 /jsdoc/

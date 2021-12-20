@@ -1,8 +1,12 @@
 # @teqfw/web: releases
 
-# 0.6.1
+# 0.7.0
 
+* Ability to start in HTTP/1.1, HTTP/2 and HTTPS over HTTP/2 modes.
+* Start w/o PID file (for readonly filesystems like Google AppEngine).
+* Base handlers for files uploading and Server Sent Events.
 * SW cache cleaning.
+* IDB store for front objects.
 
 # 0.6.0
 

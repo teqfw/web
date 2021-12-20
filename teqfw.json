@@ -5,8 +5,8 @@
       "path": "./src"
     },
     "replace": {
-      "TeqFw_Web_Front_Api_Gate_IAjaxLed": {"ns": "TeqFw_Web_Front_Model_Gate_AjaxLed", "area": "front"},
-      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"ns": "TeqFw_Web_Front_Model_Gate_ErrorHandler", "area": "front"}
+      "TeqFw_Web_Front_Api_Gate_IAjaxLed": {"front": "TeqFw_Web_Front_Model_Gate_AjaxLed"},
+      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Model_Gate_ErrorHandler"}
     }
   },
   "@teqfw/core": {
@@ -17,14 +17,24 @@
   },
   "@teqfw/web": {
     "handlers": {
-      "TeqFw_Web_Back_Plugin_Web_Handler_Service": {
-        "before": "TeqFw_Web_Back_Plugin_Web_Handler_Static",
-        "spaces": ["api"],
-        "weight": 100
-      }, "TeqFw_Web_Back_Plugin_Web_Handler_Static": {
-        "spaces": ["src", "web"],
-        "weight": 10
-      }
+      "TeqFw_Web_Back_Handler_SSE": {
+        "before": ["TeqFw_Web_Back_Handler_WAPI"],
+        "spaces": ["sse"]
+      },
+      "TeqFw_Web_Back_Handler_WAPI": {
+        "before": ["TeqFw_Web_Back_Handler_Static"],
+        "spaces": ["api"]
+      },
+      "TeqFw_Web_Back_Handler_Static": {
+        "before": ["TeqFw_Web_Back_Handler_Final"],
+        "spaces": ["src", "web"]
+      },
+      "TeqFw_Web_Back_Handler_Upload": {
+        "after": ["TeqFw_Web_Back_Handler_WAPI"],
+        "before": ["TeqFw_Web_Back_Handler_Static"],
+        "spaces": ["upload"]
+      },
+      "TeqFw_Web_Back_Handler_Final": {}
     },
     "services": [
       "TeqFw_Web_Back_Service_Load_Config",

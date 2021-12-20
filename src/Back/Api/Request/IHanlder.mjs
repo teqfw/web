@@ -1,26 +1,34 @@
 /**
- * Interface for request handler.
+ * Interface for web request handlers.
+ *
+ * These handlers are used by dispatcher to process HTTP request.
  *
  * @namespace TeqFw_Web_Back_Api_Request_IHandler
  */
 
 /**
- * Interface for request handling function.
- * @param {TeqFw_Web_Back_Api_Request_IContext} context
- * @returns {Promise<void>}
  * @interface
- * @memberOf TeqFw_Web_Back_Api_Request_IHandler
  */
-async function handle(context) {}
-
-/**
- * Interface for factory to create request handling function.
- * @interface
- * @memberOf TeqFw_Web_Back_Api_Request_IHandler
- */
-export default class Factory {
+export default class TeqFw_Web_Back_Api_Request_IHandler {
     /**
-     * @return {Promise<TeqFw_Web_Back_Api_Request_IHandler.handle>}
+     * Return processing function to handle request.
+     * @return {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}
      */
-    async create() {}
+    getProcessor() { }
+
+    /**
+     * Initialize working environment for processor (config, loading, ...).
+     * @return {Promise<void>}
+     */
+    async init() { }
+
+    /**
+     * Return 'true' if handler considers the request to be its.
+     *
+     * @param {string} method GET, POST, ...
+     * @param {TeqFw_Web_Back_Dto_Address} address
+     * @param {Object<string, string>} headers
+     * @return {boolean}
+     */
+    requestIsMine({method, address, headers} = {}) {}
 }

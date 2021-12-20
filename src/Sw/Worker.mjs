@@ -27,6 +27,7 @@ const EVT = {
 };
 const API_STATIC_FILES = '/api/@teqfw/web/load/files_to_cache'; // get list of files to cache on SW installation
 const AREA_API = 'api'; // marker for API routes (don't cache)
+const AREA_SSE = 'sse'; // marker for SSE routes (don't cache)
 const AREA_STATIC = 'web'; // marker for static resources (to be cached)
 const AREA_WORKER = 'sw'; // marker for Service Worker commands
 const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
@@ -57,7 +58,7 @@ export default class TeqFw_Web_Sw_Worker {
         /**
          * Send message to `index.html` to start bootstrap.
          */
-        function onActivate(event) {
+        function onActivate() {
             console.log(`[SW]: on activate event is here...`);
             self.clients.claim();
         }
@@ -73,9 +74,12 @@ export default class TeqFw_Web_Sw_Worker {
              */
             function getRouteType(req) {
                 const API = /(.*)(\/api\/)(.*)/;
+                const SSE = /(.*)(\/sse\/)(.*)/;
                 const SW = /(.*)(\/sw\/)(.*)/;
                 if (req.url.match(API)) {
                     return AREA_API;
+                } else if (req.url.match(SSE)) {
+                    return AREA_SSE;
                 } else if (req.url.match(SW)) {
                     return AREA_WORKER;
                 }
@@ -102,7 +106,7 @@ export default class TeqFw_Web_Sw_Worker {
 
             // MAIN FUNCTIONALITY
             const routeType = getRouteType(event.request);
-            if (routeType === AREA_API) {
+            if ((routeType === AREA_API) || (routeType === AREA_SSE)) {
                 // just pass the request to remote server
             } else {
                 if (_cacheDisabled !== true) {

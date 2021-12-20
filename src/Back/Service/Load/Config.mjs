@@ -7,7 +7,7 @@
 const NS = 'TeqFw_Web_Back_Service_Load_Config';
 
 /**
- * @implements TeqFw_Web_Back_Api_Service_IFactory
+ * @implements TeqFw_Web_Back_Api_WAPI_IFactory
  */
 export default class TeqFw_Web_Back_Service_Load_Config {
     constructor(spec) {
@@ -26,14 +26,14 @@ export default class TeqFw_Web_Back_Service_Load_Config {
             // DEFINE INNER FUNCTIONS
             /**
              *
-             * @param {TeqFw_Web_Back_Api_Service_Context} context
+             * @param {TeqFw_Web_Back_Api_WAPI_Context} context
              * @return {Promise<void>}
              */
             async function service(context) {
                 /** @type {TeqFw_Web_Shared_Service_Route_Load_Config.Response} */
                 const out = context.getOutData();
                 // put web part of the local configuration to the out
-                /** @type {TeqFw_Web_Back_Api_Dto_Config_Local} */
+                /** @type {TeqFw_Web_Back_Dto_Config_Local} */
                 const webCfg = config.getLocal(DEF.SHARED.NAME);
                 Object.assign(out, webCfg);
             }

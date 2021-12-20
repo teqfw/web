@@ -21,15 +21,15 @@ export default class TeqFw_Web_Back_Plugin_Web_Handler_Service_Item {
      * @type {string}
      */
     route;
-    /** @type {TeqFw_Web_Back_Api_Service_IRoute} */
+    /** @type {TeqFw_Web_Back_Api_WAPI_IRoute} */
     routeFactory;
-    /** @type {function(TeqFw_Web_Back_Api_Service_Context): Promise<void>} */
+    /** @type {function(TeqFw_Web_Back_Api_WAPI_Context): Promise<void>} */
     service;
 
     /**
      * Initialize item properties using service factory.
      *
-     * @param {TeqFw_Web_Back_Api_Service_IFactory} factory
+     * @param {TeqFw_Web_Back_Api_WAPI_IFactory} factory
      */
     constructor(factory) {
         this.routeFactory = factory.getRouteFactory();
