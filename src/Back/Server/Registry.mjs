@@ -7,7 +7,7 @@ export default class TeqFw_Web_Back_Server_Registry {
         /** @type {typeof TeqFw_Core_Shared_Mod_Map} */
         const Map = spec['TeqFw_Core_Shared_Mod_Map#'];
 
-        this.create = function ({}) {
+        this.create = function (opts = {}) {
             return new Map();
         }
     }

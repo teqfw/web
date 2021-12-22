@@ -43,7 +43,7 @@ export default class TeqFw_Web_Back_Handler_Final {
                 const file = shares.get(DEF.SHARE_RES_FILE);
                 const body = shares.get(DEF.SHARE_RES_BODY);
                 let stat;
-                if (file) {
+                if (file && (statusCode === HTTP_STATUS_OK)) {
                     if (existsSync(file) && (stat = statSync(file)) && stat.isFile()) {
                         const mimeType = lookup(file) ?? 'application/octet-stream';
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, mimeType);
@@ -52,11 +52,18 @@ export default class TeqFw_Web_Back_Handler_Final {
                         const readStream = createReadStream(file);
                         res.writeHead(statusCode, headers);
                         // TODO: add error hndl
-                        pipeline(readStream, res, (err) => {if (err) console.dir(err)});
-                    }
+                        pipeline(readStream, res, (err) => {
+                            const input = readStream;
+                            const output = res;
+                            const bp = true;
+                        });
+                    } else respond404(res);
                 } else if (body) {
                     res.writeHead(statusCode, headers);
                     res.end(body);
+                } else if (statusCode !== HTTP_STATUS_OK) {
+                    res.writeHead(statusCode, headers);
+                    res.end();
                 } else respond404(res);
             }
         }
