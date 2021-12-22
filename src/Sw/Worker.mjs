@@ -120,7 +120,13 @@ export default class TeqFw_Web_Sw_Worker {
             async function loadFilesToCache() {
                 // Get list of static files from the server
                 const data = {door: _door}; // see TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Request
-                const req = new Request(API_STATIC_FILES, {method: 'POST', body: JSON.stringify({data})});
+                const req = new Request(API_STATIC_FILES, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({data})
+                });
                 const resp = await self.fetch(req);
                 const json = await resp.json();
                 return json?.data?.items ?? [];
