@@ -1,7 +1,8 @@
 /**
  * Model to represent context for plugins services.
- * All plugins services use this context to interchange data with HTTP-server (and, through the server, with clients).
- *
+ * All plugins' services use this context to interchange data with HTTP-server (and, through the server, with clients).
+ * TODO: it's not a DTO, we should pass HTTP-request data to constructor
+ * TODO: move class fields to constructor (they are public now)
  * @namespace TeqFw_Web_Back_Api_WAPI_Context
  */
 // MODULE'S IMPORT
@@ -11,24 +12,25 @@ import {constants as H2} from 'http2';
 const NS = 'TeqFw_Web_Back_Api_WAPI_Context';
 
 export default class TeqFw_Web_Back_Api_WAPI_Context {
+    /** @type {TeqFw_Core_Shared_Mod_Map} */
+    handlersShare;
+    /** @type {module:http.IncomingMessage|module:http2.Http2ServerRequest} */
+    httpRequest;
     /** @type {Object} */
     inData;
     /** @type {Object} */
     outData;
     /** @type {Object<string, string>} */
     outHeaders;
-    /** @type {TeqFw_Web_Back_Api_Request_IContext} */
-    requestContext;
     /** @type {{string, string}} */
     routeParams;
 
     /**
-     * Get object that is shared between all handlers from request context.
-     * TODO: should we return prop of the shared object for method param (getHandlersShare(name) => shared[name])?
-     * @return {Object}
+     * Get objects registry that is shared between all handlers.
+     * @return {TeqFw_Core_Shared_Mod_Map}
      */
     getHandlersShare() {
-        return this.requestContext.getHandlersShare();
+        return this.handlersShare;
     }
 
     /**
@@ -56,11 +58,11 @@ export default class TeqFw_Web_Back_Api_WAPI_Context {
     }
 
     /**
-     * Get context for current request.
-     * @return TeqFw_Web_Back_Api_Request_IContext
+     * Get HTTP request url (/root/door/space/route).
+     * @return {string} data
      */
-    getRequestContext() {
-        return this.requestContext;
+    getRequestUrl() {
+        return this.httpRequest.url;
     }
 
     /**
@@ -72,6 +74,14 @@ export default class TeqFw_Web_Back_Api_WAPI_Context {
     }
 
     /**
+     * Set context to current request.
+     * @param {TeqFw_Core_Shared_Mod_Map} data
+     */
+    setHandlersShare(data) {
+        this.handlersShare = data;
+    }
+
+    /**
      * Set service input data extracted from the POSTed JSON.
      * @param {Object} data
      */
@@ -80,7 +90,7 @@ export default class TeqFw_Web_Back_Api_WAPI_Context {
     }
 
     /**
-     * Set service output data to be send as JSON in the response.
+     * Set service output data to be sent as JSON in the response.
      * @param {Object} data
      */
     setOutData(data) {
@@ -88,7 +98,7 @@ export default class TeqFw_Web_Back_Api_WAPI_Context {
     }
 
     /**
-     * Add/replace one header to be send in the response.
+     * Add/replace one header to be sent in the response.
      * @param {string} key
      * @param {string} value
      */
@@ -107,11 +117,11 @@ export default class TeqFw_Web_Back_Api_WAPI_Context {
     }
 
     /**
-     * Set context to current request.
-     * @param {TeqFw_Web_Back_Api_Request_IContext} data
+     * Set HTTP request data.
+     * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
      */
-    setRequestContext(data) {
-        this.requestContext = data;
+    setHttpRequest(req) {
+        this.httpRequest = req;
     }
 
     /**
@@ -137,7 +147,7 @@ export class Factory {
         res.inData = data?.inData;
         res.outData = data?.outData;
         res.outHeaders = data?.outHeaders ?? {};
-        res.requestContext = data?.requestContext;
+        res.handlersShare = data?.handlersShare;
         res.routeParams = data?.routeParams ?? {};
         return res;
     }

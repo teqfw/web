@@ -124,9 +124,11 @@ export default class TeqFw_Web_Back_Handler_Static {
             }
 
             // MAIN FUNCTIONALITY
-            if (!res.headersSent && !res[DEF.RES_STATUS]) {
-                res[DEF.RES_FILE] = getFilesystemPath(req.url);
-                res[DEF.RES_STATUS] = HTTP_STATUS_OK;
+            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            const shares = res[DEF.HNDL_SHARE];
+            if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
+                shares.set(DEF.SHARE_RES_FILE, getFilesystemPath(req.url));
+                shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
             }
         }
 

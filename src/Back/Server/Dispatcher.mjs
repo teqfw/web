@@ -27,6 +27,8 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
         const scan = spec['TeqFw_Web_Back_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
+        /** @type {TeqFw_Web_Back_Server_Registry} */
+        const fRegistry = spec['TeqFw_Web_Back_Server_Registry$'];
         /** @type {TeqFw_Web_Back_Server_Respond.respond405|function} */
         const respond405 = spec['TeqFw_Web_Back_Server_Respond.respond405'];
 
@@ -52,7 +54,7 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
             /**
              * Read body and save it to `req` structure if MIME type is 'text/plain' or 'application/json'.
              * @param {string} method
-             * @param {string[]} headers
+             * @param {string[]|IncomingHttpHeaders} headers
              * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
              * @return {Promise<void>}
              */
@@ -74,16 +76,18 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
                     });
                 }
 
-
                 // MAIN FUNCTIONALITY
                 // should we process body of the input message?
                 if (method === HTTP2_METHOD_POST) {
                     const contentType = headers[HTTP2_HEADER_CONTENT_TYPE] ?? '';
+                    /** @type {TeqFw_Core_Shared_Mod_Map} */
+                    const shares = req[DEF.HNDL_SHARE];
                     if (contentType.startsWith('application/json')) {
                         const body = await readBody(req);
-                        req[DEF.REQ_BODY_JSON] = JSON.parse(body);
+                        shares.set(DEF.SHARE_REQ_BODY_JSON, JSON.parse(body));
                     } else if (contentType.startsWith('text/plain')) {
-                        req[DEF.REQ_BODY] = await readBody(req);
+                        const body = await readBody(req);
+                        shares.set(DEF.SHARE_REQ_BODY, body);
                     }
                 }
             }
@@ -94,6 +98,10 @@ export default class TeqFw_Web_Back_Server_Dispatcher {
             const {headers, method, url} = req;
             // check HTTP method
             if (isMethodAllowed(method)) {
+                // set registry for shared objects to request & response (the same object)
+                const sharedReg = fRegistry.create();
+                req[DEF.HNDL_SHARE] = res[DEF.HNDL_SHARE] = sharedReg;
+                // try to parse body for text & json input
                 await parseBody(method, headers, req);
                 const address = mAddress.parsePath(url);
                 // collect processors

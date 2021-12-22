@@ -77,7 +77,9 @@ export default class TeqFw_Web_Back_Handler_WAPI {
             }
 
             // MAIN FUNCTIONALITY
-            if (!res.headersSent && !res[DEF.RES_STATUS]) {
+            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            const shares = res[DEF.HNDL_SHARE];
+            if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
                 /** @type {TeqFw_Web_Back_Dto_Address} */
                 const address = mAddress.parsePath(req.url);
                 if (address?.space === DEF.SHARED.SPACE_API) {
@@ -88,9 +90,12 @@ export default class TeqFw_Web_Back_Handler_WAPI {
                     } = findRoute(address.route);
                     if (routeItem) { // call endpoint service
                         try {
+
                             // create service context object and put input data inside
                             const serviceCtx = fContext.create();
-                            const json = req[DEF.REQ_BODY_JSON];
+                            serviceCtx.setHttpRequest(req);
+                            serviceCtx.setHandlersShare(shares);
+                            const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
                             if (json) {
                                 const inData = routeItem.routeFactory.createReq(json?.data);
                                 serviceCtx.setInData(inData);
@@ -102,13 +107,14 @@ export default class TeqFw_Web_Back_Handler_WAPI {
                                 // run service function
                                 await routeItem.service(serviceCtx);
                                 // compose result from outData been put into service context before service was run
-                                res[DEF.RES_BODY] = JSON.stringify({data: outData});
+                                const json = JSON.stringify({data: outData});
+                                shares.set(DEF.SHARE_RES_BODY, json);
                                 // merge service out headers into response headers
                                 const headersSrv = serviceCtx.getOutHeaders();
                                 for (const key of Object.keys(headersSrv))
                                     res.setHeader(key, headersSrv[key]);
                                 res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
-                                res[DEF.RES_STATUS] = HTTP_STATUS_OK;
+                                shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                             } catch (err) {
                                 logger.error(err);
                                 respond500(res, err?.message);

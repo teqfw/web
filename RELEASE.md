@@ -1,5 +1,10 @@
 # @teqfw/web: releases
 
+# 0.8.0.new
+
+* Add shared object' registry for HTTP request/response.
+* Clean up deprecated code.
+
 # 0.7.0
 
 * Ability to start in HTTP/1.1, HTTP/2 and HTTPS over HTTP/2 modes.

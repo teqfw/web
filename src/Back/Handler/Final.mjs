@@ -36,10 +36,12 @@ export default class TeqFw_Web_Back_Handler_Final {
          */
         function process(req, res) {
             if (!res.headersSent) {
+                /** @type {TeqFw_Core_Shared_Mod_Map} */
+                const shares = req[DEF.HNDL_SHARE];
                 const headers = res.getHeaders();
-                const statusCode = res[DEF.RES_STATUS] ?? HTTP_STATUS_OK;
-                const file = res[DEF.RES_FILE];
-                const body = res[DEF.RES_BODY];
+                const statusCode = shares.get(DEF.SHARE_RES_STATUS) ?? HTTP_STATUS_OK;
+                const file = shares.get(DEF.SHARE_RES_FILE);
+                const body = shares.get(DEF.SHARE_RES_BODY);
                 let stat;
                 if (file) {
                     if (existsSync(file) && (stat = statSync(file)) && stat.isFile()) {

@@ -39,7 +39,9 @@ export default class TeqFw_Web_Back_Handler_SSE {
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function process(req, res) {
-            if (!res.headersSent && !res[DEF.RES_STATUS]) {
+            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            const shares = res[DEF.HNDL_SHARE];
+            if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
                 return _service.act(req, res);
             }
         }

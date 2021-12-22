@@ -12,14 +12,17 @@ export default class TeqFw_Web_Back_Defaults {
 
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
 
+    HNDL_SHARE = 'teqSharedObjects'; // attribute name for shared objects' registry in req/res structures
+
     /** @type {TeqFw_Di_Back_Defaults} */
     MOD_DI;
 
-    REQ_BODY = 'teqBody'; // request body as text
-    REQ_BODY_JSON = 'teqBodyJson'; // request body as JSON object
-    RES_BODY = 'teqBody'; // response body as text
-    RES_FILE = 'teqFile'; // file name to be send as response
-    RES_STATUS = 'teqStatus'; // HTTP status for response (if request is processed by handler)
+    // key names for objects stored in shared objects' registry (related to processing of one HTTP request)
+    SHARE_REQ_BODY;
+    SHARE_REQ_BODY_JSON;
+    SHARE_RES_BODY;
+    SHARE_RES_FILE;
+    SHARE_RES_STATUS;
 
     /** @type {TeqFw_Web_Shared_Defaults} */
     SHARED;
@@ -30,6 +33,13 @@ export default class TeqFw_Web_Back_Defaults {
         this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 
         // MAIN FUNCTIONALITY
+        // init props after dependencies was injected
+        const ns = this.SHARED.NAME;
+        this.SHARE_REQ_BODY = `${ns}/req/body`; // request body as text
+        this.SHARE_REQ_BODY_JSON = `${ns}/req/body/json`; // request body as JSON object
+        this.SHARE_RES_BODY = `${ns}/res/body`; // response body as text
+        this.SHARE_RES_FILE = `${ns}/res/filename`; // name of the to be sent as response
+        this.SHARE_RES_STATUS = `${ns}/res/status`; // HTTP status for response (if request is processed by handler)
         Object.freeze(this);
     }
 }
