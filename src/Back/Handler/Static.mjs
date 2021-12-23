@@ -18,7 +18,7 @@ const {
 
 // MODULE'S CLASSES
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Static {
     constructor(spec) {

@@ -6,6 +6,7 @@
 * Respond 404 for missed static resource.
 * Add 'content-type' header to service worker request for files to caching.
 * Clean up deprecated code.
+* Clean up DTO features from 'TeqFw_Web_Back_Handler_WAPI_Context'.
 
 # 0.7.0
 

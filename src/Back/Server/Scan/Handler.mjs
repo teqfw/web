@@ -34,7 +34,7 @@ export default function (spec) {
         /**
          * Create handlers and populate sort util with before-after data.
          * @param utilSort
-         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Request_IHandler>>}
+         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Dispatcher_IHandler>>}
          */
         async function createHandlers(utilSort) {
             const res = {};
@@ -60,7 +60,7 @@ export default function (spec) {
                     logger.info(`Create Web handler: ${hName}`);
                     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
                     const dto = includes[hName];
-                    /** @type {TeqFw_Web_Back_Api_Request_IHandler} */
+                    /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler} */
                     res[hName] = await container.get(`${hName}$`);
                     const orderDto = new DtoSort();
                     orderDto.id = hName;
@@ -74,7 +74,7 @@ export default function (spec) {
             // init result handlers
             logger.info(`Initialize web request handlers (total: ${Object.keys(res).length}).`);
             for (const hName of Object.keys(res)) {
-                /** @type {TeqFw_Web_Back_Api_Request_IHandler} */
+                /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler} */
                 const handler = res[hName];
                 if (typeof handler.init === 'function') await handler.init();
             }

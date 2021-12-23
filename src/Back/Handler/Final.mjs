@@ -17,7 +17,7 @@ const {
 } = H2;
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Final {
     constructor(spec) {
@@ -53,8 +53,6 @@ export default class TeqFw_Web_Back_Handler_Final {
                         res.writeHead(statusCode, headers);
                         // TODO: add error hndl
                         pipeline(readStream, res, (err) => {
-                            const input = readStream;
-                            const output = res;
                             const bp = true;
                         });
                     } else respond404(res);

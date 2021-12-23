@@ -3,13 +3,13 @@
  *
  * These handlers are used by dispatcher to process HTTP request.
  *
- * @namespace TeqFw_Web_Back_Api_Request_IHandler
+ * @namespace TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 
 /**
  * @interface
  */
-export default class TeqFw_Web_Back_Api_Request_IHandler {
+export default class TeqFw_Web_Back_Api_Dispatcher_IHandler {
     /**
      * Return processing function to handle request.
      * @return {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}

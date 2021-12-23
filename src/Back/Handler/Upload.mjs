@@ -18,7 +18,7 @@ const {
 const HEAD_FILENAME = 'teq-upload-filename'; // HTTP header to get uploading filename
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Upload {
     constructor(spec) {

@@ -26,7 +26,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Config {
             // DEFINE INNER FUNCTIONS
             /**
              *
-             * @param {TeqFw_Web_Back_Api_WAPI_Context} context
+             * @param {TeqFw_Web_Back_Handler_WAPI_Context} context
              * @return {Promise<void>}
              */
             async function service(context) {

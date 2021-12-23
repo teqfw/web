@@ -11,7 +11,7 @@ const {
 } = H2;
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_SSE {
     constructor(spec) {
