@@ -1,26 +1,26 @@
 /**
  * Route data for service to load app configuration to the front.
  *
- * @namespace TeqFw_Web_Shared_Service_Route_Load_Config
+ * @namespace TeqFw_Web_Shared_WAPI_Load_Config
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Shared_Service_Route_Load_Config';
+const NS = 'TeqFw_Web_Shared_WAPI_Load_Config';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_Config
  */
 export class Request {}
 
 /**
  * This response contains unstructured data.
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_Config
  */
 export class Response {}
 
 /**
  * Factory to create new DTOs and get route address.
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_Config
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_Config
  * @implements TeqFw_Web_Back_Api_WAPI_IRoute
  */
 export class Factory {
@@ -34,7 +34,7 @@ export class Factory {
 
         /**
          * @param {Request|Object|null} data
-         * @return {TeqFw_Web_Shared_Service_Route_Load_Config.Request}
+         * @return {TeqFw_Web_Shared_WAPI_Load_Config.Request}
          */
         this.createReq = function (data = null) {
             return new Request();
@@ -43,7 +43,7 @@ export class Factory {
         /**
          * This response contains unstructured data.
          * @param {Response|Object|null} data
-         * @return {TeqFw_Web_Shared_Service_Route_Load_Config.Response}
+         * @return {TeqFw_Web_Shared_WAPI_Load_Config.Response}
          */
         this.createRes = function (data = null) {
             return Object.assign(new Response(), data);

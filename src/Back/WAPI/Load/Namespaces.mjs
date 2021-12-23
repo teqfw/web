@@ -1,35 +1,35 @@
 /**
  * Load DI namespaces to the front.
  *
- * @namespace TeqFw_Web_Back_Service_Load_Namespaces
+ * @namespace TeqFw_Web_Back_WAPI_Load_Namespaces
  */
 // MODULE'S IMPORT
 import $path from 'path';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Service_Load_Namespaces';
+const NS = 'TeqFw_Web_Back_WAPI_Load_Namespaces';
 
 /**
  * @implements TeqFw_Web_Back_Api_WAPI_IFactory
  */
-export default class TeqFw_Web_Back_Service_Load_Namespaces {
+export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Factory} */
-        const route = spec['TeqFw_Web_Shared_Service_Route_Load_Namespaces#Factory$'];
-        /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item.Factory} */
-        const fItem = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Item#Factory$'];
-        /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace.Factory} */
-        const fReplace = spec['TeqFw_Web_Shared_Service_Dto_Namespace_Replace#Factory$'];
+        /** @type {TeqFw_Web_Shared_WAPI_Load_Namespaces.Factory} */
+        const route = spec['TeqFw_Web_Shared_WAPI_Load_Namespaces#Factory$'];
+        /** @type {TeqFw_Web_Shared_Dto_Namespace_Item.Factory} */
+        const fItem = spec['TeqFw_Web_Shared_Dto_Namespace_Item#Factory$'];
+        /** @type {TeqFw_Web_Shared_Dto_Namespace_Replace.Factory} */
+        const fReplace = spec['TeqFw_Web_Shared_Dto_Namespace_Replace#Factory$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]} */
+        /** @type {TeqFw_Web_Shared_Dto_Namespace_Item[]} */
         const namespaces = getNamespaces(registry); // cache for DI namespaces
-        /** @type {TeqFw_Web_Shared_Service_Dto_Namespace_Replace[]} */
+        /** @type {TeqFw_Web_Shared_Dto_Namespace_Replace[]} */
         const replaces = getReplaces(registry); // cache for frontend replaces for DI
 
         // DEFINE INNER FUNCTIONS
@@ -39,7 +39,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
          * (@see TeqFw_Web_Back_Handler_Static)
          *
          * @param {TeqFw_Core_Back_Scan_Plugin_Registry} registry
-         * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Item[]}
+         * @return {TeqFw_Web_Shared_Dto_Namespace_Item[]}
          */
         function getNamespaces(registry) {
             const result = [];
@@ -60,7 +60,7 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
          * Loop through all plugins and compose replaces for DI container on the front.
          *
          * @param {TeqFw_Core_Back_Scan_Plugin_Registry} registry
-         * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Replace[]}
+         * @return {TeqFw_Web_Shared_Dto_Namespace_Replace[]}
          */
         function getReplaces(registry) {
             const result = [];
@@ -108,10 +108,10 @@ export default class TeqFw_Web_Back_Service_Load_Namespaces {
             // DEFINE INNER FUNCTIONS
             /**
              *
-             * @param {TeqFw_Web_Back_Api_WAPI_Context} context
+             * @param {TeqFw_Web_Back_Handler_WAPI_Context} context
              */
             async function service(context) {
-                /** @type {TeqFw_Web_Shared_Service_Route_Load_Namespaces.Response} */
+                /** @type {TeqFw_Web_Shared_WAPI_Load_Namespaces.Response} */
                 const out = context.getOutData();
                 out.items = namespaces;
                 out.replaces = replaces;

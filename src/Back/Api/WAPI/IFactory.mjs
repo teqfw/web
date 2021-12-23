@@ -11,7 +11,7 @@ export default class TeqFw_Web_Back_Api_WAPI_IFactory {
 
     /**
      * Get service function.
-     * @return {function(TeqFw_Web_Back_Api_WAPI_Context): Promise<void>}
+     * @return {function(TeqFw_Web_Back_Handler_WAPI_Context): Promise<void>}
      */
     getService() {}
 }

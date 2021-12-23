@@ -1,5 +1,14 @@
 # @teqfw/web: releases
 
+# 0.7.1
+
+* Add shared objects' registry for HTTP request/response.
+* Respond 404 for missed static resource.
+* Add 'content-type' header to service worker request for files to caching.
+* Clean up deprecated code.
+* Clean up DTO features from 'TeqFw_Web_Back_Handler_WAPI_Context'.
+* Restructure directories & files.
+
 # 0.7.0
 
 * Ability to start in HTTP/1.1, HTTP/2 and HTTPS over HTTP/2 modes.

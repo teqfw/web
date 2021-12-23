@@ -17,7 +17,7 @@ const {
 } = H2;
 
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_Final {
     constructor(spec) {
@@ -36,12 +36,14 @@ export default class TeqFw_Web_Back_Handler_Final {
          */
         function process(req, res) {
             if (!res.headersSent) {
+                /** @type {TeqFw_Core_Shared_Mod_Map} */
+                const shares = req[DEF.HNDL_SHARE];
                 const headers = res.getHeaders();
-                const statusCode = res[DEF.RES_STATUS] ?? HTTP_STATUS_OK;
-                const file = res[DEF.RES_FILE];
-                const body = res[DEF.RES_BODY];
+                const statusCode = shares.get(DEF.SHARE_RES_STATUS) ?? HTTP_STATUS_OK;
+                const file = shares.get(DEF.SHARE_RES_FILE);
+                const body = shares.get(DEF.SHARE_RES_BODY);
                 let stat;
-                if (file) {
+                if (file && (statusCode === HTTP_STATUS_OK)) {
                     if (existsSync(file) && (stat = statSync(file)) && stat.isFile()) {
                         const mimeType = lookup(file) ?? 'application/octet-stream';
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, mimeType);
@@ -50,11 +52,16 @@ export default class TeqFw_Web_Back_Handler_Final {
                         const readStream = createReadStream(file);
                         res.writeHead(statusCode, headers);
                         // TODO: add error hndl
-                        pipeline(readStream, res, (err) => {if (err) console.dir(err)});
-                    }
+                        pipeline(readStream, res, (err) => {
+                            const bp = true;
+                        });
+                    } else respond404(res);
                 } else if (body) {
                     res.writeHead(statusCode, headers);
                     res.end(body);
+                } else if (statusCode !== HTTP_STATUS_OK) {
+                    res.writeHead(statusCode, headers);
+                    res.end();
                 } else respond404(res);
             }
         }

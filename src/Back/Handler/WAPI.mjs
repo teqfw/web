@@ -17,7 +17,7 @@ const {
 
 // MODULE'S CLASSES
 /**
- * @implements TeqFw_Web_Back_Api_Request_IHandler
+ * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_Handler_WAPI {
     constructor(spec) {
@@ -40,8 +40,8 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Api_WAPI_Context.Factory} */
-        const fContext = spec['TeqFw_Web_Back_Api_WAPI_Context#Factory$'];
+        /** @type {TeqFw_Web_Back_Handler_WAPI_Context.Factory} */
+        const fContext = spec['TeqFw_Web_Back_Handler_WAPI_Context.Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */
@@ -50,7 +50,7 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         // DEFINE INNER FUNCTIONS
         /**
          * Process request if address space is equal to 'api'.
-         * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
+         * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function process(req, res) {
@@ -77,7 +77,9 @@ export default class TeqFw_Web_Back_Handler_WAPI {
             }
 
             // MAIN FUNCTIONALITY
-            if (!res.headersSent && !res[DEF.RES_STATUS]) {
+            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            const shares = res[DEF.HNDL_SHARE];
+            if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
                 /** @type {TeqFw_Web_Back_Dto_Address} */
                 const address = mAddress.parsePath(req.url);
                 if (address?.space === DEF.SHARED.SPACE_API) {
@@ -89,26 +91,20 @@ export default class TeqFw_Web_Back_Handler_WAPI {
                     if (routeItem) { // call endpoint service
                         try {
                             // create service context object and put input data inside
-                            const serviceCtx = fContext.create();
-                            const json = req[DEF.REQ_BODY_JSON];
-                            if (json) {
-                                const inData = routeItem.routeFactory.createReq(json?.data);
-                                serviceCtx.setInData(inData);
-                            }
+                            const serviceCtx = fContext.create(req, params, routeItem.routeFactory);
                             try {
-                                // create output object for requested service
-                                const outData = routeItem.routeFactory?.createRes();
-                                serviceCtx.setOutData(outData);
                                 // run service function
                                 await routeItem.service(serviceCtx);
                                 // compose result from outData been put into service context before service was run
-                                res[DEF.RES_BODY] = JSON.stringify({data: outData});
+                                const outData = serviceCtx.getOutData();
+                                const json = JSON.stringify({data: outData});
+                                shares.set(DEF.SHARE_RES_BODY, json);
                                 // merge service out headers into response headers
                                 const headersSrv = serviceCtx.getOutHeaders();
                                 for (const key of Object.keys(headersSrv))
                                     res.setHeader(key, headersSrv[key]);
                                 res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
-                                res[DEF.RES_STATUS] = HTTP_STATUS_OK;
+                                shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                             } catch (err) {
                                 logger.error(err);
                                 respond500(res, err?.message);

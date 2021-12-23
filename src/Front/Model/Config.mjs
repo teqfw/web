@@ -6,13 +6,13 @@ export default class TeqFw_Web_Front_Model_Config {
     #DEF;
     /** @type {TeqFw_Web_Front_Api_Dto_Config} */
     #frontCfg;
-    /** @type {TeqFw_Web_Shared_Service_Route_Load_Config.Factory} */
+    /** @type {TeqFw_Web_Shared_WAPI_Load_Config.Factory} */
     #route;
 
     constructor(spec) {
         this.#DEF = spec['TeqFw_Web_Front_Defaults$'];
         this.#frontCfg = spec['TeqFw_Web_Front_Api_Dto_Config$'];
-        this.#route = spec['TeqFw_Web_Shared_Service_Route_Load_Config#Factory$'];
+        this.#route = spec['TeqFw_Web_Shared_WAPI_Load_Config#Factory$'];
     }
 
     /**
