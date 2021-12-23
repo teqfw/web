@@ -17,7 +17,7 @@
       }
     },
     "services": [
-      "Vnd_Prj_Back_Service_Name"
+      "Vnd_Prj_Back_WAPI_Name"
     ],
     "statics": {
       "/package/": "/package/dist/"

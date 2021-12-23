@@ -1,14 +1,14 @@
 /**
  * Route data for service to load list of files to be cached on the front by service worker.
  *
- * @namespace TeqFw_Web_Shared_Service_Route_Load_FilesToCache
+ * @namespace TeqFw_Web_Shared_WAPI_Load_FilesToCache
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Shared_Service_Route_Load_FilesToCache';
+const NS = 'TeqFw_Web_Shared_WAPI_Load_FilesToCache';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_FilesToCache
  */
 export class Request {
     /**
@@ -19,7 +19,7 @@ export class Request {
 }
 
 /**
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_FilesToCache
  */
 export class Response {
     /** @type {string[]} */
@@ -28,7 +28,7 @@ export class Response {
 
 /**
  * Factory to create new DTOs.
- * @memberOf TeqFw_Web_Shared_Service_Route_Load_FilesToCache
+ * @memberOf TeqFw_Web_Shared_WAPI_Load_FilesToCache
  * @implements TeqFw_Web_Back_Api_WAPI_IRoute
  */
 export class Factory {
@@ -41,7 +41,7 @@ export class Factory {
         // DEFINE INSTANCE METHODS
         /**
          * @param {Request|Object|null} data
-         * @return {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Request}
+         * @return {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request}
          */
         this.createReq = function (data = null) {
             const res = new Request();
@@ -51,7 +51,7 @@ export class Factory {
 
         /**
          * @param {Response|Object|null} data
-         * @return {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Response}
+         * @return {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Response}
          */
         this.createRes = function (data = null) {
             const res = new Response();

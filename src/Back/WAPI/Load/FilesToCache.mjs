@@ -1,19 +1,19 @@
 /**
  * Load list of files to be cached on the front by service worker.
  *
- * @namespace TeqFw_Web_Back_Service_Load_FilesToCache
+ * @namespace TeqFw_Web_Back_WAPI_Load_FilesToCache
  */
 // MODULE'S IMPORT
 import {join} from 'path';
 import {existsSync} from 'fs';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Service_Load_FilesToCache';
+const NS = 'TeqFw_Web_Back_WAPI_Load_FilesToCache';
 
 /**
  * @implements TeqFw_Web_Back_Api_WAPI_IFactory
  */
-export default class TeqFw_Web_Back_Service_Load_FilesToCache {
+export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -22,8 +22,8 @@ export default class TeqFw_Web_Back_Service_Load_FilesToCache {
         const scanRecursively = spec['TeqFw_Core_Back_Util#scanRecursively'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Factory} */
-        const route = spec['TeqFw_Web_Shared_Service_Route_Load_FilesToCache#Factory$'];
+        /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Factory} */
+        const route = spec['TeqFw_Web_Shared_WAPI_Load_FilesToCache#Factory$'];
 
         // DEFINE INSTANCE METHODS
         this.getRouteFactory = () => route;
@@ -130,9 +130,9 @@ export default class TeqFw_Web_Back_Service_Load_FilesToCache {
                 }
 
                 // MAIN FUNCTIONALITY
-                /** @type {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Request} */
+                /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request} */
                 const input = context.getInData();
-                /** @type {TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Response} */
+                /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Response} */
                 const out = context.getOutData();
                 out.items = generateUrlsList(input.door);
             }

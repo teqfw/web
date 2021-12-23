@@ -119,7 +119,7 @@ export default class TeqFw_Web_Sw_Worker {
             // DEFINE INNER FUNCTIONS
             async function loadFilesToCache() {
                 // Get list of static files from the server
-                const data = {door: _door}; // see TeqFw_Web_Shared_Service_Route_Load_FilesToCache.Request
+                const data = {door: _door}; // see TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request
                 const req = new Request(API_STATIC_FILES, {
                     method: 'POST',
                     headers: {

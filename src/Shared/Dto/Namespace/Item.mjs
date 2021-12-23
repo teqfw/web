@@ -2,10 +2,10 @@
  * DI namespace item DTO in Service API.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Shared_Service_Dto_Namespace_Item';
+const NS = 'TeqFw_Web_Shared_Dto_Namespace_Item';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Shared_Service_Dto_Namespace_Item {
+export default class TeqFw_Web_Shared_Dto_Namespace_Item {
     /**
      * Extension for ES6 modules ('mjs' or 'js').
      * @type {string}
@@ -25,24 +25,24 @@ export default class TeqFw_Web_Shared_Service_Dto_Namespace_Item {
 }
 
 // attributes names to use as aliases in queries to RDb
-TeqFw_Web_Shared_Service_Dto_Namespace_Item.EXT = 'ext';
-TeqFw_Web_Shared_Service_Dto_Namespace_Item.NS = 'ns';
-TeqFw_Web_Shared_Service_Dto_Namespace_Item.PATH = 'path';
+TeqFw_Web_Shared_Dto_Namespace_Item.EXT = 'ext';
+TeqFw_Web_Shared_Dto_Namespace_Item.NS = 'ns';
+TeqFw_Web_Shared_Dto_Namespace_Item.PATH = 'path';
 
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Shared_Service_Dto_Namespace_Item
+ * @memberOf TeqFw_Web_Shared_Dto_Namespace_Item
  */
 export class Factory {
     constructor(spec) {
         const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
         /**
-         * @param {TeqFw_Web_Shared_Service_Dto_Namespace_Item|null} data
-         * @return {TeqFw_Web_Shared_Service_Dto_Namespace_Item}
+         * @param {TeqFw_Web_Shared_Dto_Namespace_Item|null} data
+         * @return {TeqFw_Web_Shared_Dto_Namespace_Item}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Shared_Service_Dto_Namespace_Item();
+            const res = new TeqFw_Web_Shared_Dto_Namespace_Item();
             res.ext = castString(data?.ext);
             res.ns = castString(data?.ns);
             res.path = castString(data?.path);
@@ -52,5 +52,5 @@ export class Factory {
 }
 
 // finalize code components for this es6-module
-Object.freeze(TeqFw_Web_Shared_Service_Dto_Namespace_Item);
+Object.freeze(TeqFw_Web_Shared_Dto_Namespace_Item);
 Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
