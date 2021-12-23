@@ -1,8 +1,10 @@
 # @teqfw/web: releases
 
-# 0.8.0.new
+# 0.7.1.new
 
-* Add shared object' registry for HTTP request/response.
+* Add shared objects' registry for HTTP request/response.
+* Respond 404 for missed static resource.
+* Add 'content-type' header to service worker request for files to caching.
 * Clean up deprecated code.
 
 # 0.7.0
