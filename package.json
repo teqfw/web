@@ -31,6 +31,7 @@
   "dependencies": {
     "@teqfw/core": "*",
     "mime-types": "*",
+    "uuid": "*",
     "path-to-regexp": "*",
     "stream-buffers": "*"
   },

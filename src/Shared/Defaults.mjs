@@ -3,13 +3,15 @@
  */
 export default class TeqFw_Web_Shared_Defaults {
 
+    NAME = '@teqfw/web';
+
     /** @type {TeqFw_Core_Shared_Defaults} */
     MOD_CORE;
 
-    NAME = '@teqfw/web';
-
     // URL prefix for API requests: https://.../door/space/...
     SPACE_API = 'api';
+    SPACE_EVENT_DIRECT = 'efb'; // events stream from front to back
+    SPACE_EVENT_REVERSE = 'ebf'; // events stream from back to front
     SPACE_SRC = 'src';
     SPACE_SSE = 'sse';
     SPACE_UPLOAD = 'upload';

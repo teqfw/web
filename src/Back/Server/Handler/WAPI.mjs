@@ -1,13 +1,13 @@
 /**
  * Web server handler to process requests to API.
  *
- * @namespace TeqFw_Web_Back_Handler_WAPI
+ * @namespace TeqFw_Web_Back_Server_Handler_WAPI
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Handler_WAPI';
+const NS = 'TeqFw_Web_Back_Server_Handler_WAPI';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_GET,
@@ -19,7 +19,7 @@ const {
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Handler_WAPI {
+export default class TeqFw_Web_Back_Server_Handler_WAPI {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -40,8 +40,8 @@ export default class TeqFw_Web_Back_Handler_WAPI {
         const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Handler_WAPI_Context.Factory} */
-        const fContext = spec['TeqFw_Web_Back_Handler_WAPI_Context.Factory$'];
+        /** @type {TeqFw_Web_Back_Server_Handler_WAPI_Context.Factory} */
+        const fContext = spec['TeqFw_Web_Back_Server_Handler_WAPI_Context.Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */

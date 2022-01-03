@@ -53,8 +53,8 @@ export default function (spec) {
                     Array.prototype.push.apply(excludes, excl);
             }
             // remove excludes
-            if (excludes.includes('TeqFw_Web_Back_Handler_Final'))
-                throw new Error(`Handler 'TeqFw_Web_Back_Handler_Final' cannot be excluded.`);
+            if (excludes.includes('TeqFw_Web_Back_Server_Handler_Final'))
+                throw new Error(`Handler 'TeqFw_Web_Back_Server_Handler_Final' cannot be excluded.`);
             for (const hName of Object.keys(includes)) {
                 if (!excludes.includes(hName)) {
                     logger.info(`Create Web handler: ${hName}`);

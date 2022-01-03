@@ -23,7 +23,7 @@ export default class TeqFw_Web_Back_Plugin_Web_Handler_Service_Item {
     route;
     /** @type {TeqFw_Web_Back_Api_WAPI_IRoute} */
     routeFactory;
-    /** @type {function(TeqFw_Web_Back_Handler_WAPI_Context): Promise<void>} */
+    /** @type {function(TeqFw_Web_Back_Server_Handler_WAPI_Context): Promise<void>} */
     service;
 
     /**

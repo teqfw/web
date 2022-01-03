@@ -7,7 +7,7 @@ import {join} from 'path';
 import {createWriteStream, existsSync, mkdirSync} from 'fs';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Handler_Upload';
+const NS = 'TeqFw_Web_Back_Server_Handler_Upload';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_POST,
@@ -20,7 +20,7 @@ const HEAD_FILENAME = 'teq-upload-filename'; // HTTP header to get uploading fil
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Handler_Upload {
+export default class TeqFw_Web_Back_Server_Handler_Upload {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */

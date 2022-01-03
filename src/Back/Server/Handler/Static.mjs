@@ -1,7 +1,7 @@
 /**
  * Web server handler for static files.
  *
- * @namespace TeqFw_Web_Back_Handler_Static
+ * @namespace TeqFw_Web_Back_Server_Handler_Static
  */
 // MODULE'S IMPORT
 import {existsSync, statSync} from 'fs';
@@ -9,7 +9,7 @@ import {join} from 'path';
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Handler_Static';
+const NS = 'TeqFw_Web_Back_Server_Handler_Static';
 const INDEX_NAME = 'index.html';
 const {
     HTTP2_METHOD_GET,
@@ -20,7 +20,7 @@ const {
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Handler_Static {
+export default class TeqFw_Web_Back_Server_Handler_Static {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */

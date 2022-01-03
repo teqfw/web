@@ -9,17 +9,18 @@ import {pipeline} from 'stream';
 import {constants as H2} from "http2";
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Handler_Final';
+const NS = 'TeqFw_Web_Back_Server_Handler_Final';
 const {
     HTTP2_HEADER_CONTENT_LENGTH,
     HTTP2_HEADER_CONTENT_TYPE,
+    HTTP2_HEADER_SET_COOKIE,
     HTTP_STATUS_OK,
 } = H2;
 
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Handler_Final {
+export default class TeqFw_Web_Back_Server_Handler_Final {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -48,6 +49,7 @@ export default class TeqFw_Web_Back_Handler_Final {
                         const mimeType = lookup(file) ?? 'application/octet-stream';
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, mimeType);
                         res.setHeader(HTTP2_HEADER_CONTENT_LENGTH, stat.size);
+                        res.setHeader(HTTP2_HEADER_SET_COOKIE, 'boobs=asses');
                         // return file content
                         const readStream = createReadStream(file);
                         res.writeHead(statusCode, headers);
