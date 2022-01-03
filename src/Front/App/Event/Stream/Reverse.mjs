@@ -12,6 +12,10 @@ const SSE_STATE = {
     OPEN: 1,
 };
 
+// noinspection JSClosureCompilerSyntax
+/**
+ * @implements TeqFw_Core_Shared_Api_Event_IProducer
+ */
 export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
     constructor(spec) {
         // EXTRACT DEPS
@@ -25,11 +29,21 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
         const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
         /** @type {TeqFw_Web_Front_App_Event_Embassy} */
         const embassy = spec['TeqFw_Web_Front_App_Event_Embassy$'];
+        /** @type {TeqFw_Core_Shared_Mod_Event_Producer} */
+        const baseProducer = spec['TeqFw_Core_Shared_Mod_Event_Producer$$']; // instance
+        /** @type {TeqFw_Web_Front_Event_Stream_Reverse_Closed} */
+        const efClosed = spec['TeqFw_Web_Front_Event_Stream_Reverse_Closed$'];
+        /** @type {TeqFw_Web_Front_Event_Stream_Reverse_Opened} */
+        const efOpened = spec['TeqFw_Web_Front_Event_Stream_Reverse_Opened$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {EventSource} */
         let _source;
         let _url = `./${DEF.SHARED.SPACE_EVENT_REVERSE}`;
+
+        // MAIN FUNCTIONALITY
+        Object.assign(this, baseProducer); // new base instance for every current instance
+
 
         // DEFINE INSTANCE METHODS
 
@@ -37,6 +51,7 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
                 state.closed();
+                this.emit(efClosed.getName(), efClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
         }
@@ -52,8 +67,9 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
                 _source = new EventSource(url);
                 // on 'open'
                 _source.addEventListener('open', function () {
-                    logger.info(`New SSE connection is opened.`);
                     state.connected();
+                    thisConn.emit(efOpened.getName(), efOpened.createDto());
+                    logger.info(`New SSE connection is opened.`);
                 });
                 // on 'error'
                 _source.addEventListener('error', function (event) {
