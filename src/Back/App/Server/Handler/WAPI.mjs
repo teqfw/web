@@ -32,19 +32,19 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
         const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond500|function} */
         const respond500 = spec['TeqFw_Web_Back_App_Server_Respond.respond500'];
-        /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
-        const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
+        /** @type {TeqFw_Core_Back_App_Scan_Plugin_Registry} */
+        const regPlugins = spec['TeqFw_Core_Back_App_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
         const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#Factory$'];
-        /** @type {typeof TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
-        const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
-        /** @type {TeqFw_Web_Back_Model_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
+        /** @type {typeof TeqFw_Web_Back_App_Server_Handler_WAPI_Service} */
+        const Item = spec['TeqFw_Web_Back_App_Server_Handler_WAPI_Service#'];
+        /** @type {TeqFw_Web_Back_Mod_Address} */
+        const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Context.Factory} */
         const fContext = spec['TeqFw_Web_Back_App_Server_Handler_WAPI_Context.Factory$'];
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */
+        /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Service[]} */
         const router = [];
 
         // DEFINE INNER FUNCTIONS
@@ -60,7 +60,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
              * Match request to all routes and extract route params (if exist).
              *
              * @param {string} pathRoute route path of the URL (http://.../root/door/space[/route])
-             * @return {{routeItem: TeqFw_Web_Back_Plugin_Web_Handler_Service_Item, params: {string, string}}}
+             * @return {{routeItem: TeqFw_Web_Back_App_Server_Handler_WAPI_Service, params: {string, string}}}
              */
             function findRoute(pathRoute) {
                 let routeItem, params = {};
@@ -85,7 +85,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
                 if (address?.space === DEF.SHARED.SPACE_API) {
                     // match address to route item and extract route params
                     const {
-                        /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item} */
+                        /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Service} */
                         routeItem, params
                     } = findRoute(address.route);
                     if (routeItem) { // call endpoint service

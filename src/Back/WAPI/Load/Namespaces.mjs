@@ -17,8 +17,8 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
-        const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
+        /** @type {TeqFw_Core_Back_App_Scan_Plugin_Registry} */
+        const registry = spec['TeqFw_Core_Back_App_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Shared_WAPI_Load_Namespaces.Factory} */
         const route = spec['TeqFw_Web_Shared_WAPI_Load_Namespaces#Factory$'];
         /** @type {TeqFw_Web_Shared_Dto_Namespace_Item.Factory} */
@@ -38,7 +38,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
          * Loop through all plugins and compose namespace-to-source mapping for DI container on the front.
          * (@see TeqFw_Web_Back_App_Server_Handler_Static)
          *
-         * @param {TeqFw_Core_Back_Scan_Plugin_Registry} registry
+         * @param {TeqFw_Core_Back_App_Scan_Plugin_Registry} registry
          * @return {TeqFw_Web_Shared_Dto_Namespace_Item[]}
          */
         function getNamespaces(registry) {
@@ -59,7 +59,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
         /**
          * Loop through all plugins and compose replaces for DI container on the front.
          *
-         * @param {TeqFw_Core_Back_Scan_Plugin_Registry} registry
+         * @param {TeqFw_Core_Back_App_Scan_Plugin_Registry} registry
          * @return {TeqFw_Web_Shared_Dto_Namespace_Replace[]}
          */
         function getReplaces(registry) {

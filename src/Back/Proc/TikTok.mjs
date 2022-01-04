@@ -1,9 +1,9 @@
 /**
  * Some process that starts when new Reverse Events Stream opened and sends 'tik' events to the stream.
  *
- * @namespace TeqFw_Web_Back_Process_TikTok
+ * @namespace TeqFw_Web_Back_Proc_TikTok
  */
-export default class TeqFw_Web_Back_Process_TikTok {
+export default class TeqFw_Web_Back_Proc_TikTok {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse} */

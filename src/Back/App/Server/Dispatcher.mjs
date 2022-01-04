@@ -25,8 +25,8 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
         const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
-        /** @type {TeqFw_Web_Back_Model_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
+        /** @type {TeqFw_Web_Back_Mod_Address} */
+        const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
         /** @type {TeqFw_Web_Back_App_Server_Registry} */
         const fRegistry = spec['TeqFw_Web_Back_App_Server_Registry$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond405|function} */

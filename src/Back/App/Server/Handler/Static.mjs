@@ -29,10 +29,10 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
-        /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
-        const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Model_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
+        /** @type {TeqFw_Core_Back_App_Scan_Plugin_Registry} */
+        const regPlugins = spec['TeqFw_Core_Back_App_Scan_Plugin_Registry$'];
+        /** @type {TeqFw_Web_Back_Mod_Address} */
+        const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
 
         // DEFINE WORKING VARS / PROPS
         const _rootFs = config.getBoot().projectRoot; // path to project root

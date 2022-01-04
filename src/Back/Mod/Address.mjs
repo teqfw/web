@@ -1,15 +1,15 @@
 /**
  * Model to parse web addresses according to TeqFw_Web_Back_Dto_Address structure.
  */
-export default class TeqFw_Web_Back_Model_Address {
+export default class TeqFw_Web_Back_Mod_Address {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc} */
         const Desc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#'];
-        /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
-        const registry = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
+        /** @type {TeqFw_Core_Back_App_Scan_Plugin_Registry} */
+        const registry = spec['TeqFw_Core_Back_App_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
         const fAddr = spec['TeqFw_Web_Back_Dto_Address#Factory$'];
 
