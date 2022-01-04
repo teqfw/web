@@ -84,7 +84,7 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
                 // on 'message' (repeat event emission on the front)
                 _source.addEventListener('message', function (event) {
                     try {
-                        /** @type {TeqFw_Web_Back_Server_Event_Queue_Item} */
+                        /** @type {TeqFw_Web_Back_App_Server_Event_Queue_Item} */
                         const envelop = JSON.parse(event.data);
                         embassy.emit(envelop.eventName, envelop.eventData);
                     } catch (e) {

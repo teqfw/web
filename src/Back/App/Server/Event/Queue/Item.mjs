@@ -2,7 +2,7 @@
  * Data model for transborder events queue.
  * This is transport envelop for transborder events data.
  */
-export default class TeqFw_Web_Back_Server_Event_Queue_Item {
+export default class TeqFw_Web_Back_App_Server_Event_Queue_Item {
     /** @type {string} */
     backUUID;
     /** @type {Object} */
@@ -15,16 +15,16 @@ export default class TeqFw_Web_Back_Server_Event_Queue_Item {
 
 /**
  * @implements TeqFw_Core_Shared_Api_Sync_IFactory
- * @memberOf TeqFw_Web_Back_Server_Event_Queue_Item
+ * @memberOf TeqFw_Web_Back_App_Server_Event_Queue_Item
  */
 export class Factory {
 
     /**
      *
      * @param [opts]
-     * @return {TeqFw_Web_Back_Server_Event_Queue_Item}
+     * @return {TeqFw_Web_Back_App_Server_Event_Queue_Item}
      */
     create(opts) {
-        return new TeqFw_Web_Back_Server_Event_Queue_Item();
+        return new TeqFw_Web_Back_App_Server_Event_Queue_Item();
     }
 }

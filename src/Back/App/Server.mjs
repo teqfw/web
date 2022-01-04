@@ -2,7 +2,7 @@
  * HTTP server to process web requests.
  * Can start in HTTP/1, HTTP/2 & HTTPS modes.
  *
- * @namespace TeqFw_Web_Back_Server
+ * @namespace TeqFw_Web_Back_App_Server
  */
 // MODULE'S IMPORT
 import {createServer as createHttp1Server} from 'http';
@@ -10,7 +10,7 @@ import {createSecureServer, createServer} from 'http2';
 import {readFileSync} from 'fs';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Server {
+export default class TeqFw_Web_Back_App_Server {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -19,8 +19,8 @@ export default class TeqFw_Web_Back_Server {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
-        /** @type {TeqFw_Web_Back_Server_Dispatcher} */
-        const dispatcher = spec['TeqFw_Web_Back_Server_Dispatcher$'];
+        /** @type {TeqFw_Web_Back_App_Server_Dispatcher} */
+        const dispatcher = spec['TeqFw_Web_Back_App_Server_Dispatcher$'];
 
         // DEFINE WORKING VARS
         let _serverType; // save type for logs (HTTP/1, HTTP/2, HTTPS)

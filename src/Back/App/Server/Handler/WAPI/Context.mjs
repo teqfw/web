@@ -4,15 +4,15 @@
  * data for response).
  * It's not a typical DTO, we should pass HTTP-request data to constructor.
  *
- * @namespace TeqFw_Web_Back_Server_Handler_WAPI_Context
+ * @namespace TeqFw_Web_Back_App_Server_Handler_WAPI_Context
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Handler_WAPI_Context';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_WAPI_Context';
 
-export default class TeqFw_Web_Back_Server_Handler_WAPI_Context {
+export default class TeqFw_Web_Back_App_Server_Handler_WAPI_Context {
     /**
      * This is not DI compatible constructor. Use Factory class to create new instances.
      * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
@@ -99,7 +99,7 @@ export default class TeqFw_Web_Back_Server_Handler_WAPI_Context {
 /**
  * Factory to create new instances of context.
  * It is not a typical DTO factory.
- * @memberOf TeqFw_Web_Back_Server_Handler_WAPI_Context
+ * @memberOf TeqFw_Web_Back_App_Server_Handler_WAPI_Context
  */
 export class Factory {
     constructor(spec) {
@@ -112,14 +112,14 @@ export class Factory {
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
          * @param {TeqFw_Web_Back_Api_WAPI_IRoute} route
          * @param {Object<string, string>} params
-         * @return {TeqFw_Web_Back_Server_Handler_WAPI_Context}
+         * @return {TeqFw_Web_Back_App_Server_Handler_WAPI_Context}
          */
         this.create = function (req, params, route) {
             const shares = req[DEF.HNDL_SHARE];
             const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
             const inData = (json) ? route.createReq(json?.data) : null;
             const outData = route.createRes();
-            return new TeqFw_Web_Back_Server_Handler_WAPI_Context(req, params, shares, inData, outData);
+            return new TeqFw_Web_Back_App_Server_Handler_WAPI_Context(req, params, shares, inData, outData);
         }
     }
 }

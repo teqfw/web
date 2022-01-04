@@ -1,14 +1,14 @@
 /**
  * Handlers dispatcher scan for HTTP request handlers and creates 'onRequest' listener.
  *
- * @namespace TeqFw_Web_Back_Server_Dispatcher
+ * @namespace TeqFw_Web_Back_App_Server_Dispatcher
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 import sb from 'stream-buffers';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Dispatcher';
+const NS = 'TeqFw_Web_Back_App_Server_Dispatcher';
 const {
     HTTP2_HEADER_CONTENT_LENGTH,
     HTTP2_HEADER_CONTENT_TYPE,
@@ -17,20 +17,20 @@ const {
     HTTP2_METHOD_POST,
 } = H2;
 
-export default class TeqFw_Web_Back_Server_Dispatcher {
+export default class TeqFw_Web_Back_App_Server_Dispatcher {
 
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Web_Back_Server_Scan_Handler.act|function} */
-        const scan = spec['TeqFw_Web_Back_Server_Scan_Handler$'];
+        /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
+        const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Server_Registry} */
-        const fRegistry = spec['TeqFw_Web_Back_Server_Registry$'];
-        /** @type {TeqFw_Web_Back_Server_Respond.respond405|function} */
-        const respond405 = spec['TeqFw_Web_Back_Server_Respond.respond405'];
+        /** @type {TeqFw_Web_Back_App_Server_Registry} */
+        const fRegistry = spec['TeqFw_Web_Back_App_Server_Registry$'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond405|function} */
+        const respond405 = spec['TeqFw_Web_Back_App_Server_Respond.respond405'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */

@@ -20,24 +20,24 @@
   },
   "@teqfw/web": {
     "handlers": {
-      "TeqFw_Web_Back_Server_Handler_Event_Reverse": {
-        "before": ["TeqFw_Web_Back_Server_Handler_Static"],
+      "TeqFw_Web_Back_App_Server_Handler_Event_Reverse": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
         "spaces": ["ebf"]
       },
-      "TeqFw_Web_Back_Server_Handler_WAPI": {
-        "before": ["TeqFw_Web_Back_Server_Handler_Static"],
+      "TeqFw_Web_Back_App_Server_Handler_WAPI": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
         "spaces": ["api"]
       },
-      "TeqFw_Web_Back_Server_Handler_Static": {
-        "before": ["TeqFw_Web_Back_Server_Handler_Final"],
+      "TeqFw_Web_Back_App_Server_Handler_Static": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Final"],
         "spaces": ["src", "web"]
       },
-      "TeqFw_Web_Back_Server_Handler_Upload": {
-        "after": ["TeqFw_Web_Back_Server_Handler_WAPI"],
-        "before": ["TeqFw_Web_Back_Server_Handler_Static"],
+      "TeqFw_Web_Back_App_Server_Handler_Upload": {
+        "after": ["TeqFw_Web_Back_App_Server_Handler_WAPI"],
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
         "spaces": ["upload"]
       },
-      "TeqFw_Web_Back_Server_Handler_Final": {}
+      "TeqFw_Web_Back_App_Server_Handler_Final": {}
     },
     "services": [
       "TeqFw_Web_Back_WAPI_Load_Config",

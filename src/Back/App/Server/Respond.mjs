@@ -1,13 +1,13 @@
 /**
  * Library with functions to respond using various HTTP status codes.
- * @namespace TeqFw_Web_Back_Server_Respond
+ * @namespace TeqFw_Web_Back_App_Server_Respond
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 import {castArray} from "@teqfw/core/src/Shared/Util/Cast.mjs";
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Respond';
+const NS = 'TeqFw_Web_Back_App_Server_Respond';
 const {
     HTTP2_HEADER_ALLOW,
     HTTP2_HEADER_CONTENT_TYPE,
@@ -21,7 +21,7 @@ const {
 
 /**
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @memberOf TeqFw_Web_Back_Server_Respond
+ * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
 function respond400(res) {
     if (!res.headersSent) {
@@ -34,7 +34,7 @@ function respond400(res) {
 
 /**
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @memberOf TeqFw_Web_Back_Server_Respond
+ * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
 function respond404(res) {
     if (!res.headersSent) {
@@ -48,7 +48,7 @@ function respond404(res) {
 /**
  * Respond
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @memberOf TeqFw_Web_Back_Server_Respond
+ * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
 function respond405(res) {
     if (!res.headersSent) {
@@ -64,7 +64,7 @@ function respond405(res) {
 /**
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
  * @param {string} err
- * @memberOf TeqFw_Web_Back_Server_Respond
+ * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
 function respond500(res, err) {
     if (!res.headersSent) {

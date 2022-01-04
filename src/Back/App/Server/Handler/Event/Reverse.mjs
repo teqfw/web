@@ -6,7 +6,7 @@ import {constants as H2} from 'http2';
 import {validate, v4} from 'uuid';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Handler_Event_Reverse';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_Event_Reverse';
 const {
     HTTP2_HEADER_CACHE_CONTROL,
     HTTP2_HEADER_CONTENT_TYPE,
@@ -21,23 +21,23 @@ const {
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  * @implements TeqFw_Core_Shared_Api_Event_IProducer
  */
-export default class TeqFw_Web_Back_Server_Handler_Event_Reverse {
+export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Back_Server_Respond.respond400|function} */
-        const respond400 = spec['TeqFw_Web_Back_Server_Respond.respond400'];
-        /** @type {TeqFw_Web_Back_Server_Event_Stream_Reverse_Registry} */
-        const regConnReverse = spec['TeqFw_Web_Back_Server_Event_Stream_Reverse_Registry$'];
-        /** @type {TeqFw_Web_Back_Server_Event_Stream_Reverse_Stream.Factory} */
-        const fConn = spec['TeqFw_Web_Back_Server_Event_Stream_Reverse_Stream.Factory$'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
+        const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
+        /** @type {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry} */
+        const regConnReverse = spec['TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry$'];
+        /** @type {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream.Factory} */
+        const fConn = spec['TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream.Factory$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backAppUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Web_Back_Server_Event_Queue} */
-        const eventQueue = spec['TeqFw_Web_Back_Server_Event_Queue$'];
+        /** @type {TeqFw_Web_Back_App_Server_Event_Queue} */
+        const eventQueue = spec['TeqFw_Web_Back_App_Server_Event_Queue$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Stream_Reverse_Opened} */
@@ -79,7 +79,7 @@ export default class TeqFw_Web_Back_Server_Handler_Event_Reverse {
          * Process HTTP request if not processed before.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-         * @memberOf TeqFw_Web_Back_Server_Handler_Event_Reverse
+         * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse
          */
         async function process(req, res) {
             // INNER FUNCTIONS

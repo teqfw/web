@@ -6,12 +6,12 @@
 export default class TeqFw_Web_Back_Process_TikTok {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Web_Back_Server_Handler_Event_Reverse} */
-        const reverseStreamsHandler = spec['TeqFw_Web_Back_Server_Handler_Event_Reverse$'];
-        /** @type {TeqFw_Web_Back_Server_Event_Stream_Reverse_Registry} */
-        const regStreamsReverse = spec['TeqFw_Web_Back_Server_Event_Stream_Reverse_Registry$'];
-        /** @type {TeqFw_Web_Back_Server_Event_Queue} */
-        const eventQueue = spec['TeqFw_Web_Back_Server_Event_Queue$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse} */
+        const reverseStreamsHandler = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse$'];
+        /** @type {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry} */
+        const regStreamsReverse = spec['TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry$'];
+        /** @type {TeqFw_Web_Back_App_Server_Event_Queue} */
+        const eventQueue = spec['TeqFw_Web_Back_App_Server_Event_Queue$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_TikTok} */

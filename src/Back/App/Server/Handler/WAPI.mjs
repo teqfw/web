@@ -1,13 +1,13 @@
 /**
  * Web server handler to process requests to API.
  *
- * @namespace TeqFw_Web_Back_Server_Handler_WAPI
+ * @namespace TeqFw_Web_Back_App_Server_Handler_WAPI
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Handler_WAPI';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_WAPI';
 const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_GET,
@@ -19,7 +19,7 @@ const {
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Server_Handler_WAPI {
+export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -28,10 +28,10 @@ export default class TeqFw_Web_Back_Server_Handler_WAPI {
         const container = spec['TeqFw_Di_Shared_Container$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Back_Server_Respond.respond400|function} */
-        const respond400 = spec['TeqFw_Web_Back_Server_Respond.respond400'];
-        /** @type {TeqFw_Web_Back_Server_Respond.respond500|function} */
-        const respond500 = spec['TeqFw_Web_Back_Server_Respond.respond500'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
+        const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond500|function} */
+        const respond500 = spec['TeqFw_Web_Back_App_Server_Respond.respond500'];
         /** @type {TeqFw_Core_Back_Scan_Plugin_Registry} */
         const regPlugins = spec['TeqFw_Core_Back_Scan_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
@@ -40,8 +40,8 @@ export default class TeqFw_Web_Back_Server_Handler_WAPI {
         const Item = spec['TeqFw_Web_Back_Plugin_Web_Handler_Service_Item#'];
         /** @type {TeqFw_Web_Back_Model_Address} */
         const mAddress = spec['TeqFw_Web_Back_Model_Address$'];
-        /** @type {TeqFw_Web_Back_Server_Handler_WAPI_Context.Factory} */
-        const fContext = spec['TeqFw_Web_Back_Server_Handler_WAPI_Context.Factory$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Context.Factory} */
+        const fContext = spec['TeqFw_Web_Back_App_Server_Handler_WAPI_Context.Factory$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {TeqFw_Web_Back_Plugin_Web_Handler_Service_Item[]} */

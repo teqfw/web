@@ -37,7 +37,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
     const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
     /** @type {TeqFw_Di_Shared_Api_IProxy} */
-    const proxyServer = spec['TeqFw_Web_Back_Server@'];
+    const proxyServer = spec['TeqFw_Web_Back_App_Server@'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
@@ -71,7 +71,7 @@ export default function Factory(spec) {
             }
             // PID is wrote => start the server
             // create server from proxy then run it
-            /** @type {TeqFw_Web_Back_Server} */
+            /** @type {TeqFw_Web_Back_App_Server} */
             const server = await proxyServer.create;
             await server.run({port, useHttp1, cert, key});
         } catch (e) {

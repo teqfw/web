@@ -9,7 +9,7 @@ import {pipeline} from 'stream';
 import {constants as H2} from "http2";
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Handler_Final';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_Final';
 const {
     HTTP2_HEADER_CONTENT_LENGTH,
     HTTP2_HEADER_CONTENT_TYPE,
@@ -20,13 +20,13 @@ const {
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
-export default class TeqFw_Web_Back_Server_Handler_Final {
+export default class TeqFw_Web_Back_App_Server_Handler_Final {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Web_Back_Server_Respond.respond404|function} */
-        const respond404 = spec['TeqFw_Web_Back_Server_Respond.respond404'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond404|function} */
+        const respond404 = spec['TeqFw_Web_Back_App_Server_Respond.respond404'];
 
         // DEFINE INNER FUNCTIONS
 

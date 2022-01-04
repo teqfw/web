@@ -18,7 +18,7 @@ export default class TeqFw_Web_Shared_Dto_Namespace_Item {
     ns;
     /**
      * Path to the sources in URL ('/src/@vendor/prj').
-     * (@see TeqFw_Web_Back_Server_Handler_Static)
+     * (@see TeqFw_Web_Back_App_Server_Handler_Static)
      * @type {string}
      */
     path;

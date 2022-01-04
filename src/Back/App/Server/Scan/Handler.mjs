@@ -1,9 +1,9 @@
 /**
  * Action to scan for web requests handlers and to populate handlers registry.
- * @namespace TeqFw_Web_Back_Server_Scan_Handler
+ * @namespace TeqFw_Web_Back_App_Server_Scan_Handler
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Server_Scan_Handler';
+const NS = 'TeqFw_Web_Back_App_Server_Scan_Handler';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
@@ -26,7 +26,7 @@ export default function (spec) {
     // DEFINE INNER FUNCTIONS
     /**
      * @return {Promise<*>}
-     * @memberOf TeqFw_Web_Back_Server_Scan_Handler
+     * @memberOf TeqFw_Web_Back_App_Server_Scan_Handler
      */
     async function act() {
         // DEFINE INNER FUNCTIONS
@@ -53,8 +53,8 @@ export default function (spec) {
                     Array.prototype.push.apply(excludes, excl);
             }
             // remove excludes
-            if (excludes.includes('TeqFw_Web_Back_Server_Handler_Final'))
-                throw new Error(`Handler 'TeqFw_Web_Back_Server_Handler_Final' cannot be excluded.`);
+            if (excludes.includes('TeqFw_Web_Back_App_Server_Handler_Final'))
+                throw new Error(`Handler 'TeqFw_Web_Back_App_Server_Handler_Final' cannot be excluded.`);
             for (const hName of Object.keys(includes)) {
                 if (!excludes.includes(hName)) {
                     logger.info(`Create Web handler: ${hName}`);
