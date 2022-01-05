@@ -61,7 +61,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
                 } else if (body) {
                     res.writeHead(statusCode, headers);
                     res.end(body);
-                } else if (statusCode !== HTTP_STATUS_OK) {
+                } else if (statusCode === HTTP_STATUS_OK) {
                     res.writeHead(statusCode, headers);
                     res.end();
                 } else respond404(res);

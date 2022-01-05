@@ -1,14 +1,12 @@
 /**
  * Reverse stream for events (back to front) is opened.
- *
- * @namespace TeqFw_Web_Shared_Event_Stream_Reverse_Opened
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Shared_Event_Stream_Reverse_Opened';
+const NS = 'TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Shared_Event_Stream_Reverse_Opened
+ * @memberOf TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened
  */
 class Dto {
     static name = `${NS}.Dto`;
@@ -23,7 +21,7 @@ class Dto {
 /**
  * @implements TeqFw_Core_Shared_Api_IEvent
  */
-export default class TeqFw_Web_Shared_Event_Stream_Reverse_Opened {
+export default class TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
@@ -32,8 +30,8 @@ export default class TeqFw_Web_Shared_Event_Stream_Reverse_Opened {
         // DEFINE INSTANCE METHODS
 
         /**
-         * @param {TeqFw_Web_Shared_Event_Stream_Reverse_Opened.Dto} [data]
-         * @return {TeqFw_Web_Shared_Event_Stream_Reverse_Opened.Dto}
+         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} [data]
+         * @return {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

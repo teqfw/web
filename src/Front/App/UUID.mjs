@@ -14,7 +14,7 @@ export default class TeqFw_Web_Front_App_UUID {
         const uuidV4 = spec['TeqFw_Web_Front_Lib_Uuid.v4'];
 
         // DEFINE WORKING VARS / PROPS
-        const STORE_KEY = `${DEF.SHARED.NAME}/uuid`;
+        const STORE_KEY = `${DEF.SHARED.NAME}/front/app/uuid`;
         let _uuid;
 
         // DEFINE INSTANCE METHODS

@@ -1,7 +1,7 @@
 /**
  * Data model for 'back-to-front' connection to send server events to the front.
  */
-export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream {
+export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream {
     /**
      * Function with HTTPResponse object in own scope (closure) to close HTTP connection.
      * @type {function}
@@ -37,7 +37,7 @@ export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream {
 
 /**
  * @implements TeqFw_Core_Shared_Api_Sync_IFactory
- * @memberOf TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream
+ * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream
  */
 export class Factory {
     constructor(spec) {
@@ -51,11 +51,11 @@ export class Factory {
 
         // DEFINE INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream|Object} data
-         * @return {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream}
+         * @param {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream|Object} data
+         * @return {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream}
          */
         this.create = function (data = {}) {
-            const res = new TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream();
+            const res = new TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream();
             res.finalize = castFunction(data.finalize);
             res.frontId = castString(data.frontId);
             res.messageId = castInt(data.messageId) || 1;

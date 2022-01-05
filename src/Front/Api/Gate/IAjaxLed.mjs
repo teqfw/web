@@ -1,6 +1,7 @@
 /**
  * Interface for object that indicates AJAX request execution on the front.
  * @interface
+ * @deprecated we should use events here
  */
 export default class TeqFw_Web_Front_Api_Gate_IAjaxLed {
     /**

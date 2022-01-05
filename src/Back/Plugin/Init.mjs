@@ -8,13 +8,11 @@ export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Core_Shared_Logger} */
     const logger = spec['TeqFw_Core_Shared_Logger$'];
-    /** @type {TeqFw_Web_Back_Proc_TikTok} */
-    const tikTok = spec['TeqFw_Web_Back_Proc_TikTok$'];
+
 
     // DEFINE INNER FUNCTIONS
     async function action() {
-        // TODO: use local events to initialize plugins
-        await tikTok.init();
+        // TODO: use it ore remove it
     }
 
     // MAIN FUNCTIONALITY

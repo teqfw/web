@@ -1,20 +1,17 @@
 /**
  * Registry for reverse events streams.
  *
- * @namespace TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry
+ * @namespace TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry
  */
-export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry {
+export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
 
-    constructor(spec) {
-        // EXTRACT DEPS
+    constructor() {
 
         // DEFINE WORKING VARS / PROPS
-        /** @type {Object<string, TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream>} */
+        /** @type {Object<string, TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream>} */
         const _store = {}; // internal store for connection objects (stream UUID is the key)
         /** @type {Object<string, string>} */
         const _mapUUIDFrontToStream = {}; // map to get stream UUID for front app UUID
-
-        // DEFINE INNER FUNCTIONS
 
         // DEFINE INSTANCE METHODS
         /**
@@ -32,14 +29,14 @@ export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry {
         /**
          * Get connection object by stream UUID.
          * @param {string} uuid
-         * @return {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream|null}
+         * @return {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream|null}
          */
         this.get = (uuid) => _store[uuid];
 
         /**
          * Get connection object by front application UUID.
          * @param {string} uuid
-         * @return {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream|null}
+         * @return {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream|null}
          */
         this.getByFrontUUID = function (uuid) {
             return (_mapUUIDFrontToStream[uuid] && _store[_mapUUIDFrontToStream[uuid]])
@@ -48,7 +45,7 @@ export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry {
 
         /**
          * Put connection to the registry.
-         * @param {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream} conn
+         * @param {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream} conn
          * @param {string} streamUUID
          * @param {string} frontUUID
          */
@@ -59,6 +56,5 @@ export default class TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry {
             _mapUUIDFrontToStream[frontUUID] = streamUUID;
         }
 
-        // MAIN FUNCTIONALITY
     }
 }

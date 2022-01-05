@@ -28,22 +28,22 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
-        const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
-        /** @type {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry} */
-        const regConnReverse = spec['TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Registry$'];
-        /** @type {TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream.Factory} */
-        const fConn = spec['TeqFw_Web_Back_App_Server_Event_Stream_Reverse_Stream.Factory$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backAppUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Web_Back_App_Server_Event_Queue} */
-        const eventQueue = spec['TeqFw_Web_Back_App_Server_Event_Queue$'];
+        /** @type {TeqFw_Core_Shared_App_Event_Producer} */
+        const baseProducer = spec['TeqFw_Core_Shared_App_Event_Producer$$']; // instance
+        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
+        const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
+        const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry} */
+        const regConnReverse = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory} */
+        const fConn = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Queue} */
+        const eventQueue = spec['TeqFw_Web_Back_App_Server_Handler_Event_Queue$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
-        /** @type {TeqFw_Web_Shared_Event_Stream_Reverse_Opened} */
-        const esOpened = spec['TeqFw_Web_Shared_Event_Stream_Reverse_Opened$'];
-        /** @type {TeqFw_Core_Shared_Mod_Event_Producer} */
-        const baseProducer = spec['TeqFw_Core_Shared_Mod_Event_Producer$$']; // instance
 
         // DEFINE WORKING VARS / PROPS
         /**
@@ -84,7 +84,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         async function process(req, res) {
             // INNER FUNCTIONS
 
-
             // MAIN FUNCTIONALITY
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
@@ -119,17 +118,18 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     sendHeaders(res);
 
                     // send connection data as the first transborder event
-                    const transEvent = esOpened.createDto();
+                    const transEvent = esbOpened.createDto();
                     transEvent.backUUID = _backUUID;
                     transEvent.frontUUID = frontUUID;
                     transEvent.streamUUID = streamUUID;
-                    eventQueue.add(frontUUID, esOpened.getName(), transEvent);
+                    eventQueue.add(frontUUID, esbOpened.getName(), transEvent);
 
                     // emit local event
                     const localEvent = ebOpened.createDto();
                     localEvent.backUUID = _backUUID;
                     localEvent.frontUUID = frontUUID;
                     localEvent.streamUUID = streamUUID;
+                    // noinspection JSUnresolvedFunction
                     thisRequestHandler.emit(ebOpened.getName(), localEvent);
                 } else respond400(res);
             }

@@ -1,6 +1,7 @@
 /**
- * Connection to server sent events (reverse event stream representation).
- * Contains connection UUID and uses SSE state model to reflect changes in connection state.
+ * Connection to SSE source (reverse event stream representation).
+ * It uses SSE state model to reflect changes in connection state.
+ * Connection uses frontUUID to connect to backend and saves backendUUID when connected.
  */
 
 /**
@@ -16,7 +17,7 @@ const SSE_STATE = {
 /**
  * @implements TeqFw_Core_Shared_Api_Event_IProducer
  */
-export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
+export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
@@ -27,14 +28,20 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
         const state = spec['TeqFw_Web_Front_Api_Event_Stream_Reverse_IState$'];
         /** @type {TeqFw_Web_Front_App_UUID} */
         const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
+        /** @type {TeqFw_Web_Front_App_Back_UUID} */
+        const backUUID = spec['TeqFw_Web_Front_App_Back_UUID$'];
         /** @type {TeqFw_Web_Front_App_Event_Embassy} */
         const embassy = spec['TeqFw_Web_Front_App_Event_Embassy$'];
-        /** @type {TeqFw_Core_Shared_Mod_Event_Producer} */
-        const baseProducer = spec['TeqFw_Core_Shared_Mod_Event_Producer$$']; // instance
-        /** @type {TeqFw_Web_Front_Event_Stream_Reverse_Closed} */
-        const efClosed = spec['TeqFw_Web_Front_Event_Stream_Reverse_Closed$'];
-        /** @type {TeqFw_Web_Front_Event_Stream_Reverse_Opened} */
-        const efOpened = spec['TeqFw_Web_Front_Event_Stream_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory} */
+        const fQueueItem = spec['TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory$'];
+        /** @type {TeqFw_Core_Shared_App_Event_Producer} */
+        const baseProducer = spec['TeqFw_Core_Shared_App_Event_Producer$$']; // instance
+        /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed} */
+        const elClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
+        /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened} */
+        const elOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
+        const esOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {EventSource} */
@@ -43,7 +50,17 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
 
         // MAIN FUNCTIONALITY
         Object.assign(this, baseProducer); // new base instance for every current instance
+        embassy.subscribe(esOpened.getName(), onStreamOpened);
 
+        // DEFINE INNER FUNCTIONS
+        /**
+         * Save backend UUID for currently connected server.
+         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} event
+         */
+        function onStreamOpened(event) {
+            // noinspection JSIgnoredPromiseFromCall
+            backUUID.set(event.backUUID);
+        }
 
         // DEFINE INSTANCE METHODS
 
@@ -51,7 +68,7 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
                 state.closed();
-                this.emit(efClosed.getName(), efClosed.createDto());
+                this.emit(elClosed.getName(), elClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
         }
@@ -68,7 +85,7 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
                 // on 'open'
                 _source.addEventListener('open', function () {
                     state.connected();
-                    thisConn.emit(efOpened.getName(), efOpened.createDto());
+                    thisConn.emit(elOpened.getName(), elOpened.createDto());
                     logger.info(`New SSE connection is opened.`);
                 });
                 // on 'error'
@@ -84,9 +101,11 @@ export default class TeqFw_Web_Front_App_Event_Stream_Reverse {
                 // on 'message' (repeat event emission on the front)
                 _source.addEventListener('message', function (event) {
                     try {
-                        /** @type {TeqFw_Web_Back_App_Server_Event_Queue_Item} */
-                        const envelop = JSON.parse(event.data);
-                        embassy.emit(envelop.eventName, envelop.eventData);
+                        const obj = JSON.parse(event.data);
+                        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem} */
+                        const item = fQueueItem.create(obj);
+                        logger.info(`Event message '${item.eventName}' from back '${item.backUUID}' is received.`);
+                        embassy.emit(item.eventName, item.eventData);
                     } catch (e) {
                         console.error(e);
                     }
