@@ -8,11 +8,12 @@ export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Core_Shared_Logger} */
     const logger = spec['TeqFw_Core_Shared_Logger$'];
-
+    /** @type {TeqFw_Web_Back_Proc_Tok} */
+    const procTok = spec['TeqFw_Web_Back_Proc_Tok$']; // TODO: we should init process in teqfw.json
 
     // DEFINE INNER FUNCTIONS
     async function action() {
-        // TODO: use it ore remove it
+
     }
 
     // MAIN FUNCTIONALITY
