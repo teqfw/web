@@ -13,7 +13,6 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Final';
 const {
     HTTP2_HEADER_CONTENT_LENGTH,
     HTTP2_HEADER_CONTENT_TYPE,
-    HTTP2_HEADER_SET_COOKIE,
     HTTP_STATUS_OK,
 } = H2;
 
@@ -49,7 +48,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
                         const mimeType = lookup(file) ?? 'application/octet-stream';
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, mimeType);
                         res.setHeader(HTTP2_HEADER_CONTENT_LENGTH, stat.size);
-                        res.setHeader(HTTP2_HEADER_SET_COOKIE, 'boobs=asses');
                         // return file content
                         const readStream = createReadStream(file);
                         res.writeHead(statusCode, headers);

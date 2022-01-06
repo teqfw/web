@@ -25,7 +25,7 @@ export default class TeqFw_Web_Back_Proc_Tok {
          * @param {TeqFw_Web_Shared_Event_Front_Tik.Dto} evt
          */
         function handler(evt) {
-            const timeout = Math.floor(Math.random() * 100);
+            const timeout = Math.floor(Math.random() * 10);
             setTimeout(() => {
                 const msg = esbTok.createDto();
                 msg.backUUID = backUUID.get();
