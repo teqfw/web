@@ -1,6 +1,6 @@
 # @teqfw/web: releases
 
-# 0.x.x
+# 0.x.x.x
 
 * Restructure directories and files.
 * Add events streams between front and back.
