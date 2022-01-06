@@ -9,7 +9,7 @@ const NS = 'TeqFw_Web_Shared_Event_Back_Tok';
  * @memberOf TeqFw_Web_Shared_Event_Back_Tok
  */
 class Dto {
-    static name = `${NS}.Dto`;
+    static namespace = `${NS}.Dto`;
     /** @type {string} */
     backUUID;
 }

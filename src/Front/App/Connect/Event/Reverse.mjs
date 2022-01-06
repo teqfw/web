@@ -37,9 +37,9 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         /** @type {TeqFw_Core_Shared_App_Event_Producer} */
         const baseProducer = spec['TeqFw_Core_Shared_App_Event_Producer$$']; // instance
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed} */
-        const elClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
+        const efClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened} */
-        const elOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
+        const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
         const esOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
 
@@ -68,7 +68,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
                 state.closed();
-                this.emit(elClosed.getName(), elClosed.createDto());
+                this.emit(efClosed.getName(), efClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
         }
@@ -85,7 +85,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 // on 'open'
                 _source.addEventListener('open', function () {
                     state.connected();
-                    thisConn.emit(elOpened.getName(), elOpened.createDto());
+                    thisConn.emit(efOpened.getName(), efOpened.createDto());
                     logger.info(`New SSE connection is opened.`);
                 });
                 // on 'error'

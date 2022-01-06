@@ -91,27 +91,34 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 // extract front application UUID
                 const frontUUID = getFrontAppUUID(req.url);
                 if (frontUUID) {
+                    const frontStamp = `${frontUUID.substr(0, 8)}...`;
                     const streamUUID = v4(); // generate new UUID for newly established connection
                     let conn = regConnReverse.getByFrontUUID(frontUUID);
                     if (!conn) {
                         conn = fConn.create();
                         regConnReverse.put(conn, streamUUID, frontUUID);
-                        logger.info(`New front app established reverse events stream: '${frontUUID.substr(0, 8)}...'.`);
+                        logger.info(`Front app '${frontStamp}' established new stream for back-to-front events.`);
                     } else {
-                        logger.info(`Front app tries to re-established reverse events stream: '${frontUUID.substr(0, 8)}...'.`);
+                        logger.info(`Front app '${frontStamp}' tries to re-established stream for back-to-front events.`);
                     }
                     if (conn.write) logger.info(`Is this connection closed (${frontUUID.substr(0, 8)})?`);
                     // set 'write' function to connection, response stream is pinned in closure
                     conn.write = function (payload) {
-                        const json = JSON.stringify(payload);
-                        res.write(`data: ${json}\n\n`);
-                        res.write(`id: ${conn.messageId++}\n`);
+                        if (res.writable) {
+                            const json = JSON.stringify(payload);
+                            res.write(`data: ${json}\n\n`);
+                            res.write(`id: ${conn.messageId++}\n`);
+                        } else {
+                            logger.error(`Back-to-front events stream is not writable (front: '${frontStamp}')`);
+                        }
                     };
-                    conn.finalize = () => res.end();
+                    conn.finalize = () => {
+                        res.end();
+                    }
                     // remove stream from registry on close
                     res.addListener('close', () => {
                         regConnReverse.delete(streamUUID);
-                        logger.info(`Reverse events stream is closed (front app id: ${frontUUID.substr(0, 8)}...).`);
+                        logger.info(`Back-to-front events stream is closed (front: '${frontStamp}').`);
                     });
 
                     // respond with headers only to start events stream
