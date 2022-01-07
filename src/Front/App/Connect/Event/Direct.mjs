@@ -30,7 +30,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
             const root = (config.root) ? `/${config.root}` : '';
             const door = (config.door) ? `/${config.door}` : '';
             const space = `/${DEF.SHARED.SPACE_EVENT_DIRECT}`;
-            return `${schema}${domain}${port}${root}${door}${space}`;
+            return `${schema}${domain}${port}${root}${door}${space}/`; // '/efb/' key in service worker!!
         }
 
         // DEFINE INSTANCE METHODS

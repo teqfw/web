@@ -51,7 +51,7 @@ export default class TeqFw_Web_Sw_Worker {
          */
         let _door;
         /** @type {boolean} */
-        let _cacheDisabled;
+        let _cacheDisabled = true; // disable by default TODO: invert logic here and in IndexedDB
 
         // DEFINE INNER FUNCTIONS
 
@@ -74,11 +74,12 @@ export default class TeqFw_Web_Sw_Worker {
              */
             function getRouteType(req) {
                 const API = /(.*)(\/api\/)(.*)/;
-                const SSE = /(.*)(\/sse\/)(.*)/;
+                const EBF = /(.*)(\/ebf\/)(.*)/; // events 'back-to-front'
+                const EFB = /(.*)(\/efb\/)(.*)/; // events 'front-to-back'
                 const SW = /(.*)(\/sw\/)(.*)/;
-                if (req.url.match(API)) {
+                if (req.url.match(API) || req.url.match(EFB)) {
                     return AREA_API;
-                } else if (req.url.match(SSE)) {
+                } else if (req.url.match(EBF)) {
                     return AREA_SSE;
                 } else if (req.url.match(SW)) {
                     return AREA_WORKER;
