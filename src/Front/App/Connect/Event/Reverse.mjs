@@ -15,7 +15,7 @@ const SSE_STATE = {
 
 // noinspection JSClosureCompilerSyntax
 /**
- * @implements TeqFw_Core_Shared_Api_Event_IProducer
+ * @implements TeqFw_Core_Shared_Api_Event_IBus
  */
 export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
     constructor(spec) {
@@ -32,16 +32,18 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const backUUID = spec['TeqFw_Web_Front_App_Back_UUID$'];
         /** @type {TeqFw_Web_Front_App_Event_Embassy} */
         const embassy = spec['TeqFw_Web_Front_App_Event_Embassy$'];
-        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory} */
-        const fQueueItem = spec['TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory$'];
-        /** @type {TeqFw_Core_Shared_App_Event_Producer} */
-        const baseProducer = spec['TeqFw_Core_Shared_App_Event_Producer$$']; // instance
+        /** @type {TeqFw_Core_Shared_App_Event_Bus} */
+        const baseEventBus = spec['TeqFw_Core_Shared_App_Event_Bus$$']; // instance
+        /** @type {TeqFw_Web_Front_App_Event_Bus} */
+        const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
+        /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
+        const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed} */
         const efClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened} */
         const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
-        const esOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
+        const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
 
         // DEFINE WORKING VARS / PROPS
         /** @type {EventSource} */
@@ -49,17 +51,17 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         let _url = `./${DEF.SHARED.SPACE_EVENT_REVERSE}`;
 
         // MAIN FUNCTIONALITY
-        Object.assign(this, baseProducer); // new base instance for every current instance
-        embassy.subscribe(esOpened.getName(), onStreamOpened);
+        Object.assign(this, baseEventBus); // new base instance for every current instance
+        embassy.subscribe(esbOpened.getEventName(), onStreamOpened);
 
         // DEFINE INNER FUNCTIONS
         /**
          * Save backend UUID for currently connected server.
-         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} event
+         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} data
          */
-        function onStreamOpened(event) {
+        function onStreamOpened({data}) {
             // noinspection JSIgnoredPromiseFromCall
-            backUUID.set(event.backUUID);
+            backUUID.set(data.backUUID);
         }
 
         // DEFINE INSTANCE METHODS
@@ -68,7 +70,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
                 state.closed();
-                this.emit(efClosed.getName(), efClosed.createDto());
+                this.publish(efClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
         }
@@ -85,7 +87,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 // on 'open'
                 _source.addEventListener('open', function () {
                     state.connected();
-                    thisConn.emit(efOpened.getName(), efOpened.createDto());
+                    eventBus.publish(efOpened.createDto());
                     logger.info(`New SSE connection is opened.`);
                 });
                 // on 'error'
@@ -102,10 +104,11 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 _source.addEventListener('message', function (event) {
                     try {
                         const obj = JSON.parse(event.data);
-                        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem} */
-                        const item = fQueueItem.create(obj);
-                        logger.info(`Event message '${item.eventName}' from back '${item.backUUID}' is received.`);
-                        embassy.emit(item.eventName, item.eventData);
+                        const message = factTransMsg.createDto(obj);
+                        const eventName = message.meta.name;
+                        const backUUID = message.meta.backUUID;
+                        logger.info(`Event message '${eventName}' from back '${backUUID}' is received.`);
+                        eventBus.publish(message);
                     } catch (e) {
                         console.error(e);
                     }

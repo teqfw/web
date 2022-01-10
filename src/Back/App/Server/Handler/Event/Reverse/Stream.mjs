@@ -36,7 +36,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream {
 }
 
 /**
- * @implements TeqFw_Core_Shared_Api_Sync_IFactory
+ * @implements TeqFw_Core_Shared_Api_IFactory
  * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream
  */
 export class Factory {

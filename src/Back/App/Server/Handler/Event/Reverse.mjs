@@ -19,7 +19,7 @@ const {
 // noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
- * @implements TeqFw_Core_Shared_Api_Event_IProducer
+ * @implements TeqFw_Core_Shared_Api_Event_IBus
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
     constructor(spec) {
@@ -29,19 +29,19 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
-        const backAppUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Core_Shared_App_Event_Producer} */
-        const baseProducer = spec['TeqFw_Core_Shared_App_Event_Producer$$']; // instance
+        const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
+        /** @type {TeqFw_Core_Back_App_Event_Bus} */
+        const eventBus = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
         const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
         const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry} */
-        const regConnReverse = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
+        const registry = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory} */
         const fConn = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Queue} */
-        const eventQueue = spec['TeqFw_Web_Back_App_Server_Handler_Event_Queue$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
+        const portal = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
 
@@ -50,12 +50,11 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
          * UUID for this backup instance.
          * @type {string}
          */
-        const _backUUID = backAppUUID.get();
-        const thisRequestHandler = this;
+        const _backUUID = backUUID.get();
+        // const thisRequestHandler = this;
 
         // MAIN FUNCTIONALITY
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
-        Object.assign(this, baseProducer); // new base instance for every current instance
 
         // DEFINE INNER FUNCTIONS
         /**
@@ -91,15 +90,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 // extract front application UUID
                 const frontUUID = getFrontAppUUID(req.url);
                 if (frontUUID) {
-                    const frontStamp = `${frontUUID.substr(0, 8)}...`;
                     const streamUUID = v4(); // generate new UUID for newly established connection
-                    let conn = regConnReverse.getByFrontUUID(frontUUID);
+                    let conn = registry.getByFrontUUID(frontUUID);
                     if (!conn) {
                         conn = fConn.create();
-                        regConnReverse.put(conn, streamUUID, frontUUID);
-                        logger.info(`Front app '${frontStamp}' established new stream for back-to-front events.`);
+                        registry.put(conn, streamUUID, frontUUID);
+                        logger.info(`Front app '${frontUUID}' established new stream for back-to-front events.`);
                     } else {
-                        logger.info(`Front app '${frontStamp}' tries to re-established stream for back-to-front events.`);
+                        logger.info(`Front app '${frontUUID}' tries to re-established stream for back-to-front events.`);
                     }
                     if (conn.write) logger.info(`Is this connection closed (${frontUUID.substr(0, 8)})?`);
                     // set 'write' function to connection, response stream is pinned in closure
@@ -109,7 +107,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                             res.write(`data: ${json}\n\n`);
                             res.write(`id: ${conn.messageId++}\n`);
                         } else {
-                            logger.error(`Back-to-front events stream is not writable (front: '${frontStamp}')`);
+                            logger.error(`Back-to-front events stream is not writable (front: '${frontUUID}')`);
                         }
                     };
                     conn.finalize = () => {
@@ -117,27 +115,31 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     }
                     // remove stream from registry on close
                     res.addListener('close', () => {
-                        regConnReverse.delete(streamUUID);
-                        logger.info(`Back-to-front events stream is closed (front: '${frontStamp}').`);
+                        registry.delete(streamUUID);
+                        logger.info(`Back-to-front events stream is closed (front: '${frontUUID}').`);
                     });
 
                     // respond with headers only to start events stream
                     sendHeaders(res);
 
                     // send connection data as the first transborder event
-                    const transEvent = esbOpened.createDto();
-                    transEvent.backUUID = _backUUID;
-                    transEvent.frontUUID = frontUUID;
-                    transEvent.streamUUID = streamUUID;
-                    eventQueue.add(frontUUID, esbOpened.getName(), transEvent);
+                    const transMsg = esbOpened.createDto();
+                    const transData = transMsg.data;
+                    transData.backUUID = _backUUID;
+                    transData.frontUUID = frontUUID;
+                    transData.streamUUID = streamUUID;
+                    const transMeta = transMsg.meta;
+                    transMeta.frontUUID = frontUUID;
+                    portal.publish(transMsg);
 
                     // emit local event
-                    const localEvent = ebOpened.createDto();
-                    localEvent.backUUID = _backUUID;
-                    localEvent.frontUUID = frontUUID;
-                    localEvent.streamUUID = streamUUID;
+                    const localMsg = ebOpened.createDto();
+                    const localData = localMsg.data;
+                    localData.backUUID = _backUUID;
+                    localData.frontUUID = frontUUID;
+                    localData.streamUUID = streamUUID;
                     // noinspection JSUnresolvedFunction
-                    thisRequestHandler.emit(ebOpened.getName(), localEvent);
+                    eventBus.publish(localMsg);
                 } else respond400(res);
             }
         }

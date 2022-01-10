@@ -1,6 +1,6 @@
 /**
  * Factory to create registry to share objects between handlers during HTTP request processing.
- * @implements TeqFw_Core_Shared_Api_Sync_IFactory
+ * @implements TeqFw_Core_Shared_Api_IFactory
  */
 export default class TeqFw_Web_Back_App_Server_Registry {
     constructor(spec) {

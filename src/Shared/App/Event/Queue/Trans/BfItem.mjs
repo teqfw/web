@@ -1,7 +1,7 @@
 /**
  * Data model for back-to-front queue item.
  * This is transport envelop for transborder events data.
- * Backend queue and frontend embassy both use this envelop.
+ * Backend queue and frontend embassy both use this envelope.
  */
 export default class TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem {
     /** @type {string} */
@@ -15,7 +15,7 @@ export default class TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem {
 }
 
 /**
- * @implements TeqFw_Core_Shared_Api_Sync_IFactory
+ * @implements TeqFw_Core_Shared_Api_IFactory
  * @memberOf TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem
  */
 export class Factory {
