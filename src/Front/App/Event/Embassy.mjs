@@ -5,6 +5,7 @@
 // noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Core_Shared_Api_Event_IBus
+ * @deprecated use TeqFw_Web_Front_App_Event_Bus
  */
 export default class TeqFw_Web_Front_App_Event_Embassy {
     constructor(spec) {

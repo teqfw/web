@@ -13,19 +13,20 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
 
         // INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} message
+         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto|*} message
          */
         this.publish = function (message) {
             const meta = message?.meta;
             const eventName = meta?.name;
+            const uuid = meta?.uuid;
             const frontUUID = meta?.frontUUID;
             meta.backUUID = backUUID.get();
             const conn = registry.getByFrontUUID(frontUUID);
             if (conn) {
                 conn.write(message);
-                logger.info(`Event '${eventName}' is sent to front app '${frontUUID}'. `);
+                logger.info(`Event '${eventName}' (${uuid}) is sent to front app '${frontUUID}'. `);
             } else {
-                logger.info(`Cannot send event '${eventName}' to front app '${frontUUID}'. `);
+                logger.info(`Cannot send event '${eventName}' (${uuid}) to front app '${frontUUID}'. `);
             }
         }
     }

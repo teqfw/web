@@ -8,8 +8,8 @@ export default class TeqFw_Web_Front_Proc_Tik {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Web_Front_App_UUID} */
         const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
-        /** @type {TeqFw_Web_Front_App_Event_Queue} */
-        const frontQueue = spec['TeqFw_Web_Front_App_Event_Queue$'];
+        /** @type {TeqFw_Web_Front_App_Connect_Event_Direct_Portal} */
+        const frontQueue = spec['TeqFw_Web_Front_App_Connect_Event_Direct_Portal$'];
         /** @type {TeqFw_Web_Front_App_Event_Embassy} */
         const backEmbassy = spec['TeqFw_Web_Front_App_Event_Embassy$'];
         /** @type {TeqFw_Web_Shared_Event_Front_Tik} */

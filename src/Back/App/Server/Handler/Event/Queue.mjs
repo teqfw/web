@@ -11,8 +11,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Queue {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory} */
-        const fQueueItem = spec['TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory$'];
+        // /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory} */
+        // const fQueueItem = spec['TeqFw_Web_Shared_App_Event_Queue_Trans_BfItem.Factory$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry} */
         const registry = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
 

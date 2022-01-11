@@ -29,8 +29,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const respond500 = spec['TeqFw_Web_Back_App_Server_Respond.respond500'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
         const eventBus = spec['TeqFw_Core_Back_App_Event_Bus$'];
-        /** @type {TeqFw_Web_Shared_App_Event_Queue_Trans_FbItem.Factory} */
-        const fQueueItem = spec['TeqFw_Web_Shared_App_Event_Queue_Trans_FbItem.Factory$'];
+        /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
+        const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
 
         // MAIN FUNCTIONALITY
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
@@ -43,17 +43,17 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
          * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Direct
          */
         async function process(req, res) {
-            // INNER FUNCTIONS
-
-            // MAIN FUNCTIONALITY
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
                 try {
                     const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
-                    const item = fQueueItem.create(json);
-                    logger.info(`Event message '${item.eventName}' from front '${item.frontUUID}' is received.`);
-                    eventBus.publish(item.eventName, item.eventData);
+                    const message = factTransMsg.createDto(json);
+                    const name = message.meta.name;
+                    const uuid = message.meta.uuid;
+                    const frontUUID = message.meta.frontUUID;
+                    logger.info(`Shared event: ${name} (${uuid}) from front ${frontUUID}.`);
+                    eventBus.publish(message);
                     res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
                     shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                 } catch (e) {

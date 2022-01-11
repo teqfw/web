@@ -30,10 +30,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
         /** @type {TeqFw_Web_Front_App_Back_UUID} */
         const backUUID = spec['TeqFw_Web_Front_App_Back_UUID$'];
-        /** @type {TeqFw_Web_Front_App_Event_Embassy} */
-        const embassy = spec['TeqFw_Web_Front_App_Event_Embassy$'];
-        /** @type {TeqFw_Core_Shared_App_Event_Bus} */
-        const baseEventBus = spec['TeqFw_Core_Shared_App_Event_Bus$$']; // instance
         /** @type {TeqFw_Web_Front_App_Event_Bus} */
         const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
@@ -51,8 +47,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         let _url = `./${DEF.SHARED.SPACE_EVENT_REVERSE}`;
 
         // MAIN FUNCTIONALITY
-        Object.assign(this, baseEventBus); // new base instance for every current instance
-        embassy.subscribe(esbOpened.getEventName(), onStreamOpened);
+        eventBus.subscribe(esbOpened.getEventName(), onStreamOpened);
 
         // DEFINE INNER FUNCTIONS
         /**
@@ -70,7 +65,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
                 state.closed();
-                this.publish(efClosed.createDto());
+                eventBus.publish(efClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
         }
@@ -88,7 +83,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 _source.addEventListener('open', function () {
                     state.connected();
                     eventBus.publish(efOpened.createDto());
-                    logger.info(`New SSE connection is opened.`);
                 });
                 // on 'error'
                 _source.addEventListener('error', function (event) {
@@ -96,7 +90,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                         thisConn.close();
                     } else {
                         state.error(event);
-                        logger.error(`Error in SSE connection (event: ${JSON.stringify(event)}).`);
+                        logger.error(`Error in 'back-to-front event stream' (event: ${JSON.stringify(event)}).`);
                         thisConn.close();
                     }
                 });
@@ -105,9 +99,10 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                     try {
                         const obj = JSON.parse(event.data);
                         const message = factTransMsg.createDto(obj);
-                        const eventName = message.meta.name;
+                        const name = message.meta.name;
+                        const uuid = message.meta.uuid;
                         const backUUID = message.meta.backUUID;
-                        logger.info(`Event message '${eventName}' from back '${backUUID}' is received.`);
+                        logger.info(`Shared event: ${name} (${uuid}) from back ${backUUID}.`);
                         eventBus.publish(message);
                     } catch (e) {
                         console.error(e);
