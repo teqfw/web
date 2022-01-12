@@ -30,8 +30,10 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
+        const portalFront = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
-        const eventBus = spec['TeqFw_Core_Back_App_Event_Bus$'];
+        const eventsBack = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
         const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
@@ -40,8 +42,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const registry = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory} */
         const fConn = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
-        const portal = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
 
@@ -130,7 +130,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     transData.streamUUID = streamUUID;
                     const transMeta = transMsg.meta;
                     transMeta.frontUUID = frontUUID;
-                    portal.publish(transMsg);
+                    portalFront.publish(transMsg);
 
                     // emit local event
                     const localMsg = ebOpened.createDto();
@@ -138,8 +138,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     localData.backUUID = _backUUID;
                     localData.frontUUID = frontUUID;
                     localData.streamUUID = streamUUID;
-                    // noinspection JSUnresolvedFunction
-                    eventBus.publish(localMsg);
+                    eventsBack.publish(localMsg);
                 } else respond400(res);
             }
         }
