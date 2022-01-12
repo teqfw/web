@@ -34,14 +34,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const portalFront = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
         const eventsBack = spec['TeqFw_Core_Back_App_Event_Bus$'];
-        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
-        const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
         const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry} */
         const registry = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory} */
         const fConn = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream.Factory$'];
+        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
+        const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
 
