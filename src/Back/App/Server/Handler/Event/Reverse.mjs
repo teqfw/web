@@ -92,14 +92,10 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 if (frontUUID) {
                     const streamUUID = v4(); // generate new UUID for newly established connection
                     let conn = registry.getByFrontUUID(frontUUID);
-                    if (!conn) {
-                        conn = fConn.create();
-                        registry.put(conn, streamUUID, frontUUID);
-                        logger.info(`Front app '${frontUUID}' established new stream for back-to-front events.`);
-                    } else {
-                        logger.info(`Front app '${frontUUID}' tries to re-established stream for back-to-front events.`);
-                    }
-                    if (conn.write) logger.info(`Is this connection closed (${frontUUID.substr(0, 8)})?`);
+                    if (conn) registry.delete(conn.streamId);
+                    conn = fConn.create();
+                    registry.put(conn, streamUUID, frontUUID);
+                    logger.info(`Front app '${frontUUID}' established new stream for back-to-front events.`);
                     // set 'write' function to connection, response stream is pinned in closure
                     conn.write = function (payload) {
                         if (res.writable) {
@@ -116,6 +112,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     // remove stream from registry on close
                     res.addListener('close', () => {
                         registry.delete(streamUUID);
+                        // TODO: publish local event here and process it in TeqFw_User_Back_Mod_Event_Stream_Registry
+                        // TODO: ... to cleanup users registry
                         logger.info(`Back-to-front events stream is closed (front: '${frontUUID}').`);
                     });
 

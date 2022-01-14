@@ -52,6 +52,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
         this.put = function (conn, streamUUID, frontUUID) {
             if (_store[streamUUID])
                 throw new Error(`Cannot registry reverse stream with duplicated UUID: ${streamUUID}.`);
+            conn.frontId = frontUUID;
+            conn.streamId = streamUUID;
             _store[streamUUID] = conn;
             _mapUUIDFrontToStream[frontUUID] = streamUUID;
         }
