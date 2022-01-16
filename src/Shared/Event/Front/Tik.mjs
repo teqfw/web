@@ -9,7 +9,7 @@ const NS = 'TeqFw_Web_Shared_Event_Front_Tik';
  * @memberOf TeqFw_Web_Shared_Event_Front_Tik
  */
 class Dto {
-    static namespace = `${NS}.Dto`;
+    static namespace = NS;
     frontUUID;
 }
 

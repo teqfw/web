@@ -12,7 +12,7 @@ const NS = 'TeqFw_Web_Shared_App_Event_Trans_Message_Meta';
  * @memberOf TeqFw_Web_Shared_App_Event_Trans_Message_Meta
  */
 class Dto {
-    static namespace = `${NS}.Dto`;
+    static namespace = NS;
     /** @type {string} */
     backUUID;
     /** @type {string} */

@@ -20,7 +20,7 @@ const ATTR = {
  * @extends TeqFw_Core_Shared_App_Event_Message.Dto
  */
 class Dto {
-    static namespace = `${NS}.Dto`;
+    static namespace = NS;
     /** @type {Object} */
     data;
     /** @type {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} */

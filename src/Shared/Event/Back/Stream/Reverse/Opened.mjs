@@ -9,7 +9,7 @@ const NS = 'TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened';
  * @memberOf TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened
  */
 class Dto {
-    static namespace = `${NS}.Dto`;
+    static namespace = NS;
     /** @type {string} */
     backUUID;
     /** @type {string} */

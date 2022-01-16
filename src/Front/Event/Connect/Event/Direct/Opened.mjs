@@ -9,7 +9,7 @@ const NS = 'TeqFw_Web_Front_Event_Connect_Event_Direct_Opened';
  * @memberOf TeqFw_Web_Front_Event_Connect_Event_Direct_Opened
  */
 class Dto {
-    static namespace = `${NS}.Dto`;
+    static namespace = NS;
 }
 
 /**
