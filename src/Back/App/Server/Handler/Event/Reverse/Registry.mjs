@@ -16,13 +16,13 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
         // DEFINE INSTANCE METHODS
         /**
          * Delete connection data from registry.
-         * @param connUUID
+         * @param {string} streamUUID
          */
-        this.delete = function (connUUID) {
-            if (_store[connUUID]) {
-                const frontUUID = _store[connUUID].frontId;
+        this.delete = function (streamUUID) {
+            if (_store[streamUUID]) {
+                const frontUUID = _store[streamUUID].frontId;
                 delete _mapUUIDFrontToStream[frontUUID];
-                delete _store[connUUID];
+                delete _store[streamUUID];
             }
         }
 
@@ -43,6 +43,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
                 ? _store[_mapUUIDFrontToStream[uuid]] : null;
         }
 
+        /**
+         * Get frontUUID by stream UUID
+         * @param {string} streamUUID
+         * @return {string}
+         */
+        this.mapUUIDStreamToFront = function (streamUUID) {
+            return _store[streamUUID]?.frontId;
+        }
         /**
          * Put connection to the registry.
          * @param {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream} conn
