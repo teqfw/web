@@ -24,7 +24,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
             const conn = registry.getByFrontUUID(frontUUID);
             if (conn) {
                 conn.write(message);
-                logger.info(`Event '${eventName}' (${uuid}) is sent to front app '${frontUUID}'. `);
+                logger.info(`<= ${frontUUID} / ${uuid}: ${eventName}`);
             } else {
                 logger.info(`Cannot send event '${eventName}' (${uuid}) to front app '${frontUUID}'. `);
             }

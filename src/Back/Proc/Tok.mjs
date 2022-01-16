@@ -6,10 +6,6 @@
 export default class TeqFw_Web_Back_Proc_Tok {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_Back_App_UUID} */
-        const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Queue} */
-        const backQueue = spec['TeqFw_Web_Back_App_Server_Handler_Event_Queue$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
         const portal = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Embassy} */

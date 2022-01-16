@@ -102,7 +102,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                         const name = message.meta.name;
                         const uuid = message.meta.uuid;
                         const backUUID = message.meta.backUUID;
-                        logger.info(`Shared event: ${name} (${uuid}) from back ${backUUID}.`);
+                        logger.info(`=> ${backUUID} / ${uuid} : ${name}`);
                         eventBus.publish(message);
                     } catch (e) {
                         console.error(e);

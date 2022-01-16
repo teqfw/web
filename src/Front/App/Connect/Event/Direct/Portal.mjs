@@ -28,7 +28,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
             if (conn) {
                 // noinspection JSIgnoredPromiseFromCall
                 conn.send(message);
-                logger.info(`Event '${eventName}' (${uuid}) is sent to back '${backUUID.get()}'. `);
+                logger.info(`<= ${meta.backUUID} / ${uuid} : ${eventName}`);
             } else {
                 logger.info(`Cannot send event '${eventName}' to the back. `);
             }
