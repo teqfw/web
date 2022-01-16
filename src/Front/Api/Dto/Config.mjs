@@ -28,6 +28,8 @@ export default class TeqFw_Web_Front_Api_Dto_Config {
  * @memberOf TeqFw_Web_Front_Api_Dto_Config
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
@@ -44,6 +46,3 @@ export class Factory {
         }
     }
 }
-
-// finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

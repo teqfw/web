@@ -73,6 +73,8 @@ export default class TeqFw_Web_Front_Store_Connect {
  * @memberOf TeqFw_Web_Front_Store_Connect
  */
 class Store {
+    static namespace = NS;
+
     constructor($name, $db) {
         const db = $db;
         const name = $name;
@@ -124,5 +126,3 @@ class Store {
         }
     }
 }
-
-Object.defineProperty(Store, 'name', {value: `${NS}.${Store.constructor.name}`});

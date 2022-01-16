@@ -43,6 +43,8 @@ TeqFw_Web_Back_Dto_Plugin_Desc.STATICS = 'statics';
  * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         const {castArrayOfStr} = spec['TeqFw_Core_Shared_Util_Cast'];
         /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory} */
@@ -79,4 +81,3 @@ export class Factory {
 
 // freeze DTO class to deny attributes changes and pin namespace
 Object.freeze(TeqFw_Web_Back_Dto_Plugin_Desc);
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

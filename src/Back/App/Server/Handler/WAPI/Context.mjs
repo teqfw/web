@@ -102,6 +102,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI_Context {
  * @memberOf TeqFw_Web_Back_App_Server_Handler_WAPI_Context
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -123,6 +125,3 @@ export class Factory {
         }
     }
 }
-
-// finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

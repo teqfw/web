@@ -27,6 +27,8 @@ TeqFw_Web_Shared_Dto_Namespace_Replace.ORIG = 'orig';
  * @memberOf TeqFw_Web_Shared_Dto_Namespace_Replace
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
@@ -45,4 +47,3 @@ export class Factory {
 
 // finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Shared_Dto_Namespace_Replace);
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

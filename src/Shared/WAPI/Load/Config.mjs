@@ -24,6 +24,8 @@ export class Response {}
  * @implements TeqFw_Web_Back_Api_WAPI_IRoute
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
@@ -53,6 +55,5 @@ export class Factory {
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
 Object.defineProperty(Request, 'name', {value: `${NS}.${Request.constructor.name}`});
 Object.defineProperty(Response, 'name', {value: `${NS}.${Response.constructor.name}`});

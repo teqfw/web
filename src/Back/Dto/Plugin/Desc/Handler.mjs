@@ -41,6 +41,8 @@ TeqFw_Web_Back_Dto_Plugin_Desc_Handler.SPACES = 'spaces';
  * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc_Handler
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         const {castArrayOfStr} = spec['TeqFw_Core_Shared_Util_Cast'];
 
@@ -60,4 +62,3 @@ export class Factory {
 
 // finalize code components for this es6-module
 Object.freeze(TeqFw_Web_Back_Dto_Plugin_Desc_Handler);
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});

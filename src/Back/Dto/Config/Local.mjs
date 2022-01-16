@@ -18,6 +18,8 @@ export default class TeqFw_Web_Back_Dto_Config_Local {
  * @memberOf TeqFw_Web_Back_Dto_Config_Local
  */
 export class Factory {
+    static namespace = NS;
+
     constructor(spec) {
         const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
@@ -35,6 +37,3 @@ export class Factory {
         }
     }
 }
-
-// finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.constructor.name}`});
