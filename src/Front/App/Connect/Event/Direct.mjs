@@ -12,13 +12,10 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
 
 
-        // DEFINE WORKING VARS / PROPS
+        // ENCLOSED VARS
         let _url = composeBaseUrl();
 
-        // MAIN FUNCTIONALITY
-
-
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCTIONS
         /**
          * @return {string}
          */
@@ -33,10 +30,15 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
             return `${schema}${domain}${port}${root}${door}${space}/`; // '/efb/' key in service worker!!
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
+        /**
+         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} data
+         * @return {Promise<void>}
+         */
         this.send = async function (data) {
             try {
-                const res = await fetch(_url, {
+                const eventName = data?.meta?.name;
+                const res = await fetch(`${_url}/${eventName}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
