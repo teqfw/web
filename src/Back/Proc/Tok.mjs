@@ -16,7 +16,7 @@ export default class TeqFw_Web_Back_Proc_Tok {
         const esfTik = spec['TeqFw_Web_Shared_Event_Front_Tik$'];
 
         // MAIN FUNCTIONALITY
-        frontEmbassy.subscribe(esfTik.getName(), handler)
+        frontEmbassy.subscribe(esfTik.getEventName(), handler)
 
         // DEFINE INNER FUNCTIONS
         /**

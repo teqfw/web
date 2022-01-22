@@ -14,7 +14,7 @@ class Dto {
 }
 
 /**
- * @implements TeqFw_Core_Shared_Api_IEvent
+ * @implements TeqFw_Core_Shared_Api_Factory_Dto_IEvent
  */
 export default class TeqFw_Web_Shared_Event_Front_Tik {
     constructor(spec) {
@@ -34,6 +34,6 @@ export default class TeqFw_Web_Shared_Event_Front_Tik {
             return res;
         }
 
-        this.getName = () => NS;
+        this.getEventName = () => NS;
     }
 }

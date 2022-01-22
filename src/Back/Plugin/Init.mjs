@@ -6,14 +6,13 @@ const NS = 'TeqFw_Web_Back_Plugin_Init';
 
 export default function Factory(spec) {
     // EXTRACT DEPS
-    /** @type {TeqFw_Core_Shared_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Logger$'];
-    /** @type {TeqFw_Web_Back_Proc_Tok} */
-    const procTok = spec['TeqFw_Web_Back_Proc_Tok$']; // TODO: we should init process in teqfw.json
+    /** @type {TeqFw_Di_Shared_Container} */
+    const container = spec['TeqFw_Di_Shared_Container$'];
 
     // DEFINE INNER FUNCTIONS
     async function action() {
-
+        await container.get('TeqFw_Web_Back_Proc_Front_Log$');
+        await container.get('TeqFw_Web_Back_Proc_Tok$');
     }
 
     // MAIN FUNCTIONALITY
