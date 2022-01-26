@@ -52,7 +52,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                     const name = message.meta.name;
                     const uuid = message.meta.uuid;
                     const frontUUID = message.meta.frontUUID;
-                    logger.info(`=> ${frontUUID} / ${uuid}: ${name}`);
+                    if (name !== 'TeqFw_Web_Shared_Event_Front_Log')
+                        logger.info(`=> ${frontUUID} / ${uuid}: ${name}`);
                     eventBus.publish(message);
                     res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
                     shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);

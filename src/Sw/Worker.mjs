@@ -39,7 +39,7 @@ export default class TeqFw_Web_Sw_Worker {
      * ATTN: This is standard ES6 module w/o TeqFW DI support !!!
      */
     constructor() {
-        // DEFINE WORKING VARS / PROPS
+        // ENCLOSED VARS
         /**
          * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
          * @type {TeqFw_Web_Sw_Config}
@@ -52,14 +52,16 @@ export default class TeqFw_Web_Sw_Worker {
         let _door;
         /** @type {boolean} */
         let _cacheDisabled = true; // disable by default TODO: invert logic here and in IndexedDB
+        /** @type {function} */
+        let _log;
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCTIONS
 
         /**
          * Send message to `index.html` to start bootstrap.
          */
         function onActivate() {
-            console.log(`[SW]: on activate event is here...`);
+            _log(`[TeqFw_Web_Sw_Worker]: on activate event is here...`);
             self.clients.claim();
         }
 
@@ -100,8 +102,7 @@ export default class TeqFw_Web_Sw_Worker {
                     await cache.put(event.request, resp.clone());
                     return resp;
                 } catch (e) {
-                    console.log('[SW] error: ');
-                    console.dir(e);
+                    _log(`[TeqFw_Web_Sw_Worker] error: ${JSON.stringify(e)}`);
                 }
             }
 
@@ -116,8 +117,8 @@ export default class TeqFw_Web_Sw_Worker {
             }
         }
 
-        function onInstall(event) {
-            // DEFINE INNER FUNCTIONS
+        async function onInstall(event) {
+            // ENCLOSED FUNCTIONS
             async function loadFilesToCache() {
                 // Get list of static files from the server
                 const data = {door: _door}; // see TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request
@@ -130,6 +131,7 @@ export default class TeqFw_Web_Sw_Worker {
                 });
                 const resp = await self.fetch(req);
                 const json = await resp.json();
+                _log(`[TeqFw_Web_Sw_Worker]: list of static files to cache is loaded.`);
                 return json?.data?.items ?? [];
             }
 
@@ -142,24 +144,23 @@ export default class TeqFw_Web_Sw_Worker {
                         await Promise.all(
                             urls.map(function (url) {
                                 return cacheStat.add(url).catch(function (reason) {
-                                    console.log(`'${url}' failed: ${String(reason)}`);
+                                    _log(`[TeqFw_Web_Sw_Worker]: '${url}' failed: ${String(reason)}`);
                                 });
                             })
                         );
                     }
+                    _log(`[TeqFw_Web_Sw_Worker]: static files are loaded.`);
                 } catch (e) {
-                    console.log('[SW] install error: ');
-                    console.dir(e);
+                    _log(`[TeqFw_Web_Sw_Worker] install error: ${JSON.stringify(e)}`);
                 }
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             event.waitUntil(
                 loadFilesToCache()
                     .then(cacheStatics)
-                    .catch((err) => {
-                        console.log('[SW] error: ');
-                        console.dir(err);
+                    .catch((e) => {
+                        _log(`[TeqFw_Web_Sw_Worker] error: ${e.message}`);
                     })
             );
         }
@@ -177,8 +178,7 @@ export default class TeqFw_Web_Sw_Worker {
                     const keys = await cache.keys();
                     keys.forEach((one) => cache.delete(one));
                 } catch (e) {
-                    console.log('[SW] error: ');
-                    console.dir(e);
+                    _log(`[TeqFw_Web_Sw_Worker] error: ${JSON.stringify(e)}`);
                 }
             }
 
@@ -206,7 +206,7 @@ export default class TeqFw_Web_Sw_Worker {
             event.source.postMessage(res);
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         /**
          * Bind event handlers to worker's scope.
@@ -219,10 +219,11 @@ export default class TeqFw_Web_Sw_Worker {
             context.addEventListener(EVT.FETCH, onFetch);
             context.addEventListener(EVT.INSTALL, onInstall);
             context.addEventListener(EVT.MESSAGE, onMessage);
-            console.log(`[SW]: is registering for '${_door}' entry point.`);
+            _log = context.logToServer; // pin remote log function to current module
+            _log(`[TeqFw_Web_Sw_Worker] is registered for '${_door}' entry point.`);
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         _config.get(CFG_CACHE_DISABLED).then((disabled) => _cacheDisabled = disabled);
     }
 
