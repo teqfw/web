@@ -44,6 +44,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Opened} */
         const ebOpened = spec['TeqFw_Web_Back_Event_Stream_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Closed} */
+        const ebClosed = spec['TeqFw_Web_Back_Event_Stream_Reverse_Closed$'];
 
         // DEFINE WORKING VARS / PROPS
         /**
@@ -112,8 +114,12 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     // remove stream from registry on close
                     res.addListener('close', () => {
                         registry.delete(streamUUID);
-                        // TODO: publish local event here and process it in TeqFw_User_Back_Mod_Event_Stream_Registry
-                        // TODO: ... to cleanup users registry
+                        // publish event for backend
+                        const event = ebClosed.createDto();
+                        event.data.frontUUID = frontUUID;
+                        event.data.streamUUID = streamUUID;
+                        eventsBack.publish(event);
+                        //
                         logger.info(`Back-to-front events stream is closed (front: '${frontUUID}').`);
                     });
 
@@ -133,7 +139,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     // emit local event
                     const localMsg = ebOpened.createDto();
                     const localData = localMsg.data;
-                    localData.backUUID = _backUUID;
                     localData.frontUUID = frontUUID;
                     localData.streamUUID = streamUUID;
                     eventsBack.publish(localMsg);

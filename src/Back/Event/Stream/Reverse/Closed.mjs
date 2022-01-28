@@ -1,12 +1,12 @@
 /**
- * Backend local event 'Reverse event stream is opened'.
+ * Backend local event 'Reverse event stream is closed'.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Event_Stream_Reverse_Opened';
+const NS = 'TeqFw_Web_Back_Event_Stream_Reverse_Closed';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Back_Event_Stream_Reverse_Opened
+ * @memberOf TeqFw_Web_Back_Event_Stream_Reverse_Closed
  */
 class Dto {
     static namespace = NS;
@@ -19,7 +19,7 @@ class Dto {
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto_IEvent
  */
-export default class TeqFw_Web_Back_Event_Stream_Reverse_Opened {
+export default class TeqFw_Web_Back_Event_Stream_Reverse_Closed {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Core_Shared_App_Event_Message} */
@@ -32,8 +32,8 @@ export default class TeqFw_Web_Back_Event_Stream_Reverse_Opened {
 
         // ENCLOSED FUNCTIONS
         /**
-         * @param {TeqFw_Web_Back_Event_Stream_Reverse_Opened.Dto} [data]
-         * @return {TeqFw_Web_Back_Event_Stream_Reverse_Opened.Dto}
+         * @param {TeqFw_Web_Back_Event_Stream_Reverse_Closed.Dto} [data]
+         * @return {TeqFw_Web_Back_Event_Stream_Reverse_Closed.Dto}
          */
         function createData(data) {
             const res = new Dto();
@@ -44,8 +44,8 @@ export default class TeqFw_Web_Back_Event_Stream_Reverse_Opened {
 
         // INSTANCE METHODS
         /**
-         * @param {{[data]: TeqFw_Web_Back_Event_Stream_Reverse_Opened.Dto, [meta]: TeqFw_Core_Shared_App_Event_Message_Meta.Dto}} [data]
-         * @return {{data: TeqFw_Web_Back_Event_Stream_Reverse_Opened.Dto, meta: TeqFw_Core_Shared_App_Event_Message_Meta.Dto}}
+         * @param {{[data]: TeqFw_Web_Back_Event_Stream_Reverse_Closed.Dto, [meta]: TeqFw_Core_Shared_App_Event_Message_Meta.Dto}} [data]
+         * @return {{data: TeqFw_Web_Back_Event_Stream_Reverse_Closed.Dto, meta: TeqFw_Core_Shared_App_Event_Message_Meta.Dto}}
          */
         this.createDto = function (data) {
             const res = dtoBase.createDto({[ATTR.META]: data?.[ATTR.META]});
