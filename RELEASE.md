@@ -4,6 +4,7 @@
 
 * Restructure directories and files.
 * Add events streams between front and back.
+* Add process to monitor online/offline modes.
 
 # 0.7.1
 

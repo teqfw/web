@@ -24,8 +24,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Front_Api_Event_Stream_Reverse_IState} */
-        const state = spec['TeqFw_Web_Front_Api_Event_Stream_Reverse_IState$'];
         /** @type {TeqFw_Web_Front_App_UUID} */
         const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
         /** @type {TeqFw_Web_Front_App_Back_UUID} */
@@ -40,16 +38,20 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
         const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
 
-        // DEFINE WORKING VARS / PROPS
+        // ENCLOSED VARS
         /** @type {EventSource} */
         let _source;
         let _url = `./${DEF.SHARED.SPACE_EVENT_REVERSE}`;
 
-        // MAIN FUNCTIONALITY
+        // MAIN
+        window.addEventListener('offline', closeStream);
+        window.addEventListener('online', openStream);
         eventBus.subscribe(esbOpened.getEventName(), onStreamOpened);
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCTIONS
         /**
          * Save backend UUID for currently connected server.
          * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} data
@@ -59,40 +61,36 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             backUUID.set(data.backUUID);
         }
 
-        // DEFINE INSTANCE METHODS
-
-        this.close = function () {
+        function closeStream() {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
-                state.closed();
                 eventBus.publish(efClosed.createDto());
                 logger.info(`Reverse events stream connection is closed.`);
             }
+            modConn.setOffline();
         }
+
 
         /**
          * Open SSE connection and set handlers for input data.
          */
-        this.open = function () {
+        function openStream() {
             if ((_source === undefined) || (_source.readyState === SSE_STATE.CLOSED)) {
-                const thisConn = this;
                 const url = `${_url}/${frontUUID.get()}`;
                 // open new SSE connection and add event listeners
                 _source = new EventSource(url);
                 // on 'open'
                 _source.addEventListener('open', function () {
-                    state.connected();
                     eventBus.publish(efOpened.createDto());
+                    modConn.setOnline();
                 });
                 // on 'error'
                 _source.addEventListener('error', function (event) {
-                    if (event.eventPhase === EventSource.CLOSED) {
-                        thisConn.close();
-                    } else {
-                        state.error(event);
+                    if (event.eventPhase !== EventSource.CLOSED) {
                         logger.error(`Error in 'back-to-front event stream' (event: ${JSON.stringify(event)}).`);
-                        thisConn.close();
+
                     }
+                    closeStream();
                 });
                 // on 'message' (repeat event emission on the front)
                 _source.addEventListener('message', function (event) {
@@ -111,6 +109,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             }
         }
 
-        this.stateOpen = () => (_source?.readyState === 1);
+        // INSTANCE METHODS
+        this.close = closeStream;
+        this.open = openStream;
     }
 }

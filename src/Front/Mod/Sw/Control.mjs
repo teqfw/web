@@ -4,7 +4,7 @@
 
 /**
  * Marker for service worker message structure.
- * @memberOf TeqFw_Web_Front_Model_Sw_Control
+ * @memberOf TeqFw_Web_Front_Mod_Sw_Control
  */
 class Message {
     /** @type {string} */
@@ -15,10 +15,10 @@ class Message {
     type;
 }
 
-export default class TeqFw_Web_Front_Model_Sw_Control {
+export default class TeqFw_Web_Front_Mod_Sw_Control {
     constructor(spec) {
-        /** @type {typeof TeqFw_Web_Front_Model_Sw_Enum_Message} */
-        const MSG = spec['TeqFw_Web_Front_Model_Sw_Enum_Message$'];
+        /** @type {typeof TeqFw_Web_Front_Mod_Sw_Enum_Message} */
+        const MSG = spec['TeqFw_Web_Front_Mod_Sw_Enum_Message$'];
 
         const _queue = {};
 

@@ -10,7 +10,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Web_Front_Api_Dto_Config} */
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
-
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
 
         // ENCLOSED VARS
         let _url = composeBaseUrl();
@@ -37,6 +38,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
          */
         this.send = async function (data) {
             try {
+                modConn.startActivity();
                 const eventName = data?.meta?.name;
                 const res = await fetch(`${_url}/${eventName}`, {
                     method: 'POST',
@@ -48,6 +50,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                 const text = await res.text();
                 try {
                     const json = JSON.parse(text);
+                    // TODO: remove sent event from front queue
                     // result = factory.createRes(json.data);
                     const bp = true;
                 } catch (e) {
@@ -56,7 +59,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
             } catch (e) {
                 // errHndl.error(e);
             } finally {
-                // ajaxLed.off();
+                modConn.stopActivity();
             }
         }
 

@@ -1,7 +1,7 @@
 /**
  * Model object for frontend configuration.
  */
-export default class TeqFw_Web_Front_Model_Config {
+export default class TeqFw_Web_Front_Mod_Config {
     /** @type {TeqFw_Web_Front_Defaults} */
     #DEF;
     /** @type {TeqFw_Web_Front_Api_Dto_Config} */

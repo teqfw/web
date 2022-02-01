@@ -1,5 +1,6 @@
 /**
  * Frontend local event 'Reverse event stream is opened'.
+ * TODO: use this event or TeqFw_Web_Front_Api_Mod_Server_IConnect model
  */
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened';

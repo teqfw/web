@@ -6,8 +6,7 @@
     },
     "replace": {
       "TeqFw_Core_Shared_Lib_Uuid": {"front": "TeqFw_Web_Front_Lib_Uuid"},
-      "TeqFw_Web_Front_Api_Gate_IAjaxLed": {"front": "TeqFw_Web_Front_Model_Gate_AjaxLed"},
-      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Model_Gate_ErrorHandler"}
+      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"}
     }
   },
   "@teqfw/core": {

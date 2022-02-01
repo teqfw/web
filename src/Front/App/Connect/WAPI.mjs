@@ -11,15 +11,15 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Web_Front_Api_Dto_Config} */
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
-        /** @type {TeqFw_Web_Front_Api_Gate_IAjaxLed} */
-        const ajaxLed = spec['TeqFw_Web_Front_Api_Gate_IAjaxLed$'];
         /** @type {TeqFw_Web_Front_Api_Gate_IErrorHandler} */
         const errHndl = spec['TeqFw_Web_Front_Api_Gate_IErrorHandler$'];
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
 
-        // DEFINE WORKING VARS / PROPS
+        // ENCLOSED VARS
         let BASE;
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCTIONS
         function getBaseUrl() {
             if (!BASE) {
                 const schema = '//';
@@ -34,7 +34,7 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
             return BASE;
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         /**
          * Send API service request to backend.
          *
@@ -44,7 +44,7 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
          */
         this.send = async function (data, factory) {
             let result = false;
-            ajaxLed.on();
+            modConn.startActivity();
             try {
                 const URL = `${getBaseUrl()}${factory.getRoute()}`;
                 const res = await fetch(URL, {
@@ -64,7 +64,7 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
             } catch (e) {
                 errHndl.error(e);
             } finally {
-                ajaxLed.off();
+                modConn.stopActivity();
             }
             return result;
         }

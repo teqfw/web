@@ -6,7 +6,7 @@
  * I suppose that SW files should be cached by browser itself, so these files are not under `./Front/` folder.
  */
 import Config from './Config.mjs';
-import MSG from '../Front/Model/Sw/Enum/Message.mjs';
+import MSG from '../Front/Mod/Sw/Enum/Message.mjs';
 
 /**
  * Service Worker events.
@@ -184,7 +184,7 @@ export default class TeqFw_Web_Sw_Worker {
 
             // MAIN FUNCTIONALITY
 
-            /** @type {TeqFw_Web_Front_Model_Sw_Control.Message} */
+            /** @type {TeqFw_Web_Front_Mod_Sw_Control.Message} */
             const data = event.data;
             const type = data.type;
             const payload = data.payload;
