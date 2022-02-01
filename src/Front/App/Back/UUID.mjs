@@ -2,6 +2,7 @@
  * Application UUID for backend where to this front is connected.
  *
  * @namespace TeqFw_Web_Front_App_Back_UUID
+ * TODO: should we use backend UUID in FW? It should be enough frontUUID for event streams switching.
  */
 export default class TeqFw_Web_Front_App_Back_UUID {
     constructor(spec) {

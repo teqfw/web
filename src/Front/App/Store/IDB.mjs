@@ -1,7 +1,7 @@
 /**
  * Wrapper to IDBDatabase to use in TeqFW.
  */
-export default class TeqFw_Web_Front_Store_IDB {
+export default class TeqFw_Web_Front_App_Store_IDB {
     constructor(spec) {
 
         // ENCLOSED VARS
