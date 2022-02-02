@@ -3,6 +3,11 @@
  * @interface
  */
 export default class TeqFw_Web_Front_Api_Mod_Server_IConnect {
+    /**
+     * 'true' - if connection with server is established and works.
+     * @return {boolean}
+     */
+    isOnline() {}
 
     /**
      * Some connector (WAPI or Events Direct Channel) starts outgoing transfer.

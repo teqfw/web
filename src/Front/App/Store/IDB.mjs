@@ -126,12 +126,11 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
 
         /**
-         * TODO: should be a CRUD notation (create)
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {*} data
          */
-        this.add = async function (trx, meta, data) {
+        this.create = async function (trx, meta, data) {
             // DEFINE INNER FUNCTIONS
             function createPromise(store, data) {
                 return new Promise(function (resolve, reject) {
@@ -155,6 +154,29 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 if (data[one] === undefined) delete data[one];
             // create promise and perform operation
             return await createPromise(store, data);
+        }
+
+        /**
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @param {IDBValidKey|IDBKeyRange} key JS primitive for simple PK or object/array for complex PK or unique key
+         * @return {*}
+         */
+        this.deleteOne = async function (trx, meta, key) {
+            let res = null;
+            if (key) { // key must be valid object or primitive
+                const storeName = meta.getEntityName();
+                const store = trx.objectStore(storeName);
+                const promise = new Promise((resolve, reject) => {
+                    // TODO: test it for multi-key (more than 1 attr in the key)
+                    const norm = typeof key === 'object' ? Object.values(key) : key;
+                    const req = store.delete(norm);
+                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => resolve(req.result);
+                });
+                res = await promise;
+            }
+            return res;
         }
 
         /**

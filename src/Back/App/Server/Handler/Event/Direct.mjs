@@ -1,5 +1,5 @@
 /**
- * Web server handler to establish events stream from front to back (direct channel).
+ * Web server handler to receive 'front-to-back' events (direct stream).
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
@@ -31,11 +31,13 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const eventBus = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
         const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
+        /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response} */
+        const dtoRes = spec['TeqFw_Web_Shared_Dto_Event_Direct_Response$'];
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCTIONS
         /**
          * Process HTTP request if not processed before.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
@@ -56,6 +58,9 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                         logger.info(`=> ${frontUUID} / ${uuid}: ${name}`);
                     eventBus.publish(message);
                     res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                    const eventRes = dtoRes.createDto();
+                    eventRes.success = true;
+                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
                     shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                 } catch (e) {
                     logger.error(e);

@@ -1,13 +1,11 @@
 /**
- * Transborder events port to departure events messages from front to back.
+ * Transborder events portal to departure events messages from front to back.
  *
  * @namespace TeqFw_Web_Front_App_Connect_Event_Direct_Portal
  */
 export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_Shared_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct} */
         const conn = spec['TeqFw_Web_Front_App_Connect_Event_Direct$'];
         /** @type {TeqFw_Web_Front_App_UUID} */
@@ -19,7 +17,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         /** @type {TeqFw_Web_Front_Store_Entity_Event_Delayed} */
         const idbQueue = spec['TeqFw_Web_Front_Store_Entity_Event_Delayed$'];
 
-
         // ENCLOSED FUNCTIONS
         /**
          * Queue event message before sending to back.
@@ -30,7 +27,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
             const trx = await idb.startTransaction([idbQueue]);
             // noinspection JSCheckFunctionSignatures
             const dto = idbQueue.createDto(event);
-            const id = await idb.add(trx, idbQueue, dto);
+            const id = await idb.create(trx, idbQueue, dto);
             trx.commit();
             return id;
         }
@@ -42,11 +39,9 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
          */
         async function removeFromQueue(uuid) {
             const trx = await idb.startTransaction([idbQueue]);
-            // noinspection JSCheckFunctionSignatures
-            const dto = idbQueue.createDto(event);
-            const id = await idb.add(trx, idbQueue, dto);
+            const res = await idb.deleteOne(trx, idbQueue, uuid);
             trx.commit();
-            return id;
+            return res;
         }
 
 
@@ -56,18 +51,12 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
          * @return {Promise<void>}
          */
         this.publish = async function (event) {
-            const meta = event?.meta;
-            const eventName = meta?.name;
-            const uuid = meta?.uuid;
+            const meta = event.meta;
             meta.backUUID = backUUID.get();
             meta.frontUUID = frontUUID.get();
             await saveToQueue(event);
-            if (conn) {
-                await conn.send(event);
-                logger.info(`<= ${meta.backUUID} / ${uuid} : ${eventName}`);
-            } else {
-                logger.info(`Cannot send event '${eventName}' to the back. `);
-            }
+            const sent = await conn.send(event);
+            if (sent) await removeFromQueue(meta?.uuid);
         }
     }
 }

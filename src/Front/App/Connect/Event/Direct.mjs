@@ -2,7 +2,6 @@
  * HTTP connection to send frontend events to the server (direct event stream representation).
  * Contains connection UUID and uses SSE state model to reflect changes in connection state.
  */
-// noinspection JSClosureCompilerSyntax
 export default class TeqFw_Web_Front_App_Connect_Event_Direct {
     constructor(spec) {
         // EXTRACT DEPS
@@ -34,33 +33,35 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} data
-         * @return {Promise<void>}
+         * @return {Promise<boolean>}
          */
         this.send = async function (data) {
-            try {
-                modConn.startActivity();
-                const eventName = data?.meta?.name;
-                const res = await fetch(`${_url}/${eventName}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                const text = await res.text();
+            let result = false;
+            if (modConn.isOnline())
                 try {
-                    const json = JSON.parse(text);
-                    // TODO: remove sent event from front queue
-                    // result = factory.createRes(json.data);
-                    const bp = true;
+                    modConn.startActivity();
+                    const eventName = data?.meta?.name;
+                    const res = await fetch(`${_url}/${eventName}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const text = await res.text();
+                    try {
+                        /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
+                        const eventRes = JSON.parse(text);
+                        result = eventRes.success ?? false;
+                    } catch (e) {
+                        // errHndl.error(text);
+                    }
                 } catch (e) {
-                    // errHndl.error(text);
+                    // errHndl.error(e);
+                } finally {
+                    modConn.stopActivity();
                 }
-            } catch (e) {
-                // errHndl.error(e);
-            } finally {
-                modConn.stopActivity();
-            }
+            return result;
         }
 
     }
