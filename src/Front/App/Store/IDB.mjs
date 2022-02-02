@@ -2,7 +2,7 @@
  * Wrapper to IDBDatabase to use in TeqFW.
  */
 export default class TeqFw_Web_Front_App_Store_IDB {
-    constructor(spec) {
+    constructor() {
 
         // ENCLOSED VARS
         /** @type {IDBDatabase} */
@@ -255,10 +255,14 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 req.onsuccess = (event) => {
                     const cursor = event.target.result;
                     if (cursor) {
-                        if (count++ < limit) {
+                        if ((limit === undefined) || (count++ < limit)) {
                             const key = {};
-                            let i = 0;
-                            for (const name of keyAttrs) key[name] = cursor.key[i++];
+                            if (keyAttrs.length === 1) {
+                                key[keyAttrs] = cursor.key;
+                            } else {
+                                let i = 0;
+                                for (const name of keyAttrs) key[name] = cursor.key[i++];
+                            }
                             res.push(key);
                             cursor.continue();
                         } else resolve();
