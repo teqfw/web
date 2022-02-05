@@ -6,11 +6,20 @@
     },
     "replace": {
       "TeqFw_Core_Shared_Lib_Uuid": {"front": "TeqFw_Web_Front_Lib_Uuid"},
-      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"}
+      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"},
+      "TeqFw_Web_Shared_Api_Crypto_IScrambler": {
+        "back": "TeqFw_Web_Back_Mod_Crypto_Scrambler",
+        "front": "TeqFw_Web_Front_Mod_Crypto_Scrambler"
+      },
+      "TeqFw_Web_Shared_Api_Crypto_Key_IManager": {
+        "back": "TeqFw_Web_Back_Mod_Crypto_Key_Manager",
+        "front": "TeqFw_Web_Front_Mod_Crypto_Key_Manager"
+      }
     }
   },
   "@teqfw/core": {
     "commands": [
+      "TeqFw_Web_Back_Cli_Crypto_Key_Create",
       "TeqFw_Web_Back_Cli_Server_Start",
       "TeqFw_Web_Back_Cli_Server_Stop"
     ],
@@ -49,6 +58,8 @@
       "TeqFw_Web_Back_WAPI_Load_Namespaces"
     ],
     "statics": {
+      "/tweetnacl-util/": "/tweetnacl-util/",
+      "/tweetnacl/": "/tweetnacl/",
       "/uuid/": "/uuid/dist/esm-browser"
     }
   }

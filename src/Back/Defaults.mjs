@@ -10,6 +10,8 @@ export default class TeqFw_Web_Back_Defaults {
     DATA_FILE_PID = './var/web-server.pid'; // PID file to stop running server.
     DATA_SERVER_PORT = 8080;
 
+    FILE_CRYPTO_KEYS = './cfg/local.crypto.keys.json';
+
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
 
     HNDL_SHARE = 'teqSharedObjects'; // attribute name for shared objects' registry in req/res structures

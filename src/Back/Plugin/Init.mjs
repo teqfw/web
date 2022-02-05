@@ -12,6 +12,7 @@ export default function Factory(spec) {
     // DEFINE INNER FUNCTIONS
     async function action() {
         await container.get('TeqFw_Web_Back_Proc_Front_Log$');
+        await container.get('TeqFw_Web_Back_Proc_Server_Key_Source$');
         await container.get('TeqFw_Web_Back_Proc_Tok$');
     }
 

@@ -6,6 +6,9 @@ const NS = 'TeqFw_Web_Front_Store';
 const IDB_VERSION = 1;
 const ENTITY = 'singleton';
 
+/**
+ * @deprecated use TeqFw_Web_Front_Mod_Store_Singleton
+ */
 export default class TeqFw_Web_Front_Store {
     constructor(spec) {
         /** @type {TeqFw_Web_Front_Store_Connect} */

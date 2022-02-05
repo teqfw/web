@@ -1,0 +1,59 @@
+/**
+ * Front application identity.
+ */
+// MODULE'S VARS
+const NS = 'TeqFw_Web_Front_Dto_App_Identity';
+
+/**
+ * @memberOf TeqFw_Web_Front_Dto_App_Identity
+ * @type {Object}
+ */
+const ATTR = {
+    KEYS: 'keys',
+    UUID: 'uuid',
+};
+
+// MODULE'S CLASSES
+/**
+ * @memberOf TeqFw_Web_Front_Dto_App_Identity
+ */
+class Dto {
+    static namespace = NS;
+    /** @type {TeqFw_Web_Shared_Dto_Identity_Keys.Dto} */
+    keys;
+    /** @type {string} */
+    uuid;
+}
+
+/**
+ * @implements TeqFw_Core_Shared_Api_Factory_Dto_IMeta
+ */
+export default class TeqFw_Web_Front_Dto_App_Identity {
+
+    constructor(spec) {
+        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
+        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
+        /** @type {TeqFw_Web_Shared_Dto_Identity_Keys} */
+        const dtoKeys = spec['TeqFw_Web_Shared_Dto_Identity_Keys$'];
+
+        // INSTANCE METHODS
+        /**
+         * @param {TeqFw_Web_Front_Dto_App_Identity.Dto} data
+         * @return {TeqFw_Web_Front_Dto_App_Identity.Dto}
+         */
+        this.createDto = function (data = null) {
+            const res = new Dto();
+            res.keys = dtoKeys.createDto(data?.keys);
+            res.uuid = castString(data?.uuid);
+            return res;
+        }
+
+        this.getAttributes = () => ATTR;
+
+        this.getAttrNames = () => Object.values(ATTR);
+    }
+
+}
+
+// finalize code components for this es6-module
+Object.freeze(ATTR);
