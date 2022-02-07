@@ -53,6 +53,7 @@
       "TeqFw_Web_Back_App_Server_Handler_Final": {}
     },
     "services": [
+      "TeqFw_Web_Back_WAPI_Front_Register",
       "TeqFw_Web_Back_WAPI_Load_Config",
       "TeqFw_Web_Back_WAPI_Load_FilesToCache",
       "TeqFw_Web_Back_WAPI_Load_Namespaces"

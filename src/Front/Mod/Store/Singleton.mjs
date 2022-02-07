@@ -5,7 +5,7 @@ export default class TeqFw_Web_Front_Mod_Store_Singleton {
     constructor(spec) {
         // DEPS
         /** @type {TeqFw_Web_Front_App_Store_IDB} */
-        const idb = spec['Fl32_Dup_Front_Store_Db$'];
+        const idb = spec['TeqFw_Web_Front_Store_Db$']; // interface & impl
         /** @type {TeqFw_Web_Front_Store_Entity_Singleton} */
         const idbSingleton = spec['TeqFw_Web_Front_Store_Entity_Singleton$'];
 

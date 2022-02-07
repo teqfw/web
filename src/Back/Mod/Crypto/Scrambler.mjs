@@ -15,15 +15,10 @@ const NS = 'TeqFw_Web_Back_Mod_Crypto_Scrambler';
  * @implements TeqFw_Web_Shared_Api_Crypto_IScrambler
  */
 export default class TeqFw_Web_Back_Mod_Crypto_Scrambler {
-    constructor(spec) {
-        // EXTRACT DEPS
+    constructor() {
 
         // ENCLOSED VARS
         let _keyShared;
-
-        // MAIN
-
-        // ENCLOSED FUNCTIONS
 
         // INSTANCE METHODS
 
@@ -57,6 +52,29 @@ export default class TeqFw_Web_Back_Mod_Crypto_Scrambler {
             const abPub = util.decodeBase64(pub);
             const abSec = util.decodeBase64(sec);
             _keyShared = nacl.box.before(abPub, abSec);
+        }
+    }
+}
+
+/**
+ * @implements TeqFw_Core_Shared_Api_Factory_IAsync
+ * @memberOf TeqFw_Web_Back_Mod_Crypto_Scrambler
+ */
+export class Factory {
+    constructor(spec) {
+        // DEPS
+        /** @type {TeqFw_Di_Shared_Container} */
+        const container = spec['TeqFw_Di_Shared_Container$'];
+
+        // INSTANCE METHODS
+        /**
+         *
+         * @param [opts]
+         * @return {Promise<TeqFw_Web_Back_Mod_Crypto_Scrambler>}
+         */
+        this.create = async function (opts) {
+            // return new instance
+            return container.get(`${NS}$$`);
         }
     }
 }

@@ -1,28 +1,25 @@
 /**
- * Shared backend event 'Reverse event stream is opened'.
+ * Backend request to front with payload for authentication.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened';
+const NS = 'TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened
+ * @memberOf TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request
  */
 class Dto {
     static namespace = NS;
     /** @type {string} */
     backUUID;
     /** @type {string} */
-    frontUUID;
-    /** @type {string} */
-    streamUUID;
+    serverKey;
 }
 
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto_IEvent
- * @deprecated I used this event to authenticate users
  */
-export default class TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened {
+export default class TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request {
     constructor(spec) {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
@@ -35,21 +32,20 @@ export default class TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened {
 
         // ENCLOSED FUNCTIONS
         /**
-         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} [data]
-         * @return {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto}
+         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request.Dto} [data]
+         * @return {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request.Dto}
          */
         function createData(data) {
             const res = new Dto();
             res.backUUID = castString(data?.backUUID);
-            res.frontUUID = castString(data?.frontUUID);
-            res.streamUUID = castString(data?.streamUUID);
+            res.serverKey = castString(data?.serverKey);
             return res;
         }
 
         // INSTANCE METHODS
         /**
-         * @param {{data: TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto, meta: TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto}} [data]
-         * @return {{data: TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto, meta: TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto}}
+         * @param {{data: TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request.Dto, meta: TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto}} [data]
+         * @return {{data: TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request.Dto, meta: TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto}}
          */
         this.createDto = function (data) {
             const res = dtoBase.createDto({[ATTR.META]: data?.[ATTR.META]});

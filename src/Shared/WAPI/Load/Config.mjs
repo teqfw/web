@@ -32,7 +32,7 @@ export class Factory {
         const DEF = spec['TeqFw_Web_Shared_Defaults$'];
 
         // DEFINE INSTANCE METHODS
-        this.getRoute = () => `/${DEF.NAME}${DEF.WEB_LOAD_CONFIG}`;
+        this.getRoute = () => `/${DEF.NAME}${DEF.WAPI_LOAD_CONFIG}`;
 
         /**
          * @param {Request|Object|null} data
@@ -55,5 +55,5 @@ export class Factory {
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Request, 'name', {value: `${NS}.${Request.constructor.name}`});
-Object.defineProperty(Response, 'name', {value: `${NS}.${Response.constructor.name}`});
+Object.defineProperty(Request, 'namespace', {value: `${NS}.Request`});
+Object.defineProperty(Response, 'namespace', {value: `${NS}.Response`});

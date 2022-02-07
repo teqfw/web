@@ -25,7 +25,7 @@ export default class TeqFw_Web_Front_Mod_Config {
     async init({door}) {
         const space = this.#DEF.SHARED.SPACE_API;
         const pkg = this.#DEF.SHARED.NAME;
-        const service = this.#DEF.SHARED.WEB_LOAD_CONFIG;
+        const service = this.#DEF.SHARED.WAPI_LOAD_CONFIG;
         const url = `./${space}/${pkg}${service}`;
         const res = await fetch(url);
         const json = await res.json();

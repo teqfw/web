@@ -6,8 +6,8 @@ export default class TeqFw_Web_Front_Proc_Tik {
         // EXTRACT DEPS
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Front_App_UUID} */
-        const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
+        /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
+        const appIdentity = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Front_App_Event_Bus} */
         const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct_Portal} */
@@ -30,7 +30,7 @@ export default class TeqFw_Web_Front_Proc_Tik {
          */
         function onStreamOpened(evt) {
             const msg = esfTik.createDto();
-            msg.frontUUID = frontUUID.get();
+            msg.frontUUID = appIdentity.getUuid();
             // noinspection JSIgnoredPromiseFromCall
             portalBack.publish(msg);
             logger.info(`'Tik' event is sent to the back on 'Event Stream Opened'.`);
@@ -44,7 +44,7 @@ export default class TeqFw_Web_Front_Proc_Tik {
             const timeout = Math.floor(Math.random() * 10);
             setTimeout(() => {
                 const msg = esfTik.createDto();
-                msg.frontUUID = frontUUID.get();
+                msg.frontUUID = appIdentity.getUuid();
                 // noinspection JSIgnoredPromiseFromCall
                 portalBack.publish(msg);
                 logger.info(`'Tik' event is sent to the back as an answer to backend 'tok'.`);

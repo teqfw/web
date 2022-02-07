@@ -1,14 +1,17 @@
 /**
  * Registry for reverse events streams.
  *
- * @namespace TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry
+ * @namespace TeqFw_Web_Back_Mod_Event_Reverse_Registry
  */
-export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
+export default class TeqFw_Web_Back_Mod_Event_Reverse_Registry {
 
-    constructor() {
+    constructor(spec) {
+        // DEPS
+        /** @type {typeof TeqFw_Web_Back_Mod_Event_Reverse_Stream.STATE} */
+        const STATE = spec['TeqFw_Web_Back_Mod_Event_Reverse_Stream.STATE$'];
 
-        // DEFINE WORKING VARS / PROPS
-        /** @type {Object<string, TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream>} */
+        // ENCLOSED VARS
+        /** @type {Object<string, TeqFw_Web_Back_Mod_Event_Reverse_Stream>} */
         const _store = {}; // internal store for connection objects (stream UUID is the key)
         /** @type {Object<string, string>} */
         const _mapUUIDFrontToStream = {}; // map to get stream UUID for front app UUID
@@ -29,18 +32,28 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
         /**
          * Get connection object by stream UUID.
          * @param {string} uuid
-         * @return {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream|null}
+         * @param {boolean} [activeOnly]
+         * @return {TeqFw_Web_Back_Mod_Event_Reverse_Stream|null}
          */
-        this.get = (uuid) => _store[uuid];
+        this.get = (uuid, activeOnly = true) => {
+            let res;
+            const found = _store[uuid];
+            if (found)
+                if (activeOnly === false) res = found;
+                else if ((activeOnly === true) && (found.state === STATE.ACTIVE))
+                    res = found;
+            return res;
+        }
 
         /**
          * Get connection object by front application UUID.
          * @param {string} uuid
-         * @return {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream|null}
+         * @param {boolean} [activeOnly]
+         * @return {TeqFw_Web_Back_Mod_Event_Reverse_Stream|null}
          */
-        this.getByFrontUUID = function (uuid) {
-            return (_mapUUIDFrontToStream[uuid] && _store[_mapUUIDFrontToStream[uuid]])
-                ? _store[_mapUUIDFrontToStream[uuid]] : null;
+        this.getByFrontUUID = function (uuid, activeOnly = true) {
+            const streamUUID = _mapUUIDFrontToStream[uuid]
+            return this.get(streamUUID, activeOnly);
         }
 
         /**
@@ -53,7 +66,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Registry {
         }
         /**
          * Put connection to the registry.
-         * @param {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Stream} conn
+         * @param {TeqFw_Web_Back_Mod_Event_Reverse_Stream} conn
          * @param {string} streamUUID
          * @param {string} frontUUID
          */

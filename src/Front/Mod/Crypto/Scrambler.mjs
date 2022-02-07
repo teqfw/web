@@ -61,3 +61,26 @@ export default class TeqFw_Web_Front_Mod_Crypto_Scrambler {
         }
     }
 }
+
+/**
+ * @implements TeqFw_Core_Shared_Api_Factory_IAsync
+ * @memberOf TeqFw_Web_Front_Mod_Crypto_Scrambler
+ */
+export class Factory {
+    constructor(spec) {
+        // DEPS
+        /** @type {TeqFw_Di_Shared_Container} */
+        const container = spec['TeqFw_Di_Shared_Container$'];
+
+        // INSTANCE METHODS
+        /**
+         *
+         * @param [opts]
+         * @return {Promise<TeqFw_Web_Front_Mod_Crypto_Scrambler>}
+         */
+        this.create = async function (opts) {
+            // return new instance
+            return container.get('TeqFw_Web_Front_Mod_Crypto_Scrambler$$');
+        }
+    }
+}

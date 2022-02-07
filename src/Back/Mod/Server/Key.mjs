@@ -7,15 +7,12 @@
 import {join} from "path";
 import {existsSync, writeFileSync} from 'fs';
 
-// MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Mod_Server_Key';
-
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Mod_Server_Key {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_User_Back_Defaults} */
-        const DEF = spec['TeqFw_User_Back_Defaults$'];
+        /** @type {TeqFw_Web_Back_Defaults} */
+        const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_Config} */
@@ -48,19 +45,21 @@ export default class TeqFw_Web_Back_Mod_Server_Key {
         }
 
         // INSTANCE METHODS
+
         /**
          * @return {Promise<string>}
          */
         this.getPublic = async function () {
             if (!_keys) await init();
-            return _keys.publicKey;
+            return _keys.public;
         }
+
         /**
          * @return {Promise<string>}
          */
         this.getSecret = async function () {
             if (!_keys) await init();
-            return _keys.secretKey;
+            return _keys.secret;
         }
     }
 }

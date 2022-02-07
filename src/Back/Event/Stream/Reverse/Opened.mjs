@@ -18,6 +18,7 @@ class Dto {
 
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto_IEvent
+ * @deprecated I used this event to authenticate users
  */
 export default class TeqFw_Web_Back_Event_Stream_Reverse_Opened {
     constructor(spec) {

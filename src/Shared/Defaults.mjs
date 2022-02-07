@@ -3,6 +3,8 @@
  */
 export default class TeqFw_Web_Shared_Defaults {
 
+    EVENT_AUTHENTICATE = 'authenticate'; // SSE event name
+
     NAME = '@teqfw/web';
 
     /** @type {TeqFw_Core_Shared_Defaults} */
@@ -17,9 +19,10 @@ export default class TeqFw_Web_Shared_Defaults {
     SPACE_UPLOAD = 'upload';
     SPACE_WEB = 'web';
 
-    WEB_LOAD_CONFIG = '/load/config';
-    WEB_LOAD_NAMESPACES = '/load/namespaces';
-    WEB_LOAD_FILES_TO_CACHE = '/load/files_to_cache';
+    WAPI_FRONT_REGISTER = '/front/register';
+    WAPI_LOAD_CONFIG = '/load/config';
+    WAPI_LOAD_FILES_TO_CACHE = '/load/files_to_cache';
+    WAPI_LOAD_NAMESPACES = '/load/namespaces';
 
     constructor(spec) {
         this.MOD_CORE = spec['TeqFw_Core_Shared_Defaults$'];

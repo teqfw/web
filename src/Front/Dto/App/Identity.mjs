@@ -9,6 +9,7 @@ const NS = 'TeqFw_Web_Front_Dto_App_Identity';
  * @type {Object}
  */
 const ATTR = {
+    FRONT_ID: 'frontId',
     KEYS: 'keys',
     UUID: 'uuid',
 };
@@ -19,6 +20,11 @@ const ATTR = {
  */
 class Dto {
     static namespace = NS;
+    /**
+     * Backend ID for current front (see TeqFw_Web_Back_WAPI_Front_Register)
+     * @type {number}
+     */
+    frontId;
     /** @type {TeqFw_Web_Shared_Dto_Identity_Keys.Dto} */
     keys;
     /** @type {string} */
@@ -31,6 +37,8 @@ class Dto {
 export default class TeqFw_Web_Front_Dto_App_Identity {
 
     constructor(spec) {
+        /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
+        const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
         /** @type {TeqFw_Web_Shared_Dto_Identity_Keys} */
@@ -43,6 +51,7 @@ export default class TeqFw_Web_Front_Dto_App_Identity {
          */
         this.createDto = function (data = null) {
             const res = new Dto();
+            res.frontId = castInt(data?.frontId);
             res.keys = dtoKeys.createDto(data?.keys);
             res.uuid = castString(data?.uuid);
             return res;

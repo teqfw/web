@@ -61,11 +61,11 @@ export class Factory {
             return res;
         }
 
-        this.getRoute = () => `/${DEF.NAME}${DEF.WEB_LOAD_FILES_TO_CACHE}`;
+        this.getRoute = () => `/${DEF.NAME}${DEF.WAPI_LOAD_FILES_TO_CACHE}`;
     }
 
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Request, 'name', {value: `${NS}.${Request.constructor.name}`});
-Object.defineProperty(Response, 'name', {value: `${NS}.${Response.constructor.name}`});
+Object.defineProperty(Request, 'namespace', {value: `${NS}.Request`});
+Object.defineProperty(Response, 'namespace', {value: `${NS}.Response`});

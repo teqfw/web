@@ -24,12 +24,14 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Core_Shared_Logger} */
         const logger = spec['TeqFw_Core_Shared_Logger$'];
-        /** @type {TeqFw_Web_Front_App_UUID} */
-        const frontUUID = spec['TeqFw_Web_Front_App_UUID$'];
-        /** @type {TeqFw_Web_Front_App_Back_UUID} */
-        const backUUID = spec['TeqFw_Web_Front_App_Back_UUID$'];
+        /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
+        const frontIdentity = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
+        /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */
+        const backIdentity = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
         /** @type {TeqFw_Web_Front_App_Event_Bus} */
-        const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
+        const eventFront = spec['TeqFw_Web_Front_App_Event_Bus$'];
+        /** @type {TeqFw_Web_Front_App_Connect_Event_Direct_Portal} */
+        const portalBack = spec['TeqFw_Web_Front_App_Connect_Event_Direct_Portal$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
         const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed} */
@@ -38,8 +40,14 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
         const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
+        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request} */
+        const esbAuthReq = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
+        /** @type {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response} */
+        const esfAuthRes = spec['TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response$'];
         /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
         const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
+        /** @type {TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory} */
+        const factScrambler = spec['TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory$'];
 
         // ENCLOSED VARS
         /** @type {EventSource} */
@@ -49,63 +57,101 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         // MAIN
         window.addEventListener('offline', closeStream);
         window.addEventListener('online', openStream);
-        eventBus.subscribe(esbOpened.getEventName(), onStreamOpened);
+        eventFront.subscribe(esbOpened.getEventName(), onStreamOpened);
 
-        // ENCLOSED FUNCTIONS
+        // ENCLOSED FUNCS
+        function closeStream() {
+            if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
+                _source.close();
+                eventFront.publish(efClosed.createDto());
+                logger.info(`Reverse events stream connection is closed.`);
+            }
+            modConn.setOffline();
+        }
+
         /**
          * Save backend UUID for currently connected server.
          * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} data
          */
         function onStreamOpened({data}) {
             // noinspection JSIgnoredPromiseFromCall
-            backUUID.set(data.backUUID);
+            // backUUID.set(data.backUUID);
         }
-
-        function closeStream() {
-            if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
-                _source.close();
-                eventBus.publish(efClosed.createDto());
-                logger.info(`Reverse events stream connection is closed.`);
-            }
-            modConn.setOffline();
-        }
-
 
         /**
          * Open SSE connection and set handlers for input data.
          */
         function openStream() {
+            // ENCLOSED FUNCS
+            /**
+             * Listener for SSE authentication event from the back.
+             * Save back identity to front model, encrypt back payload and return to back.
+             * @param {MessageEvent} event
+             */
+            async function onAuthenticate(event) {
+                const obj = JSON.parse(event.data);
+                const dto = esbAuthReq.createDto(obj);
+                const backUUID = dto.data.backUUID;
+                const serverKey = dto.data.serverKey;
+                backIdentity.set(backUUID, serverKey);
+                const scrambler = await factScrambler.create();
+                const front = frontIdentity.get();
+                scrambler.setKeys(serverKey, front.keys.secret);
+                const msg = esfAuthRes.createDto();
+                msg.data.frontId = front.frontId;
+                msg.data.encrypted = scrambler.encryptAndSign(backUUID);
+                portalBack.publish(msg);
+            }
+
+            /**
+             * Publish 'opened' event on the front.
+             * @param {Event} event
+             */
+            function onError(event) {
+                if (event.eventPhase !== EventSource.CLOSED) {
+                    logger.error(`Error in 'back-to-front event stream' (event: ${JSON.stringify(event)}).`);
+                }
+                closeStream();
+            }
+
+            /**
+             * Listener for regular SSE event from the back.
+             * @param {MessageEvent} event
+             */
+            function onMessage(event) {
+                try {
+                    const obj = JSON.parse(event.data);
+                    const dto = factTransMsg.createDto(obj);
+                    const name = dto.meta.name;
+                    const uuid = dto.meta.uuid;
+                    const backUUID = dto.meta.backUUID;
+                    logger.info(`=> ${backUUID} / ${uuid} : ${name}`);
+                    eventFront.publish(dto);
+                } catch (e) {
+                    logger.error(e);
+                }
+            }
+
+            /**
+             * Publish 'opened' event on the front.
+             * @param {Event} event
+             */
+            function onOpen(event) {
+                eventFront.publish(efOpened.createDto());
+                modConn.setOnline();
+            }
+
+            // MAIN
             if ((_source === undefined) || (_source.readyState === SSE_STATE.CLOSED)) {
-                const url = `${_url}/${frontUUID.get()}`;
+                const url = `${_url}/${frontIdentity.getUuid()}`;
                 // open new SSE connection and add event listeners
                 _source = new EventSource(url);
-                // on 'open'
-                _source.addEventListener('open', function () {
-                    eventBus.publish(efOpened.createDto());
-                    modConn.setOnline();
-                });
-                // on 'error'
-                _source.addEventListener('error', function (event) {
-                    if (event.eventPhase !== EventSource.CLOSED) {
-                        logger.error(`Error in 'back-to-front event stream' (event: ${JSON.stringify(event)}).`);
-
-                    }
-                    closeStream();
-                });
-                // on 'message' (repeat event emission on the front)
-                _source.addEventListener('message', function (event) {
-                    try {
-                        const obj = JSON.parse(event.data);
-                        const message = factTransMsg.createDto(obj);
-                        const name = message.meta.name;
-                        const uuid = message.meta.uuid;
-                        const backUUID = message.meta.backUUID;
-                        logger.info(`=> ${backUUID} / ${uuid} : ${name}`);
-                        eventBus.publish(message);
-                    } catch (e) {
-                        console.error(e);
-                    }
-                });
+                _source.addEventListener('open', onOpen);
+                _source.addEventListener('error', onError);
+                // on 'message' (repeat backend event emission on the front)
+                _source.addEventListener('message', onMessage);
+                // Front authentication request is the first event in the stream
+                _source.addEventListener(DEF.SHARED.EVENT_AUTHENTICATE, onAuthenticate);
             }
         }
 
