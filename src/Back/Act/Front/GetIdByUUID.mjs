@@ -1,12 +1,10 @@
 /**
- * Registry new front app in RDB.
+ * Get front id by front UUID from RDB.
  *
- * @namespace TeqFw_Web_Back_Act_Front_Create
+ * @namespace TeqFw_Web_Back_Act_Front_GetIdByUUID
  */
-// MODULE'S IMPORT
-
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Act_Front_Create';
+const NS = 'TeqFw_Web_Back_Act_Front_GetIdByUUID';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
@@ -23,19 +21,14 @@ export default function (spec) {
     // ENCLOSED FUNCS
     /**
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
-     * @param {string} keyPub asymmetric public key for the front
      * @param {string} uuid front's UUID
      * @return {Promise<{id: number}>}
-     * @memberOf TeqFw_Web_Back_Act_Front_Create
+     * @memberOf TeqFw_Web_Back_Act_Front_GetIdByUUID
      */
-    async function act({trx, keyPub, uuid}) {
-        const data = {
-            [ATTR.DATE_CREATED]: new Date(),
-            [ATTR.KEY_PUB]: keyPub,
-            [ATTR.UUID]: uuid,
-        };
-        const pk = await crud.create(trx, rdbFront, data);
-        const id = pk[ATTR.ID];
+    async function act({trx, uuid}) {
+        /** @type {TeqFw_Web_Back_Store_RDb_Schema_Front.Dto} */
+        const one = await crud.readOne(trx, rdbFront, {[ATTR.UUID]: uuid});
+        const id = one?.id;
         return {id};
     }
 

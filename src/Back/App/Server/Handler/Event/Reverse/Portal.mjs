@@ -21,7 +21,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
             const uuid = meta?.uuid;
             const frontUUID = meta?.frontUUID;
             meta.backUUID = backUUID.get();
-            const conn = registry.getByFrontUUID(frontUUID);
+            const activeOnly = !useUnAuthStream;
+            const conn = registry.getByFrontUUID(frontUUID, activeOnly);
             if (conn) {
                 conn.write(message);
                 logger.info(`<= ${frontUUID} / ${uuid}: ${eventName}`);

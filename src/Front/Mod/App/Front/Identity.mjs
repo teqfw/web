@@ -21,7 +21,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         const wapiRegister = spec['TeqFw_Web_Shared_WAPI_Front_Register.Factory$'];
 
         // ENCLOSED VARS
-        const KEY_IDENTITY = `${DEF.SHARED.NAME}/app/identity`;
+        const KEY_IDENTITY = `${DEF.SHARED.NAME}/front/identity`;
         /** @type {TeqFw_Web_Front_Dto_App_Identity.Dto} */
         let _cache;
 
@@ -61,7 +61,17 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
          * @return {TeqFw_Web_Front_Dto_App_Identity.Dto}
          */
         this.get = () => _cache;
+        /**
+         * Front ID from backend RDB.
+         * @return {number}
+         */
+        this.getFrontId = () => _cache?.frontId;
 
+        /**
+         * Front's public key for asymmetric encryption.
+         * @type {string}
+         */
+        this.getPublicKey = () => _cache?.keys?.public;
         /**
          * @return {string}
          */

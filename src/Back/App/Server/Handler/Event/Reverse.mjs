@@ -117,7 +117,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 if (stream) registry.delete(stream.streamId);
                 stream = factStream.create();
                 registry.put(stream, streamUUID, frontUUID);
-                logger.info(`Front app '${frontUUID}' established new stream for back-to-front events.`);
+                logger.info(`Front app '${frontUUID}' opened new reverse stream (back-to-front events).`);
                 // set 'write' function to connection, response stream is pinned in closure
                 stream.write = function (payload) {
                     if (res.writable) {
@@ -125,7 +125,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                         res.write(`data: ${json}\n\n`);
                         res.write(`id: ${stream.messageId++}\n`);
                     } else {
-                        logger.error(`Back-to-front events stream is not writable (front: '${frontUUID}')`);
+                        logger.error(`Events reverse stream is not writable (front: '${frontUUID}')`);
                     }
                 };
                 stream.finalize = () => {

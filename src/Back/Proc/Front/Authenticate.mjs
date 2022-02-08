@@ -16,6 +16,8 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
         const esfAuthRes = spec['TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated} */
         const esbAuthenticated = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated$'];
+        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Failed} */
+        const esbFailed = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Failed$'];
         /** @type {TeqFw_Db_Back_RDb_IConnect} */
         const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
         /** @type {TeqFw_Db_Back_Api_RDb_ICrudEngine} */
@@ -72,15 +74,24 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
                     const frontPublic = await getFrontKey(data?.frontId);
                     const serverSecret = await modServerKey.getSecret();
                     const scrambler = await factScrambler.create();
-                    scrambler.setKeys(frontPublic, serverSecret);
-                    const decrypted = scrambler.decryptAndVerify(encrypted);
-                    if (decrypted === backUUID.get()) {
-                        // activate stream and send events
-                        stream.state = STATE.ACTIVE
-                        const msg = esbAuthenticated.createDto();
-                        msg.meta.frontUUID = frontUUID;
-                        portalFront.publish(msg);
-                    } // we can't decrypt payload, do nothing
+                    try {
+                        scrambler.setKeys(frontPublic, serverSecret);
+                        const decrypted = scrambler.decryptAndVerify(encrypted);
+                        if (decrypted === backUUID.get()) {
+                            // activate stream and send events
+                            stream.state = STATE.ACTIVE
+                            const event = esbAuthenticated.createDto();
+                            event.meta.frontUUID = frontUUID;
+                            portalFront.publish(event);
+                        } // impossible situation: payload is decrypted but wrong
+                    } catch (e) {
+                        const msg = `Cannot authenticate front, payload decryption is failed.`;
+                        logger.error(msg);
+                        const event = esbFailed.createDto();
+                        event.data.reason = msg;
+                        event.meta.frontUUID = frontUUID;
+                        portalFront.publish(event, {useUnAuthStream: true});
+                    }
                 } // else: requested front is not in the streams registry, do nothing
             } // else: encrypted data is absent, do nothing
         }
