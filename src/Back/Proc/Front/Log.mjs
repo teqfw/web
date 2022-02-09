@@ -24,7 +24,8 @@ export default class TeqFw_Web_Back_Proc_Front_Log {
         function onLog({data, meta}) {
             const frontUUID = meta.frontUUID;
             const body = data.body;
-            logger.info(`${frontUUID}: ${body}`);
+            // TODO: enable front logs on the back
+            // logger.info(`${frontUUID}: ${body}`);
         }
 
     }

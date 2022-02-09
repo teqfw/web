@@ -66,10 +66,10 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
             }
 
             // MAIN
-            const frontUUID = meta.frontUUID;
+            const frontUuid = meta.frontUUID;
             const encrypted = data.encrypted;
             if (encrypted) {
-                const stream = modRegistry.getByFrontUUID(frontUUID, false);
+                const stream = modRegistry.getByFrontUUID(frontUuid, false);
                 if (stream) {
                     const frontPublic = await getFrontKey(data?.frontId);
                     const serverSecret = await modServerKey.getSecret();
@@ -78,18 +78,20 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
                         scrambler.setKeys(frontPublic, serverSecret);
                         const decrypted = scrambler.decryptAndVerify(encrypted);
                         if (decrypted === backUUID.get()) {
-                            // activate stream and send events
+                            // activate stream and send 'authenticated' event to connected front
                             stream.state = STATE.ACTIVE
                             const event = esbAuthenticated.createDto();
-                            event.meta.frontUUID = frontUUID;
+                            event.meta.frontUUID = frontUuid;
                             portalFront.publish(event);
+                            // re-publish delayed events
+                            portalFront.sendDelayedEvents(frontUuid);
                         } // impossible situation: payload is decrypted but wrong
                     } catch (e) {
                         const msg = `Cannot authenticate front, payload decryption is failed.`;
                         logger.error(msg);
                         const event = esbFailed.createDto();
                         event.data.reason = msg;
-                        event.meta.frontUUID = frontUUID;
+                        event.meta.frontUUID = frontUuid;
                         portalFront.publish(event, {useUnAuthStream: true});
                     }
                 } // else: requested front is not in the streams registry, do nothing

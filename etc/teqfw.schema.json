@@ -1,0 +1,48 @@
+{
+  "package": {
+    "web": {
+      "entity": {
+        "front": {
+          "comment": "Registry to save public keys for front apps.",
+          "attr": {
+            "id": {"type": "id"},
+            "uuid": {"comment": "Front UUID.", "type": "string"},
+            "date_created": {
+              "comment": "Date-time for front registration.",
+              "type": "datetime",
+              "default": "current"
+            },
+            "key_pub": {
+              "comment": "Public key for encryption and authentication.",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "package": {
+        "event": {
+          "entity": {
+            "queue": {
+              "comment": "Queue for delayed transborder events.",
+              "attr": {
+                "id": {"type": "id"},
+                "front_ref": {"comment": "Front ID for recipient of the message.", "type": "ref"},
+                "message": {
+                  "comment": "Event message as JSON string.",
+                  "type": "text"
+                }
+              },
+              "relation": {
+                "front": {
+                  "attrs": ["front_ref"],
+                  "ref": {"path": "/web/front", "attrs": ["id"]},
+                  "action": {"delete": "cascade", "update": "cascade"}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
