@@ -38,8 +38,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const efClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened} */
         const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
-        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened} */
-        const esbOpened = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request} */
         const esbAuthReq = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
         /** @type {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response} */
@@ -57,7 +55,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         // MAIN
         window.addEventListener('offline', closeStream);
         window.addEventListener('online', openStream);
-        eventFront.subscribe(esbOpened.getEventName(), onStreamOpened);
 
         // ENCLOSED FUNCS
         function closeStream() {
@@ -67,15 +64,6 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 logger.info(`Reverse events stream connection is closed.`);
             }
             modConn.setOffline();
-        }
-
-        /**
-         * Save backend UUID for currently connected server.
-         * @param {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Opened.Dto} data
-         */
-        function onStreamOpened({data}) {
-            // noinspection JSIgnoredPromiseFromCall
-            // backUUID.set(data.backUUID);
         }
 
         /**
@@ -93,7 +81,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 const dto = esbAuthReq.createDto(obj);
                 const backUUID = dto.data.backUUID;
                 const serverKey = dto.data.serverKey;
-                backIdentity.set(backUUID, serverKey);
+                await backIdentity.set(backUUID, serverKey);
                 const scrambler = await factScrambler.create();
                 const front = frontIdentity.get();
                 scrambler.setKeys(serverKey, front.keys.secret);

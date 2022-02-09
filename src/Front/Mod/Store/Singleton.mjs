@@ -46,8 +46,15 @@ export default class TeqFw_Web_Front_Mod_Store_Singleton {
          */
         this.set = async function (key, value) {
             const trx = await idb.startTransaction([idbSingleton]);
-            const dto = new idbSingleton.createDto({key, value});
-            await idb.create(trx, idbSingleton, dto);
+            /** @type {TeqFw_Web_Front_Store_Entity_Singleton.Dto} */
+            const found = await idb.readOne(trx, idbSingleton, key);
+            if (found) {
+                found.value = value;
+                await idb.updateOne(trx, idbSingleton, found);
+            } else {
+                const dto = new idbSingleton.createDto({key, value});
+                await idb.create(trx, idbSingleton, dto);
+            }
             await trx.commit();
         }
     }

@@ -30,16 +30,12 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         const logger = spec['TeqFw_Core_Shared_Logger$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
-        /** @type {TeqFw_Core_Back_App_Event_Bus} */
-        const eventsBack = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
         const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Registry} */
         const registry = spec['TeqFw_Web_Back_Mod_Event_Reverse_Registry$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Stream.Factory} */
         const factStream = spec['TeqFw_Web_Back_Mod_Event_Reverse_Stream.Factory$'];
-        /** @type {TeqFw_Web_Back_Event_Stream_Reverse_Closed} */
-        const ebClosed = spec['TeqFw_Web_Back_Event_Stream_Reverse_Closed$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request} */
         const esbAuthReq = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
         /** @type {TeqFw_Web_Back_Mod_Server_Key} */
@@ -103,12 +99,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                  */
                 function onClose() {
                     registry.delete(streamUUID);
-                    // publish event for backend
-                    const event = ebClosed.createDto();
-                    event.data.frontUUID = frontUUID;
-                    event.data.streamUUID = streamUUID;
-                    eventsBack.publish(event);
-                    //
                     logger.info(`Back-to-front events stream is closed (front: '${frontUUID}').`);
                 }
 

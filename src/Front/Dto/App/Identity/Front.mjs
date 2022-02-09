@@ -2,10 +2,10 @@
  * Front application identity.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Dto_App_Identity';
+const NS = 'TeqFw_Web_Front_Dto_App_Identity_Front';
 
 /**
- * @memberOf TeqFw_Web_Front_Dto_App_Identity
+ * @memberOf TeqFw_Web_Front_Dto_App_Identity_Front
  * @type {Object}
  */
 const ATTR = {
@@ -16,7 +16,7 @@ const ATTR = {
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Front_Dto_App_Identity
+ * @memberOf TeqFw_Web_Front_Dto_App_Identity_Front
  */
 class Dto {
     static namespace = NS;
@@ -34,7 +34,7 @@ class Dto {
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto_IMeta
  */
-export default class TeqFw_Web_Front_Dto_App_Identity {
+export default class TeqFw_Web_Front_Dto_App_Identity_Front {
 
     constructor(spec) {
         /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
@@ -46,8 +46,8 @@ export default class TeqFw_Web_Front_Dto_App_Identity {
 
         // INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Front_Dto_App_Identity.Dto} data
-         * @return {TeqFw_Web_Front_Dto_App_Identity.Dto}
+         * @param {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} data
+         * @return {TeqFw_Web_Front_Dto_App_Identity_Front.Dto}
          */
         this.createDto = function (data = null) {
             const res = new Dto();

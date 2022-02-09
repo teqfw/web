@@ -8,11 +8,11 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Web_Front_Mod_Store_Singleton} */
-        const modSingleton = spec['TeqFw_Web_Front_Mod_Store_Singleton$'];
+        const storeSingleton = spec['TeqFw_Web_Front_Mod_Store_Singleton$'];
         /** @type {TeqFw_Web_Front_Lib_Uuid.v4|function} */
         const uuidV4 = spec['TeqFw_Web_Front_Lib_Uuid.v4'];
-        /** @type {TeqFw_Web_Front_Dto_App_Identity} */
-        const dtoIdentity = spec['TeqFw_Web_Front_Dto_App_Identity$'];
+        /** @type {TeqFw_Web_Front_Dto_App_Identity_Front} */
+        const dtoIdentity = spec['TeqFw_Web_Front_Dto_App_Identity_Front$'];
         /** @type {TeqFw_Web_Shared_Api_Crypto_Key_IManager} */
         const mgrKeys = spec['TeqFw_Web_Shared_Api_Crypto_Key_IManager$'];
         /** @type {TeqFw_Web_Front_App_Connect_WAPI} */
@@ -22,7 +22,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
 
         // ENCLOSED VARS
         const KEY_IDENTITY = `${DEF.SHARED.NAME}/front/identity`;
-        /** @type {TeqFw_Web_Front_Dto_App_Identity.Dto} */
+        /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
         let _cache;
 
         // INSTANCE METHODS
@@ -38,8 +38,8 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
             }
 
             // MAIN
-            /** @type {TeqFw_Web_Front_Dto_App_Identity.Dto} */
-            const found = await modSingleton.get(KEY_IDENTITY);
+            /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
+            const found = await storeSingleton.get(KEY_IDENTITY);
             if (found) _cache = found;
             else {
                 // this is first run, create identity and send it to the back
@@ -49,7 +49,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
                 const frontId = await sendToBack(dto.uuid, dto.keys.public);
                 if (frontId) {
                     dto.frontId = frontId;
-                    await modSingleton.set(KEY_IDENTITY, dto);
+                    await storeSingleton.set(KEY_IDENTITY, dto);
                     _cache = dto;
                 } else {
                     throw new Error('Fatal error. Cannot register new front app on the back.');
@@ -58,7 +58,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         }
 
         /**
-         * @return {TeqFw_Web_Front_Dto_App_Identity.Dto}
+         * @return {TeqFw_Web_Front_Dto_App_Identity_Front.Dto}
          */
         this.get = () => _cache;
         /**
