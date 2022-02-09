@@ -1,10 +1,10 @@
 /**
  * Get front id by front UUID from RDB.
  *
- * @namespace TeqFw_Web_Back_Act_Front_GetIdByUUID
+ * @namespace TeqFw_Web_Back_Act_Front_GetIdByUuid
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Act_Front_GetIdByUUID';
+const NS = 'TeqFw_Web_Back_Act_Front_GetIdByUuid';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
@@ -23,7 +23,7 @@ export default function (spec) {
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
      * @param {string} uuid front's UUID
      * @return {Promise<{id: number}>}
-     * @memberOf TeqFw_Web_Back_Act_Front_GetIdByUUID
+     * @memberOf TeqFw_Web_Back_Act_Front_GetIdByUuid
      */
     async function act({trx, uuid}) {
         /** @type {TeqFw_Web_Back_Store_RDb_Schema_Front.Dto} */

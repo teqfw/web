@@ -72,6 +72,12 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
          * @type {string}
          */
         this.getPublicKey = () => _cache?.keys?.public;
+
+        /**
+         * Front's secret key for asymmetric encryption.
+         * @type {string}
+         */
+        this.getSecretKey = () => _cache?.keys?.secret;
         /**
          * @return {string}
          */
