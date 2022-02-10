@@ -42,6 +42,11 @@ export default class TeqFw_Web_Back_Mod_Event_Reverse_Stream {
      * @type {function}
      */
     write;
+    /**
+     * ID of the delayed function (setTimeout) to close unauthorized streams.
+     * @type {Timeout}
+     */
+    unauthenticatedCloseId;
 }
 
 /**
@@ -71,6 +76,7 @@ export class Factory {
             res.state = castString(data.state) ?? STATE.OPENED;
             res.streamId = castString(data.streamId);
             res.write = castFunction(data.write);
+            res.unauthenticatedCloseId = undefined; // don't init this property
             return res;
         }
     }

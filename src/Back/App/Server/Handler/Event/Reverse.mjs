@@ -14,12 +14,11 @@ const {
     HTTP_STATUS_OK,
 } = H2;
 const RECONNECT_TIMEOUT = 500; // browser's reconnect timeout on connection loose
+const DISCONNECT_TIMEOUT = 10000; // disconnect stream if not authenticated in 10 sec.
 
 // MODULE'S CLASSES
-// noinspection JSClosureCompilerSyntax
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
- * @implements TeqFw_Core_Shared_Api_Event_IBus
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
     constructor(spec) {
@@ -53,26 +52,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         Object.defineProperty(process, 'namespace', {value: `${NS}.${process.name}`});
 
         // ENCLOSED FUNCS
-        /**
-         * Extract, validate as UUID and return front application UUID or 'null' otherwise.
-         * @param {string} url
-         * @return {string|null}
-         */
-        function getFrontAppUUID(url) {
-            const connId = url.split('/').pop();
-            return validate(connId) ? connId : null;
-        }
-
-        /**
-         * Write headers to SSE stream to start streaming.
-         * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-         */
-        function startStreaming(res) {
-            res.writeHead(HTTP_STATUS_OK, {
-                [HTTP2_HEADER_CONTENT_TYPE]: 'text/event-stream',
-                [HTTP2_HEADER_CACHE_CONTROL]: 'no-cache',
-            });
-        }
 
         /**
          * Process HTTP request if not processed before.
@@ -82,12 +61,33 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
          */
         async function process(req, res) {
             // ENCLOSED FUNCS
+            /**
+             * Extract, validate as UUID and return front application UUID or 'null' otherwise.
+             * @param {string} url
+             * @return {string|null}
+             */
+            function getFrontAppUUID(url) {
+                const connId = url.split('/').pop();
+                return validate(connId) ? connId : null;
+            }
+
+            /**
+             * Write headers to SSE stream to start streaming.
+             * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
+             */
+            function startStreaming(res) {
+                res.writeHead(HTTP_STATUS_OK, {
+                    [HTTP2_HEADER_CONTENT_TYPE]: 'text/event-stream',
+                    [HTTP2_HEADER_CACHE_CONTROL]: 'no-cache',
+                });
+            }
 
             /**
              * Create reverse events stream for connected front app.
              * @param {string} frontUUID
              * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
              * @return {string} stream UUID
+             * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse.process
              */
             function createStream(frontUUID, res) {
                 // ENCLOSED VARS
@@ -103,9 +103,9 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 }
 
                 // MAIN
-                let stream = registry.getByFrontUUID(frontUUID, false);
-                if (stream) registry.delete(stream.streamId);
-                stream = factStream.create();
+                const streamExist = registry.getByFrontUUID(frontUUID, false);
+                if (streamExist) registry.delete(streamExist.streamId);
+                const stream = factStream.create();
                 registry.put(stream, streamUUID, frontUUID);
                 logger.info(`Front app '${frontUUID}' opened new reverse stream (back-to-front events).`);
                 // set 'write' function to connection, response stream is pinned in closure
@@ -121,6 +121,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 stream.finalize = () => {
                     res.end();
                 }
+                stream.unauthenticatedCloseId = setTimeout(() => res.end(), DISCONNECT_TIMEOUT);
                 // remove stream from registry on close
                 res.addListener('close', onClose);
                 return streamUUID;
@@ -158,6 +159,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
 
         // DEFINE INSTANCE METHODS
 
+        // noinspection JSUnusedGlobalSymbols
         this.getProcessor = () => process;
 
         this.init = async function () {
@@ -165,6 +167,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
             logger.info(`Initialize Reverse Events Stream handler for web requests:`);
         }
 
+        // noinspection JSUnusedGlobalSymbols
         this.requestIsMine = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_GET)

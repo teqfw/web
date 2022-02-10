@@ -80,6 +80,7 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
                         if (decrypted === backUUID.get()) {
                             // activate stream and send 'authenticated' event to connected front
                             stream.state = STATE.ACTIVE
+                            clearTimeout(stream.unauthenticatedCloseId);
                             const event = esbAuthenticated.createDto();
                             event.meta.frontUUID = frontUuid;
                             portalFront.publish(event);
