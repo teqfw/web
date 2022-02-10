@@ -11,6 +11,12 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
         /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
         const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
+        /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
+        const frontIdentity = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
+        /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */
+        const backIdentity = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
+        /** @type {TeqFw_Web_Shared_Mod_Event_Stamper} */
+        const stamper = spec['TeqFw_Web_Shared_Mod_Event_Stamper$$']; // new instance
 
         // ENCLOSED VARS
         let _url = composeBaseUrl();
@@ -41,6 +47,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                 try {
                     modConn.startActivity();
                     const eventName = data?.meta?.name;
+                    stamper.initKeys(backIdentity.getServerKey(), frontIdentity.getSecretKey());
+                    data.stamp = stamper.create(data.meta);
                     const res = await fetch(`${_url}/${eventName}`, {
                         method: 'POST',
                         headers: {

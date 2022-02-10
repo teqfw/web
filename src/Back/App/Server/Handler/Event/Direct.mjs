@@ -1,5 +1,6 @@
 /**
  * Web server handler to receive 'front-to-back' events (direct stream).
+ * Handler verifies stamps of the event messages and publishes their to backend event bus.
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
@@ -10,6 +11,7 @@ const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_POST,
     HTTP_STATUS_OK,
+    HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
 
@@ -33,6 +35,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
         /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response} */
         const dtoRes = spec['TeqFw_Web_Shared_Dto_Event_Direct_Response$'];
+        /** @type {TeqFw_Web_Back_Mod_Event_Stamper_Factory} */
+        const factStamper = spec['TeqFw_Web_Back_Mod_Event_Stamper_Factory$'];
 
         // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
@@ -51,17 +55,26 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                 try {
                     const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
                     const message = factTransMsg.createDto(json);
+                    const meta = message.meta;
                     const name = message.meta.name;
                     const uuid = message.meta.uuid;
-                    const frontUUID = message.meta.frontUUID;
-                    if (name !== 'TeqFw_Web_Shared_Event_Front_Log')
-                        logger.info(`=> ${frontUUID} / ${uuid}: ${name}`);
-                    eventBus.publish(message);
-                    res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
-                    const eventRes = dtoRes.createDto();
-                    eventRes.success = true;
-                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
-                    shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    const frontUuid = message.meta.frontUUID;
+                    // validate encryption stamp
+                    const stamper = await factStamper.create({frontUuid: meta.frontUUID});
+                    const valid = stamper.verify(message.stamp, meta);
+                    if (valid) {
+                        if (name !== 'TeqFw_Web_Shared_Event_Front_Log')
+                            logger.info(`=> ${frontUuid} / ${uuid}: ${name}`);
+                        eventBus.publish(message);
+                        res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                        const eventRes = dtoRes.createDto();
+                        eventRes.success = true;
+                        shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
+                        shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    } else {
+                        shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_UNAUTHORIZED);
+                        shares.set(DEF.SHARE_RES_BODY, `Front #${frontUuid} is not authenticated.`);
+                    }
                 } catch (e) {
                     logger.error(e);
                     respond500(res, e?.message);

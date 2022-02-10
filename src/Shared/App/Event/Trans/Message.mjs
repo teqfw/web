@@ -13,6 +13,7 @@ const NS = 'TeqFw_Web_Shared_App_Event_Trans_Message';
 const ATTR = {
     DATA: 'data',
     META: 'meta',
+    STAMP: 'stamp',
 };
 
 /**
@@ -25,6 +26,11 @@ class Dto {
     data;
     /** @type {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} */
     meta;
+    /**
+     * Contains encrypted data (uuid & data from meta) to verify sender and receiver.
+     * @type {string}
+     */
+    stamp;
 }
 
 /**
@@ -36,6 +42,8 @@ export default class TeqFw_Web_Shared_App_Event_Trans_Message {
         const dtoFormless = spec['TeqFw_Core_Shared_Dto_Formless$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message_Meta} */
         const dtoMeta = spec['TeqFw_Web_Shared_App_Event_Trans_Message_Meta$'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
+        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
         // INSTANCE METHODS
         /**
@@ -46,6 +54,7 @@ export default class TeqFw_Web_Shared_App_Event_Trans_Message {
             const res = new Dto();
             res.data = dtoFormless.createDto(data?.[ATTR.DATA]);
             res.meta = dtoMeta.createDto(data?.[ATTR.META]);
+            res.stamp = castString(data?.stamp);
             return res;
         }
 
