@@ -22,6 +22,7 @@ export default class TeqFw_Web_Shared_Defaults {
     // TODO: set dev 64 sec to prod 16 sec.
     TIMEOUT_EVENT_RESPONSE = 64000; // default timeout for response event (sent from back as answer to request from front)
 
+    WAPI_ALIVE = '/alive';
     WAPI_FRONT_REGISTER = '/front/register';
     WAPI_LOAD_CONFIG = '/load/config';
     WAPI_LOAD_FILES_TO_CACHE = '/load/files_to_cache';

@@ -1,5 +1,6 @@
 /**
  * Register newly installed front on server.
+ * We should save public key for asymmetric encryption before we open reverse Events Stream.
  *
  * @namespace TeqFw_Web_Back_WAPI_Front_Register
  */
