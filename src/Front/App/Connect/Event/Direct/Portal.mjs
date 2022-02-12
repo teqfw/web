@@ -56,6 +56,9 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
 
         async function onReverseAuthenticated() {
             // ENCLOSED FUNCS
+            /**
+             * @return {Promise<TeqFw_Web_Shared_App_Event_Trans_Message.Dto[]>}
+             */
             async function getDelayedEvents() {
                 const trx = await idb.startTransaction([idbQueue]);
                 const res = await idb.readSet(trx, idbQueue, I_DELAYED.BY_DATE);
@@ -64,10 +67,15 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
             }
 
             // MAIN
+            const now = new Date();
             const events = await getDelayedEvents();
             for (const event of events) {
-                const sent = await conn.send(event);
-                if (sent) await removeFromQueue(event.meta.uuid);
+                if ((event.meta.expiration instanceof Date) && (event.meta.expiration < now))
+                    await removeFromQueue(event.meta.uuid); // just remove expired events
+                else { // ... and process not expired
+                    const sent = await conn.send(event);
+                    if (sent) await removeFromQueue(event.meta.uuid);
+                }
             }
         }
 

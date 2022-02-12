@@ -42,21 +42,25 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         this.sendDelayedEvents = async function (frontUuid) {
             /** @type {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto[]} */
             const found = await modQueue.getEventsByFrontUuid(frontUuid);
+            const now = new Date();
             for (const one of found) {
                 const eventId = one.id;
                 logger.info(`Process delayed event #${eventId}.`);
                 const data = JSON.parse(one.message);
                 const event = dtoEvent.createDto(data);
                 const meta = event.meta;
-                const conn = registry.getByFrontUUID(frontUuid);
-                if (conn) {
-                    // TODO: save message to queue on write failure
-                    conn.write(event);
-                    logger.info(`<= ${frontUuid} / ${meta.uuid}: ${meta.name}`);
-                    await modQueue.removeEvent(eventId);
-                } else {
-                    // connection is closed, break the loop
-                    break;
+                if ((meta.expiration instanceof Date) && (meta.expiration < now))
+                    await modQueue.removeEvent(eventId); // just remove expired events
+                else { // ... and process not expired
+                    const conn = registry.getByFrontUUID(frontUuid);
+                    if (conn) {
+                        conn.write(event);
+                        logger.info(`<= ${frontUuid} / ${meta.uuid}: ${meta.name}`);
+                        await modQueue.removeEvent(eventId);
+                    } else {
+                        // connection is closed, break the loop
+                        break;
+                    }
                 }
             }
         }

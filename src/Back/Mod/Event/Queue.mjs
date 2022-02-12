@@ -81,7 +81,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
                 const rs = await crud.deleteOne(trx, rdbQueue, where);
                 res = (rs === 1);
                 await trx.commit();
-                logger.error(`Delayed event #${id} is removed from queue.`);
+                logger.info(`Delayed event #${id} is removed from queue.`);
             } catch (e) {
                 logger.error(`Cannot remove delayed event #${id}. Error: ${e.message}`);
                 await trx.rollback();
