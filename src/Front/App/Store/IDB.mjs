@@ -80,7 +80,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 return new Promise(function (resolve, reject) {
                     /** @type {IDBOpenDBRequest} */
                     const req = indexedDB.open(name, version);
-                    req.onupgradeneeded = (event) => {
+                    req.onupgradeneeded = () => {
                         fnUpgrade(req.result);
                     };
                     req.onsuccess = () => {
@@ -99,7 +99,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             if (_db === undefined) {
                 const promise = createPromise(_dbName, _dbVersion, _fnDbUpgrade);
                 const resDb = await promise;
-                resDb.onclose = (event) => {
+                resDb.onclose = () => {
                     _db = undefined;
                 };
             }
@@ -207,6 +207,14 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             return res;
         }
 
+        /**
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @param {string} indexName
+         * @param {IDBKeyRange} query
+         * @param {number} count
+         * @return {Promise<*[]>}
+         */
         this.readSet = async function (trx, meta, indexName = null, query = null, count = null) {
             const res = [];
             const storeName = meta.getEntityName();
