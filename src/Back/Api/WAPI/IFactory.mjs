@@ -5,7 +5,7 @@
 export default class TeqFw_Web_Back_Api_WAPI_IFactory {
     /**
      * Get factory compose route (address & DTO for request & response).
-     * @return {TeqFw_Web_Back_Api_WAPI_IRoute}
+     * @return {TeqFw_Web_Shared_Api_WAPI_IRoute}
      */
     getRouteFactory() {}
 

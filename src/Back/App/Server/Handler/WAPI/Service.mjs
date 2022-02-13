@@ -21,7 +21,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI_Service {
      * @type {string}
      */
     route;
-    /** @type {TeqFw_Web_Back_Api_WAPI_IRoute} */
+    /** @type {TeqFw_Web_Shared_Api_WAPI_IRoute} */
     routeFactory;
     /** @type {function(TeqFw_Web_Back_App_Server_Handler_WAPI_Context): Promise<void>} */
     service;

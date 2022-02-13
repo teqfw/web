@@ -112,7 +112,7 @@ export class Factory {
         // DEFINE INSTANCE METHODS
         /**
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
-         * @param {TeqFw_Web_Back_Api_WAPI_IRoute} route
+         * @param {TeqFw_Web_Shared_Api_WAPI_IRoute} route
          * @param {Object<string, string>} params
          * @return {TeqFw_Web_Back_App_Server_Handler_WAPI_Context}
          */

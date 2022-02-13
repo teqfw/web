@@ -25,7 +25,7 @@ export class Response {
 /**
  * Factory to create new DTOs.
  * @memberOf TeqFw_Web_Shared_WAPI_Load_Namespaces
- * @implements TeqFw_Web_Back_Api_WAPI_IRoute
+ * @implements TeqFw_Web_Shared_Api_WAPI_IRoute
  */
 export class Factory {
     static namespace = NS;
