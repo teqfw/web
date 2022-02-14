@@ -22,8 +22,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         // EXTRACT DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
         /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
         const frontIdentity = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */

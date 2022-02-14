@@ -26,14 +26,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Di_Shared_Container} */
         const container = spec['TeqFw_Di_Shared_Container$'];
-        /** @type {TeqFw_Core_Shared_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond400|function} */
         const respond400 = spec['TeqFw_Web_Back_App_Server_Respond.respond400'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond500|function} */
         const respond500 = spec['TeqFw_Web_Back_App_Server_Respond.respond500'];
-        /** @type {TeqFw_Core_Back_App_Scan_Plugin_Registry} */
-        const regPlugins = spec['TeqFw_Core_Back_App_Scan_Plugin_Registry$'];
+        /** @type {TeqFw_Core_Back_App_Init_Plugin_Registry} */
+        const regPlugins = spec['TeqFw_Core_Back_App_Init_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
         const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#Factory$'];
         /** @type {typeof TeqFw_Web_Back_App_Server_Handler_WAPI_Service} */

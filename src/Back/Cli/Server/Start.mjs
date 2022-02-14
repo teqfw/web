@@ -26,8 +26,12 @@ export default function Factory(spec) {
     // EXTRACT DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Shared_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Logger$'];
+    /** @type {TeqFw_Core_Shared_Api_ILogger} */
+    const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
+    /** @type {TeqFw_Core_Back_App_Init_Logger} */
+    const loggerInit = spec['TeqFw_Core_Back_App_Init_Logger$'];
+    /** @type {TeqFw_Core_Shared_Api_Logger_ITransport} */
+    const loggerTransport = spec['TeqFw_Core_Shared_Api_Logger_ITransport$'];
     /** @type {TeqFw_Core_Back_Config} */
     const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
@@ -52,7 +56,7 @@ export default function Factory(spec) {
      * @memberOf TeqFw_Web_Back_Cli_Server_Start
      */
     const action = async function (opts) {
-        logger.pause(false);
+        loggerInit.setTransport(loggerTransport);
         logger.info('Starting web server.');
         try {
             // collect startup configuration from command option

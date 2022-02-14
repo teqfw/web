@@ -4,8 +4,8 @@
 export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_Shared_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Registry} */

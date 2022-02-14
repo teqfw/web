@@ -25,8 +25,8 @@ export default function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Config} */
     const config = spec['TeqFw_Core_Back_Config$'];
-    /** @type {TeqFw_Core_Shared_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Logger$'];
+    /** @type {TeqFw_Core_Shared_Api_ILogger} */
+    const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
     /** @type {TeqFw_Web_Shared_Api_Crypto_Key_IManager} */

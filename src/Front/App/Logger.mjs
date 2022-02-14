@@ -6,8 +6,8 @@
 export default class TeqFw_Web_Front_App_Logger {
     constructor(spec) {
         // EXTRACT DEPS
-        /** @type {TeqFw_Core_Shared_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Logger$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct_Portal} */
         const portalBack = spec['TeqFw_Web_Front_App_Connect_Event_Direct_Portal$'];
         /** @type {TeqFw_Web_Shared_Event_Front_Log} */
