@@ -55,7 +55,7 @@ export default class TeqFw_Web_Back_Mod_Event_Reverse_Stream {
  */
 export class Factory {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
         const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castFunction|function} */

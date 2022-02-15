@@ -15,7 +15,7 @@ const NS = 'TeqFw_Web_Back_WAPI_Load_FilesToCache';
  */
 export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {Function|TeqFw_Core_Back_Util.scanRecursively} */
@@ -29,13 +29,13 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              *
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
              */
             async function service(context) {
-                // DEFINE INNER FUNCTIONS
+                // ENCLOSED FUNCS
                 /**
                  * Scan each teq-plugin of the app and compose URL for files
                  * from './Front/', './Shared/' and './web/' folders.
@@ -43,7 +43,7 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                  * @return {string[]}
                  */
                 function generateUrlsList(door) {
-                    // DEFINE INNER FUNCTIONS
+                    // ENCLOSED FUNCS
                     /**
                      * Scan sources root recursively for files to cache and replace filesystem parts with URL parts.
                      * @param {string} root path to the root folder of sources
@@ -105,7 +105,7 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                         return res;
                     }
 
-                    // MAIN FUNCTIONALITY
+                    // MAIN
                     const res = [];
                     const appName = registry.getAppName();
                     const items = registry.items();
@@ -129,7 +129,7 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                     return res;
                 }
 
-                // MAIN FUNCTIONALITY
+                // MAIN
                 /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request} */
                 const input = context.getInData();
                 /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Response} */
@@ -137,7 +137,7 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                 out.items = generateUrlsList(input.door);
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
             return service;
         }

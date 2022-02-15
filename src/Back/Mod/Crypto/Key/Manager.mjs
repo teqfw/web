@@ -12,7 +12,7 @@ import util from 'tweetnacl-util'; // as CommonJS module
 export default class TeqFw_Web_Back_Mod_Crypto_Key_Manager {
 
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Shared_Dto_Identity_Keys} */
         const dtoKeys = spec['TeqFw_Web_Shared_Dto_Identity_Keys$'];
 

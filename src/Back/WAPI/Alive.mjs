@@ -11,7 +11,7 @@ const NS = 'TeqFw_Web_Back_WAPI_Alive';
  */
 export default class TeqFw_Web_Back_WAPI_Alive {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
         /** @type {TeqFw_Web_Shared_WAPI_Alive.Factory} */
@@ -21,7 +21,7 @@ export default class TeqFw_Web_Back_WAPI_Alive {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
              */
@@ -31,7 +31,7 @@ export default class TeqFw_Web_Back_WAPI_Alive {
                 res.payload = backUUID.get();
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
             return service;
         }

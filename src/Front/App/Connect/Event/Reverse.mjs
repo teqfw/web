@@ -19,7 +19,7 @@ const SSE_STATE = {
  */
 export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */

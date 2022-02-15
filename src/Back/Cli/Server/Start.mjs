@@ -23,7 +23,7 @@ const OPT_SKIP_PID = 'skipPid';
  * @memberOf TeqFw_Web_Back_Cli_Server_Start
  */
 export default function Factory(spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Shared_Api_ILogger} */
@@ -47,7 +47,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
     const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option#Factory$'];
 
-    // DEFINE INNER FUNCTIONS
+    // ENCLOSED FUNCS
     /**
      * Parse command line options and start server in requested mode.
      *

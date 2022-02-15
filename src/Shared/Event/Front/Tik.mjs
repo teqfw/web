@@ -18,7 +18,7 @@ class Dto {
  */
 export default class TeqFw_Web_Shared_Event_Front_Tik {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 

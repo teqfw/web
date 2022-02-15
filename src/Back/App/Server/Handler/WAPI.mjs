@@ -21,7 +21,7 @@ const {
  */
 export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Di_Shared_Container} */
@@ -47,14 +47,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
         /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Service[]} */
         const router = [];
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
         /**
          * Process request if address space is equal to 'api'.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function process(req, res) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
 
             /**
              * Match request to all routes and extract route params (if exist).
@@ -76,7 +76,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
                 return {routeItem, params};
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
@@ -150,7 +150,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
             );
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
     }
 }

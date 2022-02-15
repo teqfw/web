@@ -12,7 +12,7 @@ const NS = 'TeqFw_Web_Back_WAPI_Front_Register';
  */
 export default class TeqFw_Web_Back_WAPI_Front_Register {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Factory} */
         const route = spec['TeqFw_Web_Shared_WAPI_Front_Register#Factory$'];
         /** @type {TeqFw_Db_Back_RDb_IConnect} */
@@ -24,7 +24,7 @@ export default class TeqFw_Web_Back_WAPI_Front_Register {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
              */
@@ -45,7 +45,7 @@ export default class TeqFw_Web_Back_WAPI_Front_Register {
                 }
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
             return service;
         }

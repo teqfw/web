@@ -57,7 +57,7 @@ export class Factory {
          * @return {TeqFw_Web_Back_Dto_Plugin_Desc}
          */
         this.create = function (data = null) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             function parseHandlers(data) {
                 const res = {};
                 if (typeof data === 'object')
@@ -66,7 +66,7 @@ export class Factory {
                 return res;
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             const res = new TeqFw_Web_Back_Dto_Plugin_Desc();
             res.doors = castArrayOfStr(data?.doors);
             res.excludes = fExcludes.create(data?.excludes);

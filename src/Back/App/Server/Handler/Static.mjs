@@ -22,7 +22,7 @@ const {
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Static {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
@@ -39,14 +39,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
         /**
          * Extract static file name from GET request, find file in filesystem then send it back to client.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         function process(req, res) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              * Compose absolute path to requested resource:
              *  - /src/vue/vue.global.js => /.../node_modules/vue/dist/vue.global.js
@@ -58,7 +58,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
              */
             function getFilesystemPath(url) {
 
-                // DEFINE INNER FUNCTIONS
+                // ENCLOSED FUNCS
                 /**
                  * Recombine path parts to use as key in URL mapping.
                  *
@@ -111,7 +111,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                     return result;
                 }
 
-                // MAIN FUNCTIONALITY
+                // MAIN
                 let result;
                 const normal = normalize(url);
                 const mapped = pathMap(normal);
@@ -123,7 +123,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                 return result;
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
@@ -180,7 +180,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
             return ((method === HTTP2_METHOD_GET) && (address.space !== DEF.SHARED.SPACE_SSE));
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
     }
 }

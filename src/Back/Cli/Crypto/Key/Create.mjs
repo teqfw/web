@@ -20,7 +20,7 @@ const NS = 'TeqFw_Web_Back_Cli_Crypto_Key_Create';
  * @memberOf TeqFw_Web_Back_Cli_Crypto_Key_Create
  */
 export default function Factory(spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Config} */

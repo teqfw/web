@@ -20,7 +20,7 @@ const {
 export default class TeqFw_Web_Back_App_Server_Dispatcher {
 
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
@@ -36,14 +36,14 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
         const handlers = [];
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
         /**
          * Listener for 'request' event on the web server.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function onRequest(req, res) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
 
             function isMethodAllowed(method) {
                 return (method === HTTP2_METHOD_HEAD)
@@ -59,7 +59,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
              * @return {Promise<void>}
              */
             async function parseBody(method, headers, req) {
-                // DEFINE INNER FUNCTIONS
+                // ENCLOSED FUNCS
                 /**
                  * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
                  * @return {Promise<string>}
@@ -76,7 +76,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                     });
                 }
 
-                // MAIN FUNCTIONALITY
+                // MAIN
                 // should we process body of the input message?
                 if (method === HTTP2_METHOD_POST) {
                     const contentType = headers[HTTP2_HEADER_CONTENT_TYPE] ?? '';
@@ -93,7 +93,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             }
 
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             // prepare data to collect processors that will handle current request
             const {headers, method, url} = req;
             // check HTTP method
@@ -131,7 +131,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
          */
         this.getListener = () => onRequest;
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         Object.defineProperty(onRequest, 'name', {value: `${NS}.${onRequest.name}`});
     }
 

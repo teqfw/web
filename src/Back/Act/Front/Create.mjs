@@ -10,7 +10,7 @@ const NS = 'TeqFw_Web_Back_Act_Front_Create';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Db_Back_Api_RDb_ICrudEngine} */
     const crud = spec['TeqFw_Db_Back_Api_RDb_ICrudEngine$'];
     /** @type {TeqFw_Web_Back_Store_RDb_Schema_Front} */

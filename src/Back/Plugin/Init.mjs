@@ -5,11 +5,11 @@
 const NS = 'TeqFw_Web_Back_Plugin_Init';
 
 export default function Factory(spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Di_Shared_Container} */
     const container = spec['TeqFw_Di_Shared_Container$'];
 
-    // DEFINE INNER FUNCTIONS
+    // ENCLOSED FUNCS
     async function action() {
         await container.get('TeqFw_Web_Back_Proc_Front_Authenticate$');
         await container.get('TeqFw_Web_Back_Proc_Front_Log$');
@@ -17,7 +17,7 @@ export default function Factory(spec) {
         await container.get('TeqFw_Web_Back_Proc_Tok$');
     }
 
-    // MAIN FUNCTIONALITY
+    // MAIN
     Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});
     return action;
 }

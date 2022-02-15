@@ -12,7 +12,7 @@ import {readFileSync} from 'fs';
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_App_Server {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
@@ -27,7 +27,7 @@ export default class TeqFw_Web_Back_App_Server {
 
         // DEFINE THIS INSTANCE METHODS
         this.run = async function ({port, useHttp1, key, cert} = {}) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
 
             /**
              * Extract server options from local config.
@@ -61,7 +61,7 @@ export default class TeqFw_Web_Back_App_Server {
                 });
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             // get startup options from config
             const {cfgPort, cfgUseHttp1, cfgKey, cfgCert} = optionsFromConfig();
             port = port ?? (cfgPort) ?? DEF.DATA_SERVER_PORT;

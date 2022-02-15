@@ -11,7 +11,7 @@ const NS = 'TeqFw_Web_Back_WAPI_Load_Config';
  */
 export default class TeqFw_Web_Back_WAPI_Load_Config {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_Config} */
@@ -23,7 +23,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Config {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              *
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
@@ -38,7 +38,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Config {
                 Object.assign(out, webCfg);
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
             return service;
         }

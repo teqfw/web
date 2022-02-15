@@ -9,7 +9,7 @@
  */
 export default class TeqFw_Web_Front_App_Event_Bus {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_App_Event_Bus} */
         const baseEventBus = spec['TeqFw_Core_Shared_App_Event_Bus$$']; // instance
 

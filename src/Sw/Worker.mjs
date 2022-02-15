@@ -68,7 +68,7 @@ export default class TeqFw_Web_Sw_Worker {
         function onFetch(event) {
             // DEFINE WORKING VARS / PROPS
 
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              * Analyze route's URL and return route type (api, service worker or static).
              * @param {Request} req
@@ -106,7 +106,7 @@ export default class TeqFw_Web_Sw_Worker {
                 }
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             const routeType = getRouteType(event.request);
             if ((routeType === AREA_API) || (routeType === AREA_SSE)) {
                 // just pass the request to remote server
@@ -170,7 +170,7 @@ export default class TeqFw_Web_Sw_Worker {
          */
         async function onMessage(event) {
 
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
 
             async function cacheClean() {
                 try {
@@ -182,7 +182,7 @@ export default class TeqFw_Web_Sw_Worker {
                 }
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
 
             /** @type {TeqFw_Web_Front_Mod_Sw_Control.Message} */
             const data = event.data;

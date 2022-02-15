@@ -3,9 +3,9 @@
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
-        const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Core_Back_App_UUID} */
         const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Registry} */
@@ -14,6 +14,9 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         const modQueue = spec['TeqFw_Web_Back_Mod_Event_Queue$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
         const dtoEvent = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
+
+        // MAIN
+        logger.setNamespace(this.constructor.name);
 
         // INSTANCE METHODS
         /**

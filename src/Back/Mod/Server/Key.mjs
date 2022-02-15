@@ -10,7 +10,7 @@ import {existsSync, writeFileSync} from 'fs';
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Mod_Server_Key {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */

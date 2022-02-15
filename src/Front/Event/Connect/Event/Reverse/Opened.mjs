@@ -18,7 +18,7 @@ class Dto {
  */
 export default class TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_App_Event_Message} */
         const dtoBase = spec['TeqFw_Core_Shared_App_Event_Message$'];
 

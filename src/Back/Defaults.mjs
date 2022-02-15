@@ -30,11 +30,11 @@ export default class TeqFw_Web_Back_Defaults {
     SHARED;
 
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         this.MOD_DI = spec['TeqFw_Di_Back_Defaults$'];
         this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         // init props after dependencies was injected
         const ns = this.SHARED.NAME;
         this.SHARE_REQ_BODY = `${ns}/req/body`; // request body as text

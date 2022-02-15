@@ -6,7 +6,7 @@
  */
 export default class TeqFw_Web_Front_Mod_Crypto_Scrambler {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Front_Lib_Nacl.box} */
         const box = spec['TeqFw_Web_Front_Lib_Nacl.box'];
         /** @type {TeqFw_Web_Front_Lib_Nacl.randomBytes|function} */

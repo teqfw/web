@@ -7,7 +7,7 @@ const NS = 'TeqFw_Web_Back_App_Server_Scan_Handler';
 
 // MODULE'S FUNCTIONS
 export default function (spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Di_Shared_Container} */
@@ -23,13 +23,13 @@ export default function (spec) {
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
     const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
 
-    // DEFINE INNER FUNCTIONS
+    // ENCLOSED FUNCS
     /**
      * @return {Promise<*>}
      * @memberOf TeqFw_Web_Back_App_Server_Scan_Handler
      */
     async function act() {
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
 
         /**
          * Create handlers and populate sort util with before-after data.
@@ -81,7 +81,7 @@ export default function (spec) {
             return res;
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         utilSort.reset();
         const handlers = await createHandlers(utilSort);
         const ordered = utilSort.getOrdered();
@@ -91,7 +91,7 @@ export default function (spec) {
         return res;
     }
 
-    // MAIN FUNCTIONALITY
+    // MAIN
     Object.defineProperty(act, 'name', {value: `${NS}.act`});
     return act;
 }

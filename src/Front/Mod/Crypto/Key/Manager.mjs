@@ -8,7 +8,7 @@
  */
 export default class TeqFw_Web_Front_Mod_Crypto_Key_Manager {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         const {box, secretbox, randomBytes} = spec['TeqFw_Web_Front_Lib_Nacl'];
         const {decodeBase64, encodeBase64} = spec['TeqFw_Web_Front_Lib_Nacl_Util'];
         /** @type {TeqFw_Web_Shared_Dto_Identity_Keys} */

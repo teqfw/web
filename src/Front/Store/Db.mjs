@@ -47,7 +47,7 @@ export default function (spec) {
         }
     }
 
-    // MAIN FUNCTIONALITY
+    // MAIN
     idb.init(NS, IDB_VERSION, fnUpgradeDb);
 
     return idb;

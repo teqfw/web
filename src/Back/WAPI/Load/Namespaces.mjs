@@ -14,7 +14,7 @@ const NS = 'TeqFw_Web_Back_WAPI_Load_Namespaces';
  */
 export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_App_Init_Plugin_Registry} */
@@ -32,7 +32,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
         /** @type {TeqFw_Web_Shared_Dto_Namespace_Replace[]} */
         const replaces = getReplaces(registry); // cache for frontend replaces for DI
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
 
         /**
          * Loop through all plugins and compose namespace-to-source mapping for DI container on the front.
@@ -105,7 +105,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             /**
              *
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
@@ -117,7 +117,7 @@ export default class TeqFw_Web_Back_WAPI_Load_Namespaces {
                 out.replaces = replaces;
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
             return service;
         }

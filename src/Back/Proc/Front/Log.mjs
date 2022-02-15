@@ -5,7 +5,7 @@
  */
 export default class TeqFw_Web_Back_Proc_Front_Log {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
         const logger = spec['TeqFw_Core_Shared_Api_ILogger$'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */

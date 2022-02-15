@@ -14,7 +14,7 @@ const NS = 'TeqFw_Web_Back_Util';
  * @memberOf TeqFw_Web_Back_Util
  */
 function cookieClear({name, path = '/'}) {
-    // MAIN FUNCTIONALITY
+    // MAIN
     const exp = 'Expires=Thu, 01 Jan 1970 00:00:00 GMT';
     return `${name}=; ${exp}; Path=${path}`;
 }

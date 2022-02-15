@@ -24,7 +24,7 @@ class Dto {
  */
 export default class TeqFw_Web_Shared_App_Event_Trans_Message_Meta {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Shared_App_Event_Message_Meta} */
         const baseDto = spec['TeqFw_Core_Shared_App_Event_Message_Meta$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */

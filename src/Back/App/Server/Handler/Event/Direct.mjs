@@ -22,7 +22,7 @@ const {
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */

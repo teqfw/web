@@ -75,7 +75,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
         this.open = async () => {
 
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             function createPromise(name, version, fnUpgrade) {
                 return new Promise(function (resolve, reject) {
                     /** @type {IDBOpenDBRequest} */
@@ -131,7 +131,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {*} data
          */
         this.create = async function (trx, meta, data) {
-            // DEFINE INNER FUNCTIONS
+            // ENCLOSED FUNCS
             function createPromise(store, data) {
                 return new Promise(function (resolve, reject) {
                     const req = store.add(data);
@@ -145,7 +145,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 });
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             const storeName = meta.getEntityName();
             const store = trx.objectStore(storeName);
             // remove primary key attributes if undefined (to use autoincrement)

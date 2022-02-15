@@ -3,7 +3,7 @@
  */
 export default class TeqFw_Web_Back_Mod_Address {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc} */
@@ -55,7 +55,7 @@ export default class TeqFw_Web_Back_Mod_Address {
             return result;
         };
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         /** @type {TeqFw_Core_Back_Api_Dto_Plugin_Registry_Item[]} */
         const items = registry.items();
         for (const item of items) {

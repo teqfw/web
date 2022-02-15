@@ -18,7 +18,7 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
  * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
 export default function Factory(spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Config} */
@@ -28,7 +28,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
 
-    // DEFINE INNER FUNCTIONS
+    // ENCLOSED FUNCS
     /**
      * Stop web server.
      * @returns {Promise<void>}

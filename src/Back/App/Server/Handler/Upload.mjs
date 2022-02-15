@@ -22,7 +22,7 @@ const HEAD_FILENAME = 'teq-upload-filename'; // HTTP header to get uploading fil
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Upload {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Back_Config} */
@@ -31,7 +31,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
         // DEFINE WORKING VARS / PROPS
         const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
 
         /**
          * Process request if address space is equal to 'upload'.
@@ -87,7 +87,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
             );
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
 
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
     }

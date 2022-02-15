@@ -27,7 +27,7 @@ export class Factory {
     static namespace = NS;
 
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Shared_Defaults} */
         const DEF = spec['TeqFw_Web_Shared_Defaults$'];
 

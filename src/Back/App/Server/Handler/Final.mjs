@@ -21,13 +21,13 @@ const {
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Final {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond404|function} */
         const respond404 = spec['TeqFw_Web_Back_App_Server_Respond.respond404'];
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
 
         /**
          * Send 'Error 404' if response is not handled yet.
@@ -75,7 +75,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
             return true;
         }
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
     }
 }

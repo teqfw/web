@@ -5,7 +5,7 @@
  */
 export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct} */
         const conn = spec['TeqFw_Web_Front_App_Connect_Event_Direct$'];
         /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */

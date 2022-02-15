@@ -5,7 +5,7 @@
  */
 export default class TeqFw_Web_Back_Proc_Tok {
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
         const eventsBack = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
@@ -15,10 +15,10 @@ export default class TeqFw_Web_Back_Proc_Tok {
         /** @type {TeqFw_Web_Shared_Event_Front_Tik} */
         const esfTik = spec['TeqFw_Web_Shared_Event_Front_Tik$'];
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         eventsBack.subscribe(esfTik.getEventName(), handler)
 
-        // DEFINE INNER FUNCTIONS
+        // ENCLOSED FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Front_Tik.Dto} evt
          */
