@@ -46,6 +46,19 @@ export default class TeqFw_Web_Back_Mod_Event_Reverse_Registry {
         }
 
         /**
+         * Return all active streams.
+         * @return {TeqFw_Web_Back_Mod_Event_Reverse_Stream[]}
+         */
+        this.getAll = () => {
+            const res = [];
+            /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Stream[]} */
+            const streams = Object.values(_store);
+            for (const one of streams)
+                if (one.state === STATE.ACTIVE) res.push(one);
+
+            return res;
+        }
+        /**
          * Get connection object by front application UUID.
          * @param {string} uuid
          * @param {boolean} [activeOnly]
