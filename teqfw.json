@@ -7,7 +7,7 @@
     "replace": {
       "TeqFw_Core_Shared_Lib_Uuid": {"front": "TeqFw_Web_Front_Lib_Uuid"},
       "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"},
-      "TeqFw_Web_Front_Api_Mod_Server_IConnect": {"front": "TeqFw_Web_Front_Mod_Server_Connect"},
+      "TeqFw_Web_Front_Api_Mod_Server_Connect_IState": {"front": "TeqFw_Web_Front_Mod_Server_Connect_State"},
       "TeqFw_Web_Shared_Api_Crypto_IScrambler": {
         "back": "TeqFw_Web_Back_Mod_Crypto_Scrambler",
         "front": "TeqFw_Web_Front_Mod_Crypto_Scrambler"

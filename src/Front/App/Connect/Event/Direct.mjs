@@ -9,8 +9,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Web_Front_Api_Dto_Config} */
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
-        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
-        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_Connect_IState$'];
         /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
         const frontIdentity = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */

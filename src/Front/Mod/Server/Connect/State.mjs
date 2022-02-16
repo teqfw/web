@@ -1,9 +1,9 @@
 /**
  * Default implementation for connect state model.
  *
- * @implements TeqFw_Web_Front_Api_Mod_Server_IConnect
+ * @implements TeqFw_Web_Front_Api_Mod_Server_Connect_IState
  */
-export default class TeqFw_Web_Front_Mod_Server_Connect {
+export default class TeqFw_Web_Front_Mod_Server_Connect_State {
     constructor() {
 
         // ENCLOSED VARS

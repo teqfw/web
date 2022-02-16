@@ -13,8 +13,8 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
         /** @type {TeqFw_Web_Front_Api_Gate_IErrorHandler} */
         const errHndl = spec['TeqFw_Web_Front_Api_Gate_IErrorHandler$'];
-        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
-        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_Connect_IState$'];
 
         // ENCLOSED VARS
         let BASE;

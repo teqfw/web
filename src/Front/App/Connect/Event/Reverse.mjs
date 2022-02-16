@@ -42,8 +42,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const esbAuthReq = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
         /** @type {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response} */
         const esfAuthRes = spec['TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response$'];
-        /** @type {TeqFw_Web_Front_Api_Mod_Server_IConnect} */
-        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_IConnect$'];
+        /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
+        const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_Connect_IState$'];
         /** @type {TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory} */
         const factScrambler = spec['TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory$'];
 

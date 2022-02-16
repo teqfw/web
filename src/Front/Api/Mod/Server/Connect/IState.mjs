@@ -2,7 +2,7 @@
  * Model to store and propagate across the application front-to-back connection state.
  * @interface
  */
-export default class TeqFw_Web_Front_Api_Mod_Server_IConnect {
+export default class TeqFw_Web_Front_Api_Mod_Server_Connect_IState {
     /**
      * 'true' - if connection with server is established and works.
      * @return {boolean}
