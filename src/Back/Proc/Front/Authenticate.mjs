@@ -28,8 +28,8 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
         const modServerKey = spec['TeqFw_Web_Back_Mod_Server_Key$'];
         /** @type {TeqFw_Web_Back_Mod_Crypto_Scrambler.Factory} */
         const factScrambler = spec['TeqFw_Web_Back_Mod_Crypto_Scrambler.Factory$'];
-        /** @type {TeqFw_Core_Back_App_UUID} */
-        const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
+        /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
+        const backUUID = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Registry} */
         const modRegistry = spec['TeqFw_Web_Back_Mod_Event_Reverse_Registry$'];
         /** @type {typeof TeqFw_Web_Back_Mod_Event_Reverse_Stream.STATE} */

@@ -12,8 +12,8 @@ const NS = 'TeqFw_Web_Back_WAPI_Alive';
 export default class TeqFw_Web_Back_WAPI_Alive {
     constructor(spec) {
         // DEPS
-        /** @type {TeqFw_Core_Back_App_UUID} */
-        const backUUID = spec['TeqFw_Core_Back_App_UUID$'];
+        /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
+        const backUUID = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
         /** @type {TeqFw_Web_Shared_WAPI_Alive.Factory} */
         const route = spec['TeqFw_Web_Shared_WAPI_Alive#Factory$'];
 
