@@ -45,7 +45,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
          * UUID for this backup instance.
          * @type {string}
          */
-        const _backUUID = backUUID.get();
+        const _backUuid = backUUID.get();
         let _serverPubKey;
 
         // MAIN
@@ -84,30 +84,32 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
 
             /**
              * Create reverse events stream for connected front app.
-             * @param {string} frontUUID
+             * @param {string} frontUuid
              * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
              * @return {string} stream UUID
              * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse.process
              */
-            function createStream(frontUUID, res) {
+            function createStream(frontUuid, res) {
                 // ENCLOSED VARS
-                const streamUUID = v4(); // generate new UUID for newly established connection
+                const streamUuid = v4(); // generate new UUID for newly established connection
+                const metaLog = {frontUuid, streamUuid};
 
                 // ENCLOSED FUNCS
                 /**
                  * Listener to remove events stream from registry.
                  */
                 function onClose() {
-                    registry.delete(streamUUID);
-                    logger.info(`Back-to-front events stream is closed (front: '${frontUUID}').`);
+                    registry.delete(streamUuid);
+
+                    logger.info(`Back-to-front events stream is closed (front: '${frontUuid}').`, metaLog);
                 }
 
                 // MAIN
-                const streamExist = registry.getByFrontUUID(frontUUID, false);
+                const streamExist = registry.getByFrontUUID(frontUuid, false);
                 if (streamExist) registry.delete(streamExist.streamId);
                 const stream = factStream.create();
-                registry.put(stream, streamUUID, frontUUID);
-                logger.info(`Front app '${frontUUID}' opened new reverse stream (back-to-front events).`);
+                registry.put(stream, streamUuid, frontUuid);
+                logger.info(`Front app '${frontUuid}' opened new reverse stream (back-to-front events).`, metaLog);
                 // set 'write' function to connection, response stream is pinned in closure
                 stream.write = function (payload) {
                     if (res.writable) {
@@ -115,7 +117,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                         res.write(`data: ${json}\n\n`);
                         res.write(`id: ${stream.messageId++}\n`);
                     } else {
-                        logger.error(`Events reverse stream is not writable (front: '${frontUUID}')`);
+                        logger.error(`Events reverse stream is not writable (front: '${frontUuid}')`, metaLog);
                     }
                 };
                 stream.finalize = () => {
@@ -124,22 +126,23 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 stream.unauthenticatedCloseId = setTimeout(() => res.end(), DISCONNECT_TIMEOUT);
                 // remove stream from registry on close
                 res.addListener('close', onClose);
-                return streamUUID;
+                return streamUuid;
             }
 
-            function authenticateStream(streamUUID, frontUUID, res) {
+            function authenticateStream(streamUuid, frontUuid, res) {
                 if (res.writable) {
                     const event = esbAuthReq.createDto();
-                    event.data.backUUID = _backUUID;
+                    event.data.backUUID = _backUuid;
                     event.data.serverKey = _serverPubKey;
-                    event.meta.frontUUID = frontUUID;
-                    event.meta.backUUID = _backUUID;
+                    event.meta.frontUUID = frontUuid;
+                    event.meta.backUUID = _backUuid;
                     const json = JSON.stringify(event);
                     res.write(`event: ${DEF.SHARED.EVENT_AUTHENTICATE}\n`);
                     res.write(`retry: ${RECONNECT_TIMEOUT}\n`);
                     res.write(`data: ${json}\n\n`);
                 } else {
-                    logger.error(`Back-to-front events stream is not writable (${streamUUID}).`);
+                    const metaLog = {frontUuid, streamUuid, backUuid: _backUuid};
+                    logger.error(`Back-to-front events stream is not writable (${streamUuid}).`, metaLog);
                 }
             }
 
@@ -164,7 +167,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
 
         this.init = async function () {
             _serverPubKey = await modServerKey.getPublic();
-            logger.info(`Initialize Reverse Events Stream handler for web requests:`);
+            const metaLog = {backUuid: _backUuid};
+            logger.info(`Initialize Reverse Events Stream handler for web requests.`, metaLog);
         }
 
         // noinspection JSUnusedGlobalSymbols
