@@ -50,6 +50,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
 
         // MAIN
         Object.defineProperty(process, 'namespace', {value: `${NS}.${process.name}`});
+        logger.setNamespace(this.constructor.name);
 
         // ENCLOSED FUNCS
 

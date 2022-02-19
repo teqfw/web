@@ -24,6 +24,7 @@ export default class TeqFw_Web_Shared_Defaults {
 
     WAPI_ALIVE = '/alive';
     WAPI_FRONT_REGISTER = '/front/register';
+    WAPI_FRONT_LOG_COLLECT = '/front/log/collect';
     WAPI_LOAD_CONFIG = '/load/config';
     WAPI_LOAD_FILES_TO_CACHE = '/load/files_to_cache';
     WAPI_LOAD_NAMESPACES = '/load/namespaces';

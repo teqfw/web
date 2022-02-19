@@ -16,14 +16,17 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
         const rdbQueue = spec['TeqFw_Web_Back_Store_RDb_Schema_Event_Queue$'];
         /** @type {TeqFw_Web_Back_Act_Front_GetIdByUuid.act|function} */
         const actGetIdByUuid = spec['TeqFw_Web_Back_Act_Front_GetIdByUuid$'];
+        /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
+        const modBackUuid = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
+        /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
+        const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // ENCLOSED VARS
         /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.ATTR} */
         const A_QUEUE = rdbQueue.getAttributes();
 
         // MAIN
-
-        // ENCLOSED FUNCS
+        logger.setNamespace(this.constructor.name);
 
         // INSTANCE METHODS
 
@@ -34,16 +37,22 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
          */
         this.save = async function (event) {
             const trx = await rdb.startTransaction();
+            const meta = event.meta;
+            const logMeta = dtoLogMeta.createDto();
+            logMeta.backUuid = modBackUuid.get();
+            logMeta.eventName = meta.name;
+            logMeta.eventUuid = meta.uuid;
+            logMeta.frontUuid = meta.frontUUID;
             try {
                 const {id: frontId} = await actGetIdByUuid({trx, uuid: event.meta.frontUUID});
                 const dto = rdbQueue.createDto();
                 dto.message = JSON.stringify(event);
                 dto.front_ref = frontId;
                 const pk = await crud.create(trx, rdbQueue, dto);
-                logger.info(`Event message #${event.meta.uuid} is saved to backend queue as #${pk[A_QUEUE.ID]}.`);
+                logger.info(`Event message #${event.meta.uuid} is saved to backend queue as #${pk[A_QUEUE.ID]}.`, logMeta);
                 await trx.commit();
             } catch (e) {
-                logger.error(`Cannot save event #${event?.meta?.uuid} to queue. Error: ${e.message}`);
+                logger.error(`Cannot save event #${event?.meta?.uuid} to queue. Error: ${e.message}`, logMeta);
                 await trx.rollback();
             }
         }

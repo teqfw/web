@@ -7,6 +7,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         // DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Web_Front_Api_Dto_Config} */
         const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
         /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
@@ -17,9 +19,14 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const backIdentity = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
         /** @type {TeqFw_Web_Shared_Mod_Event_Stamper} */
         const stamper = spec['TeqFw_Web_Shared_Mod_Event_Stamper$$']; // new instance
+        /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
+        const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // ENCLOSED VARS
         let _url = composeBaseUrl();
+
+        // MAIN
+        logger.setNamespace(this.constructor.name);
 
         // ENCLOSED FUNCTIONS
         /**
@@ -45,10 +52,17 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
             let result = false;
             if (modConn.isOnline())
                 try {
+                    const meta = data.meta;
+                    const logMeta = dtoLogMeta.createDto();
+                    logMeta.backUuid = backIdentity.getUUID();
+                    logMeta.eventName = meta.name;
+                    logMeta.eventUuid = meta.uuid;
+                    logMeta.frontUuid = meta.frontUUID;
+                    //
                     modConn.startActivity();
-                    const eventName = data?.meta?.name;
+                    const eventName = meta.name;
                     stamper.initKeys(backIdentity.getServerKey(), frontIdentity.getSecretKey());
-                    data.stamp = stamper.create(data.meta);
+                    data.stamp = stamper.create(meta);
                     const res = await fetch(`${_url}/${eventName}`, {
                         method: 'POST',
                         headers: {
@@ -61,6 +75,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                         /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
                         const eventRes = JSON.parse(text);
                         result = eventRes.success ?? false;
+                        logger.info(`aaa ${meta.frontUUID} => ${eventName}`, logMeta);
                     } catch (e) {
                         // errHndl.error(text);
                     }

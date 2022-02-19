@@ -55,6 +55,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         // MAIN
         window.addEventListener('offline', closeStream);
         window.addEventListener('online', openStream);
+        logger.setNamespace(this.constructor.name);
 
         // ENCLOSED FUNCS
         function closeStream() {

@@ -14,6 +14,10 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         const modQueue = spec['TeqFw_Web_Back_Mod_Event_Queue$'];
         /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
         const dtoEvent = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
+        /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
+        const modBackUuid = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
+        /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
+        const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // MAIN
         logger.setNamespace(this.constructor.name);
@@ -25,19 +29,33 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
          * @return {Promise<void>}
          */
         this.publish = async function (event, {useUnAuthStream} = {}) {
+            // ENCLOSED FUNCTIONS
+            /**
+             * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta
+             */
+            function logEvent(meta) {
+                const logMeta = dtoLogMeta.createDto();
+                logMeta.backUuid = modBackUuid.get();
+                logMeta.eventName = meta.name;
+                logMeta.eventUuid = meta.uuid;
+                logMeta.frontUuid = meta.frontUUID;
+                logger.info(`${meta.frontUUID} <= ${meta.name}`, logMeta);
+            }
+
+            // MAIN
             const meta = event?.meta;
             const eventName = meta?.name;
             const uuid = meta?.uuid;
-            const frontUUID = meta?.frontUUID;
+            const frontUuid = meta?.frontUUID;
             meta.backUUID = backUUID.get();
             const activeOnly = !useUnAuthStream;
-            const conn = registry.getByFrontUUID(frontUUID, activeOnly);
+            const conn = registry.getByFrontUUID(frontUuid, activeOnly);
             if (conn) {
                 // TODO: save message to queue on write failure
                 conn.write(event);
-                logger.info(`<= ${frontUUID} / ${uuid}: ${eventName}`);
+                logEvent(meta);
             } else {
-                logger.info(`Cannot send event '${eventName}' (${uuid}) to front app '${frontUUID}'. `);
+                logger.info(`Front '${frontUuid}' is offline. `);
                 await modQueue.save(event);
             }
         }

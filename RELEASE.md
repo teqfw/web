@@ -5,6 +5,7 @@
 * Restructure directories and files.
 * Add events streams between front and back.
 * Add process to monitor online/offline modes.
+* Add fronts logs collector.
 
 # 0.7.1
 

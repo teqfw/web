@@ -37,9 +37,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const dtoRes = spec['TeqFw_Web_Shared_Dto_Event_Direct_Response$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Stamper_Factory} */
         const factStamper = spec['TeqFw_Web_Back_Mod_Event_Stamper_Factory$'];
+        /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
+        const modBackUuid = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
+        /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
+        const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // MAIN
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
+        logger.setNamespace(this.constructor.name);
 
         // ENCLOSED FUNCTIONS
         /**
@@ -49,6 +54,20 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
          * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Direct
          */
         async function process(req, res) {
+            // ENCLOSED FUNCTIONS
+            /**
+             * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta
+             */
+            function logEvent(meta) {
+                const logMeta = dtoLogMeta.createDto();
+                logMeta.backUuid = modBackUuid.get();
+                logMeta.eventName = meta.name;
+                logMeta.eventUuid = meta.uuid;
+                logMeta.frontUuid = meta.frontUUID;
+                logger.info(`${meta.frontUUID} => ${meta.name}`, logMeta);
+            }
+
+            // MAIN
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
@@ -56,15 +75,12 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                     const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
                     const message = factTransMsg.createDto(json);
                     const meta = message.meta;
-                    const name = message.meta.name;
-                    const uuid = message.meta.uuid;
-                    const frontUuid = message.meta.frontUUID;
+                    const frontUuid = meta.frontUUID;
                     // validate encryption stamp
-                    const stamper = await factStamper.create({frontUuid: meta.frontUUID});
+                    const stamper = await factStamper.create({frontUuid});
                     const valid = stamper.verify(message.stamp, meta);
                     if (valid) {
-                        if (name !== 'TeqFw_Web_Shared_Event_Front_Log')
-                            logger.info(`=> ${frontUuid} / ${uuid}: ${name}`);
+                        logEvent(meta);
                         eventBus.publish(message);
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
                         const eventRes = dtoRes.createDto();
