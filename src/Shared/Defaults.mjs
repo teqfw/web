@@ -5,6 +5,8 @@ export default class TeqFw_Web_Shared_Defaults {
 
     EVENT_AUTHENTICATE = 'authenticate'; // SSE event name
 
+    LOG_META_TYPE = 'type'; // log type in log metadata sent to logs monitor
+
     NAME = '@teqfw/web';
 
     /** @type {TeqFw_Core_Shared_Defaults} */
