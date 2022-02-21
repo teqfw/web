@@ -39,7 +39,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
                 logMeta.eventName = meta.name;
                 logMeta.eventUuid = meta.uuid;
                 logMeta.frontUuid = meta.frontUUID;
-                logger.info(`${meta.frontUUID} <= ${meta.name}`, logMeta);
+                logger.info(`${meta.frontUUID} <= ${meta.name} (${meta.uuid})`, logMeta);
             }
 
             // MAIN
@@ -55,7 +55,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
                 conn.write(event);
                 logEvent(meta);
             } else {
-                logger.info(`Front '${frontUuid}' is offline. `);
+                logger.info(`Event ${meta.name} (${meta.uuid}) cannot be published on offline front #${frontUuid}. `);
                 await modQueue.save(event);
             }
         }

@@ -63,6 +63,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                     const eventName = meta.name;
                     stamper.initKeys(backIdentity.getServerKey(), frontIdentity.getSecretKey());
                     data.stamp = stamper.create(meta);
+                    logger.info(`${meta.backUUID} => ${eventName} (${meta.uuid}) (sent)`, logMeta);
                     const res = await fetch(`${_url}/${eventName}`, {
                         method: 'POST',
                         headers: {
@@ -75,7 +76,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                         /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
                         const eventRes = JSON.parse(text);
                         result = eventRes.success ?? false;
-                        logger.info(`aaa ${meta.frontUUID} => ${eventName}`, logMeta);
+                        logger.info(`${meta.frontUUID} <= ${eventName} (${meta.uuid}) (done)`, logMeta);
                     } catch (e) {
                         // errHndl.error(text);
                     }

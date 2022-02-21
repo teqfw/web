@@ -90,6 +90,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                 msg.data.frontId = front.frontId;
                 msg.data.encrypted = scrambler.encryptAndSign(backUUID);
                 portalBack.publish(msg);
+                logger.info(`Front authentication response is sent to back.`);
             }
 
             /**
@@ -114,7 +115,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
                     const name = dto.meta.name;
                     const uuid = dto.meta.uuid;
                     const backUUID = dto.meta.backUUID;
-                    logger.info(`=> ${backUUID} / ${uuid} : ${name}`);
+                    logger.info(`${backUUID} => ${name} (${uuid})`);
                     eventFront.publish(dto);
                 } catch (e) {
                     logger.error(e);

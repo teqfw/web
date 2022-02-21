@@ -6,6 +6,8 @@
 export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
     constructor(spec) {
         // DEPS
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct} */
         const conn = spec['TeqFw_Web_Front_App_Connect_Event_Direct$'];
         /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
@@ -26,6 +28,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
 
         // MAIN
         eventBus.subscribe(esbAuthenticated.getEventName(), onReverseAuthenticated);
+        logger.setNamespace(this.constructor.name);
 
         // ENCLOSED FUNCTIONS
         /**
@@ -88,9 +91,15 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
             const meta = event.meta;
             meta.backUUID = backIdentity.getUUID();
             meta.frontUUID = frontIdentity.getUuid();
+            logger.info(`Save event #${meta.uuid} (${meta.name}) to front queue and publish it.`);
             await saveToQueue(event);
             const sent = await conn.send(event);
-            if (sent) await removeFromQueue(meta?.uuid);
+            if (sent) {
+                await removeFromQueue(meta?.uuid);
+                logger.info(`Event #${meta.uuid} (${meta.name}) is published to back and removed from front queue.`);
+            } else {
+                logger.info(`Event #${meta.uuid} (${meta.name}) is not published to back.`);
+            }
         }
     }
 }

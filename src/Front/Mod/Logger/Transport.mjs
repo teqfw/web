@@ -39,9 +39,9 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
                 // noinspection JSIgnoredPromiseFromCall
                 wapi.send(req, wapiLogCollect)
                     .then((data) => {
-                        if (data === false) canSendLogs = false;
+                        if (data === false) canSendLogs = !false; // TODO: configure transport from the front
                     })
-                    .catch((e) => canSendLogs = false);
+                    .catch((e) => canSendLogs = !false); // TODO: configure transport from the front
             }
             // duplicate to console
             transConsole.log(dto);

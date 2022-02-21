@@ -64,35 +64,41 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                 logMeta.eventName = meta.name;
                 logMeta.eventUuid = meta.uuid;
                 logMeta.frontUuid = meta.frontUUID;
-                logger.info(`${meta.frontUUID} => ${meta.name}`, logMeta);
+                logger.info(`${meta.frontUUID} => ${meta.name} (${meta.uuid}).`, logMeta);
             }
 
             // MAIN
             /** @type {TeqFw_Core_Shared_Mod_Map} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
+                let frontUuid, eventUuid;
+                const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
                 try {
-                    const json = shares.get(DEF.SHARE_REQ_BODY_JSON);
                     const message = factTransMsg.createDto(json);
                     const meta = message.meta;
-                    const frontUuid = meta.frontUUID;
-                    // validate encryption stamp
+                    frontUuid = meta.frontUUID;
+                    eventUuid = meta.uuid;
+                    // load public key using front UUID then validate encryption stamp
                     const stamper = await factStamper.create({frontUuid});
                     const valid = stamper.verify(message.stamp, meta);
                     if (valid) {
+                        // stamp is valid, log event then publish it to backend event bus
                         logEvent(meta);
                         eventBus.publish(message);
+                        // respond as succeed
                         res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
                         const eventRes = dtoRes.createDto();
                         eventRes.success = true;
                         shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
                         shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                     } else {
+                        const msg = `Front #${frontUuid} is not authenticated.`;
                         shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_UNAUTHORIZED);
-                        shares.set(DEF.SHARE_RES_BODY, `Front #${frontUuid} is not authenticated.`);
+                        shares.set(DEF.SHARE_RES_BODY, msg);
+                        logger.error(msg);
                     }
                 } catch (e) {
-                    logger.error(e);
+                    logger.error(`Error for event #${frontUuid}/${eventUuid}: ${e?.message}`);
                     respond500(res, e?.message);
                 }
             }
