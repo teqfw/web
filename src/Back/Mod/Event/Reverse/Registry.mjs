@@ -10,7 +10,7 @@ export default class TeqFw_Web_Back_Mod_Event_Reverse_Registry {
         /** @type {typeof TeqFw_Web_Back_Mod_Event_Reverse_Stream.STATE} */
         const STATE = spec['TeqFw_Web_Back_Mod_Event_Reverse_Stream.STATE$'];
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {Object<string, TeqFw_Web_Back_Mod_Event_Reverse_Stream>} */
         const _store = {}; // internal store for connection objects (stream UUID is the key)
         /** @type {Object<string, string>} */

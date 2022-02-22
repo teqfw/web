@@ -32,7 +32,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Web_Shared_Api_Crypto_Key_IManager} */
     const mgrKey = spec['TeqFw_Web_Shared_Api_Crypto_Key_IManager$'];
 
-    // ENCLOSED FUNCTIONS
+    // FUNCS
     /**
      * Command action.
      * @returns {Promise<void>}

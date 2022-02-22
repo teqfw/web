@@ -47,7 +47,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         /** @type {TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory} */
         const factScrambler = spec['TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory$'];
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {EventSource} */
         let _source;
         let _url = `./${DEF.SHARED.SPACE_EVENT_REVERSE}`;
@@ -57,7 +57,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         window.addEventListener('online', openStream);
         logger.setNamespace(this.constructor.name);
 
-        // ENCLOSED FUNCS
+        // FUNCS
         function closeStream() {
             if (_source && (_source.readyState !== SSE_STATE.CLOSED)) {
                 _source.close();
@@ -71,7 +71,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
          * Open SSE connection and set handlers for input data.
          */
         function openStream() {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Listener for SSE authentication event from the back.
              * Save back identity to front model, encrypt back payload and return to back.

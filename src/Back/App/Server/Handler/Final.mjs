@@ -27,7 +27,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond404|function} */
         const respond404 = spec['TeqFw_Web_Back_App_Server_Respond.respond404'];
 
-        // ENCLOSED FUNCS
+        // FUNCS
 
         /**
          * Send 'Error 404' if response is not handled yet.

@@ -40,7 +40,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         /** @type {TeqFw_Web_Back_Mod_Server_Key} */
         const modServerKey = spec['TeqFw_Web_Back_Mod_Server_Key$'];
 
-        // ENCLOSED VARS
+        // VARS
         /**
          * UUID for this backup instance.
          * @type {string}
@@ -52,7 +52,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         Object.defineProperty(process, 'namespace', {value: `${NS}.${process.name}`});
         logger.setNamespace(this.constructor.name);
 
-        // ENCLOSED FUNCS
+        // FUNCS
 
         /**
          * Process HTTP request if not processed before.
@@ -61,7 +61,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
          * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse
          */
         async function process(req, res) {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Extract, validate as UUID and return front application UUID or 'null' otherwise.
              * @param {string} url
@@ -91,11 +91,11 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
              * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Reverse.process
              */
             function createStream(frontUuid, res) {
-                // ENCLOSED VARS
+                // VARS
                 const streamUuid = v4(); // generate new UUID for newly established connection
                 const metaLog = {frontUuid, streamUuid};
 
-                // ENCLOSED FUNCS
+                // FUNCS
                 /**
                  * Listener to remove events stream from registry.
                  */

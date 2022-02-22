@@ -20,12 +20,12 @@ export default class TeqFw_Web_Front_Mod_Crypto_Scrambler {
         /** @type {TeqFw_Web_Front_Lib_Nacl_Util.encodeUTF8|function} */
         const encodeUTF8 = spec['TeqFw_Web_Front_Lib_Nacl_Util.encodeUTF8'];
 
-        // ENCLOSED VARS
+        // VARS
         let _keyShared;
 
         // MAIN
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
 
         // INSTANCE METHODS
         this.decryptAndVerify = function (encrypted) {

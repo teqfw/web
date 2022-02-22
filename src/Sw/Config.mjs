@@ -12,14 +12,14 @@ export default class TeqFw_Web_Sw_Config {
         /** @type {IDBDatabase} */
         let _db;
 
-        // ENCLOSED FUNCS
+        // FUNCS
 
         /**
          * Open connection to IDB.
          * @return {Promise<void>}
          */
         async function open() {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Upgrade IDB schema.
              * @param {IDBDatabase} db

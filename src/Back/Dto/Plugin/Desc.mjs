@@ -57,7 +57,7 @@ export class Factory {
          * @return {TeqFw_Web_Back_Dto_Plugin_Desc}
          */
         this.create = function (data = null) {
-            // ENCLOSED FUNCS
+            // FUNCS
             function parseHandlers(data) {
                 const res = {};
                 if (typeof data === 'object')

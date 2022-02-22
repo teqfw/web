@@ -22,13 +22,13 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
-        // ENCLOSED VARS
+        // VARS
         let _url = composeBaseUrl();
 
         // MAIN
         logger.setNamespace(this.constructor.name);
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @return {string}
          */

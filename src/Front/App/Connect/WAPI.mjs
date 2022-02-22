@@ -16,10 +16,10 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
         /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
         const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_Connect_IState$'];
 
-        // ENCLOSED VARS
+        // VARS
         let BASE;
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         function getBaseUrl() {
             if (!BASE) {
                 const schema = '//';

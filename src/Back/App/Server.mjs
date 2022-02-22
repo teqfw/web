@@ -27,7 +27,7 @@ export default class TeqFw_Web_Back_App_Server {
 
         // DEFINE THIS INSTANCE METHODS
         this.run = async function ({port, useHttp1, key, cert} = {}) {
-            // ENCLOSED FUNCS
+            // FUNCS
 
             /**
              * Extract server options from local config.

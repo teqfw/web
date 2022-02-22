@@ -17,7 +17,7 @@ export default function (spec) {
     /** @type {TeqFw_Web_Front_Store_Entity_Singleton} */
     const idbSingleton = spec['TeqFw_Web_Front_Store_Entity_Singleton$'];
 
-    // ENCLOSED VARS
+    // VARS
     const A_EVT_QUE = idbEventQueue.getAttributes();
     const A_SINGLETON = idbSingleton.getAttributes();
     const E_EVT_QUE = idbEventQueue.getEntityName();

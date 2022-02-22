@@ -9,7 +9,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Di_Shared_Container} */
     const container = spec['TeqFw_Di_Shared_Container$'];
 
-    // ENCLOSED FUNCS
+    // FUNCS
     async function action() {
         await container.get('TeqFw_Web_Back_Proc_Front_Authenticate$');
         await container.get('TeqFw_Web_Back_Proc_Server_Key_Source$');

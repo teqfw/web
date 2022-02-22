@@ -47,14 +47,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
         /** @type {TeqFw_Web_Back_App_Server_Handler_WAPI_Service[]} */
         const router = [];
 
-        // ENCLOSED FUNCS
+        // FUNCS
         /**
          * Process request if address space is equal to 'api'.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function process(req, res) {
-            // ENCLOSED FUNCS
+            // FUNCS
 
             /**
              * Match request to all routes and extract route params (if exist).

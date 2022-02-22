@@ -47,7 +47,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
     const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option#Factory$'];
 
-    // ENCLOSED FUNCS
+    // FUNCS
     /**
      * Parse command line options and start server in requested mode.
      *

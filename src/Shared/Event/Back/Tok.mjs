@@ -25,10 +25,10 @@ export default class TeqFw_Web_Shared_Event_Back_Tok {
         /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
         const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
 
-        // ENCLOSED VARS
+        // VARS
         const ATTR = dtoBase.getAttributes();
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Back_Tok.Dto} [data]
          * @return {TeqFw_Web_Shared_Event_Back_Tok.Dto}

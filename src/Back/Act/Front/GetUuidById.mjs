@@ -14,11 +14,11 @@ export default function (spec) {
     /** @type {TeqFw_Web_Back_Store_RDb_Schema_Front} */
     const rdbFront = spec['TeqFw_Web_Back_Store_RDb_Schema_Front$'];
 
-    // ENCLOSED VARS
+    // VARS
     /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Front.ATTR} */
     const ATTR = rdbFront.getAttributes();
 
-    // ENCLOSED FUNCS
+    // FUNCS
     /**
      * @param {TeqFw_Db_Back_RDb_ITrans} trx
      * @param {number} id front's ID

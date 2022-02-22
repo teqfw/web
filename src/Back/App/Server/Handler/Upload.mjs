@@ -31,7 +31,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
         // DEFINE WORKING VARS / PROPS
         const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
 
-        // ENCLOSED FUNCS
+        // FUNCS
 
         /**
          * Process request if address space is equal to 'upload'.

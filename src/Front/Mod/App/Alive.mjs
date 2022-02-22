@@ -7,7 +7,7 @@ export default class TeqFw_Web_Front_Mod_App_Alive {
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
 
-        // ENCLOSED VARS
+        // VARS
         const space = DEF.SHARED.SPACE_API;
         const pkg = DEF.SHARED.NAME;
         const service = DEF.SHARED.WAPI_ALIVE;

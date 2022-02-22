@@ -23,13 +23,13 @@ export default function (spec) {
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
     const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
 
-    // ENCLOSED FUNCS
+    // FUNCS
     /**
      * @return {Promise<*>}
      * @memberOf TeqFw_Web_Back_App_Server_Scan_Handler
      */
     async function act() {
-        // ENCLOSED FUNCS
+        // FUNCS
 
         /**
          * Create handlers and populate sort util with before-after data.

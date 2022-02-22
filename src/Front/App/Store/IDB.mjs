@@ -4,7 +4,7 @@
 export default class TeqFw_Web_Front_App_Store_IDB {
     constructor() {
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {IDBDatabase} */
         let _db;
         /** @type {function: function} */
@@ -14,7 +14,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         /** @type {string} */
         let _dbName;
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * Return index if 'index' is available for given 'store' or store itself.
          * @param {IDBObjectStore} store
@@ -36,10 +36,10 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             if (_db) _db.close();
 
             const promise = new Promise(function (resolve, reject) {
-                // ENCLOSED VARS
+                // VARS
                 let idRepeat, i = 0;
 
-                // ENCLOSED FUNCTIONS
+                // FUNCS
                 function drop() {
                     /** @type {IDBOpenDBRequest} */
                     const req = indexedDB.deleteDatabase(_dbName);
@@ -75,7 +75,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
         this.open = async () => {
 
-            // ENCLOSED FUNCS
+            // FUNCS
             function createPromise(name, version, fnUpgrade) {
                 return new Promise(function (resolve, reject) {
                     /** @type {IDBOpenDBRequest} */
@@ -131,7 +131,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {*} data
          */
         this.create = async function (trx, meta, data) {
-            // ENCLOSED FUNCS
+            // FUNCS
             function createPromise(store, data) {
                 return new Promise(function (resolve, reject) {
                     const req = store.add(data);
@@ -187,7 +187,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @return {*}
          */
         this.readOne = async function (trx, meta, key, indexName) {
-            // ENCLOSED FUNCTIONS
+            // FUNCS
 
             // MAIN
             let res = null;

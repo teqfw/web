@@ -25,7 +25,7 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */
         const identityBack = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
 
-        // ENCLOSED VARS
+        // VARS
         let canSendLogs = true;
 
         // INSTANCE METHODS

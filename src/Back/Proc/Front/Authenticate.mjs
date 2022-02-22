@@ -38,13 +38,13 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
         // MAIN
         eventsBack.subscribe(esfAuthRes.getEventName(), onResponse);
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response.Dto} data
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta
          */
         async function onResponse({data, meta}) {
-            // ENCLOSED FUNCTIONS
+            // FUNCS
             /**
              * Get front public key by id from RDB.
              * @param {number} frontId

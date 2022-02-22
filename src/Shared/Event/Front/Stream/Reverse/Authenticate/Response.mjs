@@ -29,10 +29,10 @@ export default class TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Re
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
-        // ENCLOSED VARS
+        // VARS
         const ATTR = dtoBase.getAttributes();
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response.Dto} [data]
          * @return {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response.Dto}

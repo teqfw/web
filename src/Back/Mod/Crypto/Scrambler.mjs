@@ -17,7 +17,7 @@ const NS = 'TeqFw_Web_Back_Mod_Crypto_Scrambler';
 export default class TeqFw_Web_Back_Mod_Crypto_Scrambler {
     constructor() {
 
-        // ENCLOSED VARS
+        // VARS
         let _keyShared;
 
         // INSTANCE METHODS

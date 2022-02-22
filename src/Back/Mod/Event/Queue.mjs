@@ -21,7 +21,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
         /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.ATTR} */
         const A_QUEUE = rdbQueue.getAttributes();
 

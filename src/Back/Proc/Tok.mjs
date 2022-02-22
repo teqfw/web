@@ -18,7 +18,7 @@ export default class TeqFw_Web_Back_Proc_Tok {
         // MAIN
         eventsBack.subscribe(esfTik.getEventName(), handler)
 
-        // ENCLOSED FUNCS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Front_Tik.Dto} evt
          */

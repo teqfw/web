@@ -17,12 +17,12 @@ export default class TeqFw_Web_Back_Proc_Server_Key_Source {
         /** @type {TeqFw_Web_Shared_Event_Back_Server_Key_Response} */
         const esbRes = spec['TeqFw_Web_Shared_Event_Back_Server_Key_Response$'];
 
-        // ENCLOSED VARS
+        // VARS
 
         // MAIN
         eventsBack.subscribe(esfKeyReq.getEventName(), onRequest)
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Front_Server_Key_Request.Dto} data
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta

@@ -29,13 +29,13 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              *
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
              */
             async function service(context) {
-                // ENCLOSED FUNCS
+                // FUNCS
                 /**
                  * Scan each teq-plugin of the app and compose URL for files
                  * from './Front/', './Shared/' and './web/' folders.
@@ -43,7 +43,7 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                  * @return {string[]}
                  */
                 function generateUrlsList(door) {
-                    // ENCLOSED FUNCS
+                    // FUNCS
                     /**
                      * Scan sources root recursively for files to cache and replace filesystem parts with URL parts.
                      * @param {string} root path to the root folder of sources

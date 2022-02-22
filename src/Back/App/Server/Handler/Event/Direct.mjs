@@ -46,7 +46,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
         logger.setNamespace(this.constructor.name);
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * Process HTTP request if not processed before.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
@@ -54,7 +54,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
          * @memberOf TeqFw_Web_Back_App_Server_Handler_Event_Direct
          */
         async function process(req, res) {
-            // ENCLOSED FUNCTIONS
+            // FUNCS
             /**
              * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta
              */

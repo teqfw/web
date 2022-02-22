@@ -29,7 +29,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
          * @return {Promise<void>}
          */
         this.publish = async function (event, {useUnAuthStream} = {}) {
-            // ENCLOSED FUNCTIONS
+            // FUNCS
             /**
              * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta
              */

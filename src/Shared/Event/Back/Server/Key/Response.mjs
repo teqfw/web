@@ -28,10 +28,10 @@ export default class TeqFw_Web_Shared_Event_Back_Server_Key_Response {
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
-        // ENCLOSED VARS
+        // VARS
         const ATTR = dtoBase.getAttributes();
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Shared_Event_Back_Server_Key_Response.Dto} [data]
          * @return {TeqFw_Web_Shared_Event_Back_Server_Key_Response.Dto}

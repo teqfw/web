@@ -6,7 +6,7 @@
 export default class TeqFw_Web_Front_Mod_Server_Connect_State {
     constructor() {
 
-        // ENCLOSED VARS
+        // VARS
         let _online = false;
 
         // INSTANCE METHODS

@@ -23,14 +23,14 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated} */
         const esbAuthenticated = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated$'];
 
-        // ENCLOSED VARS
+        // VARS
         const I_DELAYED = idbQueue.getIndexes();
 
         // MAIN
         eventBus.subscribe(esbAuthenticated.getEventName(), onReverseAuthenticated);
         logger.setNamespace(this.constructor.name);
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * Queue event message before sending to back.
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} event
@@ -58,7 +58,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         }
 
         async function onReverseAuthenticated() {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * @return {Promise<TeqFw_Web_Shared_App_Event_Trans_Message.Dto[]>}
              */

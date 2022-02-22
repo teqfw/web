@@ -24,7 +24,7 @@ export default class TeqFw_Web_Back_WAPI_Front_Register {
         this.getRouteFactory = () => route;
 
         this.getService = function () {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * @param {TeqFw_Web_Back_App_Server_Handler_WAPI_Context} context
              */

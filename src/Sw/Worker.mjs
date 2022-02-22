@@ -39,7 +39,7 @@ export default class TeqFw_Web_Sw_Worker {
      * ATTN: This is standard ES6 module w/o TeqFW DI support !!!
      */
     constructor() {
-        // ENCLOSED VARS
+        // VARS
         /**
          * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
          * @type {TeqFw_Web_Sw_Config}
@@ -55,7 +55,7 @@ export default class TeqFw_Web_Sw_Worker {
         /** @type {function} */
         let _log;
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
 
         /**
          * Send message to `index.html` to start bootstrap.
@@ -68,7 +68,7 @@ export default class TeqFw_Web_Sw_Worker {
         function onFetch(event) {
             // DEFINE WORKING VARS / PROPS
 
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Analyze route's URL and return route type (api, service worker or static).
              * @param {Request} req
@@ -118,7 +118,7 @@ export default class TeqFw_Web_Sw_Worker {
         }
 
         async function onInstall(event) {
-            // ENCLOSED FUNCTIONS
+            // FUNCS
             async function loadFilesToCache() {
                 // Get list of static files from the server
                 const data = {door: _door}; // see TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request
@@ -170,7 +170,7 @@ export default class TeqFw_Web_Sw_Worker {
          */
         async function onMessage(event) {
 
-            // ENCLOSED FUNCS
+            // FUNCS
 
             async function cacheClean() {
                 try {

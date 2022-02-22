@@ -9,10 +9,10 @@ export default class TeqFw_Web_Shared_Mod_Event_Stamper {
         /** @type {TeqFw_Web_Shared_Api_Crypto_IScrambler} */
         const scrambler = spec['TeqFw_Web_Shared_Api_Crypto_IScrambler$$']; // instance
 
-        // ENCLOSED VARS
+        // VARS
         let _isInitialized = false;
 
-        // ENCLOSED VARS
+        // VARS
         /**
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message_Meta.Dto} meta event message metadata
          * @return {string} payoad to encrypt/verify

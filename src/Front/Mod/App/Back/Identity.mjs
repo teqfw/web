@@ -12,7 +12,7 @@ export default class TeqFw_Web_Front_Mod_App_Back_Identity {
         /** @type {TeqFw_Web_Front_Dto_App_Identity_Back} */
         const dtoIdentity = spec['TeqFw_Web_Front_Dto_App_Identity_Back$'];
 
-        // ENCLOSED VARS
+        // VARS
         const KEY_IDENTITY = `${DEF.SHARED.NAME}/back/identity`;
         /** @type {TeqFw_Web_Front_Dto_App_Identity_Back.Dto} */
         let _cache;

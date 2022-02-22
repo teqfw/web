@@ -20,11 +20,11 @@ export default class TeqFw_Web_Back_Mod_Event_Stamper_Factory {
         /** @type {TeqFw_Web_Back_Mod_Server_Key} */
         const modServerKeys = spec['TeqFw_Web_Back_Mod_Server_Key$'];
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {Object<string, TeqFw_Web_Shared_Mod_Event_Stamper>} */
         const _cache = {};
 
-        // ENCLOSED FUNCS
+        // FUNCS
         /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Front.ATTR} */
         const ATTR = rdbFront.getAttributes();
 
@@ -34,10 +34,10 @@ export default class TeqFw_Web_Back_Mod_Event_Stamper_Factory {
          * @return {Promise<TeqFw_Web_Shared_Mod_Event_Stamper>}
          */
         this.create = async function ({frontUuid}) {
-            // ENCLOSED VARS
+            // VARS
 
 
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Load front's public key from RDB.
              * @param {string} uuid front UUID

@@ -36,14 +36,14 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
         const handlers = [];
 
-        // ENCLOSED FUNCS
+        // FUNCS
         /**
          * Listener for 'request' event on the web server.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         async function onRequest(req, res) {
-            // ENCLOSED FUNCS
+            // FUNCS
 
             function isMethodAllowed(method) {
                 return (method === HTTP2_METHOD_HEAD)
@@ -59,7 +59,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
              * @return {Promise<void>}
              */
             async function parseBody(method, headers, req) {
-                // ENCLOSED FUNCS
+                // FUNCS
                 /**
                  * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
                  * @return {Promise<string>}

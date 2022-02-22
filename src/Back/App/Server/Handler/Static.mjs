@@ -39,14 +39,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
 
-        // ENCLOSED FUNCS
+        // FUNCS
         /**
          * Extract static file name from GET request, find file in filesystem then send it back to client.
          * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         function process(req, res) {
-            // ENCLOSED FUNCS
+            // FUNCS
             /**
              * Compose absolute path to requested resource:
              *  - /src/vue/vue.global.js => /.../node_modules/vue/dist/vue.global.js
@@ -58,7 +58,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
              */
             function getFilesystemPath(url) {
 
-                // ENCLOSED FUNCS
+                // FUNCS
                 /**
                  * Recombine path parts to use as key in URL mapping.
                  *

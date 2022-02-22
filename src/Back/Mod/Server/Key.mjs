@@ -22,11 +22,11 @@ export default class TeqFw_Web_Back_Mod_Server_Key {
         /** @type {TeqFw_Web_Shared_Api_Crypto_Key_IManager} */
         const mgrKey = spec['TeqFw_Web_Shared_Api_Crypto_Key_IManager$'];
 
-        // ENCLOSED VARS
+        // VARS
         /** @type {TeqFw_Web_Shared_Dto_Identity_Keys.Dto} */
         let _keys;
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * Load server's keys from the file or generate new ones.
          */

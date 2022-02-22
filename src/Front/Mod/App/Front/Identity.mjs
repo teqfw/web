@@ -20,14 +20,14 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Factory} */
         const wapiRegister = spec['TeqFw_Web_Shared_WAPI_Front_Register.Factory$'];
 
-        // ENCLOSED VARS
+        // VARS
         const KEY_IDENTITY = `${DEF.SHARED.NAME}/front/identity`;
         /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
         let _cache;
 
         // INSTANCE METHODS
         this.init = async function () {
-            // ENCLOSED FUNCS
+            // FUNCS
             async function sendToBack(uuid, publicKey) {
                 const req = wapiRegister.createReq();
                 req.publicKey = publicKey;

@@ -22,10 +22,10 @@ export default class TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened {
         /** @type {TeqFw_Core_Shared_App_Event_Message} */
         const dtoBase = spec['TeqFw_Core_Shared_App_Event_Message$'];
 
-        // ENCLOSED VARS
+        // VARS
         const ATTR = dtoBase.getAttributes();
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened.Dto} [data]
          * @return {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened.Dto}

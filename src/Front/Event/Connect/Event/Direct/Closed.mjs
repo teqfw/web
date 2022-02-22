@@ -21,10 +21,10 @@ export default class TeqFw_Web_Front_Event_Connect_Event_Direct_Closed {
         /** @type {TeqFw_Core_Shared_App_Event_Message} */
         const dtoBase = spec['TeqFw_Core_Shared_App_Event_Message$'];
 
-        // ENCLOSED VARS
+        // VARS
         const ATTR = dtoBase.getAttributes();
 
-        // ENCLOSED FUNCTIONS
+        // FUNCS
         /**
          * @param {TeqFw_Web_Front_Event_Connect_Event_Direct_Closed.Dto} [data]
          * @return {TeqFw_Web_Front_Event_Connect_Event_Direct_Closed.Dto}
