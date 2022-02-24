@@ -22,6 +22,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated} */
         const esbAuthenticated = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated$'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
+        const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
 
         // VARS
         const I_DELAYED = idbQueue.getIndexes();
@@ -73,7 +75,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
             const now = new Date();
             const events = await getDelayedEvents();
             for (const event of events) {
-                if ((event.meta.expiration instanceof Date) && (event.meta.expiration < now))
+                const dateEvent = castDate(event.meta.expiration);
+                if (dateEvent < now)
                     await removeFromQueue(event.meta.uuid); // just remove expired events
                 else { // ... and process not expired
                     const sent = await conn.send(event);

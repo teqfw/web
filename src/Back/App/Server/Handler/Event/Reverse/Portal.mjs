@@ -18,6 +18,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         const modBackUuid = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
         /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
+        const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
 
         // MAIN
         logger.setNamespace(this.constructor.name);
@@ -55,7 +57,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
                 conn.write(event);
                 logEvent(meta);
             } else {
-                logger.info(`Event ${meta.name} (${meta.uuid}) cannot be published on offline front #${frontUuid}. `);
+                logger.info(`Event ${eventName} (${uuid}) cannot be published on offline front #${frontUuid}. `);
                 await modQueue.save(event);
             }
         }
@@ -70,7 +72,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
                 const data = JSON.parse(one.message);
                 const event = dtoEvent.createDto(data);
                 const meta = event.meta;
-                if ((meta.expiration instanceof Date) && (meta.expiration < now))
+                const dateEvent = castDate(meta.expiration);
+                if (dateEvent < now)
                     await modQueue.removeEvent(eventId); // just remove expired events
                 else { // ... and process not expired
                     const conn = registry.getByFrontUUID(frontUuid);
