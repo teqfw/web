@@ -28,6 +28,8 @@ export default class TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Re
         const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
+        /** @type {TeqFw_Core_Shared_Util_Date.addMinutes|function} */
+        const addMinutes = spec['TeqFw_Core_Shared_Util_Date.addMinutes'];
 
         // VARS
         const ATTR = dtoBase.getAttributes();
@@ -52,6 +54,7 @@ export default class TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Re
         this.createDto = function (data) {
             const res = dtoBase.createDto({[ATTR.META]: data?.[ATTR.META]});
             res.meta.name = NS;
+            res.meta.expiration = addMinutes(1); // default TTL is 1 min
             res.data = createData(data?.[ATTR.DATA]);
             // noinspection JSValidateTypes
             return res;

@@ -4,7 +4,6 @@
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
-import {castArray} from "@teqfw/core/src/Shared/Util/Cast.mjs";
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Respond';
@@ -15,6 +14,7 @@ const {
     HTTP2_METHOD_HEAD,
     HTTP2_METHOD_POST,
     HTTP_STATUS_BAD_REQUEST,
+    HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_METHOD_NOT_ALLOWED,
     HTTP_STATUS_NOT_FOUND,
 } = H2;
@@ -68,7 +68,7 @@ function respond405(res) {
  */
 function respond500(res, err) {
     if (!res.headersSent) {
-        res.writeHead(HTTP_STATUS_NOT_FOUND, {
+        res.writeHead(HTTP_STATUS_INTERNAL_SERVER_ERROR, {
             [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
         });
         res.write('Internal server error.');
