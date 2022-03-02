@@ -7,7 +7,9 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
         const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
-        const backUUID = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
+        const backUuid = spec['TeqFw_Core_Back_Mod_App_Uuid$'];
+        /** @type {TeqFw_Core_Back_App_Event_Bus} */
+        const eventsBack = spec['TeqFw_Core_Back_App_Event_Bus$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Reverse_Registry} */
         const registry = spec['TeqFw_Web_Back_Mod_Event_Reverse_Registry$'];
         /** @type {TeqFw_Web_Back_Mod_Event_Queue} */
@@ -20,6 +22,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
         const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
+        /** @type {TeqFw_Web_Back_Event_Republish_Delayed} */
+        const ebRepublishDelayed = spec['TeqFw_Web_Back_Event_Republish_Delayed$'];
 
         // MAIN
         logger.setNamespace(this.constructor.name);
@@ -28,7 +32,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
         /**
          * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto|*} event
          * @param {boolean} useUnAuthStream send event to unauthenticated stream
-         * @return {Promise<void>}
+         * @return {Promise<boolean>}
          */
         this.publish = async function (event, {useUnAuthStream} = {}) {
             // FUNCS
@@ -45,28 +49,39 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
             }
 
             // MAIN
+            let res = false;
             const meta = event?.meta;
             const eventName = meta?.name;
             const uuid = meta?.uuid;
             const frontUuid = meta?.frontUUID;
-            meta.backUUID = backUUID.get();
+            meta.backUUID = backUuid.get();
             const activeOnly = !useUnAuthStream;
             const conn = registry.getByFrontUUID(frontUuid, activeOnly);
             if (conn) {
                 // TODO: save message to queue on write failure
                 conn.write(event);
                 logEvent(meta);
+                res = true;
             } else {
                 logger.info(`Event ${eventName} (${uuid}) cannot be published on offline front #${frontUuid}. `);
                 await modQueue.save(event);
             }
+            return res;
         }
 
-        this.sendDelayedEvents = async function (frontUuid) {
+        /**
+         * Re-publish delayed events for given front.
+         * @param {number} frontId front app ID in back RDB
+         * @param {string} frontUuid
+         * @return {Promise<void>}
+         */
+        this.sendDelayedEvents = async function (frontId, frontUuid) {
+            let count = 0;
             /** @type {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto[]} */
             const found = await modQueue.getEventsByFrontUuid(frontUuid);
             const now = new Date();
             for (const one of found) {
+                count++;
                 const eventId = one.id;
                 logger.info(`Process delayed event #${eventId}.`);
                 const data = JSON.parse(one.message);
@@ -86,6 +101,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal {
                         break;
                     }
                 }
+            }
+            if (count > 0) {
+                logger.info(`Total ${count} delayed events were processed for front #${frontUuid}.`, {frontUuid});
+                const event = ebRepublishDelayed.createDto();
+                event.data.count = count;
+                event.data.frontId = frontId;
+                event.data.frontUuid = frontUuid;
+                eventsBack.publish(event);
             }
         }
     }

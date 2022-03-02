@@ -18,6 +18,8 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
         const esbAuthenticated = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Failed} */
         const esbFailed = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Failed$'];
+        /** @type {TeqFw_Web_Back_Event_Front_Authenticated} */
+        const ebFrontAuthenticated = spec['TeqFw_Web_Back_Event_Front_Authenticated$'];
         /** @type {TeqFw_Db_Back_RDb_IConnect} */
         const conn = spec['TeqFw_Db_Back_RDb_IConnect$'];
         /** @type {TeqFw_Db_Back_Api_RDb_ICrudEngine} */
@@ -85,7 +87,11 @@ export default class TeqFw_Web_Back_Proc_Front_Authenticate {
                             event.meta.frontUUID = frontUuid;
                             portalFront.publish(event);
                             // re-publish delayed events
-                            portalFront.sendDelayedEvents(frontUuid);
+                            portalFront.sendDelayedEvents(data.frontId, frontUuid);
+                            // publish local event about front authentication
+                            const dtoAuth = ebFrontAuthenticated.createDto();
+                            dtoAuth.data.frontId = data.frontId;
+                            eventsBack.publish(dtoAuth);
                         } // impossible situation: payload is decrypted but wrong
                     } catch (e) {
                         const msg = `Cannot authenticate front, payload decryption is failed.`;

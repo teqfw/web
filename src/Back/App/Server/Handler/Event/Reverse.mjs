@@ -105,6 +105,13 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                     logger.info(`Back-to-front events stream is closed (front: '${frontUuid}').`, metaLog);
                 }
 
+                /**
+                 * Listener ot log response stream errors.
+                 */
+                function onError(e) {
+                    logger.error(`Error in reverse events stream (front: '${frontUuid}'): ${e}`, metaLog);
+                }
+
                 // MAIN
                 const streamExist = registry.getByFrontUUID(frontUuid, false);
                 if (streamExist) registry.delete(streamExist.streamId);
@@ -127,6 +134,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
                 stream.unauthenticatedCloseId = setTimeout(() => res.end(), DISCONNECT_TIMEOUT);
                 // remove stream from registry on close
                 res.addListener('close', onClose);
+                res.addListener('error', onError);
                 return streamUuid;
             }
 
