@@ -16,6 +16,8 @@ export default class TeqFw_Web_Back_Defaults {
 
     HNDL_SHARE = 'teqSharedObjects'; // attribute name for shared objects' registry in req/res structures
 
+    /** @type {TeqFw_Core_Back_Defaults} */
+    MOD_CORE;
     /** @type {TeqFw_Di_Back_Defaults} */
     MOD_DI;
 
@@ -31,6 +33,7 @@ export default class TeqFw_Web_Back_Defaults {
 
     constructor(spec) {
         // DEPS
+        this.MOD_CORE = spec['TeqFw_Core_Back_Defaults$'];
         this.MOD_DI = spec['TeqFw_Di_Back_Defaults$'];
         this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 

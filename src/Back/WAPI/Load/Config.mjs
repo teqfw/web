@@ -18,6 +18,8 @@ export default class TeqFw_Web_Back_WAPI_Load_Config {
         const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Web_Shared_WAPI_Load_Config.Factory} */
         const route = spec['TeqFw_Web_Shared_WAPI_Load_Config#Factory$'];
+        /** @type {TeqFw_Web_Front_Api_Dto_Config.Factory} */
+        const factDto = spec['TeqFw_Web_Front_Api_Dto_Config.Factory$'];
 
         // DEFINE INSTANCE METHODS
         this.getRouteFactory = () => route;
@@ -35,7 +37,13 @@ export default class TeqFw_Web_Back_WAPI_Load_Config {
                 // put web part of the local configuration to the out
                 /** @type {TeqFw_Web_Back_Dto_Config_Local} */
                 const webCfg = config.getLocal(DEF.SHARED.NAME);
-                Object.assign(out, webCfg);
+                /** @type {TeqFw_Core_Back_Api_Dto_Config_Local} */
+                const webCore = config.getLocal(DEF.MOD_CORE.SHARED.NAME);
+                /** @type {TeqFw_Web_Front_Api_Dto_Config} */
+                const res = factDto.create();
+                if (webCfg.urlBase) res.urlBase = webCfg.urlBase;
+                if (webCore.devMode) res.devMode = webCore.devMode;
+                Object.assign(out, res);
             }
 
             // MAIN

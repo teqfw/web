@@ -7,6 +7,11 @@ const NS = 'TeqFw_Web_Front_Api_Dto_Config';
 // MODULE'S CLASSES
 export default class TeqFw_Web_Front_Api_Dto_Config {
     /**
+     * 'true' - application is in development mode.
+     * @type {Boolean}
+     */
+    devMode;
+    /**
      * Current frontend door (pub, admin, ...) is configured on frontend (index.html).
      * @type {string}
      */
@@ -31,7 +36,9 @@ export class Factory {
     static namespace = NS;
 
     constructor(spec) {
-        const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
+        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
+        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
         /**
          * @param {TeqFw_Web_Front_Api_Dto_Config|null} data
@@ -39,6 +46,7 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Front_Api_Dto_Config();
+            res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
             res.root = castString(data?.root);
             res.urlBase = castString(data?.urlBase);
