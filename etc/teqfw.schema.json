@@ -16,6 +16,9 @@
               "comment": "Public key for encryption and authentication.",
               "type": "string"
             }
+          },
+          "index": {
+            "uuid": {"type": "unique", "attrs": ["uuid"]}
           }
         }
       },

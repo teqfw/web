@@ -73,7 +73,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
                     found.frontId = frontId;
                     await storeSingleton.set(KEY_IDENTITY, found);
                     _cache = found;
-                } else throw new Error('Fatal error. Cannot register new front app on the back.');
+                } else throw new Error('Fatal error. Cannot register existing front app on the back.');
             } else throw new Error('Fatal error. Cannot get front identity from IDB.');
         }
 

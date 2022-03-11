@@ -23,6 +23,8 @@ export default function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Back_Config} */
     const config = spec['TeqFw_Core_Back_Config$'];
+    /** @type {TeqFw_Core_Back_App} */
+    const app = spec['TeqFw_Core_Back_App$'];
     /** @type {Function} */
     const castInt = spec['TeqFw_Core_Shared_Util_Cast#castInt'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
@@ -35,15 +37,16 @@ export default function Factory(spec) {
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
     const action = async function () {
+        const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
+        const data = $fs.readFileSync(pidPath);
+        const pid = castInt(data);
+        console.info(`Stop web server (PID: ${pid}).`);
         try {
-            const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
-            const data = $fs.readFileSync(pidPath);
-            const pid = castInt(data);
-            console.info(`Stop web server (PID: ${pid}).`);
             process.kill(pid, 'SIGINT');
         } catch (e) {
             console.error('Cannot kill web server process.');
         }
+        await app.stop();
     };
     Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});
 
