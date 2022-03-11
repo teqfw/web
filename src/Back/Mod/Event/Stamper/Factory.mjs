@@ -64,8 +64,10 @@ export default class TeqFw_Web_Back_Mod_Event_Stamper_Factory {
                 const stamper = await container.get('TeqFw_Web_Shared_Mod_Event_Stamper$$'); // new instance
                 const sec = await modServerKeys.getSecret();
                 const pub = await getPublicKey(frontUuid);
-                stamper.initKeys(pub, sec);
-                _cache[frontUuid] = stamper;
+                if (sec && pub) {
+                    stamper.initKeys(pub, sec);
+                    _cache[frontUuid] = stamper;
+                } // else: there is no public key for given front
             }
             return _cache[frontUuid];
         }

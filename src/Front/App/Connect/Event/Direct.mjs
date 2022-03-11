@@ -71,15 +71,25 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                         },
                         body: JSON.stringify(data)
                     });
-                    const text = await res.text();
-                    try {
-                        /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
-                        const eventRes = JSON.parse(text);
-                        result = eventRes.success ?? false;
-                        logger.info(`${meta.frontUUID} <= ${eventName} (${meta.uuid}) (done)`, logMeta);
-                    } catch (e) {
-                        // errHndl.error(text);
+                    if (res.status === 200) {
+                        const text = await res.text();
+                        try {
+                            /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
+                            const eventRes = JSON.parse(text);
+                            result = eventRes.success ?? false;
+                            logger.info(`${meta.frontUUID} <= ${eventName} (${meta.uuid}) (done)`, logMeta);
+                        } catch (e) {
+                            // errHndl.error(text);
+                        }
+                    } else if (res.status === 403) {
+                        const msg = await res.text();
+                        logger.info(msg, logMeta);
+                        if(meta.frontUUID) {
+                            // there is front identity, but it is not found on back
+                            await frontIdentity.registerOnBack();
+                        }
                     }
+
                 } catch (e) {
                     // errHndl.error(e);
                 } finally {

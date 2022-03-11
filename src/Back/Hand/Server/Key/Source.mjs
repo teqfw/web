@@ -1,11 +1,9 @@
 /**
  * Process to distribute server's public key for asymmetric encryption.
  */
-export default class TeqFw_Web_Back_Proc_Server_Key_Source {
+export default class TeqFw_Web_Back_Hand_Server_Key_Source {
     constructor(spec) {
         // DEPS
-        /** @type {TeqFw_Core_Shared_Api_ILogger} */
-        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal} */
         const portalFront = spec['TeqFw_Web_Back_App_Server_Handler_Event_Reverse_Portal$'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
@@ -16,8 +14,6 @@ export default class TeqFw_Web_Back_Proc_Server_Key_Source {
         const esfKeyReq = spec['TeqFw_Web_Shared_Event_Front_Server_Key_Request$'];
         /** @type {TeqFw_Web_Shared_Event_Back_Server_Key_Response} */
         const esbRes = spec['TeqFw_Web_Shared_Event_Back_Server_Key_Response$'];
-
-        // VARS
 
         // MAIN
         eventsBack.subscribe(esfKeyReq.getEventName(), onRequest)

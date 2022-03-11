@@ -1,9 +1,9 @@
 /**
  * Process to validate fronts authentication responses.
  *
- * @namespace TeqFw_Web_Back_Proc_Front_Authenticate
+ * @namespace TeqFw_Web_Back_Hand_Front_Authenticate
  */
-export default class TeqFw_Web_Back_Proc_Front_Authenticate {
+export default class TeqFw_Web_Back_Hand_Front_Authenticate {
     constructor(spec) {
         // DEPS
         /** @type {TeqFw_Core_Shared_Api_ILogger} */

@@ -25,19 +25,22 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
         let _cache;
 
-        // INSTANCE METHODS
-        this.init = async function () {
-            // FUNCS
-            async function sendToBack(uuid, publicKey) {
-                const req = wapiRegister.createReq();
-                req.publicKey = publicKey;
-                req.uuid = uuid;
-                /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Response} */
-                const res = await wapi.send(req, wapiRegister);
-                return res?.frontId;
-            }
+        // FUNCS
+        async function sendToBack(uuid, publicKey) {
+            const req = wapiRegister.createReq();
+            req.publicKey = publicKey;
+            req.uuid = uuid;
+            /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Response} */
+            const res = await wapi.send(req, wapiRegister);
+            return res?.frontId;
+        }
 
-            // MAIN
+        // INSTANCE METHODS
+        /**
+         * Generate new identity and register it on backend.
+         * @return {Promise<void>}
+         */
+        this.init = async function () {
             /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
             const found = await storeSingleton.get(KEY_IDENTITY);
             if (found) _cache = found;
@@ -55,6 +58,23 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
                     throw new Error('Fatal error. Cannot register new front app on the back.');
                 }
             }
+        }
+
+        /**
+         * Register current identity on backend.
+         * @return {Promise<void>}
+         */
+        this.registerOnBack = async function () {
+            /** @type {TeqFw_Web_Front_Dto_App_Identity_Front.Dto} */
+            const found = await storeSingleton.get(KEY_IDENTITY);
+            if (found) {
+                const frontId = await sendToBack(found.uuid, found.keys.public);
+                if (frontId) {
+                    found.frontId = frontId;
+                    await storeSingleton.set(KEY_IDENTITY, found);
+                    _cache = found;
+                } else throw new Error('Fatal error. Cannot register new front app on the back.');
+            } else throw new Error('Fatal error. Cannot get front identity from IDB.');
         }
 
         /**

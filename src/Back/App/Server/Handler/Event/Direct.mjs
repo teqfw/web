@@ -11,7 +11,6 @@ const {
     HTTP2_HEADER_CONTENT_TYPE,
     HTTP2_METHOD_POST,
     HTTP_STATUS_OK,
-    HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
 
@@ -27,6 +26,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
         const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
+        /** @type {TeqFw_Web_Back_App_Server_Respond.respond403|function} */
+        const respond403 = spec['TeqFw_Web_Back_App_Server_Respond.respond403'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond500|function} */
         const respond500 = spec['TeqFw_Web_Back_App_Server_Respond.respond500'];
         /** @type {TeqFw_Core_Back_App_Event_Bus} */
@@ -78,24 +79,29 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
                     const meta = message.meta;
                     frontUuid = meta.frontUUID;
                     eventUuid = meta.uuid;
-                    // load public key using front UUID then validate encryption stamp
+                    // try to load public key using front UUID then validate encryption stamp
                     const stamper = await factStamper.create({frontUuid});
-                    const valid = stamper.verify(message.stamp, meta);
-                    if (valid) {
-                        // stamp is valid, log event then publish it to backend event bus
-                        logEvent(meta);
-                        eventBus.publish(message);
-                        // respond as succeed
-                        res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
-                        const eventRes = dtoRes.createDto();
-                        eventRes.success = true;
-                        shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
-                        shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    if (stamper) {
+                        const valid = stamper.verify(message.stamp, meta);
+                        if (valid) {
+                            // stamp is valid, log event then publish it to backend event bus
+                            logEvent(meta);
+                            eventBus.publish(message);
+                            // respond as succeed
+                            res.setHeader(HTTP2_HEADER_CONTENT_TYPE, 'application/json');
+                            const eventRes = dtoRes.createDto();
+                            eventRes.success = true;
+                            shares.set(DEF.SHARE_RES_BODY, JSON.stringify(eventRes));
+                            shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                        } else {
+                            const msg = `Cannot verify encryption stamp.`;
+                            logger.error(`Front authentication is failed. ${msg}`, meta);
+                            respond403(res, msg);
+                        }
                     } else {
-                        const msg = `Front #${frontUuid} is not authenticated.`;
-                        shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_UNAUTHORIZED);
-                        shares.set(DEF.SHARE_RES_BODY, msg);
-                        logger.error(msg);
+                        const msg = `Unknown front UUID: ${frontUuid}`;
+                        logger.error(`Front authentication is failed. ${msg}`, meta);
+                        respond403(res, msg);
                     }
                 } catch (e) {
                     logger.error(`Error for event #${frontUuid}/${eventUuid}: ${e?.message}`);
