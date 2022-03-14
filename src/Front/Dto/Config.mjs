@@ -2,10 +2,10 @@
  * Frontend configuration DTO.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Api_Dto_Config';
+const NS = 'TeqFw_Web_Front_Dto_Config';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Front_Api_Dto_Config {
+export default class TeqFw_Web_Front_Dto_Config {
     /**
      * 'true' - application is in development mode.
      * @type {Boolean}
@@ -16,6 +16,10 @@ export default class TeqFw_Web_Front_Api_Dto_Config {
      * @type {string}
      */
     door;
+    /**
+     * @type {boolean}
+     */
+    frontLogsMonitoring;
     /**
      * Root for teq-application (empty by default) is configured on the server side (./cfg/local.json).
      * @type {string}
@@ -30,7 +34,7 @@ export default class TeqFw_Web_Front_Api_Dto_Config {
 
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Front_Api_Dto_Config
+ * @memberOf TeqFw_Web_Front_Dto_Config
  */
 export class Factory {
     static namespace = NS;
@@ -41,13 +45,14 @@ export class Factory {
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
         /**
-         * @param {TeqFw_Web_Front_Api_Dto_Config|null} data
-         * @return {TeqFw_Web_Front_Api_Dto_Config}
+         * @param {TeqFw_Web_Front_Dto_Config|null} data
+         * @return {TeqFw_Web_Front_Dto_Config}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Front_Api_Dto_Config();
+            const res = new TeqFw_Web_Front_Dto_Config();
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
+            res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
             res.root = castString(data?.root);
             res.urlBase = castString(data?.urlBase);
             return res;

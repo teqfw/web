@@ -4,14 +4,14 @@
 export default class TeqFw_Web_Front_Mod_Config {
     /** @type {TeqFw_Web_Front_Defaults} */
     #DEF;
-    /** @type {TeqFw_Web_Front_Api_Dto_Config} */
+    /** @type {TeqFw_Web_Front_Dto_Config} */
     #frontCfg;
     /** @type {TeqFw_Web_Shared_WAPI_Load_Config.Factory} */
     #route;
 
     constructor(spec) {
         this.#DEF = spec['TeqFw_Web_Front_Defaults$'];
-        this.#frontCfg = spec['TeqFw_Web_Front_Api_Dto_Config$'];
+        this.#frontCfg = spec['TeqFw_Web_Front_Dto_Config$'];
         this.#route = spec['TeqFw_Web_Shared_WAPI_Load_Config#Factory$'];
     }
 
@@ -28,7 +28,7 @@ export default class TeqFw_Web_Front_Mod_Config {
         const service = this.#DEF.SHARED.WAPI_LOAD_CONFIG;
         const url = `./${space}/${pkg}${service}`;
         const res = await fetch(url);
-        /** @type {{data:TeqFw_Web_Front_Api_Dto_Config}} */
+        /** @type {{data:TeqFw_Web_Front_Dto_Config}} */
         const json = await res.json();
         json.data.door = door;
         // place loaded values into singleton from DI container

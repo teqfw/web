@@ -9,8 +9,8 @@ export default class TeqFw_Web_Front_App_Connect_WAPI {
         // DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
-        /** @type {TeqFw_Web_Front_Api_Dto_Config} */
-        const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
+        /** @type {TeqFw_Web_Front_Dto_Config} */
+        const config = spec['TeqFw_Web_Front_Dto_Config$'];
         /** @type {TeqFw_Web_Front_Api_Gate_IErrorHandler} */
         const errHndl = spec['TeqFw_Web_Front_Api_Gate_IErrorHandler$'];
         /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */

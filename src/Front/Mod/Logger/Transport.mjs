@@ -2,20 +2,13 @@
  * Logging transport implementation for front app.
  * Send logs to backend's logs collector.
  *
- * @namespace TeqFw_Web_Front_Mod_Logger_Transport
- */
-// MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Mod_Logger_Transport';
-
-// MODULE'S CLASSES
-/**
  * @implements TeqFw_Core_Shared_Api_Logger_ITransport
  */
 export default class TeqFw_Web_Front_Mod_Logger_Transport {
     constructor(spec) {
         // DEPS
-        /** @type {TeqFw_Web_Front_Api_Dto_Config} */
-        const config = spec['TeqFw_Web_Front_Api_Dto_Config$'];
+        /** @type {TeqFw_Web_Front_Dto_Config} */
+        const config = spec['TeqFw_Web_Front_Dto_Config$'];
         /** @type {TeqFw_Core_Shared_Mod_Logger_Transport_Console} */
         const transConsole = spec['TeqFw_Core_Shared_Mod_Logger_Transport_Console$'];
         /** @type {TeqFw_Web_Front_App_Connect_WAPI} */
@@ -32,7 +25,7 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
 
         // INSTANCE METHODS
         this.log = function (dto) {
-            if (config.devMode && canSendLogs) {
+            if (config.frontLogsMonitoring && canSendLogs) {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};
@@ -43,7 +36,7 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
                     .then((data) => {
                         if (data === false) canSendLogs = false; // TODO: configure transport from the front
                     })
-                    .catch((e) => canSendLogs = false); // TODO: configure transport from the front
+                    .catch(() => canSendLogs = false); // TODO: configure transport from the front
             }
             // duplicate to console
             transConsole.log(dto);

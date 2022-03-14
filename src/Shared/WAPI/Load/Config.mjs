@@ -15,7 +15,7 @@ export class Request {}
 /**
  * This response contains unstructured data.
  * @memberOf TeqFw_Web_Shared_WAPI_Load_Config
- * @extends TeqFw_Web_Front_Api_Dto_Config
+ * @extends TeqFw_Web_Front_Dto_Config
  */
 export class Response {}
 
