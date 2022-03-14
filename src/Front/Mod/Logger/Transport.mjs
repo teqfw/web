@@ -21,11 +21,11 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const identityBack = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
 
         // VARS
-        let canSendLogs = true;
+        let _canSendLogs;
 
         // INSTANCE METHODS
         this.log = function (dto) {
-            if (config.frontLogsMonitoring && canSendLogs) {
+            if (config.frontLogsMonitoring && _canSendLogs) {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};
@@ -34,12 +34,18 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
                 // noinspection JSIgnoredPromiseFromCall
                 wapi.send(req, wapiLogCollect)
                     .then((data) => {
-                        if (data === false) canSendLogs = false; // TODO: configure transport from the front
+                        if (data === false) _canSendLogs = false; // TODO: configure transport from the front
                     })
-                    .catch(() => canSendLogs = false); // TODO: configure transport from the front
+                    .catch(() => _canSendLogs = false); // TODO: configure transport from the front
             }
             // duplicate to console
             transConsole.log(dto);
         }
+
+        this.enableLogs = () => _canSendLogs = true;
+
+        this.disableLogs = () => _canSendLogs = false;
+
+        this.isLogsMonitorOn = () => _canSendLogs;
     }
 }
