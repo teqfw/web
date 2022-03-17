@@ -56,5 +56,5 @@ export class Factory {
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Request, 'namespace', {value: `${NS}.Request`});
-Object.defineProperty(Response, 'namespace', {value: `${NS}.Response`});
+Object.defineProperty(Request, 'namespace', {value: NS});
+Object.defineProperty(Response, 'namespace', {value: NS});

@@ -49,7 +49,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         let _serverPubKey;
 
         // MAIN
-        Object.defineProperty(process, 'namespace', {value: `${NS}.${process.name}`});
+        Object.defineProperty(process, 'namespace', {value: NS});
         logger.setNamespace(this.constructor.name);
 
         // FUNCS

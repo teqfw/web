@@ -57,8 +57,8 @@ function cookieCreate({name, value, path, expires, domain, secure, httpOnly, sam
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(cookieClear, 'name', {value: `${NS}.${cookieClear.name}`});
-Object.defineProperty(cookieCreate, 'name', {value: `${NS}.${cookieCreate.name}`});
+Object.defineProperty(cookieClear, 'namespace', {value: NS});
+Object.defineProperty(cookieCreate, 'namespace', {value: NS});
 
 export {
     cookieClear,

@@ -48,7 +48,7 @@ export default function Factory(spec) {
         }
         await app.stop();
     };
-    Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});
+    Object.defineProperty(action, 'namespace', {value: NS});
 
     // COMPOSE RESULT
     const res = fCommand.create();
@@ -60,4 +60,4 @@ export default function Factory(spec) {
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
+Object.defineProperty(Factory, 'namespace', {value: NS});

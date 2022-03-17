@@ -15,9 +15,9 @@ export default function Factory(spec) {
         await connect.disconnect();
     }
 
-    Object.defineProperty(exec, 'name', {value: `${NS}.${exec.name}`});
+    Object.defineProperty(exec, 'namespace', {value: NS});
     return exec;
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
+Object.defineProperty(Factory, 'namespace', {value: NS});

@@ -46,7 +46,7 @@ export default class TeqFw_Web_Back_WAPI_Front_Register {
             }
 
             // MAIN
-            Object.defineProperty(service, 'name', {value: `${NS}.${service.name}`});
+            Object.defineProperty(service, 'namespace', {value: NS});
             return service;
         }
     }

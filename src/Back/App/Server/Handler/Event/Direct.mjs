@@ -44,7 +44,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // MAIN
-        Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
+        Object.defineProperty(process, 'namespace', {value: NS});
         logger.setNamespace(this.constructor.name);
 
         // FUNCS

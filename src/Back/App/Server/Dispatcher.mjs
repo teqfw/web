@@ -132,7 +132,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         this.getListener = () => onRequest;
 
         // MAIN
-        Object.defineProperty(onRequest, 'name', {value: `${NS}.${onRequest.name}`});
+        Object.defineProperty(onRequest, 'namespace', {value: NS});
     }
 
 }

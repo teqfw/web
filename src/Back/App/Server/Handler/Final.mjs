@@ -76,6 +76,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
         }
 
         // MAIN
-        Object.defineProperty(process, 'name', {value: `${NS}.${process.name}`});
+        Object.defineProperty(process, 'namespace', {value: NS});
     }
 }

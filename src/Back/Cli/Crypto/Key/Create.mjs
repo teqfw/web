@@ -56,7 +56,7 @@ export default function Factory(spec) {
         }
     }
 
-    Object.defineProperty(action, 'name', {value: `${NS}.action`});
+    Object.defineProperty(action, 'namespace', {value: NS});
 
     // MAIN
     const res = fCommand.create();
