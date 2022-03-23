@@ -25,7 +25,7 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
 
         // INSTANCE METHODS
         this.log = function (dto) {
-            if (config.frontLogsMonitoring && _canSendLogs) {
+            if (config.frontLogsMonitoring && _canSendLogs && navigator.onLine) {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};

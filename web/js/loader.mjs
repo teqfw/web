@@ -27,7 +27,7 @@ export class Bootstrap {
         let _nsApp;
 
         // FUNCS
-        function printout(msg) {
+        function print(msg) {
             if (typeof _fnPrintout === 'function') _fnPrintout(msg);
             else console.log(msg);
         }
@@ -87,9 +87,9 @@ export class Bootstrap {
                                     const [orig, alter] = item;
                                     container.addModuleReplacement(orig, alter);
                                 }
-                            printout(`DI container is configured from local cache.`);
+                            print(`DI container is configured from local cache.`);
                         } catch (e) {
-                            printout(`Cannot load DI configuration for local storage in offline mode. ${e?.message}`);
+                            print(`Cannot load DI configuration for local storage in offline mode. ${e?.message}`);
                         }
                     }
 
@@ -119,7 +119,7 @@ export class Bootstrap {
                                 cache.replaces.push([item.orig, item.alter]);
                             }
                         window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
-                        printout(`DI container is configured from server. Local cache is updated.`);
+                        print(`DI container is configured from server. Local cache is updated.`);
                     }
 
                     // MAIN
@@ -135,16 +135,19 @@ export class Bootstrap {
                 // MAIN
                 try {
                     const mode = navigator.onLine ? 'online' : 'offline';
-                    printout(`Bootstrap is started in '${mode}' mode.`);
+                    print(`Bootstrap is started in '${mode}' mode.`);
                     // initialize objects loader (Dependency Injection container)
                     const container = await initDiContainer();
+                    print(`Creating new app instance using DI...`);
                     // create Vue application and mount it to the page
                     /** @type {TeqFw_Web_Front_Api_IApp} */
                     const app = await container.get(`${_nsApp}$`);
-                    await app.init(printout);
+                    print(`Initializing app instance...`);
+                    await app.init(print);
+                    print(`Mounting app instance...`);
                     await app.mount(_cssMount);
                 } catch (e) {
-                    printout(`Error in bootstrap: ${e.message}. ${e.stack}`);
+                    print(`Error in bootstrap: ${e.message}. ${e.stack}`);
                 }
             }
 
@@ -156,29 +159,29 @@ export class Bootstrap {
                 if (worker.controller === null) {
                     // ... then load 'sw.js' script and register service worker in navigator
                     try {
-                        printout(`Try to register new service worker (load 'sw.js').`);
+                        print(`Try to register new service worker (load 'sw.js').`);
                         const reg = await worker.register('sw.js', {type: 'module'});
                         if (reg.active) {
-                            printout(`SW is registered and is active. Start app bootstrap.`);
+                            print(`SW is registered and is active. Start app bootstrap.`);
                             await bootstrap();
                         } else {
-                            printout(`SW is registered but is not activated yet.`);
+                            print(`SW is registered but is not activated yet.`);
                             // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
                             worker.addEventListener('controllerchange', async () => {
-                                printout(`SW just installed (page's first load). Start app bootstrap.`);
+                                print(`SW just installed (page's first load). Start app bootstrap.`);
                                 await bootstrap();
                             });
                         }
                     } catch (e) {
-                        printout(`SW registration is failed: ${e}\n${e.stack}`)
+                        print(`SW registration is failed: ${e}\n${e.stack}`)
                     }
                 } else {
                     // SW already installed before (repeated loading of the page).
-                    printout('SW is already installed for this app.');
+                    print('SW is already installed for this app.');
                     await bootstrap();
                 }
             } else {
-                printout(`Cannot start PWA. This browser has no Service Workers support.`);
+                print(`Cannot start PWA. This browser has no Service Workers support.`);
             }
         }
     }

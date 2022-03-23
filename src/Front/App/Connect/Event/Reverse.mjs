@@ -132,7 +132,10 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
             }
 
             // MAIN
-            if ((_source === undefined) || (_source.readyState === SSE_STATE.CLOSED)) {
+            if (
+                (navigator.onLine) &&
+                ((_source === undefined) || (_source.readyState === SSE_STATE.CLOSED))
+            ) {
                 const url = `${_url}/${frontIdentity.getUuid()}`;
                 // open new SSE connection and add event listeners
                 _source = new EventSource(url);
