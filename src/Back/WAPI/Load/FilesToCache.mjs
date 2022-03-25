@@ -134,7 +134,8 @@ export default class TeqFw_Web_Back_WAPI_Load_FilesToCache {
                 const input = context.getInData();
                 /** @type {TeqFw_Web_Shared_WAPI_Load_FilesToCache.Response} */
                 const out = context.getOutData();
-                out.items = generateUrlsList(input.door);
+                const door = input.door ?? '';
+                out.items = generateUrlsList(door);
             }
 
             // MAIN

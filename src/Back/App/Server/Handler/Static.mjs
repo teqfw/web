@@ -177,7 +177,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
          * @return {boolean}
          */
         this.requestIsMine = function ({method, address} = {}) {
-            return ((method === HTTP2_METHOD_GET) && (address.space !== DEF.SHARED.SPACE_SSE));
+            return ((method === HTTP2_METHOD_GET) && (address.space !== DEF.SHARED.SPACE_EVENT_REVERSE));
         }
 
         // MAIN

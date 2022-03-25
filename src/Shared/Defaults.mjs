@@ -17,7 +17,6 @@ export default class TeqFw_Web_Shared_Defaults {
     SPACE_EVENT_DIRECT = 'efb'; // events stream from front to back
     SPACE_EVENT_REVERSE = 'ebf'; // events stream from back to front
     SPACE_SRC = 'src';
-    SPACE_SSE = 'sse';
     SPACE_UPLOAD = 'upload';
     SPACE_WEB = 'web';
 
