@@ -7,6 +7,8 @@
 export default class TeqFw_Web_Front_Mod_Logger_Transport {
     constructor(spec) {
         // DEPS
+        /** @type {TeqFw_Web_Front_Defaults} */
+        const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Web_Front_Dto_Config} */
         const config = spec['TeqFw_Web_Front_Dto_Config$'];
         /** @type {TeqFw_Core_Shared_Mod_Logger_Transport_Console} */
@@ -19,8 +21,11 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const identityFront = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */
         const identityBack = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
+        const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
 
         // VARS
+        const STORE_KEY = `${DEF.SHARED.NAME}/front/log/monitor`;
         let _canSendLogs;
 
         // INSTANCE METHODS
@@ -42,10 +47,21 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
             transConsole.log(dto);
         }
 
-        this.enableLogs = () => _canSendLogs = true;
+        this.enableLogs = function () {
+            _canSendLogs = true;
+            window.localStorage.setItem(STORE_KEY, _canSendLogs);
+        }
 
-        this.disableLogs = () => _canSendLogs = false;
+        this.disableLogs = function () {
+            _canSendLogs = false;
+            window.localStorage.setItem(STORE_KEY, _canSendLogs);
+        }
 
         this.isLogsMonitorOn = () => _canSendLogs;
+
+        this.initFromLocalStorage = function () {
+            const stored = window.localStorage.getItem(STORE_KEY);
+            _canSendLogs = castBooleanIfExists(stored) ?? config.frontLogsMonitoring;
+        }
     }
 }
