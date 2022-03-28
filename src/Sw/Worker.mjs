@@ -73,12 +73,13 @@ function onFetch(event) {
         const API = /(.*)(\/api\/)(.*)/;
         const EBF = /(.*)(\/ebf\/)(.*)/; // events 'back-to-front'
         const EFB = /(.*)(\/efb\/)(.*)/; // events 'front-to-back'
-        return (
+        const res = !!(
             req.method === 'POST' ||
             req.url.match(API) ||
             req.url.match(EFB) ||
             req.url.match(EBF)
         );
+        return res;
     }
 
     async function getFromCacheOrFetchAndCache(event) {
