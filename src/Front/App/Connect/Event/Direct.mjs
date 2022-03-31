@@ -23,24 +23,28 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // VARS
-        let _url = composeBaseUrl();
+        let _url;
 
         // MAIN
         logger.setNamespace(this.constructor.name);
 
         // FUNCS
         /**
+         * Don't call this function in VARS section, because config is not loaded yet.
          * @return {string}
          */
         function composeBaseUrl() {
-            const schema = '//';
-            const domain = config.urlBase ?? location.hostname;
-            let port = location.port; // empty string for default ports (80 & 443)
-            if (port !== '') port = `:${port}`
-            const root = (config.root) ? `/${config.root}` : '';
-            const door = (config.door) ? `/${config.door}` : '';
-            const space = `/${DEF.SHARED.SPACE_EVENT_DIRECT}`;
-            return `${schema}${domain}${port}${root}${door}${space}/`; // '/efb/' key in service worker!!
+            if (!_url) {
+                const schema = '//';
+                const domain = config.urlBase ?? location.hostname;
+                let port = location.port; // empty string for default ports (80 & 443)
+                if (port !== '') port = `:${port}`
+                const root = (config.root) ? `/${config.root}` : '';
+                const door = (config.door) ? `/${config.door}` : '';
+                const space = `/${DEF.SHARED.SPACE_EVENT_DIRECT}`;
+                _url = `${schema}${domain}${port}${root}${door}${space}/`; // '/efb/' key in service worker!!
+            }
+            return _url;
         }
 
         // INSTANCE METHODS
@@ -64,7 +68,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                     stamper.initKeys(backIdentity.getServerKey(), frontIdentity.getSecretKey());
                     data.stamp = stamper.create(meta);
                     logger.info(`${meta.backUUID} => ${eventName} (${meta.uuid}) (sent)`, logMeta);
-                    const res = await fetch(`${_url}/${eventName}`, {
+                    const urlBase = composeBaseUrl();
+                    const res = await fetch(`${urlBase}/${eventName}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
