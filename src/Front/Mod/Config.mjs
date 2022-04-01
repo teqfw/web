@@ -17,10 +17,10 @@ export default class TeqFw_Web_Front_Mod_Config {
          * Load '/web' node of the local configuration from the server and create configuration DTO for front.
          * Place configuration DTO into DI container.
          *
-         * @param {string} door
+         * @param {string} [door]
          * @return {Promise<void>}
          */
-        this.init = async function ({door}) {
+        this.init = async function ({door} = {}) {
             // FUNCS
             async function initFromServer(door) {
                 const space = DEF.SHARED.SPACE_API;
