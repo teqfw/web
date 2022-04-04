@@ -69,7 +69,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                     data.stamp = stamper.create(meta);
                     logger.info(`${meta.backUUID} => ${eventName} (${meta.uuid}) (sent)`, logMeta);
                     const urlBase = composeBaseUrl();
-                    const res = await fetch(`${urlBase}/${eventName}`, {
+                    const res = await fetch(`${urlBase}${eventName}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
