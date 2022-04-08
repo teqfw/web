@@ -82,6 +82,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                     const contentType = headers[HTTP2_HEADER_CONTENT_TYPE] ?? '';
                     /** @type {TeqFw_Core_Shared_Mod_Map} */
                     const shares = req[DEF.HNDL_SHARE];
+                    // TODO: add handler's code here (request body preprocessors???)
                     if (contentType.startsWith('application/json')) {
                         const body = await readBody(req);
                         shares.set(DEF.SHARE_REQ_BODY_JSON, JSON.parse(body));
@@ -91,7 +92,6 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                     }
                 }
             }
-
 
             // MAIN
             // prepare data to collect processors that will handle current request

@@ -19,7 +19,7 @@ export default function (spec) {
     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
     const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc.Factory$'];
     /** @type {TeqFw_Core_Shared_Util_BeforeAfter} */
-    const utilSort = spec['TeqFw_Core_Shared_Util_BeforeAfter$$'];
+    const instUtilSort = spec['TeqFw_Core_Shared_Util_BeforeAfter$$']; // instance
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
     const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
 
@@ -82,9 +82,9 @@ export default function (spec) {
         }
 
         // MAIN
-        utilSort.reset();
-        const handlers = await createHandlers(utilSort);
-        const ordered = utilSort.getOrdered();
+        instUtilSort.reset();
+        const handlers = await createHandlers(instUtilSort);
+        const ordered = instUtilSort.getOrdered();
         const res = [];
         for (const ns of ordered)
             res.push(handlers[ns]);

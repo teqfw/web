@@ -5,6 +5,9 @@
 import {pathToRegexp} from 'path-to-regexp';
 
 // MODULE'S CLASSES
+/**
+ * @deprecated use TeqFw_Web_Api_Back_Dto_Service.Dto
+ */
 export default class TeqFw_Web_Back_App_Server_Handler_WAPI_Service {
     /**
      * Parameters names for the route ('/post/:postId/comment/:commentId' => ['postId', 'commentId'])

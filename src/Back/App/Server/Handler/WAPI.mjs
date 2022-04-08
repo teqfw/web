@@ -2,6 +2,7 @@
  * Web server handler to process requests to API.
  *
  * @namespace TeqFw_Web_Back_App_Server_Handler_WAPI
+ * @deprecated use TeqFw_Web_Api_Back_Mod_Server_Handler
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
@@ -18,6 +19,7 @@ const {
 // MODULE'S CLASSES
 /**
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
+ * @deprecated use TeqFw_Web_Api_Back_Mod_Server_Handler
  */
 export default class TeqFw_Web_Back_App_Server_Handler_WAPI {
     constructor(spec) {

@@ -1,6 +1,7 @@
 /**
  * Interface for factory to serve route needs: create requests and responses DTOs and get route's address.
  * @interface
+ * @deprecated use TeqFw_Web_Api_Shared_Api_IEndpoint
  */
 export default class TeqFw_Web_Shared_Api_WAPI_IRoute {
     /**

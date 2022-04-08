@@ -1,9 +1,8 @@
 /**
  * Local configuration DTO for the plugin.
  * @see TeqFw_Core_Back_Config
+ * TODO: should we move it to 'web-api' plugin?
  */
-import {castBoolean} from "@teqfw/core/src/Shared/Util/Cast.mjs";
-
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Dto_Config_Local';
 
