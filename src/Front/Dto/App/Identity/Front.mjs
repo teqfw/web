@@ -21,7 +21,7 @@ const ATTR = {
 class Dto {
     static namespace = NS;
     /**
-     * Backend ID for current front (see TeqFw_Web_Back_WAPI_Front_Register)
+     * Backend ID for current front (see TeqFw_Web_Api_Back_WAPI_Front_Register)
      * @type {number}
      */
     frontId;

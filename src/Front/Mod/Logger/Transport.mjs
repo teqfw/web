@@ -15,8 +15,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const transConsole = spec['TeqFw_Core_Shared_Mod_Logger_Transport_Console$'];
         /** @type {TeqFw_Web_Front_App_Connect_WAPI} */
         const wapi = spec['TeqFw_Web_Front_App_Connect_WAPI$'];
-        /** @type {TeqFw_Web_Shared_WAPI_Front_Log_Collect.Factory} */
-        const wapiLogCollect = spec['TeqFw_Web_Shared_WAPI_Front_Log_Collect.Factory$'];
+        /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
+        const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
         /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
         const identityFront = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */

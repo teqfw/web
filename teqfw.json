@@ -55,10 +55,6 @@
       },
       "TeqFw_Web_Back_App_Server_Handler_Final": {}
     },
-    "services": [
-      "TeqFw_Web_Back_WAPI_Front_Log_Collect",
-      "TeqFw_Web_Back_WAPI_Front_Register"
-    ],
     "statics": {
       "/tweetnacl-util/": "/tweetnacl-util/",
       "/tweetnacl/": "/tweetnacl/",

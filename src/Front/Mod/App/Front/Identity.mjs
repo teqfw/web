@@ -17,8 +17,8 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
         const mgrKeys = spec['TeqFw_Web_Shared_Api_Crypto_Key_IManager$'];
         /** @type {TeqFw_Web_Front_App_Connect_WAPI} */
         const wapi = spec['TeqFw_Web_Front_App_Connect_WAPI$'];
-        /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Factory} */
-        const wapiRegister = spec['TeqFw_Web_Shared_WAPI_Front_Register.Factory$'];
+        /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Register} */
+        const wapiRegister = spec['TeqFw_Web_Api_Shared_WAPI_Front_Register$'];
 
         // VARS
         const KEY_IDENTITY = `${DEF.SHARED.NAME}/front/identity`;
@@ -30,7 +30,7 @@ export default class TeqFw_Web_Front_Mod_App_Front_Identity {
             const req = wapiRegister.createReq();
             req.publicKey = publicKey;
             req.uuid = uuid;
-            /** @type {TeqFw_Web_Shared_WAPI_Front_Register.Response} */
+            /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Register.Response} */
             const res = await wapi.send(req, wapiRegister);
             return res?.frontId;
         }

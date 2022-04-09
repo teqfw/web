@@ -239,7 +239,7 @@ function createLogger(uuid) {
             };
             if (typeof meta === 'object') Object.assign(item.meta, meta);
             item.meta.frontUuid = uuid;
-            /** @type {TeqFw_Web_Shared_WAPI_Front_Log_Collect.Request} */
+            /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect.Request} */
             const req = {item};
             fetch('./api/@teqfw/web/front/log/collect', {
                 method: 'POST',
