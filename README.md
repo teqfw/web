@@ -3,15 +3,13 @@
 |CAUTION: TeqFW is an unstable, fast-growing project w/o backward compatibility. Use it at your own risk.|
 |---|
 
-This `teq`-plugin adds web server functionality to Tequila Framework based projects.
+This `teq`-plugin adds basic web server functionality to Tequila Framework based projects.
 
-* console commands to start/stop this server in HTTP/1.1, HTTP/2, HTTPS modes;
+* console commands to start/stop web server in HTTP/1.1, HTTP/2, HTTPS modes;
 * basic web requests processing with possibility to add various handlers;
-* 4 handlers for base requests types:
-    * to static resources;
-    * to Web API services;
-    * to upload files;
-    * to process Server Sent Events;
+* 3 requests handlers:
+  * `TeqFw_Web_Back_App_Server_Handler_Final`: unprocessed requests responder;
+  * `TeqFw_Web_Back_App_Server_Handler_Static`: GET-requests to static resources;
 
 ## Install
 

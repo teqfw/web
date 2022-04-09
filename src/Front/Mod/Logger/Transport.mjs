@@ -17,10 +17,10 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const wapi = spec['TeqFw_Web_Front_App_Connect_WAPI$'];
         /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
         const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
-        /** @type {TeqFw_Web_Front_Mod_App_Front_Identity} */
-        const identityFront = spec['TeqFw_Web_Front_Mod_App_Front_Identity$'];
-        /** @type {TeqFw_Web_Front_Mod_App_Back_Identity} */
-        const identityBack = spec['TeqFw_Web_Front_Mod_App_Back_Identity$'];
+        /** @type {TeqFw_Web_Api_Front_Mod_App_Front_Identity} */
+        const identityFront = spec['TeqFw_Web_Api_Front_Mod_App_Front_Identity$'];
+        /** @type {TeqFw_Web_Api_Front_Mod_App_Back_Identity} */
+        const identityBack = spec['TeqFw_Web_Api_Front_Mod_App_Back_Identity$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
 
