@@ -28,7 +28,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
         /** @type {TeqFw_Core_Back_Config} */
         const config = spec['TeqFw_Core_Back_Config$'];
 
-        // DEFINE WORKING VARS / PROPS
+        // VARS
         const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
 
         // FUNCS
@@ -73,14 +73,14 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         this.getProcessor = () => process;
 
         this.init = async function () {
             // there is not initialization for this handler
         }
 
-        this.requestIsMine = function ({method, address} = {}) {
+        this.canProcess = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_POST)
                 && (address?.space === DEF.SHARED.SPACE_UPLOAD)

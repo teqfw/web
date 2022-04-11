@@ -71,11 +71,13 @@ function onFetch(event) {
     function detectBypass(req) {
         // see TeqFw_Web_Shared_Defaults.SPACE_...
         const API = /(.*)(\/api\/)(.*)/;
+        const CFG = /(.*)(\/cfg\/)(.*)/;
         const EBF = /(.*)(\/ebf\/)(.*)/; // events 'back-to-front'
         const EFB = /(.*)(\/efb\/)(.*)/; // events 'front-to-back'
         const res = !!(
             req.method === 'POST' ||
             req.url.match(API) ||
+            req.url.match(CFG) ||
             req.url.match(EFB) ||
             req.url.match(EBF)
         );

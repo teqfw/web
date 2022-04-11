@@ -50,7 +50,7 @@ export default class TeqFw_Web_Sw_Config {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         /**
          * Set configuration option by key.

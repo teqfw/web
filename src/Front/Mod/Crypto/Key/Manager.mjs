@@ -10,11 +10,11 @@ export default class TeqFw_Web_Front_Mod_Crypto_Key_Manager {
     constructor(spec) {
         // DEPS
         const {box, secretbox, randomBytes} = spec['TeqFw_Web_Front_Lib_Nacl'];
-        const {decodeBase64, encodeBase64} = spec['TeqFw_Web_Front_Lib_Nacl_Util'];
+        const {encodeBase64} = spec['TeqFw_Web_Front_Lib_Nacl_Util'];
         /** @type {TeqFw_Web_Shared_Dto_Identity_Keys} */
         const dtoKeys = spec['TeqFw_Web_Shared_Dto_Identity_Keys$'];
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         this.generateAsyncKeys = async function () {
             const res = dtoKeys.createDto();

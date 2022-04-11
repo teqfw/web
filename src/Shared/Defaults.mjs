@@ -13,10 +13,10 @@ export default class TeqFw_Web_Shared_Defaults {
     MOD_CORE;
 
     // URL prefix for API requests: https://.../door/space/...
-    SPACE_API = 'api';
+    SPACE_CFG = 'cfg'; // configuration data (namespaces for DI, etc)
     SPACE_EVENT_DIRECT = 'efb'; // events stream from front to back
     SPACE_EVENT_REVERSE = 'ebf'; // events stream from back to front
-    SPACE_SRC = 'src';
+    SPACE_SRC = 'src'; // sources from 'node_modules'
     SPACE_UPLOAD = 'upload';
     SPACE_WEB = 'web';
 

@@ -34,7 +34,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         /** @type {TeqFw_Web_Back_Mod_Address} */
         const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
 
-        // DEFINE WORKING VARS / PROPS
+        // VARS
         const _rootFs = config.getBoot().projectRoot; // path to project root
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
@@ -132,7 +132,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         this.getProcessor = () => process;
 
         this.init = async function () {
@@ -173,11 +173,11 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
 
         /**
          * @param {string} method
-         * @param {TeqFw_Web_Back_Dto_Address} address
          * @return {boolean}
          */
-        this.requestIsMine = function ({method, address} = {}) {
-            return ((method === HTTP2_METHOD_GET) && (address.space !== DEF.SHARED.SPACE_EVENT_REVERSE));
+        this.canProcess = function ({method} = {}) {
+            // This handler should stay immediately before Final handler and after all other handlers!
+            return (method === HTTP2_METHOD_GET);
         }
 
         // MAIN

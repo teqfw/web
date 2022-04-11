@@ -169,7 +169,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         // noinspection JSUnusedGlobalSymbols
         this.getProcessor = () => process;
@@ -181,7 +181,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Reverse {
         }
 
         // noinspection JSUnusedGlobalSymbols
-        this.requestIsMine = function ({method, address} = {}) {
+        this.canProcess = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_GET)
                 && (address?.space === DEF.SHARED.SPACE_EVENT_REVERSE)

@@ -13,7 +13,7 @@ export default class TeqFw_Web_Back_Mod_Address {
         /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
         const fAddr = spec['TeqFw_Web_Back_Dto_Address#Factory$'];
 
-        // DEFINE WORKING VARS / PROPS
+        // VARS
         /** @type {String[]} doors used in the app */
         let doors = [];
         /** @type {string} root path to the app if used */
@@ -21,7 +21,7 @@ export default class TeqFw_Web_Back_Mod_Address {
         /** @type {String[]} spaces used in the app */
         let spaces = [];
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         /**
          * Parser to decompose URL path to the parts.
          *

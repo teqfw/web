@@ -44,6 +44,10 @@
         "before": ["TeqFw_Web_Back_App_Server_Handler_Final"],
         "spaces": ["src", "web"]
       },
+      "TeqFw_Web_Back_App_Server_Handler_Config": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
+        "spaces": ["cfg"]
+      },
       "TeqFw_Web_Back_App_Server_Handler_Upload": {
         "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
         "spaces": ["upload"]

@@ -3,7 +3,7 @@
  */
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
-const URL_API_DI_NS = './api/@teqfw/web/load/namespaces';
+const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Shared/Container.mjs';
 
 // MODULE'S CLASSES
@@ -103,18 +103,19 @@ export class Bootstrap {
 
                         // load available namespaces from server
                         const res = await fetch(URL_API_DI_NS);
-                        const json = await res.json();
+                        /** @type {TeqFw_Web_Shared_Dto_Config_Di.Dto} */
+                        const configDi = await res.json();
                         // cache to place to local storage
                         const cache = {sources: [], replaces: []}
                         // add namespaces to container
-                        if (json?.data?.items && Array.isArray(json.data.items))
-                            for (const item of json.data.items) {
+                        if (Array.isArray(configDi?.namespaces))
+                            for (const item of configDi.namespaces) {
                                 container.addSourceMapping(item.ns, baseUrl + item.path, true, item.ext);
                                 cache.sources.push([item.ns, baseUrl + item.path, item.ext]);
                             }
                         // add replaces to container
-                        if (json?.data?.replaces && Array.isArray(json.data.replaces))
-                            for (const item of json.data.replaces) {
+                        if (Array.isArray(configDi?.replacements))
+                            for (const item of configDi.replacements) {
                                 container.addModuleReplacement(item.orig, item.alter);
                                 cache.replaces.push([item.orig, item.alter]);
                             }

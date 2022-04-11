@@ -32,7 +32,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond405|function} */
         const respond405 = spec['TeqFw_Web_Back_App_Server_Respond.respond405'];
 
-        // DEFINE WORKING VARS / PROPS
+        // VARS
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
         const handlers = [];
 
@@ -107,7 +107,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                 // collect processors
                 const active = [];
                 for (const one of handlers)
-                    if (one.requestIsMine({method, address, headers}))
+                    if (one.canProcess({method, address, headers}))
                         active.push(one.getProcessor());
                 // run processors one by one
                 for (const one of active)
@@ -116,7 +116,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             } else respond405(res);
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         /**
          * Scan plugins, create handlers for 'request' event, order handlers by 'before-after'.
          * @return {Promise<(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*>}

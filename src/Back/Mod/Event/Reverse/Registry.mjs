@@ -16,7 +16,7 @@ export default class TeqFw_Web_Back_Mod_Event_Reverse_Registry {
         /** @type {Object<string, string>} */
         const _mapUUIDFrontToStream = {}; // map to get stream UUID for front app UUID
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         /**
          * Delete connection data from registry.
          * @param {string} streamUUID

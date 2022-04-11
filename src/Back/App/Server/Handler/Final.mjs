@@ -66,14 +66,13 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
+
+        this.canProcess = () => true;
+
         this.getProcessor = () => process;
 
         this.init = async function () {}
-
-        this.requestIsMine = function ({}) {
-            return true;
-        }
 
         // MAIN
         Object.defineProperty(process, 'namespace', {value: NS});

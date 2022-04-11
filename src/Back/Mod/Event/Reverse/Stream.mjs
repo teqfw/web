@@ -63,7 +63,7 @@ export class Factory {
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Back_Mod_Event_Reverse_Stream|Object} data
          * @return {TeqFw_Web_Back_Mod_Event_Reverse_Stream}

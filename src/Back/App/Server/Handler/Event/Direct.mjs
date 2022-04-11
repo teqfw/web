@@ -110,7 +110,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         this.getProcessor = () => process;
 
@@ -118,7 +118,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Event_Direct {
             logger.info(`Initialize Direct Events Stream handler for web requests:`);
         }
 
-        this.requestIsMine = function ({method, address} = {}) {
+        this.canProcess = function ({method, address} = {}) {
             return (
                 (method === HTTP2_METHOD_POST)
                 && (address?.space === DEF.SHARED.SPACE_EVENT_DIRECT)
