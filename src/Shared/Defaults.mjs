@@ -3,9 +3,12 @@
  */
 export default class TeqFw_Web_Shared_Defaults {
 
+    CFG_APP = '/app';
+    CFG_DI = '/di';
+
     EVENT_AUTHENTICATE = 'authenticate'; // SSE event name
 
-    LOG_META_TYPE = 'type'; // log type in log metadata sent to logs monitor
+    LOG_META_TYPE = 'type'; // log type in log metadata sent to logs monitor (TODO: move to log plugin)
 
     NAME = '@teqfw/web';
 

@@ -9,8 +9,6 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         // DEPS
         /** @type {TeqFw_Web_Front_Defaults} */
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
-        /** @type {TeqFw_Web_Front_Dto_Config} */
-        const config = spec['TeqFw_Web_Front_Dto_Config$'];
         /** @type {TeqFw_Core_Shared_Mod_Logger_Transport_Console} */
         const transConsole = spec['TeqFw_Core_Shared_Mod_Logger_Transport_Console$'];
         /** @type {TeqFw_Web_Api_Front_App_Connect_WAPI} */
@@ -23,6 +21,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const identityBack = spec['TeqFw_Web_Api_Front_Mod_App_Back_Identity$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
+        /** @type {TeqFw_Web_Front_Mod_Config} */
+        const modCfg = spec['TeqFw_Web_Front_Mod_Config$'];
 
         // VARS
         const STORE_KEY = `${DEF.SHARED.NAME}/front/log/monitor`;
@@ -30,7 +30,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
 
         // INSTANCE METHODS
         this.log = function (dto) {
-            if (config.frontLogsMonitoring && _canSendLogs && navigator.onLine) {
+            const cfg = modCfg.get();
+            if (cfg.frontLogsMonitoring && _canSendLogs && navigator.onLine) {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};
@@ -60,8 +61,9 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         this.isLogsMonitorOn = () => _canSendLogs;
 
         this.initFromLocalStorage = function () {
+            const cfg = modCfg.get();
             const stored = window.localStorage.getItem(STORE_KEY);
-            _canSendLogs = castBooleanIfExists(stored) ?? config.frontLogsMonitoring;
+            _canSendLogs = castBooleanIfExists(stored) ?? cfg.frontLogsMonitoring;
         }
     }
 }

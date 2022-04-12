@@ -2,10 +2,14 @@
  * Frontend configuration DTO.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Front_Dto_Config';
+const NS = 'TeqFw_Web_Shared_Dto_Config_Front';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Front_Dto_Config {
+/**
+ * @memberOf TeqFw_Web_Shared_Dto_Config_Front
+ */
+class Dto {
+    static namespace = NS;
     /**
      * 'true' - application is in development mode.
      * @type {Boolean}
@@ -33,23 +37,21 @@ export default class TeqFw_Web_Front_Dto_Config {
 }
 
 /**
- * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Front_Dto_Config
+ * @implements TeqFw_Core_Shared_Api_Factory_IDto
  */
-export class Factory {
-    static namespace = NS;
-
+export default class TeqFw_Web_Shared_Dto_Config_Front {
     constructor(spec) {
+        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
         const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
         /**
-         * @param {TeqFw_Web_Front_Dto_Config|null} data
-         * @return {TeqFw_Web_Front_Dto_Config}
+         * @param {TeqFw_Web_Shared_Dto_Config_Front.Dto} [data]
+         * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
          */
-        this.create = function (data = null) {
-            const res = new TeqFw_Web_Front_Dto_Config();
+        this.createDto = function (data) {
+            const res = new Dto();
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
             res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);

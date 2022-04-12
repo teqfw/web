@@ -1,13 +1,13 @@
 /**
  * Action to load DI configuration (namespaces & replacements).
  *
- * @namespace TeqFw_Web_Back_Act_Di_Config
+ * @namespace TeqFw_Web_Back_App_Server_Handler_Config_Di
  */
 // MODULE'S IMPORT
 import $path from "path";
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Act_Di_Config';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_Di';
 
 // MODULE'S FUNCS
 /**
@@ -98,7 +98,7 @@ export default function (spec) {
 
     /**
      * Result function.
-     * @memberOf TeqFw_Web_Back_Act_Di_Config
+     * @memberOf TeqFw_Web_Back_App_Server_Handler_Config_Di
      * @return {TeqFw_Web_Shared_Dto_Config_Di.Dto}
      */
     function act() {
