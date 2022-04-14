@@ -1,14 +1,47 @@
 /**
- * Frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
- * @deprecated use ./install.mjs
+ * Frontend app installer registers Service Worker, loads DI configuration and initializes DI.
+ * This es6-module is imported with regular 'import' statement, not with DI container.
  */
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Shared/Container.mjs';
 
+/**
+ * @interface
+ */
+class InstallInterface {
+
+    /**
+     * Main method thar executes app installation.
+     * @return {Promise<void>}
+     */
+    run() {}
+
+    /**
+     * CSS selector for main UI component mount point (example: 'BODY > DIV').
+     * @param {string} css
+     */
+    setCssMount(css) {}
+
+    /**
+     * Setup printout function to trace bootstrap process.
+     * @param {function} fn
+     */
+    setFnPrintout(fn) {}
+
+    /**
+     * Setup namespace for frontend app to launch (example: 'Ns_Vnd_Front_App').
+     * @param {string} ns
+     */
+    setNsApp(ns) {}
+}
+
 // MODULE'S CLASSES
-export class Bootstrap {
+/**
+ * @implements InstallInterface
+ */
+export class Install {
     constructor() {
         // VARS
         /**
@@ -35,21 +68,10 @@ export class Bootstrap {
 
         // INSTANCE METHODS
 
-        /**
-         * CSS selector for main UI component mount point ('BODY > DIV').
-         * @param {string} css
-         */
         this.setCssMount = (css) => _cssMount = css;
 
-        /**
-         * Setup printout function to trace bootstrap process
-         * @param fn
-         */
         this.setFnPrintout = (fn) => _fnPrintout = fn;
-        /**
-         * Setup namespace for frontend app to launch (Ns_Vnd_Front_App).
-         * @param {string} ns
-         */
+
         this.setNsApp = (ns) => _nsApp = ns;
 
         this.run = async function () {
@@ -155,8 +177,6 @@ export class Bootstrap {
 
             // MAIN
             if ('serviceWorker' in navigator) { // if browser supports service workers
-                // ... then add event handler to run script after window will be loaded
-                // (https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event)
                 const worker = navigator.serviceWorker;
                 if (worker.controller === null) {
                     // ... then load 'sw.js' script and register service worker in navigator
