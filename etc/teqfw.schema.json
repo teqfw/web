@@ -21,30 +21,6 @@
             "uuid": {"type": "unique", "attrs": ["uuid"]}
           }
         }
-      },
-      "package": {
-        "event": {
-          "entity": {
-            "queue": {
-              "comment": "Queue for delayed transborder events.",
-              "attr": {
-                "id": {"type": "id"},
-                "front_ref": {"comment": "Front ID for recipient of the message.", "type": "ref"},
-                "message": {
-                  "comment": "Event message as JSON string.",
-                  "type": "text"
-                }
-              },
-              "relation": {
-                "front": {
-                  "attrs": ["front_ref"],
-                  "ref": {"path": "/web/front", "attrs": ["id"]},
-                  "action": {"delete": "cascade", "update": "cascade"}
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

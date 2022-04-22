@@ -1,9 +1,9 @@
 /**
  *  Metadata for '/web/event/queue' entity (delayed events registry).
- *  @namespace TeqFw_Web_Back_Store_RDb_Schema_Event_Queue
+ *  @namespace TeqFw_Web_Event_Back_RDb_Schema_Queue
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Store_RDb_Schema_Event_Queue';
+const NS = 'TeqFw_Web_Event_Back_RDb_Schema_Queue';
 /**
  * Path to the entity in plugin's DEM.
  * @type {string}
@@ -11,7 +11,7 @@ const NS = 'TeqFw_Web_Back_Store_RDb_Schema_Event_Queue';
 const ENTITY = '/web/event/queue';
 
 /**
- * @memberOf TeqFw_Web_Back_Store_RDb_Schema_Event_Queue
+ * @memberOf TeqFw_Web_Event_Back_RDb_Schema_Queue
  * @type {Object}
  */
 const ATTR = {
@@ -22,7 +22,7 @@ const ATTR = {
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Back_Store_RDb_Schema_Event_Queue
+ * @memberOf TeqFw_Web_Event_Back_RDb_Schema_Queue
  */
 class Dto {
     static namespace = NS;
@@ -38,7 +38,7 @@ class Dto {
 /**
  * @implements TeqFw_Db_Back_RDb_Meta_IEntity
  */
-export default class TeqFw_Web_Back_Store_RDb_Schema_Event_Queue {
+export default class TeqFw_Web_Event_Back_RDb_Schema_Queue {
     constructor(spec) {
         // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
@@ -52,8 +52,8 @@ export default class TeqFw_Web_Back_Store_RDb_Schema_Event_Queue {
 
         // INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto} [data]
-         * @return {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto}
+         * @param {TeqFw_Web_Event_Back_RDb_Schema_Queue.Dto} [data]
+         * @return {TeqFw_Web_Event_Back_RDb_Schema_Queue.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

@@ -11,8 +11,8 @@ export default function Factory(spec) {
 
     // FUNCS
     async function action() {
-        await container.get('TeqFw_Web_Back_Hand_Front_Authenticate$');
-        await container.get('TeqFw_Web_Back_Hand_Server_Key_Source$');
+        await container.get('TeqFw_Web_Event_Back_Hand_Front_Authenticate$');
+        await container.get('TeqFw_Web_Event_Back_Hand_Server_Key_Source$');
     }
 
     // MAIN

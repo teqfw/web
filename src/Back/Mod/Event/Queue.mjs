@@ -12,8 +12,8 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
         const rdb = spec['TeqFw_Db_Back_RDb_IConnect$'];
         /** @type {TeqFw_Db_Back_Api_RDb_ICrudEngine} */
         const crud = spec['TeqFw_Db_Back_Api_RDb_ICrudEngine$'];
-        /** @type {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue} */
-        const rdbQueue = spec['TeqFw_Web_Back_Store_RDb_Schema_Event_Queue$'];
+        /** @type {TeqFw_Web_Event_Back_RDb_Schema_Queue} */
+        const rdbQueue = spec['TeqFw_Web_Event_Back_RDb_Schema_Queue$'];
         /** @type {TeqFw_Web_Back_Act_Front_GetIdByUuid.act|function} */
         const actGetIdByUuid = spec['TeqFw_Web_Back_Act_Front_GetIdByUuid$'];
         /** @type {TeqFw_Core_Back_Mod_App_Uuid} */
@@ -22,7 +22,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
         // VARS
-        /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.ATTR} */
+        /** @type {typeof TeqFw_Web_Event_Back_RDb_Schema_Queue.ATTR} */
         const A_QUEUE = rdbQueue.getAttributes();
 
         // MAIN
@@ -32,7 +32,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
 
         /**
          * Save event to RDB.
-         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} event
+         * @param {TeqFw_Web_Event_Shared_Dto_Event.Dto} event
          * @return {Promise<void>}
          */
         this.save = async function (event) {
@@ -59,7 +59,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
         /**
          * Get all delayed events by front UUID.
          * @param {string} uuid
-         * @return {Promise<TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto[]>}
+         * @return {Promise<TeqFw_Web_Event_Back_RDb_Schema_Queue.Dto[]>}
          */
         this.getEventsByFrontUuid = async function (uuid) {
             const res = [];
@@ -67,7 +67,7 @@ export default class TeqFw_Web_Back_Mod_Event_Queue {
             try {
                 const {id} = await actGetIdByUuid({trx, uuid});
                 const where = {[A_QUEUE.FRONT_REF]: id};
-                /** @type {TeqFw_Web_Back_Store_RDb_Schema_Event_Queue.Dto[]} */
+                /** @type {TeqFw_Web_Event_Back_RDb_Schema_Queue.Dto[]} */
                 const items = await crud.readSet(trx, rdbQueue, where);
                 await trx.commit();
                 res.push(...items);

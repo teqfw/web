@@ -17,8 +17,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
         const frontIdentity = spec['TeqFw_Web_Api_Front_Mod_App_Front_Identity$'];
         /** @type {TeqFw_Web_Api_Front_Mod_App_Back_Identity} */
         const backIdentity = spec['TeqFw_Web_Api_Front_Mod_App_Back_Identity$'];
-        /** @type {TeqFw_Web_Shared_Mod_Event_Stamper} */
-        const stamper = spec['TeqFw_Web_Shared_Mod_Event_Stamper$$']; // new instance
+        /** @type {TeqFw_Web_Event_Shared_Mod_Stamper} */
+        const stamper = spec['TeqFw_Web_Event_Shared_Mod_Stamper$$']; // new instance
         /** @type {TeqFw_Web_Shared_Dto_Log_Meta_Event} */
         const dtoLogMeta = spec['TeqFw_Web_Shared_Dto_Log_Meta_Event$'];
 
@@ -50,7 +50,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
 
         // INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} data
+         * @param {TeqFw_Web_Event_Shared_Dto_Event.Dto} data
          * @return {Promise<boolean>}
          */
         this.send = async function (data) {
@@ -80,7 +80,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct {
                     if (res.status === 200) {
                         const text = await res.text();
                         try {
-                            /** @type {TeqFw_Web_Shared_Dto_Event_Direct_Response.Dto} */
+                            /** @type {TeqFw_Web_Event_Shared_Dto_Event_Response.Dto} */
                             const eventRes = JSON.parse(text);
                             result = eventRes.success ?? false;
                             logger.info(`${meta.frontUUID} <= ${eventName} (${meta.uuid}) (done)`, logMeta);

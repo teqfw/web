@@ -20,8 +20,8 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         const idbQueue = spec['TeqFw_Web_Front_Store_Entity_Event_Delayed$'];
         /** @type {TeqFw_Web_Front_App_Event_Bus} */
         const eventBus = spec['TeqFw_Web_Front_App_Event_Bus$'];
-        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated} */
-        const esbAuthenticated = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticated$'];
+        /** @type {TeqFw_Web_Event_Shared_Event_Back_Stream_Reverse_Authenticated} */
+        const esbAuthenticated = spec['TeqFw_Web_Event_Shared_Event_Back_Stream_Reverse_Authenticated$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castDate|function} */
         const castDate = spec['TeqFw_Core_Shared_Util_Cast.castDate'];
 
@@ -35,7 +35,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         // FUNCS
         /**
          * Queue event message before sending to back.
-         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto} event
+         * @param {TeqFw_Web_Event_Shared_Dto_Event.Dto} event
          * @return {Promise<string>}
          */
         async function saveToQueue(event) {
@@ -62,7 +62,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
         async function onReverseAuthenticated() {
             // FUNCS
             /**
-             * @return {Promise<TeqFw_Web_Shared_App_Event_Trans_Message.Dto[]>}
+             * @return {Promise<TeqFw_Web_Event_Shared_Dto_Event.Dto[]>}
              */
             async function getDelayedEvents() {
                 const trx = await idb.startTransaction([idbQueue]);
@@ -87,7 +87,7 @@ export default class TeqFw_Web_Front_App_Connect_Event_Direct_Portal {
 
         // INSTANCE METHODS
         /**
-         * @param {TeqFw_Web_Shared_App_Event_Trans_Message.Dto|*} event
+         * @param {TeqFw_Web_Event_Shared_Dto_Event.Dto|*} event
          * @return {Promise<void>}
          */
         this.publish = async function (event) {

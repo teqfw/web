@@ -32,16 +32,16 @@ export default class TeqFw_Web_Front_App_Connect_Event_Reverse {
         const eventFront = spec['TeqFw_Web_Front_App_Event_Bus$'];
         /** @type {TeqFw_Web_Front_App_Connect_Event_Direct_Portal} */
         const portalBack = spec['TeqFw_Web_Front_App_Connect_Event_Direct_Portal$'];
-        /** @type {TeqFw_Web_Shared_App_Event_Trans_Message} */
-        const factTransMsg = spec['TeqFw_Web_Shared_App_Event_Trans_Message$'];
+        /** @type {TeqFw_Web_Event_Shared_Dto_Event} */
+        const factTransMsg = spec['TeqFw_Web_Event_Shared_Dto_Event$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed} */
         const efClosed = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Closed$'];
         /** @type {TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened} */
         const efOpened = spec['TeqFw_Web_Front_Event_Connect_Event_Reverse_Opened$'];
-        /** @type {TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request} */
-        const esbAuthReq = spec['TeqFw_Web_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
-        /** @type {TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response} */
-        const esfAuthRes = spec['TeqFw_Web_Shared_Event_Front_Stream_Reverse_Authenticate_Response$'];
+        /** @type {TeqFw_Web_Event_Shared_Event_Back_Stream_Reverse_Authenticate_Request} */
+        const esbAuthReq = spec['TeqFw_Web_Event_Shared_Event_Back_Stream_Reverse_Authenticate_Request$'];
+        /** @type {TeqFw_Web_Event_Shared_Event_Front_Stream_Reverse_Authenticate_Response} */
+        const esfAuthRes = spec['TeqFw_Web_Event_Shared_Event_Front_Stream_Reverse_Authenticate_Response$'];
         /** @type {TeqFw_Web_Front_Api_Mod_Server_Connect_IState} */
         const modConn = spec['TeqFw_Web_Front_Api_Mod_Server_Connect_IState$'];
         /** @type {TeqFw_Web_Front_Mod_Crypto_Scrambler.Factory} */
