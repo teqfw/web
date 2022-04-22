@@ -12,17 +12,12 @@ const IDB_VERSION = 1;
 export default function (spec) {
     /** @type {TeqFw_Web_Front_App_Store_IDB} */
     const idb = spec['TeqFw_Web_Front_App_Store_IDB$$']; // new instance
-    /** @type {TeqFw_Web_Front_Store_Entity_Event_Delayed} */
-    const idbEventQueue = spec['TeqFw_Web_Front_Store_Entity_Event_Delayed$'];
     /** @type {TeqFw_Web_Front_Store_Entity_Singleton} */
     const idbSingleton = spec['TeqFw_Web_Front_Store_Entity_Singleton$'];
 
     // VARS
-    const A_EVT_QUE = idbEventQueue.getAttributes();
     const A_SINGLETON = idbSingleton.getAttributes();
-    const E_EVT_QUE = idbEventQueue.getEntityName();
     const E_SINGLETON = idbSingleton.getEntityName();
-    const I_EVT_QUE = idbEventQueue.getIndexes();
 
     // INNER FUNCTIONS
     /**
@@ -31,15 +26,9 @@ export default function (spec) {
      * @return {(function(*): void)|*}
      */
     function fnUpgradeDb(db) {
-        const autoIncrement = true;
-        const multiEntry = true;
-        const unique = true;
-
-        // /event/queue
-        if (!db.objectStoreNames.contains(E_EVT_QUE)) {
-            const store = db.createObjectStore(E_EVT_QUE, {keyPath: A_EVT_QUE.UUID});
-            store.createIndex(I_EVT_QUE.BY_DATE, A_EVT_QUE.DATE);
-        }
+        // const autoIncrement = true;
+        // const multiEntry = true;
+        // const unique = true;
 
         // /singleton
         if (!db.objectStoreNames.contains(E_SINGLETON)) {
