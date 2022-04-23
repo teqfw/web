@@ -7,18 +7,18 @@
 export default class TeqFw_Web_Front_Mod_Crypto_Scrambler {
     constructor(spec) {
         // DEPS
-        /** @type {TeqFw_Web_Front_Lib_Nacl.box} */
-        const box = spec['TeqFw_Web_Front_Lib_Nacl.box'];
-        /** @type {TeqFw_Web_Front_Lib_Nacl.randomBytes|function} */
-        const randomBytes = spec['TeqFw_Web_Front_Lib_Nacl.randomBytes'];
-        /** @type {TeqFw_Web_Front_Lib_Nacl_Util.decodeBase64|function} */
-        const decodeBase64 = spec['TeqFw_Web_Front_Lib_Nacl_Util.decodeBase64'];
-        /** @type {TeqFw_Web_Front_Lib_Nacl_Util.encodeBase64|function} */
-        const encodeBase64 = spec['TeqFw_Web_Front_Lib_Nacl_Util.encodeBase64'];
-        /** @type {TeqFw_Web_Front_Lib_Nacl_Util.decodeUTF8|function} */
-        const decodeUTF8 = spec['TeqFw_Web_Front_Lib_Nacl_Util.decodeUTF8'];
-        /** @type {TeqFw_Web_Front_Lib_Nacl_Util.encodeUTF8|function} */
-        const encodeUTF8 = spec['TeqFw_Web_Front_Lib_Nacl_Util.encodeUTF8'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl.box} */
+        const box = spec['TeqFw_Web_Auth_Front_Lib_Nacl.box'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl.randomBytes|function} */
+        const randomBytes = spec['TeqFw_Web_Auth_Front_Lib_Nacl.randomBytes'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl_Util.decodeBase64|function} */
+        const decodeBase64 = spec['TeqFw_Web_Auth_Front_Lib_Nacl_Util.decodeBase64'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl_Util.encodeBase64|function} */
+        const encodeBase64 = spec['TeqFw_Web_Auth_Front_Lib_Nacl_Util.encodeBase64'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl_Util.decodeUTF8|function} */
+        const decodeUTF8 = spec['TeqFw_Web_Auth_Front_Lib_Nacl_Util.decodeUTF8'];
+        /** @type {TeqFw_Web_Auth_Front_Lib_Nacl_Util.encodeUTF8|function} */
+        const encodeUTF8 = spec['TeqFw_Web_Auth_Front_Lib_Nacl_Util.encodeUTF8'];
 
         // VARS
         let _keyShared;

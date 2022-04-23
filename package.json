@@ -32,10 +32,7 @@
     "@teqfw/core": "*",
     "mime-types": "*",
     "path-to-regexp": "*",
-    "stream-buffers": "*",
-    "tweetnacl": "*",
-    "tweetnacl-util": "*",
-    "uuid": "*"
+    "stream-buffers": "*"
   },
   "devDependencies": {
     "@teqfw/core": "github:teqfw/core",

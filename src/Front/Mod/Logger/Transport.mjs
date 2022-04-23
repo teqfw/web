@@ -11,14 +11,14 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const DEF = spec['TeqFw_Web_Front_Defaults$'];
         /** @type {TeqFw_Core_Shared_Mod_Logger_Transport_Console} */
         const transConsole = spec['TeqFw_Core_Shared_Mod_Logger_Transport_Console$'];
-        /** @type {TeqFw_Web_Api_Front_App_Connect_WAPI} */
-        const wapi = spec['TeqFw_Web_Api_Front_App_Connect_WAPI$'];
+        /** @type {TeqFw_Web_Api_Front_Mod_Connect} */
+        const wapi = spec['TeqFw_Web_Api_Front_Mod_Connect$'];
         /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
         const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
-        /** @type {TeqFw_Web_Api_Front_Mod_App_Front_Identity} */
-        const identityFront = spec['TeqFw_Web_Api_Front_Mod_App_Front_Identity$'];
-        /** @type {TeqFw_Web_Api_Front_Mod_App_Back_Identity} */
-        const identityBack = spec['TeqFw_Web_Api_Front_Mod_App_Back_Identity$'];
+        /** @type {TeqFw_Web_Auth_Front_Mod_Identity_Front} */
+        const identityFront = spec['TeqFw_Web_Auth_Front_Mod_Identity_Front$'];
+        /** @type {TeqFw_Web_Auth_Front_Mod_Identity_Back} */
+        const identityBack = spec['TeqFw_Web_Auth_Front_Mod_Identity_Back$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
         /** @type {TeqFw_Web_Front_Mod_Config} */
