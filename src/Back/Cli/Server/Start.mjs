@@ -28,8 +28,8 @@ export default function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Shared_Api_ILogger} */
     const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
-    /** @type {TeqFw_Core_Back_App_Init_Logger} */
-    const loggerInit = spec['TeqFw_Core_Back_App_Init_Logger$'];
+    /** @type {TeqFw_Core_Back_Mod_Init_Logger} */
+    const loggerInit = spec['TeqFw_Core_Back_Mod_Init_Logger$'];
     /** @type {TeqFw_Core_Shared_Api_Logger_ITransport} */
     const loggerTransport = spec['TeqFw_Core_Shared_Api_Logger_ITransport$'];
     /** @type {TeqFw_Core_Back_Config} */

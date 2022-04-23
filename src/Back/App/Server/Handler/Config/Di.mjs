@@ -18,8 +18,8 @@ export default function (spec) {
     // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_App_Init_Plugin_Registry} */
-    const registry = spec['TeqFw_Core_Back_App_Init_Plugin_Registry$'];
+    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
+    const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
     /** @type {TeqFw_Web_Shared_Dto_Config_Di} */
     const dtoDi = spec['TeqFw_Web_Shared_Dto_Config_Di$'];
     /** @type {TeqFw_Web_Shared_Dto_Config_Di_Namespace} */
@@ -33,7 +33,7 @@ export default function (spec) {
      * Loop through all plugins and compose namespace-to-source mapping for DI container on the front.
      * (@see TeqFw_Web_Back_App_Server_Handler_Static)
      *
-     * @param {TeqFw_Core_Back_App_Init_Plugin_Registry} registry
+     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
      * @return {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto[]}
      */
     function getNamespaces(registry) {
@@ -54,7 +54,7 @@ export default function (spec) {
     /**
      * Loop through all plugins and compose replaces for DI container on the front.
      *
-     * @param {TeqFw_Core_Back_App_Init_Plugin_Registry} registry
+     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
      * @return {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto[]}
      */
     function getReplaces(registry) {

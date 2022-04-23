@@ -14,8 +14,8 @@ export default function (spec) {
     const container = spec['TeqFw_Di_Shared_Container$'];
     /** @type {TeqFw_Core_Shared_Api_ILogger} */
     const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
-    /** @type {TeqFw_Core_Back_App_Init_Plugin_Registry} */
-    const regPlugins = spec['TeqFw_Core_Back_App_Init_Plugin_Registry$'];
+    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
+    const regPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
     const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc.Factory$'];
     /** @type {TeqFw_Core_Shared_Util_BeforeAfter} */

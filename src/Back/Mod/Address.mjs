@@ -8,8 +8,8 @@ export default class TeqFw_Web_Back_Mod_Address {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc} */
         const Desc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#'];
-        /** @type {TeqFw_Core_Back_App_Init_Plugin_Registry} */
-        const registry = spec['TeqFw_Core_Back_App_Init_Plugin_Registry$'];
+        /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
+        const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
         const fAddr = spec['TeqFw_Web_Back_Dto_Address#Factory$'];
 
