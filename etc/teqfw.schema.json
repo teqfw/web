@@ -1,27 +1,7 @@
 {
   "package": {
     "web": {
-      "entity": {
-        "front": {
-          "comment": "Registry to save public keys for front apps.",
-          "attr": {
-            "id": {"type": "id"},
-            "uuid": {"comment": "Front UUID.", "type": "string"},
-            "date_created": {
-              "comment": "Date-time for front registration.",
-              "type": "datetime",
-              "default": "current"
-            },
-            "key_pub": {
-              "comment": "Public key for encryption and authentication.",
-              "type": "string"
-            }
-          },
-          "index": {
-            "uuid": {"type": "unique", "attrs": ["uuid"]}
-          }
-        }
-      }
+      "entity": { }
     }
   }
 }

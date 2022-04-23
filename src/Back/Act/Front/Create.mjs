@@ -13,11 +13,11 @@ export default function (spec) {
     // DEPS
     /** @type {TeqFw_Db_Back_Api_RDb_ICrudEngine} */
     const crud = spec['TeqFw_Db_Back_Api_RDb_ICrudEngine$'];
-    /** @type {TeqFw_Web_Back_Store_RDb_Schema_Front} */
-    const rdbFront = spec['TeqFw_Web_Back_Store_RDb_Schema_Front$'];
+    /** @type {TeqFw_Web_Auth_Back_RDb_Schema_Front} */
+    const rdbFront = spec['TeqFw_Web_Auth_Back_RDb_Schema_Front$'];
 
     // VARS
-    /** @type {typeof TeqFw_Web_Back_Store_RDb_Schema_Front.ATTR} */
+    /** @type {typeof TeqFw_Web_Auth_Back_RDb_Schema_Front.ATTR} */
     const ATTR = rdbFront.getAttributes();
 
     // FUNCS
