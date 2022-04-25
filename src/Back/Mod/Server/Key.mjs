@@ -1,5 +1,6 @@
 /**
  * Source to get server keys for asymmetric encryption.
+ * TODO: initialize this model to plugin init function, make get/set as sync.
  *
  * @namespace TeqFw_Web_Back_Mod_Server_Key
  */

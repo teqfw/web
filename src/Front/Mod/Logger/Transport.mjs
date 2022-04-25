@@ -15,10 +15,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const wapi = spec['TeqFw_Web_Api_Front_Mod_Connect$'];
         /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
         const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
-        /** @type {TeqFw_Web_Auth_Front_Mod_Identity_Front} */
-        const identityFront = spec['TeqFw_Web_Auth_Front_Mod_Identity_Front$'];
-        /** @type {TeqFw_Web_Auth_Front_Mod_Identity_Back} */
-        const identityBack = spec['TeqFw_Web_Auth_Front_Mod_Identity_Back$'];
+        /** @type {TeqFw_Web_Auth_Front_Mod_Identity} */
+        const modIdentity = spec['TeqFw_Web_Auth_Front_Mod_Identity$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
         /** @type {TeqFw_Web_Front_Mod_Config} */
@@ -35,8 +33,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};
-                dto.meta.frontUuid = dto.meta?.frontUuid || identityFront.getUuid();
-                dto.meta.backUuid = dto.meta?.backUuid || identityBack.getUUID();
+                dto.meta.frontUuid = dto.meta?.frontUuid || modIdentity.getFrontUuid();
+                dto.meta.backUuid = dto.meta?.backUuid || modIdentity.getBackUuid();
                 // noinspection JSIgnoredPromiseFromCall
                 wapi.send(req, wapiLogCollect)
                     .then((data) => {
