@@ -2,6 +2,8 @@
  * Logging transport implementation for front app.
  * Send logs to backend's logs collector.
  *
+ * TODO: move this functionality to separate plugin.
+ *
  * @implements TeqFw_Core_Shared_Api_Logger_ITransport
  */
 export default class TeqFw_Web_Front_Mod_Logger_Transport {
