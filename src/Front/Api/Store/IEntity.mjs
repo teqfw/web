@@ -26,8 +26,15 @@ export default class TeqFw_Web_Front_Api_Store_IEntity {
     /**
      * Get entity name: '@vnd/plugin/path/to/entity'.
      * @return {string}
+     * @deprecated use `getName`
      */
     getEntityName() {}
+
+    /**
+     * Get entity name: '@vnd/plugin/path/to/entity'.
+     * @return {string}
+     */
+    getName() {}
 
     /**
      * Get codifier for entity indexes.
