@@ -17,7 +17,7 @@ export default function (spec) {
 
     // VARS
     const A_SINGLETON = idbSingleton.getAttributes();
-    const E_SINGLETON = idbSingleton.getEntityName();
+    const E_SINGLETON = idbSingleton.getName();
 
     // INNER FUNCTIONS
     /**

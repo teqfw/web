@@ -114,11 +114,11 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             const stores = [];
             if (Array.isArray(meta)) {
                 for (const one of meta) {
-                    const name = one.getEntityName();
+                    const name = one.getName();
                     stores.push(name);
                 }
             } else {
-                const name = meta.getEntityName();
+                const name = meta.getName();
                 stores.push(name);
             }
             const mode = (readwrite) ? 'readwrite' : 'readonly';
@@ -146,7 +146,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             }
 
             // MAIN
-            const storeName = meta.getEntityName();
+            const storeName = meta.getName();
             const store = trx.objectStore(storeName);
             // remove primary key attributes if undefined (to use autoincrement)
             const pk = meta.getPrimaryKey();
@@ -165,7 +165,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         this.deleteOne = async function (trx, meta, key) {
             let res = null;
             if (key) { // key must be valid object or primitive
-                const storeName = meta.getEntityName();
+                const storeName = meta.getName();
                 const store = trx.objectStore(storeName);
                 const promise = new Promise((resolve, reject) => {
                     // TODO: test it for multi-key (more than 1 attr in the key)
@@ -192,7 +192,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             // MAIN
             let res = null;
             if (key) { // key must be valid object or primitive
-                const storeName = meta.getEntityName();
+                const storeName = meta.getName();
                 const store = trx.objectStore(storeName);
                 let source = (indexName) ? store.index(indexName) : store;
                 const promise = new Promise((resolve, reject) => {
@@ -217,7 +217,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          */
         this.readSet = async function (trx, meta, indexName = null, query = null, count = null) {
             const res = [];
-            const storeName = meta.getEntityName();
+            const storeName = meta.getName();
             const store = trx.objectStore(storeName);
             const promise = new Promise((resolve, reject) => {
                 const source = (
@@ -250,7 +250,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         this.readKeys = async function (trx, meta, {index, query, backward, limit} = {}) {
 
             const res = [];
-            const storeName = meta.getEntityName();
+            const storeName = meta.getName();
             const store = trx.objectStore(storeName);
             const source = _getSource(store, index);
             // perform async activity synchronously
@@ -290,7 +290,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @return {Promise<*>}
          */
         this.updateOne = async function (trx, meta, dto) {
-            const storeName = meta.getEntityName();
+            const storeName = meta.getName();
             const store = trx.objectStore(storeName);
             const promise = new Promise((resolve, reject) => {
                 const req = store.put(dto);

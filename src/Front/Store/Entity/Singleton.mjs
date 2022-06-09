@@ -68,7 +68,11 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
 
     getAttrNames = () => Object.values(ATTR);
 
-    getEntityName = () => ENTITY;
+    getEntityName = () => {
+        throw new Error('Deprecated, use `getName`.');
+    };
+
+    getName = () => ENTITY;
 
     /**
      * @return {typeof TeqFw_Web_Front_Store_Entity_Singleton.INDEX}
