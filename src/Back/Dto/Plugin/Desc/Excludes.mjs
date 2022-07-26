@@ -13,6 +13,12 @@ export default class TeqFw_Web_Back_Dto_Plugin_Desc_Excludes {
      */
     handlers;
     /**
+     * List of folders to be excluded from SW cache.
+     *
+     * @type {string[]}
+     */
+    swCache;
+    /**
      * List of WAPI services (namespaces only) to exclude from processing.
      *
      * @type {string[]}
@@ -32,7 +38,8 @@ export class Factory {
     static namespace = NS;
 
     constructor(spec) {
-        const {castArrayOfStr} = spec['TeqFw_Core_Shared_Util_Cast'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
+        const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
 
         /**
          * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes|null} data
@@ -41,6 +48,7 @@ export class Factory {
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Dto_Plugin_Desc_Excludes();
             res.handlers = castArrayOfStr(data?.handlers);
+            res.swCache = castArrayOfStr(data?.swCache);
             res.wapi = castArrayOfStr(data?.wapi);
             return res;
         }

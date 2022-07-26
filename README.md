@@ -65,7 +65,7 @@ Commands:
     "doors": ["admin", "pub"],
     "excludes": {
       "handlers": ["Ns_Mod"],
-      "sw_cache": ["./img/exrc/"]
+      "swCache": ["./img/exrc/"]
     },
     "handlers": {
       "Ns_Mod": {

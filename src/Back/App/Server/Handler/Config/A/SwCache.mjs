@@ -63,12 +63,20 @@ export default function (spec) {
         /**
          * Scan app web root recursively and replace filesystem parts with URL parts.
          * @param {string} path path to the root folder of web resources
+         * @param {string[]} excl paths to exclude from scan
          * @return {string[]}
          */
-        function readAppWeb(path) {
+        function readAppWeb(path, excl) {
             const res = [];
             if (existsSync(path)) {
-                const files = scanRecursively(path);
+                // scan all files
+                let files = scanRecursively(path);
+                // exclude some files from results
+                for (const one of excl) {
+                    const full = join(path, one);
+                    files = files.filter((entry) => entry.indexOf(full) !== 0);
+                }
+                // convert paths to URLs
                 const urls = files.map(entry => entry.replace(path, '.'));
                 res.push(...urls);
                 res.push('.'); // add root default URL
@@ -117,8 +125,9 @@ export default function (spec) {
                         // res.push(...readAppWeb(web, door));
                     }
                 } else {
+                    const excl = desc?.excludes?.swCache ?? [];
                     const web = join(item.path, DEF.FS_STATIC_ROOT);
-                    res.push(...readAppWeb(web));
+                    res.push(...readAppWeb(web, excl));
                 }
 
             } else {
