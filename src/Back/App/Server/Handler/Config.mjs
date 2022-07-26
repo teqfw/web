@@ -24,15 +24,17 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
         /** @type {TeqFw_Core_Shared_Api_ILogger} */
         const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_Front|function} */
-        const actApp = spec['TeqFw_Web_Back_App_Server_Handler_Config_Front$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_Di|function} */
-        const actDi = spec['TeqFw_Web_Back_App_Server_Handler_Config_Di$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_Front|function} */
+        const actApp = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_Front$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_Di|function} */
+        const actDi = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_Di$'];
+        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache|function} */
+        const actSwCache = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache$'];
         /** @type {TeqFw_Web_Back_Mod_Address} */
         const modAddr = spec['TeqFw_Web_Back_Mod_Address$'];
 
         // VARS
-        let _storeDi, _storeApp;
+        let _storeDi, _storeApp, _storeSwCache;
 
         // FUNCS
         /**
@@ -58,6 +60,10 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
                     // return app config
                     shares.set(DEF.SHARE_RES_BODY, JSON.stringify(_storeApp));
                     shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                } else if (addr.route.includes(DEF.SHARED.CFG_SW_CACHE)) {
+                    // return SW cache config
+                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(_storeSwCache));
+                    shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
                 }
             }
         }
@@ -71,6 +77,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
             logger.info('\tDI container configuration is loaded into handler\'s cache.');
             _storeApp = await actApp();
             logger.info('\tFrontend app configuration is loaded into handler\'s cache.');
+            _storeSwCache = await actSwCache();
+            logger.info('\tSW cache configuration is loaded into handler\'s cache.');
         };
 
         /**

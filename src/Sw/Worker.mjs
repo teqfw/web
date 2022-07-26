@@ -12,6 +12,8 @@ import MSG from '../Front/Mod/Sw/Enum/Message.mjs';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Sw_Worker';
+const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
+const CFG_CACHE_DISABLED = 'cache_disabled';
 /**
  * Service Worker events.
  */
@@ -29,9 +31,7 @@ const EVT = {
     PUSH_SUBSCRIPTION_CHANGE: 'pushsubscriptionchange',
     SYNC: 'sync',
 };
-const API_STATIC_FILES = '/api/@teqfw/web/load/files_to_cache'; // get list of files to cache on SW installation
-const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
-const CFG_CACHE_DISABLED = 'cache_disabled';
+const URL_CFG_SW_CACHE = '/cfg/sw_cache'; // get list of files to cache on SW installation
 
 /**
  * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
@@ -114,17 +114,16 @@ function onInstall(event) {
      */
     async function loadFilesToCache() {
         // Get list of static files from the server
-        const data = {door: _door}; // see TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request
-        const req = new Request(API_STATIC_FILES, {
-            method: 'POST',
+        //const data = {door: _door}; // see TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache
+        const req = new Request(`${URL_CFG_SW_CACHE}/${_door}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({data})
+            }
         });
         const resp = await self.fetch(req);
         const json = await resp.json();
-        const res = json?.data?.items ?? [];
+        const res = Array.isArray(json) ? json : [];
         _log(`List of static files to cache is loaded (total items: ${res.length}).`);
         return res;
     }
@@ -243,13 +242,15 @@ function createLogger(uuid) {
             item.meta.frontUuid = uuid;
             /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect.Request} */
             const req = {item};
+            const body = JSON.stringify({data: req});
             fetch('./api/@teqfw/web/front/log/collect', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({data: req}),
+                body,
             });
+            console.log(body);
         }
     }
 }

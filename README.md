@@ -7,9 +7,10 @@ This `teq`-plugin adds basic web server functionality to Tequila Framework based
 
 * console commands to start/stop web server in HTTP/1.1, HTTP/2, HTTPS modes;
 * basic web requests processing with possibility to add various handlers;
-* 3 requests handlers:
-  * `TeqFw_Web_Back_App_Server_Handler_Final`: unprocessed requests responder;
-  * `TeqFw_Web_Back_App_Server_Handler_Static`: GET-requests to static resources;
+* requests handlers:
+    * `TeqFw_Web_Back_App_Server_Handler_Final`: unprocessed requests responder;
+    * `TeqFw_Web_Back_App_Server_Handler_Static`: GET requests for static resources;
+    * `TeqFw_Web_Back_App_Server_Handler_Config`: GET requests to load various frontend configurations;
 
 ## Install
 
@@ -64,7 +65,7 @@ Commands:
     "doors": ["admin", "pub"],
     "excludes": {
       "handlers": ["Ns_Mod"],
-      "wapi": ["Ns_Mod"]
+      "sw_cache": ["./img/exrc/"]
     },
     "handlers": {
       "Ns_Mod": {
@@ -73,8 +74,6 @@ Commands:
         "spaces": ["custom"]
       }
     },
-    "services": ["Ns_Mod"],
-    "sse": ["Ns_Mod"],
     "statics": {
       "/url-path/": "/filesystem-path/"
     }

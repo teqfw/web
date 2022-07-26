@@ -1,5 +1,6 @@
 /**
  * Web server handler to process file uploads requests.
+ * TODO: move this handler in standalone plugin
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';

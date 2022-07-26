@@ -1,10 +1,10 @@
 /**
  * Action to load front app configuration.
  *
- * @namespace TeqFw_Web_Back_App_Server_Handler_Config_Front
+ * @namespace TeqFw_Web_Back_App_Server_Handler_Config_A_Front
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_Front';
+const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Front';
 
 // MODULE'S FUNCS
 /**
@@ -24,7 +24,7 @@ export default function (spec) {
 
     /**
      * Result function.
-     * @memberOf TeqFw_Web_Back_App_Server_Handler_Config_Front
+     * @memberOf TeqFw_Web_Back_App_Server_Handler_Config_A_Front
      * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
      */
     function act() {
