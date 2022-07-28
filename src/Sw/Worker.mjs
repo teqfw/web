@@ -16,6 +16,7 @@ const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
 const CFG_CACHE_DISABLED = 'cache_disabled';
 /**
  * Service Worker events.
+ * TODO: extract codifier to standalone es6-module to import in other scripts.
  */
 const EVT = {
     ACTIVATE: 'activate',
@@ -47,7 +48,7 @@ let _door;
 let _cacheDisabled = true; // disable by default TODO: invert logic here and in IndexedDB
 /**
  * Log function to trace functionality of this module.
- * @type {function}
+ * @type {function(msg:string, meta:Object=)}
  */
 let _log;
 
@@ -61,6 +62,9 @@ function onActivate() {
     self.clients.claim();
 }
 
+/**
+ * @param {FetchEvent} event
+ */
 function onFetch(event) {
     // FUNCS
     /**
@@ -105,6 +109,10 @@ function onFetch(event) {
             event.respondWith(getFromCacheOrFetchAndCache(event));
 }
 
+/**
+ * Load list of files required for offline running from server and cache all files.
+ * @param {ExtendableEvent} event
+ */
 function onInstall(event) {
     // FUNCS
 
@@ -257,25 +265,23 @@ function createLogger(uuid) {
 
 /**
  * Setup function to populate Service Worker global scope.
- * @param {WorkerGlobalScope} scope
  * @param {string} [door]
- * @param {function(string):function} logFactory
+ * @param {function(msg:string, meta:Object=)} [log]
  */
-function setup({scope, door, logFactory}) {
-    _log = logFactory(NS); // create log function for this es6-module
+function setup({door, log}) {
+    const res = {};
+    _log = log;
     _door = door;
     _config.get(CFG_CACHE_DISABLED).then((val) => _cacheDisabled = val);
-    scope.addEventListener(EVT.ACTIVATE, onActivate);
-    scope.addEventListener(EVT.FETCH, onFetch);
-    scope.addEventListener(EVT.INSTALL, onInstall);
-    scope.addEventListener(EVT.MESSAGE, onMessage);
-    const entryPoint = _door ? 'root entry point' : `'${_door}' entry point`;
-    _log(`Event listeners are registered for ${entryPoint}.`);
+    res[EVT.ACTIVATE] = onActivate;
+    res[EVT.FETCH] = onFetch;
+    res[EVT.INSTALL] = onInstall;
+    res[EVT.MESSAGE] = onMessage;
+    return res;
 }
 
 // MODULE'S MAIN
 // Object.defineProperty(setup, 'namespace', {value: NS});
 export {
-    createLogger,
-    setup
+    setup as default
 }
