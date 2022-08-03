@@ -57,7 +57,7 @@ export default function (spec) {
                 throw new Error(`Handler 'TeqFw_Web_Back_App_Server_Handler_Final' cannot be excluded.`);
             for (const hName of Object.keys(includes)) {
                 if (!excludes.includes(hName)) {
-                    logger.info(`Create Web handler: ${hName}`);
+                    logger.info(`Create web requests handler: ${hName}`);
                     /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
                     const dto = includes[hName];
                     /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler} */
