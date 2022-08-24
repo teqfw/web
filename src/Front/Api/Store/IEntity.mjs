@@ -17,18 +17,6 @@ export default class TeqFw_Web_Front_Api_Store_IEntity {
      * @return {*}
      */
     getAttributes() {}
-    /**
-     * Return array with names of entity attributes.
-     * @return {string[]}
-     */
-    getAttrNames() {}
-
-    /**
-     * Get entity name: '@vnd/plugin/path/to/entity'.
-     * @return {string}
-     * @deprecated use `getName`
-     */
-    getEntityName() {}
 
     /**
      * Get entity name: '@vnd/plugin/path/to/entity'.
