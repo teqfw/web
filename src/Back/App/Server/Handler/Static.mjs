@@ -67,7 +67,8 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                  */
                 function normalize(path) {
                     let result;
-                    const parts = path.split('?'); // cut off GET vars
+                    const decoded = decodeURI(path); // convert %20 to ' '
+                    const parts = decoded.split('?'); // cut off GET vars
                     const address = mAddress.parsePath(parts[0]);
                     if (address.space !== undefined) {
                         result = `/${address.space}${address.route}`;
