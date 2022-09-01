@@ -8,6 +8,11 @@ const NS = 'TeqFw_Web_Back_Dto_Config_Local';
 
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_Dto_Config_Local {
+    /**
+     * Any custom object to use as application configuration on the front.
+     * @type {Object}
+     */
+    custom;
     /** @type {boolean} */
     frontLogsMonitoring;
     /** @type {TeqFw_Web_Back_Dto_Config_Local_Server} */
@@ -37,6 +42,7 @@ export class Factory {
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Dto_Config_Local();
+            res.custom = data?.custom;
             res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
             res.server = fServer.create(data?.server);
             res.urlBase = castString(data?.urlBase);

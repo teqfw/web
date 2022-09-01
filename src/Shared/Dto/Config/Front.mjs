@@ -11,6 +11,11 @@ const NS = 'TeqFw_Web_Shared_Dto_Config_Front';
 class Dto {
     static namespace = NS;
     /**
+     * Any custom object to use as application configuration on the front.
+     * @type {Object}
+     */
+    custom;
+    /**
      * 'true' - application is in development mode.
      * @type {Boolean}
      */
@@ -52,6 +57,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
          */
         this.createDto = function (data) {
             const res = new Dto();
+            res.custom = data?.custom;
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
             res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
