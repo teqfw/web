@@ -126,6 +126,23 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
 
         /**
+         * Clear storage.
+         *
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @returns {Promise<void>}
+         */
+        this.clear = async function (trx, meta) {
+            const storeName = meta.getName();
+            const store = trx.objectStore(storeName);
+            return await new Promise((resolve, reject) => {
+                const req = store.clear();
+                req.onerror = () => reject(req.error);
+                req.onsuccess = () => resolve(req.result);
+            });
+        }
+
+        /**
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {*} data
@@ -155,7 +172,6 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             // create promise and perform operation
             return await createPromise(store, data);
         }
-
         /**
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
