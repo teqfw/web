@@ -8,7 +8,7 @@
  */
 // MODULE'S IMPORT
 import Config from './Config.mjs';
-import MSG from '../Front/Mod/Sw/Enum/Message.mjs';
+import CFG_MSG from '../Front/Mod/Sw/Enum/Message.mjs';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Sw_Worker';
@@ -33,6 +33,8 @@ const EVT = {
     SYNC: 'sync',
 };
 const URL_CFG_SW_CACHE = '/cfg/sw_cache'; // get list of files to cache on SW installation
+const MSG = {PROGRESS: 'PROGRESS'};
+
 
 /**
  * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
@@ -144,6 +146,14 @@ function onInstall(event) {
     async function cacheStatics(urls) {
         try {
             if (Array.isArray(urls)) {
+
+                const allClients = await self.clients.matchAll({
+                    includeUncontrolled: true
+                });
+                const [firstClient] = allClients;
+                let progress = 0;
+                firstClient.postMessage({type: MSG.PROGRESS, progress: 0});
+
                 // ... and load static files to the local cache
                 const cacheStat = await caches.open(CACHE_STATIC);
                 // METHOD 1
@@ -152,6 +162,7 @@ function onInstall(event) {
                 let total = 0;
                 const SIZE = 10;
                 while (total <= urls.length) {
+                    firstClient.postMessage({type: MSG.PROGRESS, progress});
                     const slice = urls.slice(total, total + SIZE);
                     await Promise.all(
                         slice.map(function (url) {
@@ -163,8 +174,10 @@ function onInstall(event) {
                     total += SIZE;
                     const cached = total < urls.length ? total : urls.length;
                     _log(`Total '${cached}' URLs are cached.`);
-
+                    progress = Math.round(total / urls.length * 100) / 100
                 }
+                // report 100%
+                firstClient.postMessage({type: MSG.PROGRESS, progress: 1});
             }
             _log(`Static files are loaded and cached by Service Worker.`);
         } catch (e) {
@@ -207,13 +220,13 @@ async function onMessage(event) {
     const payload = data.payload;
     let out;
     // perform requested operation
-    if (type === MSG.CACHE_STATUS_GET) {
+    if (type === CFG_MSG.CACHE_STATUS_GET) {
         _cacheDisabled = await _config.get(CFG_CACHE_DISABLED);
         out = !_cacheDisabled; // inversion for cache status
-    } else if (type === MSG.CACHE_STATUS_SET) {
+    } else if (type === CFG_MSG.CACHE_STATUS_SET) {
         _cacheDisabled = !payload; // inversion for cache status
         await _config.set(CFG_CACHE_DISABLED, _cacheDisabled);
-    } else if (type === MSG.CACHE_CLEAN) {
+    } else if (type === CFG_MSG.CACHE_CLEAN) {
         await cacheClean();
     }
     // ... then return result
@@ -283,5 +296,6 @@ function setup({door, log}) {
 // MODULE'S MAIN
 // Object.defineProperty(setup, 'namespace', {value: NS});
 export {
-    setup as default
+    setup as default,
+    MSG
 }

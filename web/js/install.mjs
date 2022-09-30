@@ -2,6 +2,9 @@
  * Frontend app installer registers Service Worker, loads DI configuration and initializes DI.
  * This es6-module is imported with regular 'import' statement, not with DI container.
  */
+// MODULE'S IMPORT
+import {MSG} from './src/@teqfw/web/Sw/Worker.mjs';
+
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
@@ -55,6 +58,11 @@ export class Install {
          */
         let _fnPrintout;
         /**
+         * Function to trace installation process (%, 0..1).
+         * @type {function(number)}
+         */
+        let _fnProgress;
+        /**
          * Namespace for module with front app (Vnd_Plug_Front_App).
          * @type {string}
          */
@@ -71,6 +79,8 @@ export class Install {
         this.setCssMount = (css) => _cssMount = css;
 
         this.setFnPrintout = (fn) => _fnPrintout = fn;
+
+        this.setFnProgress = (fn) => _fnProgress = fn;
 
         this.setNsApp = (ns) => _nsApp = ns;
 
@@ -177,19 +187,26 @@ export class Install {
 
             // MAIN
             if ('serviceWorker' in navigator) { // if browser supports service workers
-                const worker = navigator.serviceWorker;
-                if (worker.controller === null) {
+                const container = navigator.serviceWorker;
+                if (container.controller === null) {
                     // ... then load 'sw.js' script and register service worker in navigator
                     try {
+
+                        container.addEventListener('message', (event) => {
+                            console.log(JSON.stringify(event.data));
+
+                            _fnProgress(event.data?.progress);
+                        });
+
                         print(`Try to register new service worker (load 'sw.js').`);
-                        const reg = await worker.register('sw.js', {type: 'module'});
+                        const reg = await container.register('sw.js', {type: 'module'});
                         if (reg.active) {
                             print(`SW is registered and is active. Start app bootstrap.`);
                             await bootstrap();
                         } else {
                             print(`SW is registered but is not activated yet.`);
                             // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
-                            worker.addEventListener('controllerchange', async () => {
+                            container.addEventListener('controllerchange', async () => {
                                 print(`SW just installed (page's first load). Start app bootstrap.`);
                                 await bootstrap();
                             });
