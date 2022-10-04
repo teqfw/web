@@ -191,11 +191,9 @@ export class Install {
                 if (container.controller === null) {
                     // ... then load 'sw.js' script and register service worker in navigator
                     try {
-
+                        // print out installation progress on startup page
                         container.addEventListener('message', (event) => {
-                            console.log(JSON.stringify(event.data));
-
-                            _fnProgress(event.data?.progress);
+                            if (typeof _fnProgress === 'function') _fnProgress(event.data?.progress);
                         });
 
                         print(`Try to register new service worker (load 'sw.js').`);
