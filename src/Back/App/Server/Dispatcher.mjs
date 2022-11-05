@@ -23,6 +23,8 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
+        /** @type {TeqFw_Core_Shared_Api_ILogger} */
+        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
         /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
         const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Mod_Address} */
@@ -33,6 +35,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         const respond405 = spec['TeqFw_Web_Back_App_Server_Respond.respond405'];
 
         // VARS
+        logger.setNamespace(this.constructor.name);
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
         const handlers = [];
 
@@ -110,9 +113,13 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                     if (one.canProcess({method, address, headers}))
                         active.push(one.getProcessor());
                 // run processors one by one
-                for (const one of active)
-                    await one(req, res);
-
+                for (const one of active) {
+                    try {
+                        await one(req, res);
+                    } catch (e) {
+                        logger.error(`Error in processor '${one?.namespace}': ` + e);
+                    }
+                }
             } else respond405(res);
         }
 
