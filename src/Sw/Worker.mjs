@@ -66,6 +66,7 @@ function onActivate() {
 
 /**
  * @param {FetchEvent} event
+ * @memberOf TeqFw_Web_Sw_Worker
  */
 function onFetch(event) {
     // FUNCS
