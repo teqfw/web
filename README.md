@@ -1,6 +1,6 @@
 # @teqfw/web
 
-|CAUTION: TeqFW is an unstable, fast-growing project w/o backward compatibility. Use it at your own risk.|
+|CAUTION: TeqFW is an unstable project w/o backward compatibility. Use it at your own risk.|
 |---|
 
 This `teq`-plugin adds basic web server functionality to Tequila Framework based projects.
