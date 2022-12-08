@@ -17,8 +17,9 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         const wapi = spec['TeqFw_Web_Api_Front_Mod_Connect$'];
         /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
         const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
-        /** @type {TeqFw_Web_Auth_Front_Mod_Identity} */
-        const modIdentity = spec['TeqFw_Web_Auth_Front_Mod_Identity$'];
+        // TODO: fix Logger Transport
+        /** @type {TeqFw_Web_Event_Front_Mod_Identity} */
+        // const modIdentity = spec['TeqFw_Web_Event_Front_Mod_Identity$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
         /** @type {TeqFw_Web_Front_Mod_Config} */
