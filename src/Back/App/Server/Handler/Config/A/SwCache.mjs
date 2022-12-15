@@ -43,7 +43,7 @@ export default function (spec) {
             const res = [];
             const MOD_CORE = DEF.SHARED.MOD_CORE;
             const SPACE_SRC = DEF.SHARED.SPACE_SRC;
-            // scan './Front/'
+            // scan './Auth/'
             const pathFront = join(root, MOD_CORE.DIR_SRC_FRONT);
             if (existsSync(pathFront)) {
                 const files = scanRecursively(pathFront);

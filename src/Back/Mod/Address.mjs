@@ -45,9 +45,11 @@ export default class TeqFw_Web_Back_Mod_Address {
             }
             // define space
             for (const one of spaces) {
-                if (path.startsWith(`/${one}`)) {
+                const keyStart = `/${one}/`;
+                const keyEq = `/${one}`;
+                if (path.startsWith(keyStart) || (path === keyEq)) {
                     result.space = one;
-                    path = path.replace(`/${result.space}`, '');
+                    path = path.replace(keyEq, '');
                     break; // one only 'space' is allowed in URL
                 }
             }

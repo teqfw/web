@@ -13,6 +13,7 @@ const ATTR = {
     EVENT_NAME: 'eventName',
     EVENT_UUID: 'eventUuid',
     FRONT_UUID: 'frontUuid',
+    SESSION_UUID: 'sessionUuid',
 };
 
 // MODULE'S CLASSES
@@ -28,7 +29,9 @@ class Dto {
     /** @type {string} */
     eventUuid;
     /** @type {string} */
-    frontUuid;
+    streamUuid;
+    /** @type {string} */
+    sessionUuid;
 }
 
 /**
@@ -50,13 +53,12 @@ export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {
             res.backUuid = castString(data?.backUuid);
             res.eventName = castString(data?.eventName);
             res.eventUuid = castString(data?.eventUuid);
-            res.frontUuid = castString(data?.frontUuid);
+            res.streamUuid = castString(data?.streamUuid);
+            res.sessionUuid = castString(data?.sessionUuid);
             return res;
         }
 
         this.getAttributes = () => ATTR;
-
-        this.getAttrNames = () => Object.values(ATTR);
     }
 
 }

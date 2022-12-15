@@ -20,12 +20,12 @@ export default class TeqFw_Web_Front_Api_Mod_Server_Connect_IState {
     stopActivity() {}
 
     /**
-     * Front or back is disconnected.
+     * Auth or back is disconnected.
      */
     setOffline() {}
 
     /**
-     * Events Reverse Channel is up and working.
+     * Events Stream Channel is up and working.
      */
     setOnline() {}
 }

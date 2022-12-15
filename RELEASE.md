@@ -3,9 +3,9 @@
 # 0.x.x.x
 
 * Restructure directories and files.
-* Add events streams between front and back.
 * Add process to monitor online/offline modes.
 * Add fronts logs collector.
+* Fix 'space' signature in `TeqFw_Web_Back_Mod_Address.parsePath`.
 
 # 0.7.1
 

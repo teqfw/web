@@ -3,7 +3,7 @@
  *
  * This is standard ES6 module w/o TeqFW DI support (service workers don't allow dynamic `import()`).
  *
- * I suppose that SW files should be cached by browser itself, so these files are not under `./Front/` folder.
+ * I suppose that SW files should be cached by browser itself, so these files are not under `./Auth/` folder.
  * @namespace TeqFw_Web_Sw_Worker
  */
 // MODULE'S IMPORT

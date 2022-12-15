@@ -1,5 +1,5 @@
 /**
- * Front app interface is used by bootstrap loader (see `@teqfw/web/web/js/loader.mjs`).
+ * Auth app interface is used by bootstrap loader (see `@teqfw/web/web/js/loader.mjs`).
  *
  *
  * @interface

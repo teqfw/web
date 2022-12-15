@@ -18,8 +18,8 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect} */
         const wapiLogCollect = spec['TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect$'];
         // TODO: fix Logger Transport
-        /** @type {TeqFw_Web_Event_Front_Mod_Identity} */
-        // const modIdentity = spec['TeqFw_Web_Event_Front_Mod_Identity$'];
+        /** @type {TeqFw_Web_Event_Front_Mod_Identity_Front} */
+        // const modIdentity = spec['TeqFw_Web_Event_Front_Mod_Identity_Front$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
         const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
         /** @type {TeqFw_Web_Front_Mod_Config} */
@@ -32,7 +32,7 @@ export default class TeqFw_Web_Front_Mod_Logger_Transport {
         // INSTANCE METHODS
         this.log = function (dto) {
             const cfg = modCfg.get();
-            if (cfg.frontLogsMonitoring && _canSendLogs && navigator.onLine) {
+            if (cfg?.frontLogsMonitoring && _canSendLogs && navigator.onLine) {
                 const req = wapiLogCollect.createReq();
                 req.item = dto;
                 dto.meta = dto?.meta || {};
