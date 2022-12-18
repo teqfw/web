@@ -7,6 +7,7 @@ const NS = 'TeqFw_Web_Shared_Dto_Log_Meta_Event';
 /**
  * @memberOf TeqFw_Web_Shared_Dto_Log_Meta_Event
  * @type {Object}
+ * @deprecated don't use event related functionality in web plugin
  */
 const ATTR = {
     BACK_UUID: 'backUuid',
@@ -19,6 +20,7 @@ const ATTR = {
 // MODULE'S CLASSES
 /**
  * @memberOf TeqFw_Web_Shared_Dto_Log_Meta_Event
+ * @deprecated don't use event related functionality in web plugin
  */
 class Dto {
     static namespace = NS;
@@ -36,6 +38,7 @@ class Dto {
 
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto_IMeta
+ * @deprecated don't use event related functionality in web plugin
  */
 export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {
 
