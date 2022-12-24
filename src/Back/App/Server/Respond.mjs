@@ -51,19 +51,21 @@ function respond403(res, err) {
 
 /**
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
+ * @param {string} [err]
  * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
-function respond404(res) {
+function respond404(res, err) {
     if (!res.headersSent) {
         res.writeHead(HTTP_STATUS_NOT_FOUND, {
             [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
         });
-        res.end('Requested resource is not found.');
+        res.write('Requested resource is not found. ');
+        if (typeof err === 'string') res.write(err);
+        res.end();
     }
 }
 
 /**
- * Respond
  * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
  * @memberOf TeqFw_Web_Back_App_Server_Respond
  */
