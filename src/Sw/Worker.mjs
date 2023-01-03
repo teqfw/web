@@ -74,6 +74,7 @@ function onFetch(event) {
      * Analyze route's URL and return 'true' if request should not be cached.
      * @param {Request} req
      * @returns {boolean}
+     * TODO: bypass filter should be extendable
      */
     function detectBypass(req) {
         // see TeqFw_Web_Shared_Defaults.SPACE_...
@@ -81,12 +82,14 @@ function onFetch(event) {
         const CFG = /(.*)(\/cfg\/)(.*)/;
         const EBF = /(.*)(\/ebf\/)(.*)/; // events 'back-to-front'
         const EFB = /(.*)(\/efb\/)(.*)/; // events 'front-to-back'
+        const SSE_OPEN = /(.*)(\/web-event-stream-open\/)(.*)/; // events 'front-to-back'
         const res = !!(
             req.method === 'POST' ||
             req.url.match(API) ||
             req.url.match(CFG) ||
             req.url.match(EFB) ||
-            req.url.match(EBF)
+            req.url.match(EBF) ||
+            req.url.match(SSE_OPEN)
         );
         return res;
     }
