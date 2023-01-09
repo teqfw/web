@@ -241,46 +241,6 @@ async function onMessage(event) {
 }
 
 /**
- * Create log-function to trace service worker functionality.
- *
- * @param {string} uuid frontend identifier for service worker instance.
- * @return {(function(string, Object): void)}
- */
-function createLogger(uuid) {
-    // FUNCS
-    /**
-     * Log function to send log info to the server.
-     * @param {string} msg
-     * @param {Object} [meta]
-     */
-    return function log(msg, meta = {}) {
-        if (navigator.onLine) {
-            /** @type {TeqFw_Core_Shared_Dto_Log.Dto} */
-            const item = {
-                date: new Date(),
-                isError: false,
-                message: msg,
-                meta: {},
-                source: NS,
-            };
-            if (typeof meta === 'object') Object.assign(item.meta, meta);
-            item.meta.frontUuid = uuid;
-            /** @type {TeqFw_Web_Api_Shared_WAPI_Front_Log_Collect.Request} */
-            const req = {item};
-            const body = JSON.stringify({data: req});
-            fetch('./api/@teqfw/web/front/log/collect', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body,
-            });
-            console.log(body);
-        }
-    }
-}
-
-/**
  * Setup function to populate Service Worker global scope.
  * @param {string} [door]
  * @param {function(msg:string, meta:Object=)} [log]
