@@ -54,7 +54,6 @@ export default class TeqFw_Web_Shared_Dto_Identity_Keys {
 
         this.getAttributes = () => ATTR;
 
-        this.getAttrNames = () => Object.values(ATTR);
     }
 
 }
