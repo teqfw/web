@@ -177,9 +177,13 @@ export class Install {
                     /** @type {TeqFw_Web_Front_Api_IApp} */
                     const app = await container.get(`${_nsApp}$`);
                     print(`Initializing app instance...`);
-                    await app.init(print);
-                    print(`Mounting app instance...`);
-                    await app.mount(_cssMount);
+                    if (await app.init(print)) {
+                        print(`Mounting app instance...`);
+                        await app.mount(_cssMount);
+                    } else {
+                        print(`Reinstall app instance...`);
+                        await app.reinstall(_cssMount);
+                    }
                 } catch (e) {
                     print(`Error in bootstrap: ${e.message}. ${e.stack}`);
                 }
