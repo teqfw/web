@@ -35,10 +35,10 @@ export default function (spec) {
 
         /** @type {TeqFw_Web_Shared_Dto_Config_Front.Dto} */
         const res = factDto.createDto();
-        if (webCfg.custom) res.custom = webCfg.custom;
-        if (webCfg.frontLogsMonitoring) res.frontLogsMonitoring = webCfg.frontLogsMonitoring; // 'true' only
-        if (webCfg.urlBase) res.urlBase = webCfg.urlBase;
-        if (webCore.devMode) res.devMode = webCore.devMode;
+        if (webCfg?.custom) res.custom = webCfg.custom;
+        if (webCfg?.frontLogsMonitoring) res.frontLogsMonitoring = webCfg.frontLogsMonitoring; // 'true' only
+        if (webCfg?.urlBase) res.urlBase = webCfg.urlBase;
+        if (webCore?.devMode) res.devMode = webCore.devMode;
         return res;
     }
 
