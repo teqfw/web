@@ -35,7 +35,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
 
         // VARS
-        const _rootFs = config.getBoot().projectRoot; // path to project root
+        const _rootFs = config.getPathToRoot(); // path to project root
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
 

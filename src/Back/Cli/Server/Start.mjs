@@ -68,7 +68,7 @@ export default function Factory(spec) {
             if (!skipPID) {
                 // compose path to PID file and write PID to file
                 const pid = process.pid.toString();
-                const pidPath = join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
+                const pidPath = join(config.getPathToRoot(), DEF.DATA_FILE_PID);
                 const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
                 if (!existsSync(pidDir)) mkdirSync(pidDir, {recursive: true});
                 writeFileSync(pidPath, pid);

@@ -37,7 +37,7 @@ export default function Factory(spec) {
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
     const action = async function () {
-        const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
+        const pidPath = $path.join(config.getPathToRoot(), DEF.DATA_FILE_PID);
         const data = $fs.readFileSync(pidPath);
         const pid = castInt(data);
         console.info(`Stop web server (PID: ${pid}).`);

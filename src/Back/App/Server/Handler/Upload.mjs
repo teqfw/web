@@ -30,7 +30,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
         const config = spec['TeqFw_Core_Back_Config$'];
 
         // VARS
-        const _root = join(config.getBoot().projectRoot, DEF.DATA_DIR_UPLOAD);
+        const _root = join(config.getPathToRoot(), DEF.DATA_DIR_UPLOAD);
 
         // FUNCS
 
