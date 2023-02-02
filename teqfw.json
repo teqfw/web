@@ -5,7 +5,7 @@
       "path": "./src"
     },
     "replace": {
-      "TeqFw_Core_Shared_Api_Util_ICodec": {"front": "TeqFw_Web_Front_Util_Codec"},
+      "TeqFw_Core_Shared_Api_Util_Codec": {"front": "TeqFw_Web_Front_Util_Codec"},
       "TeqFw_Core_Shared_Api_Util_Crypto": {"front": "TeqFw_Web_Front_Util_Crypto"},
       "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"},
       "TeqFw_Web_Front_Api_Mod_Server_Connect_IState": {"front": "TeqFw_Web_Front_Mod_Server_Connect_State"}

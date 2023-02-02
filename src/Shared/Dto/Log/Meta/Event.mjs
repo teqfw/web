@@ -37,7 +37,7 @@ class Dto {
 }
 
 /**
- * @implements TeqFw_Core_Shared_Api_Factory_Dto_IMeta
+ * @implements TeqFw_Core_Shared_Api_Factory_Dto_Meta
  * @deprecated don't use event related functionality in web plugin
  */
 export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {

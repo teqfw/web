@@ -23,8 +23,8 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_ILogger} */
-        const logger = spec['TeqFw_Core_Shared_Api_ILogger$$']; // instance
+        /** @type {TeqFw_Core_Shared_Api_Logger} */
+        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
         /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
         const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Mod_Address} */

@@ -4,7 +4,7 @@
  *
  * TODO: move this functionality to separate plugin.
  *
- * @implements TeqFw_Core_Shared_Api_Logger_ITransport
+ * @implements TeqFw_Core_Shared_Api_Logger_Transport
  */
 export default class TeqFw_Web_Front_Mod_Logger_Transport {
     constructor(spec) {
