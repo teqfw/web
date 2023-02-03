@@ -43,8 +43,6 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
 
     constructor(spec) {
         // DEPS
-        /** @type {TeqFw_Core_Shared_Dto_Formless} */
-        const dtoFormless = spec['TeqFw_Core_Shared_Dto_Formless$'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
@@ -56,7 +54,7 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
         this.createDto = function (data) {
             const res = new Dto();
             res.key = castString(data?.key);
-            res.value = dtoFormless.createDto(data?.value);
+            res.value = structuredClone(data?.value);
             return res;
         }
     }
