@@ -4,7 +4,7 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Config
  */
 // MODULE'S IMPORT
-import {constants as H2} from 'http2';
+import {constants as H2} from 'node:http2';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config';
@@ -43,27 +43,23 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
          * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
          */
         function process(req, res) {
-            // FUNCS
-
-            // MAIN
-
-            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            /** @type {Object} */
             const shares = res[DEF.HNDL_SHARE];
-            const status = shares.get(DEF.SHARE_RES_STATUS);
+            const status = shares[DEF.SHARE_RES_STATUS];
             if (!res.headersSent && !status) {
                 const addr = modAddr.parsePath(req.url);
                 if (addr.route === DEF.SHARED.CFG_DI) {
                     // return DI config
-                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(_storeDi));
-                    shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    shares[DEF.SHARE_RES_BODY] = JSON.stringify(_storeDi);
+                    shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
                 } else if (addr.route.includes(DEF.SHARED.CFG_APP)) {
                     // return app config
-                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(_storeApp));
-                    shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    shares[DEF.SHARE_RES_BODY] = JSON.stringify(_storeApp);
+                    shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
                 } else if (addr.route.includes(DEF.SHARED.CFG_SW_CACHE)) {
                     // return SW cache config
-                    shares.set(DEF.SHARE_RES_BODY, JSON.stringify(_storeSwCache));
-                    shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+                    shares[DEF.SHARE_RES_BODY] = JSON.stringify(_storeSwCache);
+                    shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
                 }
             }
         }

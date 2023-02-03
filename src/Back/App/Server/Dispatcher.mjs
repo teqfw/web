@@ -4,7 +4,7 @@
  * @namespace TeqFw_Web_Back_App_Server_Dispatcher
  */
 // MODULE'S IMPORT
-import {constants as H2} from 'http2';
+import {constants as H2} from 'node:http2';
 import sb from 'stream-buffers';
 
 // MODULE'S VARS
@@ -29,8 +29,6 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
         /** @type {TeqFw_Web_Back_Mod_Address} */
         const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
-        /** @type {TeqFw_Web_Back_App_Server_Registry} */
-        const fRegistry = spec['TeqFw_Web_Back_App_Server_Registry$'];
         /** @type {TeqFw_Web_Back_App_Server_Respond.respond405|function} */
         const respond405 = spec['TeqFw_Web_Back_App_Server_Respond.respond405'];
 
@@ -83,15 +81,15 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                 // should we process body of the input message?
                 if (method === HTTP2_METHOD_POST) {
                     const contentType = headers[HTTP2_HEADER_CONTENT_TYPE] ?? '';
-                    /** @type {TeqFw_Core_Shared_Mod_Map} */
+                    /** @type {Object} */
                     const shares = req[DEF.HNDL_SHARE];
                     // TODO: add handler's code here (request body preprocessors???)
                     if (contentType.startsWith('application/json')) {
                         const body = await readBody(req);
-                        shares.set(DEF.SHARE_REQ_BODY_JSON, JSON.parse(body));
+                        shares[DEF.SHARE_REQ_BODY_JSON] = JSON.parse(body);
                     } else if (contentType.startsWith('text/plain')) {
                         const body = await readBody(req);
-                        shares.set(DEF.SHARE_REQ_BODY, body);
+                        shares[DEF.SHARE_REQ_BODY] = body;
                     }
                 }
             }
@@ -101,9 +99,8 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             const {headers, method, url} = req;
             // check HTTP method
             if (isMethodAllowed(method)) {
-                // set registry for shared objects to request & response (the same object)
-                const sharedReg = fRegistry.create();
-                req[DEF.HNDL_SHARE] = res[DEF.HNDL_SHARE] = sharedReg;
+                // set 'key-value' registry for shared objects to request & response (the same object)
+                req[DEF.HNDL_SHARE] = res[DEF.HNDL_SHARE] = {};
                 // try to parse body for text & json input
                 await parseBody(method, headers, req);
                 const address = mAddress.parsePath(url);

@@ -4,9 +4,9 @@
  */
 // MODULE'S IMPORT
 import {lookup} from 'mime-types';
-import {createReadStream, existsSync, statSync} from 'fs';
-import {pipeline} from 'stream';
-import {constants as H2} from "http2";
+import {createReadStream, existsSync, statSync} from 'node:fs';
+import {pipeline} from 'node:stream';
+import {constants as H2} from 'node:http2';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Final';
@@ -36,12 +36,12 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
          */
         function process(req, res) {
             if (!res.headersSent) {
-                /** @type {TeqFw_Core_Shared_Mod_Map} */
+                /** @type {Object} */
                 const shares = req[DEF.HNDL_SHARE];
                 const headers = res.getHeaders();
-                const statusCode = shares.get(DEF.SHARE_RES_STATUS) ?? HTTP_STATUS_OK;
-                const file = shares.get(DEF.SHARE_RES_FILE);
-                const body = shares.get(DEF.SHARE_RES_BODY);
+                const statusCode = shares[DEF.SHARE_RES_STATUS] ?? HTTP_STATUS_OK;
+                const file = shares[DEF.SHARE_RES_FILE];
+                const body = shares[DEF.SHARE_RES_BODY];
                 let stat;
                 if (file && (statusCode === HTTP_STATUS_OK)) {
                     if (existsSync(file) && (stat = statSync(file)) && stat.isFile()) {
@@ -68,7 +68,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
 
         // INSTANCE METHODS
 
-        this.canProcess = () => true;
+        this.canProcess = ({}) => true;
 
         this.getProcessor = () => process;
 

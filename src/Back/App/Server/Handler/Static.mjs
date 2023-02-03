@@ -4,9 +4,9 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Static
  */
 // MODULE'S IMPORT
-import {existsSync, statSync} from 'fs';
-import {join} from 'path';
-import {constants as H2} from 'http2';
+import {existsSync, statSync} from 'node:fs';
+import {join} from 'node:path';
+import {constants as H2} from 'node:http2';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Static';
@@ -125,11 +125,11 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
             }
 
             // MAIN
-            /** @type {TeqFw_Core_Shared_Mod_Map} */
+            /** @type {Object} */
             const shares = res[DEF.HNDL_SHARE];
-            if (!res.headersSent && !shares.get(DEF.SHARE_RES_STATUS)) {
-                shares.set(DEF.SHARE_RES_FILE, getFilesystemPath(req.url));
-                shares.set(DEF.SHARE_RES_STATUS, HTTP_STATUS_OK);
+            if (!res.headersSent && !shares[DEF.SHARE_RES_STATUS]) {
+                shares[DEF.SHARE_RES_FILE] = getFilesystemPath(req.url);
+                shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
             }
         }
 
