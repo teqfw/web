@@ -30,7 +30,7 @@ export default function (spec) {
     function act() {
         /** @type {TeqFw_Web_Back_Dto_Config_Local} */
         const webCfg = config.getLocal(DEF.SHARED.NAME);
-        /** @type {TeqFw_Core_Back_Api_Dto_Config_Local} */
+        /** @type {TeqFw_Core_Back_Plugin_Dto_Config_Local} */
         const webCore = config.getLocal(DEF.MOD_CORE.SHARED.NAME);
 
         /** @type {TeqFw_Web_Shared_Dto_Config_Front.Dto} */
