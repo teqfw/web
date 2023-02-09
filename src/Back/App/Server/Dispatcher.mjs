@@ -5,7 +5,7 @@
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'node:http2';
-import sb from 'stream-buffers';
+import sb from 'stream-buffers'; // to read body as string
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Dispatcher';
@@ -88,8 +88,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                         const body = await readBody(req);
                         shares[DEF.SHARE_REQ_BODY_JSON] = JSON.parse(body);
                     } else if (contentType.startsWith('text/plain')) {
-                        const body = await readBody(req);
-                        shares[DEF.SHARE_REQ_BODY] = body;
+                        shares[DEF.SHARE_REQ_BODY] = await readBody(req);
                     }
                 }
             }
@@ -129,6 +128,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             const ordered = await scan({});
             Array.prototype.push.apply(handlers, ordered);
         }
+
         /**
          * Get dispatcher listener for 'request' event.
          * @return {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}

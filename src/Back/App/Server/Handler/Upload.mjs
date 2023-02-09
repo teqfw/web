@@ -78,7 +78,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Upload {
         this.getProcessor = () => process;
 
         this.init = async function () {
-            // there is not initialization for this handler
+            // there is no initialization for this handler
         }
 
         this.canProcess = function ({method, address} = {}) {

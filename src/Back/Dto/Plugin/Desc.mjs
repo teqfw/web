@@ -5,8 +5,27 @@
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc';
 
+/**
+ * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
+ * @type {Object}
+ */
+export const ATTR = {
+    DOORS: 'doors',
+    EXCLUDES: 'excludes',
+    HANDLERS: 'handlers',
+    SERVICES: 'services',
+    SOCKETS: 'sockets',
+    SSE: 'sse',
+    STATICS: 'statics',
+};
+Object.freeze(ATTR);
+
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Dto_Plugin_Desc {
+/**
+ * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
+ */
+class Dto {
+    static namespace = NS;
     /**
      * Application frontend entry points ('pub', 'admin', 'sign', ...).
      * This property should be used in application level descriptors only.
@@ -17,67 +36,53 @@ export default class TeqFw_Web_Back_Dto_Plugin_Desc {
     /**
      * Exclude some objects from processing.
      * This property should be used in application level descriptors only.
-     * @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes}
+     * @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes.Dto}
      */
     excludes;
-    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler>} */
+    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto>} */
     handlers;
     /** @type {string[]} */
     services;
+    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Socket.Dto>} */
+    sockets;
     /** @type {string[]} */
     sse;
     /** @type {Object<string, string>} */
     statics;
 }
 
-// attributes names to use as aliases in queries to object props
-TeqFw_Web_Back_Dto_Plugin_Desc.DOORS = 'doors';
-TeqFw_Web_Back_Dto_Plugin_Desc.EXCLUDES = 'excludes';
-TeqFw_Web_Back_Dto_Plugin_Desc.HANDLERS = 'handlers';
-TeqFw_Web_Back_Dto_Plugin_Desc.SERVICES = 'services';
-TeqFw_Web_Back_Dto_Plugin_Desc.SSE = 'sse';
-TeqFw_Web_Back_Dto_Plugin_Desc.STATICS = 'statics';
-
 /**
- * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
+ * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
-export class Factory {
-    static namespace = NS;
-
+export default class TeqFw_Web_Back_Dto_Plugin_Desc {
     constructor(spec) {
-        const {castArrayOfStr} = spec['TeqFw_Core_Shared_Util_Cast'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory} */
-        const fHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Factory$'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes.Factory} */
-        const fExcludes = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Excludes#Factory$'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
+        const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castObjectsMap|function} */
+        const castObjectsMap = spec['TeqFw_Core_Shared_Util_Cast.castObjectsMap'];
+        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
+        const dtoHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler$'];
+        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes} */
+        const dtoExcludes = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Excludes$'];
+        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Socket} */
+        const dtoSocket = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Socket$'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc|null} data
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc}
+         * @param {TeqFw_Web_Back_Dto_Plugin_Desc.Dto} [data]
+         * @return {TeqFw_Web_Back_Dto_Plugin_Desc.Dto}
          */
-        this.create = function (data = null) {
-            // FUNCS
-            function parseHandlers(data) {
-                const res = {};
-                if (typeof data === 'object')
-                    for (const key of Object.keys(data))
-                        res[key] = fHandler.create(data[key]);
-                return res;
-            }
-
-            // MAIN
-            const res = new TeqFw_Web_Back_Dto_Plugin_Desc();
+        this.createDto = function (data) {
+            // create new DTO
+            const res = new Dto();
+            // cast known attributes
             res.doors = castArrayOfStr(data?.doors);
-            res.excludes = fExcludes.create(data?.excludes);
-            res.handlers = parseHandlers(data?.handlers);
+            res.excludes = dtoExcludes.createDto(data?.excludes);
+            res.handlers = castObjectsMap(data?.handlers, dtoHandler.createDto);
             res.services = castArrayOfStr(data?.services);
+            res.sockets = castObjectsMap(data?.sockets, dtoSocket.createDto);
             res.sse = castArrayOfStr(data?.sse);
-            res.statics = Object.assign({}, data?.statics);
+            res.statics = castObjectsMap(data?.statics);
             return res;
         }
     }
 }
-
-// freeze DTO class to deny attributes changes and pin namespace
-Object.freeze(TeqFw_Web_Back_Dto_Plugin_Desc);

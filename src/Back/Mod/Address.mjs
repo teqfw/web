@@ -6,8 +6,8 @@ export default class TeqFw_Web_Back_Mod_Address {
         // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc} */
-        const Desc = spec['TeqFw_Web_Back_Dto_Plugin_Desc#'];
+        /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc.ATTR} */
+        const ATTR = spec['TeqFw_Web_Back_Dto_Plugin_Desc.ATTR'];
         /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
@@ -63,7 +63,7 @@ export default class TeqFw_Web_Back_Mod_Address {
         for (const item of items) {
             // TODO: we should have ROOT config in 'local.json', not in 'teqfw.json' (Desc.ROOT always is null for now)
             // one only 'web/root' is allowed in application
-            const iRoot = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.ROOT];
+            const iRoot = item?.teqfw?.[DEF.SHARED.NAME]?.[ATTR.ROOT];
             if (iRoot) {
                 if (!root) {
                     root = iRoot;
@@ -72,14 +72,14 @@ export default class TeqFw_Web_Back_Mod_Address {
                 }
             }
             // find all doors in the app
-            const iDoors = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.DOORS];
+            const iDoors = item?.teqfw?.[DEF.SHARED.NAME]?.[ATTR.DOORS];
             if (Array.isArray(iDoors)) {
                 const allied = doors.concat(iDoors);
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
-            /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler[]} */
-            const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[Desc.HANDLERS];
+            /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto[]} */
+            const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[ATTR.HANDLERS];
             if (typeof handlers === 'object')
                 for (const key of Object.keys(handlers)) {
                     const hndl = handlers[key];

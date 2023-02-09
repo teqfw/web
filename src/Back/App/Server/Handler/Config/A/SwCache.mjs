@@ -114,7 +114,7 @@ export default function (spec) {
 
             if (item.name === appName) {
                 // app root plugin
-                /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
+                /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Dto} */
                 const desc = item.teqfw[DEF.SHARED.NAME];
                 const doors = desc?.doors;
                 if (Array.isArray(doors)) {

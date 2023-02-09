@@ -32,7 +32,8 @@
     "@teqfw/core": "*",
     "mime-types": "*",
     "path-to-regexp": "*",
-    "stream-buffers": "*"
+    "stream-buffers": "*",
+    "ws": "*"
   },
   "devDependencies": {
     "@teqfw/core": "github:teqfw/core",

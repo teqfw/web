@@ -6,6 +6,8 @@
 * Add process to monitor online/offline modes.
 * Add fronts logs collector.
 * Fix 'space' signature in `TeqFw_Web_Back_Mod_Address.parsePath`.
+* Renew DTO structures.
+* Add web socket support.
 
 # 0.7.1
 

@@ -5,9 +5,10 @@
  * @namespace TeqFw_Web_Back_App_Server
  */
 // MODULE'S IMPORT
-import {createServer as createHttp1Server} from 'http';
-import {createSecureServer, createServer} from 'http2';
-import {readFileSync} from 'fs';
+import {createServer as createHttp1Server} from 'node:http';
+import {createSecureServer, createServer} from 'node:http2';
+import {readFileSync} from 'node:fs';
+import {WebSocketServer} from 'ws';
 
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_App_Server {
@@ -21,6 +22,8 @@ export default class TeqFw_Web_Back_App_Server {
         const config = spec['TeqFw_Core_Back_Config$'];
         /** @type {TeqFw_Web_Back_App_Server_Dispatcher} */
         const dispatcher = spec['TeqFw_Web_Back_App_Server_Dispatcher$'];
+        /** @type {TeqFw_Web_Back_App_Server_Listener_Socket} */
+        const listenSocket = spec['TeqFw_Web_Back_App_Server_Listener_Socket$'];
 
         // DEFINE WORKING VARS
         let _serverType; // save type for logs (HTTP/1, HTTP/2, HTTPS)
@@ -43,16 +46,27 @@ export default class TeqFw_Web_Back_App_Server {
                 return {cfgPort, cfgUseHttp1, cfgKey, cfgCert};
             }
 
+            /**
+             * @returns {Server}
+             */
             function initHttp1() {
                 _serverType = 'HTTP/1';
                 return createHttp1Server({});
             }
 
+            /**
+             * @returns {Http2Server}
+             */
             function initHttp2() {
                 _serverType = 'HTTP/2';
                 return createServer({});
             }
 
+            /**
+             * @param {string} key
+             * @param {string} cert
+             * @returns {Http2SecureServer}
+             */
             function initHttps(key, cert) {
                 _serverType = 'HTTPS';
                 return createSecureServer({
@@ -70,15 +84,25 @@ export default class TeqFw_Web_Back_App_Server {
             cert = cert ?? cfgCert ?? null;
             if (useHttp1 && (key && cert))
                 logger.info(`Option 'useHttp1' is ignored because 'key' and 'cert' options are presented.`);
+            // TODO: add config parameter to (not) use WebSockets
 
             // create server
+            /** @type {Server|Http2Server|Http2SecureServer} */
             const server = useHttp1 ? initHttp1()
                 : (key && cert) ? initHttps(key, cert) : initHttp2();
 
             // create request handlers, bind dispatcher to request event
             await dispatcher.createHandlers();
             const onRequest = dispatcher.getListener();
+
+            /** @type {WebSocketServer} */
+            const socketServer = new WebSocketServer({noServer: true});
+            await listenSocket.init();
+            const onUpgrade = listenSocket.createListener(socketServer);
+
+            // web server's listeners
             server.on('request', onRequest);
+            server.on('upgrade', onUpgrade);
             server.on('err', (err) => {
                 logger.error(`Web server is closed on error: ${JSON.stringify(err)}.`);
                 server.close();

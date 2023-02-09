@@ -15,9 +15,9 @@ export default function (spec) {
     /** @type {TeqFw_Core_Shared_Api_Logger} */
     const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
     /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-    const regPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Factory} */
-    const fDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc.Factory$'];
+    const modPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
+    /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
+    const dtoDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc$'];
     /** @type {TeqFw_Core_Shared_Util_BeforeAfter} */
     const instUtilSort = spec['TeqFw_Core_Shared_Util_BeforeAfter$$']; // instance
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
@@ -38,14 +38,14 @@ export default function (spec) {
          */
         async function createHandlers(utilSort) {
             const res = {};
-            /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler>} */
+            /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto>} */
             const includes = {};
             const excludes = [];
             // scan plugins and get all handlers and excludes
-            const plugins = regPlugins.items();
+            const plugins = modPlugins.items();
             for (const plugin of plugins) {
-                /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
-                const desc = fDesc.create(plugin.teqfw[DEF.SHARED.NAME]);
+                /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Dto} */
+                const desc = dtoDesc.createDto(plugin.teqfw[DEF.SHARED.NAME]);
                 for (const hName of Object.keys(desc.handlers))
                     includes[hName] = desc.handlers[hName];
                 const excl = desc?.excludes?.handlers;
@@ -58,7 +58,7 @@ export default function (spec) {
             for (const hName of Object.keys(includes)) {
                 if (!excludes.includes(hName)) {
                     logger.info(`Create web requests handler: ${hName}`);
-                    /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
+                    /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto} */
                     const dto = includes[hName];
                     /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler} */
                     res[hName] = await container.get(`${hName}$`);
