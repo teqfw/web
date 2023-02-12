@@ -6,10 +6,13 @@
 export default class TeqFw_Web_Back_App_Server_Listener_Socket {
     constructor(spec) {
         // DEPS
+        /** @type {TeqFw_Core_Shared_Api_Logger} */
+        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
         /** @type {TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory} */
         const aHndlFactory = spec['TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory$'];
 
         // VARS
+        logger.setNamespace(this.constructor.name);
         /** @type {WebSocketServer} */
         let _wss;
         /** @type {TeqFw_Web_Back_Api_Listener_Socket[]} */
@@ -35,6 +38,7 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
              * @param head
              */
             function listener(req, socket, head) {
+                logger.info(`Web socket upgrade request is received.`);
 
                 _wss.handleUpgrade(req, socket, head, function done(ws) {
                     let socket = ws;
@@ -66,6 +70,7 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
                 }
 
             });
+            logger.info(`Web socket listener is created for 'Upgrade' requests.`);
 
             return listener;
         }
