@@ -2,9 +2,6 @@
  * Stop web server.
  * @namespace TeqFw_Web_Back_Cli_Server_Stop
  */
-// MODULE'S IMPORT
-import {join} from "node:path";
-
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 
@@ -20,8 +17,6 @@ export default function Factory(spec) {
     // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Config} */
-    const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Back_App} */
     const app = spec['TeqFw_Core_Back_App$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
@@ -37,8 +32,7 @@ export default function Factory(spec) {
      */
     const action = async function () {
         // get PID and stop previously started process (web-server-start)
-        const pidPath = join(config.getPathToRoot(), DEF.DATA_FILE_PID);
-        const pid = await modPid.readPid(pidPath);
+        const pid = await modPid.readPid(DEF.DATA_FILE_PID);
         if (pid) modPid.stop(pid);
         // stop current process (web-server-stop)
         await app.stop();

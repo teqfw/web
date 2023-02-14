@@ -3,10 +3,10 @@
  * that is related to '@teqfw/web' node:
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Desc';
 
 /**
- * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Desc
  * @type {Object}
  */
 export const ATTR = {
@@ -22,7 +22,7 @@ Object.freeze(ATTR);
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Desc
  */
 class Dto {
     static namespace = NS;
@@ -36,14 +36,14 @@ class Dto {
     /**
      * Exclude some objects from processing.
      * This property should be used in application level descriptors only.
-     * @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes.Dto}
+     * @type {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto}
      */
     excludes;
-    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto>} */
+    /** @type {Object<string, TeqFw_Web_Back_Plugin_Dto_Desc_Handler.Dto>} */
     handlers;
     /** @type {string[]} */
     services;
-    /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Socket.Dto>} */
+    /** @type {Object<string, TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto>} */
     sockets;
     /** @type {string[]} */
     sse;
@@ -54,22 +54,22 @@ class Dto {
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
-export default class TeqFw_Web_Back_Dto_Plugin_Desc {
+export default class TeqFw_Web_Back_Plugin_Dto_Desc {
     constructor(spec) {
         /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
         const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castObjectsMap|function} */
         const castObjectsMap = spec['TeqFw_Core_Shared_Util_Cast.castObjectsMap'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler} */
-        const dtoHandler = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Handler$'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes} */
-        const dtoExcludes = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Excludes$'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Socket} */
-        const dtoSocket = spec['TeqFw_Web_Back_Dto_Plugin_Desc_Socket$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Handler} */
+        const dtoHandler = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Handler$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes} */
+        const dtoExcludes = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Excludes$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Socket} */
+        const dtoSocket = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Socket$'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc.Dto} [data]
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc.Dto}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Desc.Dto} [data]
+         * @return {TeqFw_Web_Back_Plugin_Dto_Desc.Dto}
          */
         this.createDto = function (data) {
             // create new DTO

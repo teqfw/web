@@ -2,9 +2,6 @@
  * Start HTTP server to process web requests.
  * @namespace TeqFw_Web_Back_Cli_Server_Start
  */
-// MODULE'S IMPORT
-import {join} from 'node:path';
-
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Start';
 const OPT_CERT = 'cert';
@@ -28,8 +25,6 @@ export default function Factory(spec) {
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
     /** @type {TeqFw_Core_Shared_Api_Logger} */
     const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-    /** @type {TeqFw_Core_Back_Config} */
-    const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
     const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
     /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
@@ -41,7 +36,7 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
     const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
-    const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option#Factory$'];
+    const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$'];
     /** @type {TeqFw_Core_Back_Mod_App_Pid} */
     const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
 
@@ -64,9 +59,7 @@ export default function Factory(spec) {
             const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
             const useWs = castBooleanIfExists(opts[OPT_USE_WS]);
             if (!skipPID) {
-                // compose path to PID file and write PID to file
-                const pidPath = join(config.getPathToRoot(), DEF.DATA_FILE_PID);
-                await modPid.writePid(pidPath);
+                await modPid.writePid(DEF.DATA_FILE_PID);
             }
             // PID is (not) written => start the server
             // create server from proxy then run it

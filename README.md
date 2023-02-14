@@ -57,7 +57,7 @@ Commands:
 
 ## `teqfw.json`
 
-[DTO](src/Back/Dto/Plugin/Desc.mjs) for `@teqfw/web` nodes in `teq`-plugins descriptors.
+[DTO](src/Back/Plugin/Dto/Desc.mjs) for `@teqfw/web` nodes in `teq`-plugins descriptors.
 
 ```json
 {

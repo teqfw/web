@@ -12,8 +12,8 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory {
         const container = spec['TeqFw_Di_Shared_Container$'];
         /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
         const modPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Dto_Plugin_Desc} */
-        const dtoDesc = spec['TeqFw_Web_Back_Dto_Plugin_Desc$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc} */
+        const dtoDesc = spec['TeqFw_Web_Back_Plugin_Dto_Desc$'];
 
 
         // VARS
@@ -26,11 +26,11 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory {
             // MAIN
             const res = [];
             // get socket handlers definitions from plugins descriptors
-            /** @type {Object<string, TeqFw_Web_Back_Dto_Plugin_Desc_Socket.Dto>} */
+            /** @type {Object<string, TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto>} */
             const includes = {};
             const plugins = modPlugins.items();
             for (const plugin of plugins) {
-                /** @type {TeqFw_Web_Back_Dto_Plugin_Desc.Dto} */
+                /** @type {TeqFw_Web_Back_Plugin_Dto_Desc.Dto} */
                 const desc = dtoDesc.createDto(plugin.teqfw[DEF.SHARED.NAME]);
                 for (const name of Object.keys(desc.sockets))
                     includes[name] = desc.sockets[name];

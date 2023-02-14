@@ -6,12 +6,12 @@ export default class TeqFw_Web_Back_Mod_Address {
         // DEPS
         /** @type {TeqFw_Web_Back_Defaults} */
         const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Web_Back_Dto_Plugin_Desc.ATTR} */
-        const ATTR = spec['TeqFw_Web_Back_Dto_Plugin_Desc.ATTR'];
+        /** @type {typeof TeqFw_Web_Back_Plugin_Dto_Desc.ATTR} */
+        const ATTR = spec['TeqFw_Web_Back_Plugin_Dto_Desc.ATTR'];
         /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
         const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
         /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
-        const fAddr = spec['TeqFw_Web_Back_Dto_Address#Factory$'];
+        const fAddr = spec['TeqFw_Web_Back_Dto_Address.Factory$'];
 
         // VARS
         /** @type {String[]} doors used in the app */
@@ -78,7 +78,7 @@ export default class TeqFw_Web_Back_Mod_Address {
                 doors = [...new Set(allied)]; // make items unique
             }
             // find all spaces used by web requests handlers
-            /** @type {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto[]} */
+            /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Handler.Dto[]} */
             const handlers = item?.teqfw?.[DEF.SHARED.NAME]?.[ATTR.HANDLERS];
             if (typeof handlers === 'object')
                 for (const key of Object.keys(handlers)) {

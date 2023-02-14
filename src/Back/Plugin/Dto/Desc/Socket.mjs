@@ -1,12 +1,12 @@
 /**
- * DTO to describe web requests handler (events to listen and spaces to control).
+ * DTO to describe web socket handler.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc_Handler';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Desc_Socket';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc_Handler
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Desc_Socket
  */
 class Dto {
     static namespace = NS;
@@ -26,34 +26,24 @@ class Dto {
      * @type {string[]}
      */
     before;
-    /**
-     * Names of the spaces in URLs that processed by this handler.
-     * (@see TeqFw_Web_Back_Dto_Address)
-     *
-     * @type {string[]}
-     */
-    spaces;
 }
 
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
-export default class TeqFw_Web_Back_Dto_Plugin_Desc_Handler {
+export default class TeqFw_Web_Back_Plugin_Dto_Desc_Socket {
     constructor(spec) {
         /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
         const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto} [data]
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Handler.Dto}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto} [data]
+         * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto}
          */
         this.createDto = function (data) {
-            // create new DTO
             const res = new Dto();
-            // cast known attributes
             res.after = castArrayOfStr(data?.after);
             res.before = castArrayOfStr(data?.before);
-            res.spaces = castArrayOfStr(data?.spaces);
             return res;
         }
     }

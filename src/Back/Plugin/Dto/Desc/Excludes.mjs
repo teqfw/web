@@ -2,11 +2,11 @@
  * DTO to describe excludes for web request handlers, WAPI services, etc.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Plugin_Desc_Excludes';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Desc_Excludes';
 
 // MODULE'S CLASSES
 /**
- * @memberOf TeqFw_Web_Back_Dto_Plugin_Desc_Excludes
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Desc_Excludes
  */
 class Dto {
     static namespace = NS;
@@ -33,15 +33,15 @@ class Dto {
 /**
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
-export default class TeqFw_Web_Back_Dto_Plugin_Desc_Excludes {
+export default class TeqFw_Web_Back_Plugin_Dto_Desc_Excludes {
 
     constructor(spec) {
         /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
         const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes.Dto} [data]
-         * @return {TeqFw_Web_Back_Dto_Plugin_Desc_Excludes.Dto}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto} [data]
+         * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto}
          */
         this.createDto = function (data) {
             // create new DTO
