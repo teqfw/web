@@ -2,10 +2,10 @@
  * DTO for secure server configuration.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Config_Local_Server_Secure';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Dto_Config_Local_Server_Secure {
+export default class TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure {
     /**
      * Path to certificates chain in PEM format (absolute or relative to app's root folder).
      * @type {string}
@@ -21,7 +21,7 @@ export default class TeqFw_Web_Back_Dto_Config_Local_Server_Secure {
 // noinspection JSCheckFunctionSignatures
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Dto_Config_Local_Server_Secure
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure
  */
 export class Factory {
     static namespace = NS;
@@ -30,11 +30,11 @@ export class Factory {
         const {castString} = spec['TeqFw_Core_Shared_Util_Cast'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Config_Local_Server_Secure|null} data
-         * @return {TeqFw_Web_Back_Dto_Config_Local_Server_Secure}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure|null} data
+         * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Dto_Config_Local_Server_Secure();
+            const res = new TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure();
             res.cert = castString(data?.cert);
             res.key = castString(data?.key);
             return res;

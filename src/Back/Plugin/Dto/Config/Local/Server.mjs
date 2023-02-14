@@ -2,10 +2,10 @@
  * Configuration DTO for 'server' node of web plugin section.
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Config_Local_Server';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Config_Local_Server';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Dto_Config_Local_Server {
+export default class TeqFw_Web_Back_Plugin_Dto_Config_Local_Server {
     /**
      * Port to listening (3000).
      * @type {number}
@@ -13,7 +13,7 @@ export default class TeqFw_Web_Back_Dto_Config_Local_Server {
     port;
     /**
      * Secure server configuration.
-     * @type {TeqFw_Web_Back_Dto_Config_Local_Server_Secure}
+     * @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure}
      */
     secure;
     /**
@@ -26,22 +26,22 @@ export default class TeqFw_Web_Back_Dto_Config_Local_Server {
 // noinspection JSCheckFunctionSignatures
 /**
  * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Dto_Config_Local_Server
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Config_Local_Server
  */
 export class Factory {
     static namespace = NS;
 
     constructor(spec) {
         const {castInt, castBoolean} = spec['TeqFw_Core_Shared_Util_Cast'];
-        /** @type {TeqFw_Web_Back_Dto_Config_Local_Server_Secure.Factory} */
-        const fSecure = spec['TeqFw_Web_Back_Dto_Config_Local_Server_Secure.Factory$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory} */
+        const fSecure = spec['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$'];
 
         /**
-         * @param {TeqFw_Web_Back_Dto_Config_Local_Server|null} data
-         * @return {TeqFw_Web_Back_Dto_Config_Local_Server}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server|null} data
+         * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server}
          */
         this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Dto_Config_Local_Server();
+            const res = new TeqFw_Web_Back_Plugin_Dto_Config_Local_Server();
             res.port = castInt(data?.port);
             res.secure = fSecure.create(data?.secure);
             res.useHttp1 = castBoolean(data?.useHttp1);

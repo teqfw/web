@@ -3,13 +3,12 @@
  * @namespace TeqFw_Web_Back_Cli_Server_Stop
  */
 // MODULE'S IMPORT
-import $path from 'path';
-import $fs from 'fs';
+import {join} from "node:path";
 
-// DEFINE WORKING VARS
+// MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 
-// DEFINE MODULE'S FUNCTIONS
+// MODULE'S FUNCS
 /**
  * Factory to create CLI command.
  *
@@ -25,27 +24,23 @@ export default function Factory(spec) {
     const config = spec['TeqFw_Core_Back_Config$'];
     /** @type {TeqFw_Core_Back_App} */
     const app = spec['TeqFw_Core_Back_App$'];
-    /** @type {Function} */
-    const castInt = spec['TeqFw_Core_Shared_Util_Cast#castInt'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
+    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
+    /** @type {TeqFw_Core_Back_Mod_App_Pid} */
+    const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
 
     // FUNCS
     /**
-     * Stop web server.
+     * Stop previously started web server (using PID file).
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
     const action = async function () {
-        const pidPath = $path.join(config.getPathToRoot(), DEF.DATA_FILE_PID);
-        const data = $fs.readFileSync(pidPath);
-        const pid = castInt(data);
-        console.info(`Stop web server (PID: ${pid}).`);
-        try {
-            process.kill(pid, 'SIGINT');
-        } catch (e) {
-            console.error('Cannot kill web server process.');
-        }
+        // get PID and stop previously started process (web-server-start)
+        const pidPath = join(config.getPathToRoot(), DEF.DATA_FILE_PID);
+        const pid = await modPid.readPid(pidPath);
+        if (pid) modPid.stop(pid);
+        // stop current process (web-server-stop)
         await app.stop();
     };
     Object.defineProperty(action, 'namespace', {value: NS});

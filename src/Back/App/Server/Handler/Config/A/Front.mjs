@@ -28,17 +28,17 @@ export default function (spec) {
      * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
      */
     function act() {
-        /** @type {TeqFw_Web_Back_Dto_Config_Local} */
-        const webCfg = config.getLocal(DEF.SHARED.NAME);
-        /** @type {TeqFw_Core_Back_Plugin_Dto_Config_Local} */
-        const webCore = config.getLocal(DEF.MOD_CORE.SHARED.NAME);
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} */
+        const cfgWeb = config.getLocal(DEF.SHARED.NAME);
+        /** @type {TeqFw_Core_Back_Plugin_Dto_Config_Local.Dto} */
+        const cfgCore = config.getLocal(DEF.MOD_CORE.SHARED.NAME);
 
         /** @type {TeqFw_Web_Shared_Dto_Config_Front.Dto} */
         const res = factDto.createDto();
-        if (webCfg?.custom) res.custom = webCfg.custom;
-        if (webCfg?.frontLogsMonitoring) res.frontLogsMonitoring = webCfg.frontLogsMonitoring; // 'true' only
-        if (webCfg?.urlBase) res.urlBase = webCfg.urlBase;
-        if (webCore?.devMode) res.devMode = webCore.devMode;
+        if (cfgWeb?.custom) res.custom = cfgWeb.custom;
+        if (cfgWeb?.frontLogsMonitoring) res.frontLogsMonitoring = cfgWeb.frontLogsMonitoring; // 'true' only
+        if (cfgWeb?.urlBase) res.urlBase = cfgWeb.urlBase;
+        if (cfgCore?.devMode) res.devMode = cfgCore.devMode;
         return res;
     }
 

@@ -1,13 +1,16 @@
 /**
  * Local configuration DTO for the plugin.
  * @see TeqFw_Core_Back_Config
- * TODO: should we move it to 'web-api' plugin?
  */
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_Dto_Config_Local';
+const NS = 'TeqFw_Web_Back_Plugin_Dto_Config_Local';
 
 // MODULE'S CLASSES
-export default class TeqFw_Web_Back_Dto_Config_Local {
+/**
+ * @memberOf TeqFw_Web_Back_Plugin_Dto_Config_Local
+ */
+class Dto {
+    static namespace = NS;
     /**
      * Any custom object to use as application configuration on the front.
      * @type {Object}
@@ -15,34 +18,33 @@ export default class TeqFw_Web_Back_Dto_Config_Local {
     custom;
     /** @type {boolean} */
     frontLogsMonitoring;
-    /** @type {TeqFw_Web_Back_Dto_Config_Local_Server} */
+    /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server} */
     server;
     /** @type {string} base for URL constructing */
     urlBase;
 }
 
 /**
- * Factory to create new DTO instances.
- * @memberOf TeqFw_Web_Back_Dto_Config_Local
+ * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
-export class Factory {
-    static namespace = NS;
-
+export default class TeqFw_Web_Back_Plugin_Dto_Config_Local {
     constructor(spec) {
         /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
         const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
         /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
         const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
 
-        /** @type {TeqFw_Web_Back_Dto_Config_Local_Server.Factory} */
-        const fServer = spec['TeqFw_Web_Back_Dto_Config_Local_Server#Factory$'];
+        /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server.Factory} */
+        const fServer = spec['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server#Factory$'];
         /**
-         * @param {TeqFw_Web_Back_Dto_Config_Local|null} data
-         * @return {TeqFw_Web_Back_Dto_Config_Local}
+         * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} data
+         * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto}
          */
-        this.create = function (data = null) {
-            const res = new TeqFw_Web_Back_Dto_Config_Local();
-            res.custom = data?.custom;
+        this.createDto = function (data) {
+            // create new DTO and populate it with initialization data
+            const res = Object.assign(new Dto(), data);
+            // cast known attributes
+            res.custom = structuredClone(data?.custom);
             res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
             res.server = fServer.create(data?.server);
             res.urlBase = castString(data?.urlBase);

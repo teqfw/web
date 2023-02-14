@@ -37,7 +37,7 @@ Commands:
 
 ## `./cfg/local.json`
 
-[DTO](src/Back/Dto/Config/Local.mjs) for `@teqfw/web` node.
+[DTO](src/Back/Plugin/Dto/Config/Local.mjs) for `@teqfw/web` node.
 
 ```json
 {

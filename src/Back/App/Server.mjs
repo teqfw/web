@@ -30,21 +30,22 @@ export default class TeqFw_Web_Back_App_Server {
         logger.setNamespace(this.constructor.name);
 
         // DEFINE THIS INSTANCE METHODS
-        this.run = async function ({port, useHttp1, key, cert} = {}) {
+        this.run = async function ({port, useHttp1, key, cert, useWs} = {}) {
             // FUNCS
 
             /**
              * Extract server options from local config.
-             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number}}
+             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number, cfgSkipWs: boolean}}
              */
             function optionsFromConfig() {
-                /** @type {TeqFw_Web_Back_Dto_Config_Local} */
+                /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} */
                 const cfgLocal = config.getLocal(DEF.SHARED.NAME);
-                const cfgPort = cfgLocal?.server?.port;
-                const cfgUseHttp1 = cfgLocal?.server?.useHttp1;
-                const cfgKey = cfgLocal?.server?.secure?.key;
                 const cfgCert = cfgLocal?.server?.secure?.cert;
-                return {cfgPort, cfgUseHttp1, cfgKey, cfgCert};
+                const cfgKey = cfgLocal?.server?.secure?.key;
+                const cfgPort = cfgLocal?.server?.port;
+                const cfgSkipWs = cfgLocal?.server?.secure?.skipWebSocket ?? false;
+                const cfgUseHttp1 = cfgLocal?.server?.useHttp1;
+                return {cfgPort, cfgUseHttp1, cfgKey, cfgCert, cfgSkipWs};
             }
 
             /**
@@ -78,14 +79,14 @@ export default class TeqFw_Web_Back_App_Server {
 
             // MAIN
             // get startup options from config
-            const {cfgPort, cfgUseHttp1, cfgKey, cfgCert} = optionsFromConfig();
+            const {cfgPort, cfgUseHttp1, cfgKey, cfgCert, cfgUseWs} = optionsFromConfig();
             port = port ?? (cfgPort) ?? DEF.DATA_SERVER_PORT;
             useHttp1 = useHttp1 ?? cfgUseHttp1 ?? false;
             key = key ?? cfgKey ?? null;
             cert = cert ?? cfgCert ?? null;
+            useWs = useWs ?? (cfgUseWs === true);
             if (useHttp1 && (key && cert))
                 logger.info(`Option 'useHttp1' is ignored because 'key' and 'cert' options are presented.`);
-            // TODO: add config parameter to (not) use WebSockets
 
             // create server
             /** @type {Server|Http2Server|Http2SecureServer} */
@@ -95,24 +96,26 @@ export default class TeqFw_Web_Back_App_Server {
             // create request handlers, bind dispatcher to request event
             await dispatcher.createHandlers();
             const onRequest = dispatcher.getListener();
-
-            /** @type {WebSocketServer} */
-            const socketServer = new WebSocketServer({noServer: true});
-            await listenSocket.init();
-            const onUpgrade = listenSocket.createListener(socketServer);
-
             // web server's listeners
             server.on('request', onRequest);
-            server.on('upgrade', onUpgrade);
             server.on('err', (err) => {
                 logger.error(`Web server is closed on error: ${JSON.stringify(err)}.`);
                 server.close();
             });
 
+            if (useWs === true) {
+                logger.info(`Web server uses web sockets.`);
+                /** @type {WebSocketServer} */
+                const socketServer = new WebSocketServer({noServer: true});
+                await listenSocket.init();
+                const onUpgrade = listenSocket.createListener(socketServer);
+                server.on('upgrade', onUpgrade);
+            }
 
             // start server
             server.listen(port);
-            logger.info(`Web server is started on port ${port} in ${_serverType} mode.`);
+            const logWs = (useWs === true) ? '(with web sockets)' : '(without web sockets)';
+            logger.info(`Web server is started on port ${port} in ${_serverType} mode ${logWs}.`);
         }
 
     }

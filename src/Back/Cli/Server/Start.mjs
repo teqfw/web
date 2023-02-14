@@ -4,7 +4,6 @@
  */
 // MODULE'S IMPORT
 import {join} from 'node:path';
-import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 
 // DEFINE WORKING VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Start';
@@ -12,7 +11,8 @@ const OPT_CERT = 'cert';
 const OPT_HTTP1 = 'http1';
 const OPT_KEY = 'key';
 const OPT_PORT = 'port';
-const OPT_SKIP_PID = 'skipPid';
+const OPT_SKIP_PID = 'skipPid'; // skip PID write (for Google App Engine)
+const OPT_USE_WS = 'useWs'; // use WebSockets handlers
 
 // DEFINE MODULE'S FUNCTIONS
 /**
@@ -39,9 +39,11 @@ export default function Factory(spec) {
     /** @type {TeqFw_Di_Shared_Api_IProxy} */
     const proxyServer = spec['TeqFw_Web_Back_App_Server@'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
+    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
     const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option#Factory$'];
+    /** @type {TeqFw_Core_Back_Mod_App_Pid} */
+    const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
 
     // FUNCS
     /**
@@ -60,19 +62,17 @@ export default function Factory(spec) {
             const port = castInt(opts[OPT_PORT]);
             const skipPID = castBooleanIfExists(opts[OPT_SKIP_PID]);
             const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
+            const useWs = castBooleanIfExists(opts[OPT_USE_WS]);
             if (!skipPID) {
                 // compose path to PID file and write PID to file
-                const pid = process.pid.toString();
                 const pidPath = join(config.getPathToRoot(), DEF.DATA_FILE_PID);
-                const pidDir = pidPath.substring(0, pidPath.lastIndexOf('/'));
-                if (!existsSync(pidDir)) mkdirSync(pidDir, {recursive: true});
-                writeFileSync(pidPath, pid);
+                await modPid.writePid(pidPath);
             }
-            // PID is wrote => start the server
+            // PID is (not) written => start the server
             // create server from proxy then run it
             /** @type {TeqFw_Web_Back_App_Server} */
             const server = await proxyServer.create;
-            await server.run({port, useHttp1, cert, key});
+            await server.run({port, useHttp1, cert, key, useWs});
         } catch (e) {
             console.error('%s', e);
         }
@@ -100,16 +100,21 @@ export default function Factory(spec) {
     optKey.flags = `-k, --${OPT_KEY} <path>`;
     optKey.description = `private key in PEM format to secure HTTP/2 server`;
     res.opts.push(optKey);
-    // add option --skip-pid
-    const optSkipPID = fOpt.create();
-    optSkipPID.flags = `-s, --${OPT_SKIP_PID}`;
-    optSkipPID.description = `don't save PID file (used for read-only filesystems like Google AppEngine)`;
-    res.opts.push(optSkipPID);
     // add option --port
     const optPort = fOpt.create();
     optPort.flags = `-p, --${OPT_PORT} <port>`;
     optPort.description = `port to use (default: ${DEF.DATA_SERVER_PORT})`;
     res.opts.push(optPort);
+    // add option --skip-pid
+    const optSkipPID = fOpt.create();
+    optSkipPID.flags = `-s, --${OPT_SKIP_PID}`;
+    optSkipPID.description = `don't save PID file (used for read-only filesystems like Google AppEngine)`;
+    res.opts.push(optSkipPID);
+    // add option --use-ws
+    const optUseWs = fOpt.create();
+    optUseWs.flags = `-w, --${OPT_USE_WS}`;
+    optUseWs.description = `use web sockets with this server`;
+    res.opts.push(optUseWs);
     return res;
 }
 
