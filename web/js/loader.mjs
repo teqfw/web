@@ -1,6 +1,6 @@
 /**
  * Frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
- * @deprecated use ./install.mjs
+ * @deprecated use ./bootstrap.mjs
  */
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';

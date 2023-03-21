@@ -1,6 +1,7 @@
 /**
  * Frontend installer for ordinary web application. Loads DI configuration and initializes DI.
  * This es6-module is imported with regular 'import' statement, not with DI container.
+ * @deprecated use ./bootstrap.mjs
  */
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
