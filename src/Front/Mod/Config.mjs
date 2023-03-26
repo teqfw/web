@@ -28,8 +28,8 @@ export default class TeqFw_Web_Front_Mod_Config {
             async function initFromServer(door) {
                 const space = DEF.SHARED.SPACE_CFG;
                 const act = DEF.SHARED.CFG_APP;
-                const param = door ?? '';
-                const url = `./${space}/${act}/${param}`;
+                const param = door ? `/${door}` : '';
+                const url = `./${space}${act}${param}`;
                 const res = await fetch(url);
                 _cache = await res.json();
                 _cache.door = door;
