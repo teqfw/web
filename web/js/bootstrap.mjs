@@ -113,7 +113,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             const frontApp = await container.get(`${app}$`);
             log(`Initializing app instance...`);
             await frontApp.init(log);
-            log(`Mounting app instance...`);
+            log(`Mounting app instance to '${cssApp}'...`);
             await frontApp.mount(selector);
         } catch (e) {
             log(`Error in bootstrap: ${e.message}. ${e.stack}`);
