@@ -10,10 +10,14 @@ export default class TeqFw_Web_Back_Defaults {
     DATA_FILE_PID = './var/web-server.pid'; // PID file to stop running server.
     DATA_SERVER_PORT = 8080;
 
+
+
     FS_STATIC_ROOT = 'web'; // root folder for static resources in plugins
 
     HNDL_SHARE = 'teqSharedObjects'; // attribute name for shared objects' registry in req/res structures
 
+    /** @type {TeqFw_Core_Back_Defaults} */
+    MOD_CORE;
     /** @type {TeqFw_Di_Back_Defaults} */
     MOD_DI;
 
@@ -28,11 +32,12 @@ export default class TeqFw_Web_Back_Defaults {
     SHARED;
 
     constructor(spec) {
-        // EXTRACT DEPS
+        // DEPS
+        this.MOD_CORE = spec['TeqFw_Core_Back_Defaults$'];
         this.MOD_DI = spec['TeqFw_Di_Back_Defaults$'];
         this.SHARED = spec['TeqFw_Web_Shared_Defaults$'];
 
-        // MAIN FUNCTIONALITY
+        // MAIN
         // init props after dependencies was injected
         const ns = this.SHARED.NAME;
         this.SHARE_REQ_BODY = `${ns}/req/body`; // request body as text

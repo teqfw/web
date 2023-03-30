@@ -3,13 +3,20 @@
  *
  * This is standard ES6 module w/o TeqFW DI support (service workers don't allow dynamic `import()`).
  *
- * I suppose that SW files should be cached by browser itself, so these files are not under `./Front/` folder.
+ * I suppose that SW files should be cached by browser itself, so these files are not under `./Auth/` folder.
+ * @namespace TeqFw_Web_Sw_Worker
  */
+// MODULE'S IMPORT
 import Config from './Config.mjs';
-import MSG from '../Front/Model/Sw/Enum/Message.mjs';
+import CFG_MSG from '../Front/Mod/Sw/Enum/Message.mjs';
 
+// MODULE'S VARS
+const NS = 'TeqFw_Web_Sw_Worker';
+const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
+const CFG_CACHE_DISABLED = 'cache_disabled';
 /**
  * Service Worker events.
+ * TODO: extract codifier to standalone es6-module to import in other scripts.
  */
 const EVT = {
     ACTIVATE: 'activate',
@@ -25,204 +32,234 @@ const EVT = {
     PUSH_SUBSCRIPTION_CHANGE: 'pushsubscriptionchange',
     SYNC: 'sync',
 };
-const API_STATIC_FILES = '/api/@teqfw/web/load/files_to_cache'; // get list of files to cache on SW installation
-const AREA_API = 'api'; // marker for API routes (don't cache)
-const AREA_SSE = 'sse'; // marker for SSE routes (don't cache)
-const AREA_STATIC = 'web'; // marker for static resources (to be cached)
-const AREA_WORKER = 'sw'; // marker for Service Worker commands
-const CACHE_STATIC = 'static-cache-v1'; // store name to cache static resources
-const CFG_CACHE_DISABLED = 'cache_disabled';
+const URL_CFG_SW_CACHE = '/cfg/sw_cache'; // get list of files to cache on SW installation
+const MSG = {PROGRESS: 'PROGRESS'};
 
-export default class TeqFw_Web_Sw_Worker {
 
+/**
+ * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
+ * @type {TeqFw_Web_Sw_Config}
+ */
+const _config = new Config();
+/**
+ * Entry point for the frontend application ('pub', 'admin').
+ * @type {string}
+ */
+let _door;
+/** @type {boolean} */
+let _cacheDisabled = true; // disable by default TODO: invert logic here and in IndexedDB
+/**
+ * Log function to trace functionality of this module.
+ * @type {function(msg:string, meta:Object=)}
+ */
+let _log;
+
+// MODULE'S FUNCS
+
+/**
+ * Send message to `index.html` to start bootstrap.
+ */
+function onActivate() {
+    _log(`[TeqFw_Web_Sw_Worker]: on activate event is here...`);
+    self.clients.claim();
+}
+
+/**
+ * @param {FetchEvent} event
+ * @memberOf TeqFw_Web_Sw_Worker
+ */
+function onFetch(event) {
+    // FUNCS
     /**
-     * ATTN: This is standard ES6 module w/o TeqFW DI support !!!
+     * Analyze route's URL and return 'true' if request should not be cached.
+     * @param {Request} req
+     * @returns {boolean}
+     * TODO: bypass filter should be extendable
      */
-    constructor() {
-        // DEFINE WORKING VARS / PROPS
-        /**
-         * Configuration object for SW. It is stored in IDB and is reloaded on service worker start.
-         * @type {TeqFw_Web_Sw_Config}
-         */
-        const _config = new Config();
-        /**
-         * Entry point for the frontend application ('pub', 'admin').
-         * @type {string}
-         */
-        let _door;
-        /** @type {boolean} */
-        let _cacheDisabled;
-
-        // DEFINE INNER FUNCTIONS
-
-        /**
-         * Send message to `index.html` to start bootstrap.
-         */
-        function onActivate() {
-            console.log(`[SW]: on activate event is here...`);
-            self.clients.claim();
-        }
-
-        function onFetch(event) {
-            // DEFINE WORKING VARS / PROPS
-
-            // DEFINE INNER FUNCTIONS
-            /**
-             * Analyze route's URL and return route type (api, service worker or static).
-             * @param {Request} req
-             * @returns {string}
-             */
-            function getRouteType(req) {
-                const API = /(.*)(\/api\/)(.*)/;
-                const SSE = /(.*)(\/sse\/)(.*)/;
-                const SW = /(.*)(\/sw\/)(.*)/;
-                if (req.url.match(API)) {
-                    return AREA_API;
-                } else if (req.url.match(SSE)) {
-                    return AREA_SSE;
-                } else if (req.url.match(SW)) {
-                    return AREA_WORKER;
-                }
-                return AREA_STATIC;
-            }
-
-            async function getFromCacheOrFetchAndCache(event) {
-                try {
-
-                    const cache = await self.caches.open(CACHE_STATIC);
-                    const cachedResponse = await cache.match(event.request);
-                    if (cachedResponse) {
-                        return cachedResponse;
-                    }
-                    // wait until resource will be fetched from server and stored in cache
-                    const resp = await fetch(event.request);
-                    await cache.put(event.request, resp.clone());
-                    return resp;
-                } catch (e) {
-                    console.log('[SW] error: ');
-                    console.dir(e);
-                }
-            }
-
-            // MAIN FUNCTIONALITY
-            const routeType = getRouteType(event.request);
-            if ((routeType === AREA_API) || (routeType === AREA_SSE)) {
-                // just pass the request to remote server
-            } else {
-                if (_cacheDisabled !== true) {
-                    event.respondWith(getFromCacheOrFetchAndCache(event));
-                }
-            }
-        }
-
-        function onInstall(event) {
-            // DEFINE INNER FUNCTIONS
-            async function loadFilesToCache() {
-                // Get list of static files from the server
-                const data = {door: _door}; // see TeqFw_Web_Shared_WAPI_Load_FilesToCache.Request
-                const req = new Request(API_STATIC_FILES, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({data})
-                });
-                const resp = await self.fetch(req);
-                const json = await resp.json();
-                return json?.data?.items ?? [];
-            }
-
-            async function cacheStatics(urls) {
-                try {
-                    if (Array.isArray(urls)) {
-                        // ... and load static files to the local cache
-                        const cacheStat = await caches.open(CACHE_STATIC);
-                        // await cacheStat.addAll(files);
-                        await Promise.all(
-                            urls.map(function (url) {
-                                return cacheStat.add(url).catch(function (reason) {
-                                    console.log(`'${url}' failed: ${String(reason)}`);
-                                });
-                            })
-                        );
-                    }
-                } catch (e) {
-                    console.log('[SW] install error: ');
-                    console.dir(e);
-                }
-            }
-
-            // MAIN FUNCTIONALITY
-            event.waitUntil(
-                loadFilesToCache()
-                    .then(cacheStatics)
-                    .catch((err) => {
-                        console.log('[SW] error: ');
-                        console.dir(err);
-                    })
-            );
-        }
-
-        /**
-         * @param {MessageEvent} event
-         */
-        async function onMessage(event) {
-
-            // DEFINE INNER FUNCTIONS
-
-            async function cacheClean() {
-                try {
-                    const cache = await self.caches.open(CACHE_STATIC);
-                    const keys = await cache.keys();
-                    keys.forEach((one) => cache.delete(one));
-                } catch (e) {
-                    console.log('[SW] error: ');
-                    console.dir(e);
-                }
-            }
-
-            // MAIN FUNCTIONALITY
-
-            /** @type {TeqFw_Web_Front_Model_Sw_Control.Message} */
-            const data = event.data;
-            const type = data.type;
-            const payload = data.payload;
-            let out;
-            // perform requested operation
-            if (type === MSG.CACHE_STATUS_GET) {
-                _cacheDisabled = await _config.get(CFG_CACHE_DISABLED);
-                out = !_cacheDisabled; // inversion for cache status
-            } else if (type === MSG.CACHE_STATUS_SET) {
-                _cacheDisabled = !payload; // inversion for cache status
-                await _config.set(CFG_CACHE_DISABLED, _cacheDisabled);
-            } else if (type === MSG.CACHE_CLEAN) {
-                await cacheClean();
-            }
-            // ... then return result
-            const res = Object.assign({}, data);
-            res.payload = out;
-            // noinspection JSCheckFunctionSignatures
-            event.source.postMessage(res);
-        }
-
-        // DEFINE INSTANCE METHODS
-
-        /**
-         * Bind event handlers to worker's scope.
-         * @param {WorkerGlobalScope} context
-         * @param {string} door entry point for the front of application
-         */
-        this.setup = function (context, door) {
-            _door = door;
-            context.addEventListener(EVT.ACTIVATE, onActivate);
-            context.addEventListener(EVT.FETCH, onFetch);
-            context.addEventListener(EVT.INSTALL, onInstall);
-            context.addEventListener(EVT.MESSAGE, onMessage);
-            console.log(`[SW]: is registering for '${_door}' entry point.`);
-        }
-
-        // MAIN FUNCTIONALITY
-        _config.get(CFG_CACHE_DISABLED).then((disabled) => _cacheDisabled = disabled);
+    function detectBypass(req) {
+        // see TeqFw_Web_Shared_Defaults.SPACE_...
+        const API = /(.*)(\/api\/)(.*)/;
+        const CFG = /(.*)(\/cfg\/)(.*)/;
+        const EBF = /(.*)(\/ebf\/)(.*)/; // events 'back-to-front'
+        const EFB = /(.*)(\/efb\/)(.*)/; // events 'front-to-back'
+        const SSE_OPEN = /(.*)(\/web-event-stream-open\/)(.*)/; // events 'front-to-back'
+        const res = !!(
+            req.method === 'POST' ||
+            req.url.match(API) ||
+            req.url.match(CFG) ||
+            req.url.match(EFB) ||
+            req.url.match(EBF) ||
+            req.url.match(SSE_OPEN)
+        );
+        return res;
     }
 
+    async function getFromCacheOrFetchAndCache(event) {
+        try {
+            const cache = await self.caches.open(CACHE_STATIC);
+            const cachedResponse = await cache.match(event.request);
+            if (cachedResponse) return cachedResponse;
+            // wait until resource will be fetched from server and stored in cache
+            const resp = await fetch(event.request);
+            await cache.put(event.request, resp.clone());
+            return resp;
+        } catch (e) {
+            _log(`[TeqFw_Web_Sw_Worker] error: ${JSON.stringify(e)}`);
+        }
+    }
+
+    // MAIN
+    const bypass = detectBypass(event.request);
+    if (bypass === false)
+        if (_cacheDisabled !== true)
+            event.respondWith(getFromCacheOrFetchAndCache(event));
+}
+
+/**
+ * Load list of files required for offline running from server and cache all files.
+ * @param {ExtendableEvent} event
+ */
+function onInstall(event) {
+    // FUNCS
+
+    /**
+     * Load list of static file's URLs to cache locally.
+     * @return {Promise<string[]>}
+     */
+    async function loadFilesToCache() {
+        // Get list of static files from the server
+        //const data = {door: _door}; // see TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache
+        const req = new Request(`${URL_CFG_SW_CACHE}/${_door}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const resp = await self.fetch(req);
+        const json = await resp.json();
+        const res = Array.isArray(json) ? json : [];
+        _log(`List of static files to cache is loaded (total items: ${res.length}).`);
+        return res;
+    }
+
+    /**
+     * Load urls from server and cache content locally. All URLs are separated to batches up to 10 URLs each.
+     * @param {string[]} urls
+     * @return {Promise<void>}
+     */
+    async function cacheStatics(urls) {
+        try {
+            if (Array.isArray(urls)) {
+
+                const allClients = await self.clients.matchAll({
+                    includeUncontrolled: true
+                });
+                const [firstClient] = allClients;
+                let progress = 0;
+                firstClient.postMessage({type: MSG.PROGRESS, progress: 0});
+
+                // ... and load static files to the local cache
+                const cacheStat = await caches.open(CACHE_STATIC);
+                // METHOD 1
+                // await cacheStat.addAll(files);
+                // METHOD 2
+                let total = 0;
+                const SIZE = 10;
+                while (total <= urls.length) {
+                    firstClient.postMessage({type: MSG.PROGRESS, progress});
+                    const slice = urls.slice(total, total + SIZE);
+                    await Promise.all(
+                        slice.map(function (url) {
+                            return cacheStat.add(url).catch(function (reason) {
+                                _log(`SW install error: '${url}' failed, ${String(reason)}`);
+                            });
+                        })
+                    );
+                    total += SIZE;
+                    const cached = total < urls.length ? total : urls.length;
+                    _log(`Total '${cached}' URLs are cached.`);
+                    progress = Math.round(total / urls.length * 100) / 100
+                }
+                // report 100%
+                firstClient.postMessage({type: MSG.PROGRESS, progress: 1});
+            }
+            _log(`Static files are loaded and cached by Service Worker.`);
+        } catch (e) {
+            _log(`SW iInstallation error: ${JSON.stringify(e)}`);
+        }
+    }
+
+    // MAIN
+    event.waitUntil(
+        loadFilesToCache()
+            .then(cacheStatics)
+            .catch((e) => {
+                _log(`[TeqFw_Web_Sw_Worker] error: ${e.message}`);
+            })
+    );
+}
+
+/**
+ * @param {MessageEvent} event
+ */
+async function onMessage(event) {
+
+    // FUNCS
+
+    async function cacheClean() {
+        try {
+            const cache = await self.caches.open(CACHE_STATIC);
+            const keys = await cache.keys();
+            keys.forEach((one) => cache.delete(one));
+        } catch (e) {
+            _log(`[TeqFw_Web_Sw_Worker] error: ${JSON.stringify(e)}`);
+        }
+    }
+
+    // MAIN
+
+    /** @type {TeqFw_Web_Front_Mod_Sw_Control.Message} */
+    const data = event.data;
+    const type = data.type;
+    const payload = data.payload;
+    let out;
+    // perform requested operation
+    if (type === CFG_MSG.CACHE_STATUS_GET) {
+        _cacheDisabled = await _config.get(CFG_CACHE_DISABLED);
+        out = !_cacheDisabled; // inversion for cache status
+    } else if (type === CFG_MSG.CACHE_STATUS_SET) {
+        _cacheDisabled = !payload; // inversion for cache status
+        await _config.set(CFG_CACHE_DISABLED, _cacheDisabled);
+    } else if (type === CFG_MSG.CACHE_CLEAN) {
+        await cacheClean();
+    }
+    // ... then return result
+    const res = Object.assign({}, data);
+    res.payload = out;
+    // noinspection JSCheckFunctionSignatures
+    event.source.postMessage(res);
+}
+
+/**
+ * Setup function to populate Service Worker global scope.
+ * @param {string} [door]
+ * @param {function(msg:string, meta:Object=)} [log]
+ */
+function setup({door, log}) {
+    const res = {};
+    _log = log;
+    _door = door;
+    _config.get(CFG_CACHE_DISABLED).then((val) => _cacheDisabled = val);
+    res[EVT.ACTIVATE] = onActivate;
+    res[EVT.FETCH] = onFetch;
+    res[EVT.INSTALL] = onInstall;
+    res[EVT.MESSAGE] = onMessage;
+    return res;
+}
+
+// MODULE'S MAIN
+// Object.defineProperty(setup, 'namespace', {value: NS});
+export {
+    setup as default,
+    MSG
 }

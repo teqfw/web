@@ -2,14 +2,10 @@
  * Stop web server.
  * @namespace TeqFw_Web_Back_Cli_Server_Stop
  */
-// MODULE'S IMPORT
-import $path from 'path';
-import $fs from 'fs';
-
-// DEFINE WORKING VARS
+// MODULE'S VARS
 const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 
-// DEFINE MODULE'S FUNCTIONS
+// MODULE'S FUNCS
 /**
  * Factory to create CLI command.
  *
@@ -18,34 +14,30 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
  * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
 export default function Factory(spec) {
-    // EXTRACT DEPS
+    // DEPS
     /** @type {TeqFw_Web_Back_Defaults} */
     const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Config} */
-    const config = spec['TeqFw_Core_Back_Config$'];
-    /** @type {Function} */
-    const castInt = spec['TeqFw_Core_Shared_Util_Cast#castInt'];
+    /** @type {TeqFw_Core_Back_App} */
+    const app = spec['TeqFw_Core_Back_App$'];
     /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command#Factory$'];
+    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
+    /** @type {TeqFw_Core_Back_Mod_App_Pid} */
+    const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
 
-    // DEFINE INNER FUNCTIONS
+    // FUNCS
     /**
-     * Stop web server.
+     * Stop previously started web server (using PID file).
      * @returns {Promise<void>}
      * @memberOf TeqFw_Web_Back_Cli_Server_Stop
      */
     const action = async function () {
-        try {
-            const pidPath = $path.join(config.getBoot().projectRoot, DEF.DATA_FILE_PID);
-            const data = $fs.readFileSync(pidPath);
-            const pid = castInt(data);
-            console.info(`Stop web server (PID: ${pid}).`);
-            process.kill(pid, 'SIGINT');
-        } catch (e) {
-            console.error('Cannot kill web server process.');
-        }
+        // get PID and stop previously started process (web-server-start)
+        const pid = await modPid.readPid(DEF.DATA_FILE_PID);
+        if (pid) modPid.stop(pid);
+        // stop current process (web-server-stop)
+        await app.stop();
     };
-    Object.defineProperty(action, 'name', {value: `${NS}.${action.name}`});
+    Object.defineProperty(action, 'namespace', {value: NS});
 
     // COMPOSE RESULT
     const res = fCommand.create();
@@ -57,4 +49,4 @@ export default function Factory(spec) {
 }
 
 // finalize code components for this es6-module
-Object.defineProperty(Factory, 'name', {value: `${NS}.${Factory.name}`});
+Object.defineProperty(Factory, 'namespace', {value: NS});

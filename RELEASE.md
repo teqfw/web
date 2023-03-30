@@ -1,12 +1,21 @@
 # @teqfw/web: releases
 
+# 0.8.0
+
+* Restructure directories and files.
+* Add process to monitor online/offline modes.
+* Add fronts logs collector.
+* Fix 'space' signature in `TeqFw_Web_Back_Mod_Address.parsePath`.
+* Renew DTO structures.
+* Add web socket support.
+
 # 0.7.1
 
 * Add shared objects' registry for HTTP request/response.
 * Respond 404 for missed static resource.
 * Add 'content-type' header to service worker request for files to caching.
 * Clean up deprecated code.
-* Clean up DTO features from 'TeqFw_Web_Back_Handler_WAPI_Context'.
+* Clean up DTO features from 'TeqFw_Web_Back_App_Server_Handler_WAPI_Context'.
 * Restructure directories & files.
 
 # 0.7.0
@@ -32,5 +41,5 @@
 * remove `root` option from teq-descriptor;
 * use `@teqfw/web.handlers` in `./teqfw.json` as an object and not as an array;
 * use `@teqfw/di.replace` in `./teqfw.json` as an object and not as an array;
-* improve handlers initialization in `TeqFw_Web_Back_Handler_Registry`;
+* improve handlers initialization in `TeqFw_Web_Back_App_Server_Handler_Registry`;
 * improve error logging in `TeqFw_Web_Back_Plugin_Web_Handler_Service`;

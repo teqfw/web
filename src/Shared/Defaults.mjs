@@ -3,21 +3,22 @@
  */
 export default class TeqFw_Web_Shared_Defaults {
 
-    /** @type {TeqFw_Core_Shared_Defaults} */
-    MOD_CORE;
+    CFG_APP = '/app'; // front app configuration
+    CFG_DI = '/di'; // DI configuration for the front
+    CFG_SW_CACHE = '/sw_cache'; // files to be cached on the front by service worker
+
+    LOG_META_TYPE = 'type'; // log type in log metadata sent to logs monitor (TODO: move to log plugin)
 
     NAME = '@teqfw/web';
 
-    // URL prefix for API requests: https://.../door/space/...
-    SPACE_API = 'api';
-    SPACE_SRC = 'src';
-    SPACE_SSE = 'sse';
-    SPACE_UPLOAD = 'upload';
-    SPACE_WEB = 'web';
+    /** @type {TeqFw_Core_Shared_Defaults} */
+    MOD_CORE;
 
-    WEB_LOAD_CONFIG = '/load/config';
-    WEB_LOAD_NAMESPACES = '/load/namespaces';
-    WEB_LOAD_FILES_TO_CACHE = '/load/files_to_cache';
+    // URL prefix for API requests: https://.../door/space/...
+    SPACE_CFG = 'cfg'; // configuration data (namespaces for DI, etc)
+    SPACE_SRC = 'src'; // sources from 'node_modules' as statics
+    SPACE_UPLOAD = 'upload'; // TODO: move to standalone plugin
+    SPACE_WEB = 'web'; // sources from './web/' folder as statics
 
     constructor(spec) {
         this.MOD_CORE = spec['TeqFw_Core_Shared_Defaults$'];

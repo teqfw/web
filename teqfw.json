@@ -5,41 +5,37 @@
       "path": "./src"
     },
     "replace": {
-      "TeqFw_Web_Front_Api_Gate_IAjaxLed": {"front": "TeqFw_Web_Front_Model_Gate_AjaxLed"},
-      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Model_Gate_ErrorHandler"}
+      "TeqFw_Core_Shared_Api_Util_Codec": {"front": "TeqFw_Web_Front_Util_Codec"},
+      "TeqFw_Core_Shared_Api_Util_Crypto": {"front": "TeqFw_Web_Front_Util_Crypto"},
+      "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"},
+      "TeqFw_Web_Front_Api_Mod_Server_Connect_IState": {"front": "TeqFw_Web_Front_Mod_Server_Connect_State"}
     }
   },
   "@teqfw/core": {
     "commands": [
       "TeqFw_Web_Back_Cli_Server_Start",
       "TeqFw_Web_Back_Cli_Server_Stop"
-    ]
+    ],
+    "plugin": {
+      "onInit": "TeqFw_Web_Back_Plugin_Init",
+      "onStop": "TeqFw_Web_Back_Plugin_Stop"
+    }
   },
   "@teqfw/web": {
     "handlers": {
-      "TeqFw_Web_Back_Handler_SSE": {
-        "before": ["TeqFw_Web_Back_Handler_WAPI"],
-        "spaces": ["sse"]
+      "TeqFw_Web_Back_App_Server_Handler_Config": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
+        "spaces": ["cfg"]
       },
-      "TeqFw_Web_Back_Handler_WAPI": {
-        "before": ["TeqFw_Web_Back_Handler_Static"],
-        "spaces": ["api"]
-      },
-      "TeqFw_Web_Back_Handler_Static": {
-        "before": ["TeqFw_Web_Back_Handler_Final"],
-        "spaces": ["src", "web"]
-      },
-      "TeqFw_Web_Back_Handler_Upload": {
-        "after": ["TeqFw_Web_Back_Handler_WAPI"],
-        "before": ["TeqFw_Web_Back_Handler_Static"],
+      "TeqFw_Web_Back_App_Server_Handler_Upload": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Static"],
         "spaces": ["upload"]
       },
-      "TeqFw_Web_Back_Handler_Final": {}
-    },
-    "services": [
-      "TeqFw_Web_Back_WAPI_Load_Config",
-      "TeqFw_Web_Back_WAPI_Load_FilesToCache",
-      "TeqFw_Web_Back_WAPI_Load_Namespaces"
-    ]
+      "TeqFw_Web_Back_App_Server_Handler_Static": {
+        "before": ["TeqFw_Web_Back_App_Server_Handler_Final"],
+        "spaces": ["src", "web"]
+      },
+      "TeqFw_Web_Back_App_Server_Handler_Final": {}
+    }
   }
 }

@@ -14,21 +14,27 @@ export default class TeqFw_Web_Front_Api_Store_IEntity {
 
     /**
      * Get codifier for entity attributes.
-     * @return {Object}
+     * @return {*}
      */
     getAttributes() {}
-
-    /**
-     * Return array with names of entity attributes.
-     * @return {string[]}
-     */
-    getAttrNames() {}
 
     /**
      * Get entity name: '@vnd/plugin/path/to/entity'.
      * @return {string}
      */
-    getEntityName() { }
+    getName() {}
+
+    /**
+     * Get codifier for entity indexes.
+     * @return {*}
+     */
+    getIndexes() {}
+
+    /**
+     * Get key attributes names for given index or for primary key if 'index' is omitted.
+     * @param {string} [index]
+     */
+    getKeysForIndex(index) {}
 
     /**
      * Return array with primary keys for the entity.

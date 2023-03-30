@@ -12,14 +12,14 @@ export default class TeqFw_Web_Sw_Config {
         /** @type {IDBDatabase} */
         let _db;
 
-        // DEFINE INNER FUNCTIONS
+        // FUNCS
 
         /**
          * Open connection to IDB.
          * @return {Promise<void>}
          */
         async function open() {
-            // DEFINE INNER FUNCTIONS
+            // FUNCS
             /**
              * Upgrade IDB schema.
              * @param {IDBDatabase} db
@@ -29,7 +29,7 @@ export default class TeqFw_Web_Sw_Config {
                     db.createObjectStore(ENTITY);
             }
 
-            // MAIN FUNCTIONALITY
+            // MAIN
             if (_db === undefined) {
                 const promise = new Promise(function (resolve, reject) {
                     /** @type {IDBOpenDBRequest} */
@@ -50,7 +50,7 @@ export default class TeqFw_Web_Sw_Config {
             }
         }
 
-        // DEFINE INSTANCE METHODS
+        // INSTANCE METHODS
 
         /**
          * Set configuration option by key.

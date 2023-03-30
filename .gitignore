@@ -1,6 +1,7 @@
 /**/*.pid
 /.idea/
 /.nyc_output/
+/cfg/local.*
 /jsdoc/
 /node_modules/
 /package-lock.json
