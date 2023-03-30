@@ -1,6 +1,6 @@
 # @teqfw/web: releases
 
-# 0.x.x.x
+# 0.8.0
 
 * Restructure directories and files.
 * Add process to monitor online/offline modes.
