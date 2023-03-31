@@ -4,10 +4,12 @@
  * These handlers are used by dispatcher to process HTTP request.
  *
  * @namespace TeqFw_Web_Back_Api_Dispatcher_IHandler
+ * was: T.eqFw_Web_Back_Api_Request_IHandler
  */
 
 /**
  * @interface
+ * TODO: rename _IName to _Name
  */
 export default class TeqFw_Web_Back_Api_Dispatcher_IHandler {
     /**
