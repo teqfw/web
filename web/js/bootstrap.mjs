@@ -137,18 +137,23 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
         if (worker.controller === null) {
             // ... then load 'sw.js' script and register service worker in navigator
             try {
-                log(`Try to register new service worker (load '${urlSw}').`);
-                const reg = await worker.register(urlSw, {type: 'module'});
-                if (reg.active) {
-                    log(`SW is registered and is active. Start app bootstrap.`);
-                    await launchApp(nsApp, cssApp);
-                } else {
-                    log(`SW is registered but is not activated yet.`);
-                    // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
-                    worker.addEventListener('controllerchange', async () => {
-                        log(`SW just installed (page's first load). Start app bootstrap.`);
+                if (urlSw) {
+                    log(`Try to register new service worker (load '${urlSw}').`);
+                    const reg = await worker.register(urlSw, {type: 'module'});
+                    if (reg.active) {
+                        log(`SW is registered and is active. Start app bootstrap.`);
                         await launchApp(nsApp, cssApp);
-                    });
+                    } else {
+                        log(`SW is registered but is not activated yet.`);
+                        // wait for `controllerchange` (see `clients.claim()` in SW code on `activate` event)
+                        worker.addEventListener('controllerchange', async () => {
+                            log(`SW just installed (page's first load). Start app bootstrap.`);
+                            await launchApp(nsApp, cssApp);
+                        });
+                    }
+                } else {
+                    log(`Starting up without service worker.`);
+                    await launchApp(nsApp, cssApp);
                 }
             } catch (e) {
                 log(`SW registration is failed: ${e}\n${e.stack}`)
