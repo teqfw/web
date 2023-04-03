@@ -4,9 +4,10 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Static
  */
 // MODULE'S IMPORT
+import {constants as H2} from 'node:http2';
 import {existsSync, statSync} from 'node:fs';
 import {join} from 'node:path';
-import {constants as H2} from 'node:http2';
+import {platform} from 'node:process';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Static';
@@ -15,6 +16,7 @@ const {
     HTTP2_METHOD_GET,
     HTTP_STATUS_OK,
 } = H2;
+const IS_WIN = (platform === 'win32');
 
 // MODULE'S CLASSES
 /**
@@ -90,22 +92,35 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                 }
 
                 /**
-                 * Map URL to filesystem.
+                 * Map plugin related URL to filesystem:
+                 *  ' /web/@teqfw/web/js/bootstrap.mjs' => 'C:\...\node_modules\@teqfw\web\web\js\bootstrap.mjs'
+                 *  ' /web/@teqfw/web/js/bootstrap.mjs' => '/.../node_modules/@teqfw/web/web/js/bootstrap.mjs'
                  *
                  * @param url
                  * @returns {string}
                  */
                 function pathMap(url) {
+                    const IS_WIN = (platform === 'win32');
                     let result = url;
-                    for (const key in _routes) {
-                        const one = _routes[key];
-                        const route = `${key}/`.replace('//', '/');
+                    for (const key in _routes) { // OS dependent
+                        const path = _routes[key]; // OS dependent
+                        const keyNorm = (IS_WIN) ? key.replace(/\\/g, '/') : key; // linux style
+                        const route = `${keyNorm}/`.replace(/\/\//g, '/'); // remove '//'
                         const regSrc = new RegExp(`(.*)(${route})(.*)`);
                         const partsSrc = regSrc.exec(url);
                         if (Array.isArray(partsSrc)) {
                             const tail = partsSrc[3];
-                            result = `${one}/${tail}`;
+                            result = `${path}/${tail}`;
                             result = result.replace(/\/\//g, '/');
+                            if (IS_WIN) {
+                                // convert URL to win-style
+                                const tailWin = tail.replace(/\//g, '\\');
+                                result = `${path}\\${tailWin}`;
+                                result = result.replace(/\\\\/g, '\\');
+                            } else {
+                                result = `${path}/${tail}`;
+                                result = result.replace(/\/\//g, '/');
+                            }
                             break;
                         }
                     }
@@ -121,6 +136,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                 } else {    // URL with mapping should be resolved relative to project root
                     result = mapped;
                 }
+                if (IS_WIN) result = `file://${result}`;
                 return result;
             }
 
