@@ -1,5 +1,9 @@
 # @teqfw/web: releases
 
+# 0.8.2
+
+* Hotfix for Windows paths in Statics handler.
+
 # 0.8.1
 
 * Hotfix for Windows delimiters.

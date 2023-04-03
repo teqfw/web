@@ -100,7 +100,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                  * @returns {string}
                  */
                 function pathMap(url) {
-                    const IS_WIN = (platform === 'win32');
                     let result = url;
                     for (const key in _routes) { // OS dependent
                         const path = _routes[key]; // OS dependent
@@ -136,7 +135,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
                 } else {    // URL with mapping should be resolved relative to project root
                     result = mapped;
                 }
-                if (IS_WIN) result = `file://${result}`;
                 return result;
             }
 
