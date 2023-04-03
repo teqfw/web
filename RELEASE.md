@@ -1,5 +1,9 @@
 # @teqfw/web: releases
 
+# 0.8.1
+
+* Hotfix for Windows delimiters.
+
 # 0.8.0
 
 * Restructure directories and files.

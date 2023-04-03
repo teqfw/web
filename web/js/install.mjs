@@ -3,9 +3,6 @@
  * This es6-module is imported with regular 'import' statement, not with DI container.
  * @deprecated use ./bootstrap.mjs
  */
-// MODULE'S IMPORT
-import {MSG} from './src/@teqfw/web/Sw/Worker.mjs';
-
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
