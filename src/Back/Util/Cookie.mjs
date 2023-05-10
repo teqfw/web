@@ -70,7 +70,7 @@ function create({name, value, path, expires, domain, secure, httpOnly, sameSite}
 function get({request, cookie}) {
     const headers = request.headers;
     const cookies = headers[H2.HTTP2_HEADER_COOKIE];
-    const value = cookies.match('(^|;)\\s*' + cookie + '\\s*=\\s*([^;]+)')?.pop() || '';
+    const value = cookies?.match('(^|;)\\s*' + cookie + '\\s*=\\s*([^;]+)')?.pop() || '';
     if (value.length) {
         // there is session cookie in HTTP request
         return value;
