@@ -1,5 +1,9 @@
 # @teqfw/web: releases
 
+# 0.9.0
+
+* `TeqFw_Web_Back_Util_Cookie` is added.
+
 # 0.8.2
 
 * Hotfix for Windows paths in Statics handler.

@@ -126,7 +126,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
          */
         this.createHandlers = async function () {
             const ordered = await scan({});
-            Array.prototype.push.apply(handlers, ordered);
+            handlers.push(...ordered);
         }
 
         /**
