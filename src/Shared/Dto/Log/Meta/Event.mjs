@@ -1,5 +1,6 @@
 /**
  * Logs metadata for entries related to web communication using events.
+ * @deprecated remove after 2023/06/01
  */
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Shared_Dto_Log_Meta_Event';

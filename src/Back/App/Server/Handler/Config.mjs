@@ -34,6 +34,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
         const modAddr = spec['TeqFw_Web_Back_Mod_Address$'];
 
         // VARS
+        logger.setNamespace(this.constructor.name);
         let _storeDi, _storeApp, _storeSwCache;
 
         // FUNCS
@@ -84,7 +85,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
          */
         this.canProcess = function ({method, address} = {}) {
             return ((method === HTTP2_METHOD_GET) && (address.space === DEF.SHARED.SPACE_CFG));
-        }
+        };
 
         // MAIN
         Object.defineProperty(process, 'namespace', {value: NS});
