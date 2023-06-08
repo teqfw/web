@@ -1,6 +1,8 @@
 # @teqfw/web: releases
 
-# 0.10.0 - NEW
+# 0.X.X
+
+* Remove plugin's init/stop functionality.
 
 # 0.9.0
 
