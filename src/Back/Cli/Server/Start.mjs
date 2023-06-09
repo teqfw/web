@@ -40,6 +40,9 @@ export default function Factory(spec) {
     /** @type {TeqFw_Core_Back_Mod_App_Pid} */
     const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
 
+    // VARS
+    logger.setNamespace(NS);
+
     // FUNCS
     /**
      * Parse command line options and start server in requested mode.

@@ -35,7 +35,7 @@ export default class TeqFw_Web_Back_App_Server {
 
             /**
              * Extract server options from local config.
-             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number, cfgSkipWs: boolean}}
+             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number, cfgUseWs: boolean}}
              */
             function optionsFromConfig() {
                 /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} */
@@ -43,9 +43,9 @@ export default class TeqFw_Web_Back_App_Server {
                 const cfgCert = cfgLocal?.server?.secure?.cert;
                 const cfgKey = cfgLocal?.server?.secure?.key;
                 const cfgPort = cfgLocal?.server?.port;
-                const cfgSkipWs = cfgLocal?.server?.secure?.skipWebSocket ?? false;
+                const cfgUseWs = cfgLocal?.server?.useWebSocket ?? false;
                 const cfgUseHttp1 = cfgLocal?.server?.useHttp1;
-                return {cfgPort, cfgUseHttp1, cfgKey, cfgCert, cfgSkipWs};
+                return {cfgPort, cfgUseHttp1, cfgKey, cfgCert, cfgUseWs};
             }
 
             /**
@@ -116,7 +116,7 @@ export default class TeqFw_Web_Back_App_Server {
             server.listen(port);
             const logWs = (useWs === true) ? '(with web sockets)' : '(without web sockets)';
             logger.info(`Web server is started on port ${port} in ${_serverType} mode ${logWs}.`);
-        }
+        };
 
     }
 }

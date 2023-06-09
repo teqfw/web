@@ -1,5 +1,10 @@
 # @teqfw/web: releases
 
+# 0.10.0
+
+* Remove plugin's init/stop functionality.
+* Add 'useWebSocket' option to local configuration.
+
 # 0.9.0
 
 * `TeqFw_Web_Back_Util_Cookie` is added.

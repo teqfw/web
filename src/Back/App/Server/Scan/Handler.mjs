@@ -23,6 +23,9 @@ export default function (spec) {
     /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
     const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
 
+    // VARS
+    logger.setNamespace(NS);
+
     // FUNCS
     /**
      * @return {Promise<*>}

@@ -38,13 +38,14 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
              * @param head
              */
             function listener(req, socket, head) {
-                logger.info(`Web socket upgrade request is received.`);
+                const ipv6 = req.socket.remoteAddress;
+                logger.info(`Web socket upgrade request is received from '${ipv6}'.`);
 
                 _wss.handleUpgrade(req, socket, head, function done(ws) {
                     let socket = ws;
                     for (const handler of _handlers) {
                         if (handler.canProcess(req)) {
-                            socket = handler.prepareSocket(ws);
+                            socket = (handler.prepareSocket) ? handler.prepareSocket(ws, req) : ws;
                             break;
                         }
                     }
@@ -73,11 +74,11 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
             logger.info(`Web socket listener is created for 'Upgrade' requests.`);
 
             return listener;
-        }
+        };
 
         this.init = async function () {
             const created = await aHndlFactory.createHandlers();
             _handlers.push(...created);
-        }
+        };
     }
 }

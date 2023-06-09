@@ -24,9 +24,10 @@ export default class TeqFw_Web_Back_Api_Listener_Socket {
      * Prepare web socket before processing the connection.
      *
      * @param {WebSocket} ws
+     * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
      * @returns {WebSocket}
      */
-    prepareSocket(ws) {}
+    prepareSocket(ws, req) {}
 
     /**
      * Process one socket connection.

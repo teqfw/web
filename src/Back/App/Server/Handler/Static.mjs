@@ -37,6 +37,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
 
         // VARS
+        logger.setNamespace(this.constructor.name);
         const _rootFs = config.getPathToRoot(); // path to project root
         const _rootWeb = join(_rootFs, DEF.FS_STATIC_ROOT); // default path to app web root
         const _routes = {}; // '/src/@teqfw/core' => '/.../node_modules/@teqfw/core/src'
@@ -193,7 +194,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
         this.canProcess = function ({method} = {}) {
             // This handler should stay immediately before Final handler and after all other handlers!
             return (method === HTTP2_METHOD_GET);
-        }
+        };
 
         // MAIN
         Object.defineProperty(process, 'namespace', {value: NS});
