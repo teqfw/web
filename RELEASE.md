@@ -1,6 +1,6 @@
 # @teqfw/web: releases
 
-# 0.X.X
+# 0.10.0
 
 * Remove plugin's init/stop functionality.
 * Add 'useWebSocket' option to local configuration.
