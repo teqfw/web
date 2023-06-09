@@ -21,6 +21,11 @@ export default class TeqFw_Web_Back_Plugin_Dto_Config_Local_Server {
      * @type {boolean}
      */
     useHttp1;
+    /**
+     * 'true' - use WebSocket (skipped by default).
+     * @type {boolean}
+     */
+    useWebSocket;
 }
 
 // noinspection JSCheckFunctionSignatures
@@ -32,7 +37,10 @@ export class Factory {
     static namespace = NS;
 
     constructor(spec) {
-        const {castInt, castBoolean} = spec['TeqFw_Core_Shared_Util_Cast'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
+        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
+        /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
+        const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
         /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory} */
         const fSecure = spec['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$'];
 
@@ -45,7 +53,8 @@ export class Factory {
             res.port = castInt(data?.port);
             res.secure = fSecure.create(data?.secure);
             res.useHttp1 = castBoolean(data?.useHttp1);
+            res.useWebSocket = castBoolean(data?.useWebSocket);
             return res;
-        }
+        };
     }
 }

@@ -3,6 +3,7 @@
 # 0.X.X
 
 * Remove plugin's init/stop functionality.
+* Add 'useWebSocket' option to local configuration.
 
 # 0.9.0
 
