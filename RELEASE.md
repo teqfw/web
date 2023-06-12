@@ -1,6 +1,6 @@
 # @teqfw/web: releases
 
-# 0.X.X
+# 0.11.0
 
 * Add a list of HTTP request handlers in the order of processing to the log.
 * Fix default value of 'HTTP_STATUS_OK' when page is not found.
