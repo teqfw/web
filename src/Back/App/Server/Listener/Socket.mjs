@@ -65,11 +65,7 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
                         break;
                     }
                 }
-                if (handler) handler.process(ws, req);
-                else {
-                    // TODO: close socket
-                }
-
+                if (handler?.process) handler.process(ws, req);
             });
             logger.info(`Web socket listener is created for 'Upgrade' requests.`);
 

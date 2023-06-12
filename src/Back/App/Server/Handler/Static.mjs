@@ -143,8 +143,11 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
             /** @type {Object} */
             const shares = res[DEF.HNDL_SHARE];
             if (!res.headersSent && !shares[DEF.SHARE_RES_STATUS]) {
-                shares[DEF.SHARE_RES_FILE] = getFilesystemPath(req.url);
-                shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
+                const path = getFilesystemPath(req.url);
+                if (existsSync(path)) {
+                    shares[DEF.SHARE_RES_FILE] = path;
+                    shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
+                }
             }
         }
 

@@ -1,5 +1,11 @@
 # @teqfw/web: releases
 
+# 0.X.X
+
+* Add a list of HTTP request handlers in the order of processing to the log.
+* Fix default value of 'HTTP_STATUS_OK' when page is not found.
+* Allow WebSocket handlers w/o `process()` method.
+
 # 0.10.0
 
 * Remove plugin's init/stop functionality.
