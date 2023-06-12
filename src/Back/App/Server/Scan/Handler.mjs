@@ -89,8 +89,11 @@ export default function (spec) {
         const handlers = await createHandlers(sorter);
         const ordered = sorter.getOrdered();
         const res = [];
-        for (const ns of ordered)
+        logger.info(`HTTP requests handlers (in order of processing):`);
+        for (const ns of ordered) {
             res.push(handlers[ns]);
+            logger.info(`\t${ns}`);
+        }
         return res;
     }
 

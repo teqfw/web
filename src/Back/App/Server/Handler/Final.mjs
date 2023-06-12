@@ -13,6 +13,7 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Final';
 const {
     HTTP2_HEADER_CONTENT_LENGTH,
     HTTP2_HEADER_CONTENT_TYPE,
+    HTTP_STATUS_NOT_FOUND,
     HTTP_STATUS_OK,
 } = H2;
 
@@ -39,7 +40,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
                 /** @type {Object} */
                 const shares = req[DEF.HNDL_SHARE];
                 const headers = res.getHeaders();
-                const statusCode = shares[DEF.SHARE_RES_STATUS] ?? HTTP_STATUS_OK;
+                const statusCode = shares[DEF.SHARE_RES_STATUS] ?? HTTP_STATUS_NOT_FOUND;
                 const file = shares[DEF.SHARE_RES_FILE];
                 const body = shares[DEF.SHARE_RES_BODY];
                 let stat;
@@ -72,7 +73,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
 
         this.getProcessor = () => process;
 
-        this.init = async function () {}
+        this.init = async function () {};
 
         // MAIN
         Object.defineProperty(process, 'namespace', {value: NS});
