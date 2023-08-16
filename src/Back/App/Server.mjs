@@ -12,19 +12,21 @@ import {WebSocketServer} from 'ws';
 
 // MODULE'S CLASSES
 export default class TeqFw_Web_Back_App_Server {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Core_Back_Config} */
-        const config = spec['TeqFw_Core_Back_Config$'];
-        /** @type {TeqFw_Web_Back_App_Server_Dispatcher} */
-        const dispatcher = spec['TeqFw_Web_Back_App_Server_Dispatcher$'];
-        /** @type {TeqFw_Web_Back_App_Server_Listener_Socket} */
-        const listenSocket = spec['TeqFw_Web_Back_App_Server_Listener_Socket$'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Core_Back_Config} config
+     * @param {TeqFw_Web_Back_App_Server_Dispatcher} dispatcher
+     * @param {TeqFw_Web_Back_App_Server_Listener_Socket} listenSocket
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Core_Back_Config$: config,
+            TeqFw_Web_Back_App_Server_Dispatcher$: dispatcher,
+            TeqFw_Web_Back_App_Server_Listener_Socket$: listenSocket,
+        }) {
         // DEFINE WORKING VARS
         let _serverType; // save type for logs (HTTP/1, HTTP/2, HTTPS)
         logger.setNamespace(this.constructor.name);

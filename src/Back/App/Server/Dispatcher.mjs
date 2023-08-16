@@ -18,20 +18,22 @@ const {
 } = H2;
 
 export default class TeqFw_Web_Back_App_Server_Dispatcher {
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} scan
+     * @param {TeqFw_Web_Back_Mod_Address} mAddress
+     * @param {TeqFw_Web_Back_App_Server_Respond.respond405|function} respond405
+     */
 
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} */
-        const scan = spec['TeqFw_Web_Back_App_Server_Scan_Handler$'];
-        /** @type {TeqFw_Web_Back_Mod_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
-        /** @type {TeqFw_Web_Back_App_Server_Respond.respond405|function} */
-        const respond405 = spec['TeqFw_Web_Back_App_Server_Respond.respond405'];
-
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Web_Back_App_Server_Scan_Handler$: scan,
+            TeqFw_Web_Back_Mod_Address$: mAddress,
+            ['TeqFw_Web_Back_App_Server_Respond.respond405']: respond405,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */

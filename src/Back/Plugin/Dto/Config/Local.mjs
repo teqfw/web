@@ -28,12 +28,15 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class TeqFw_Web_Back_Plugin_Dto_Config_Local {
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
-        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
+            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+        }) {
         /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server.Factory} */
         const fServer = spec['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server.Factory$'];
         /**

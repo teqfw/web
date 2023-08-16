@@ -26,11 +26,14 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class TeqFw_Web_Shared_Dto_Config_Di_Replacement {
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
 
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+        }) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto} [data]
          * @return {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto}
@@ -40,6 +43,6 @@ export default class TeqFw_Web_Shared_Dto_Config_Di_Replacement {
             res.alter = castString(data?.alter);
             res.orig = castString(data?.orig);
             return res;
-        }
+        };
     }
 }

@@ -15,15 +15,17 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache';
  * Default export is a factory to create result function in working environment (with deps).
  * @param {TeqFw_Di_Shared_SpecProxy} spec
  */
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Util.scanRecursively|function} */
-    const scanRecursively = spec['TeqFw_Core_Back_Util#scanRecursively'];
-    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-    const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-
+/**
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Back_Util.scanRecursively|function} scanRecursively
+ * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+ */
+export default function (
+    {
+        TeqFw_Web_Back_Defaults$: DEF,
+        ['TeqFw_Core_Back_Util#scanRecursively']: scanRecursively,
+        TeqFw_Core_Back_Mod_Init_Plugin_Registry$: registry,
+    }) {
     // FUNCS
 
     /**

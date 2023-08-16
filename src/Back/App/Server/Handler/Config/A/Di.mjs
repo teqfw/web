@@ -4,7 +4,7 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Config_A_Di
  */
 // MODULE'S IMPORT
-import $path from "path";
+import $path from 'path';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
@@ -14,19 +14,21 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
  * Default export is a factory to create result function in working environment (with deps).
  * @param {TeqFw_Di_Shared_SpecProxy} spec
  */
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-    const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di} */
-    const dtoDi = spec['TeqFw_Web_Shared_Dto_Config_Di$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di_Namespace} */
-    const dtoNs = spec['TeqFw_Web_Shared_Dto_Config_Di_Namespace$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di_Replacement} */
-    const dtoReplace = spec['TeqFw_Web_Shared_Dto_Config_Di_Replacement$'];
-
+/**
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+ * @param {TeqFw_Web_Shared_Dto_Config_Di} dtoDi
+ * @param {TeqFw_Web_Shared_Dto_Config_Di_Namespace} dtoNs
+ * @param {TeqFw_Web_Shared_Dto_Config_Di_Replacement} dtoReplace
+ */
+export default function (
+    {
+        TeqFw_Web_Back_Defaults$: DEF,
+        TeqFw_Core_Back_Mod_Init_Plugin_Registry$: registry,
+        TeqFw_Web_Shared_Dto_Config_Di$: dtoDi,
+        TeqFw_Web_Shared_Dto_Config_Di_Namespace$: dtoNs,
+        TeqFw_Web_Shared_Dto_Config_Di_Replacement$: dtoReplace,
+    }) {
     // FUNCS
 
     /**

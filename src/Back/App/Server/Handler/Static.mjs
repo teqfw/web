@@ -23,19 +23,21 @@ const IS_WIN = (platform === 'win32');
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Static {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Core_Back_Config} */
-        const config = spec['TeqFw_Core_Back_Config$'];
-        /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-        const regPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Mod_Address} */
-        const mAddress = spec['TeqFw_Web_Back_Mod_Address$'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Core_Back_Config} config
+     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} regPlugins
+     * @param {TeqFw_Web_Back_Mod_Address} mAddress
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Core_Back_Config$: config,
+            TeqFw_Core_Back_Mod_Init_Plugin_Registry$: regPlugins,
+            TeqFw_Web_Back_Mod_Address$: mAddress,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         const _rootFs = config.getPathToRoot(); // path to project root

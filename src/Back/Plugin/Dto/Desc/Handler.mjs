@@ -39,10 +39,13 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class TeqFw_Web_Back_Plugin_Dto_Desc_Handler {
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
-        const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} castArrayOfStr
+     */
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castArrayOfStr']: castArrayOfStr,
+        }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Handler.Dto} [data]
          * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Handler.Dto}

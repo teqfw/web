@@ -21,13 +21,15 @@ const {
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Final {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Web_Back_App_Server_Respond.respond404|function} */
-        const respond404 = spec['TeqFw_Web_Back_App_Server_Respond.respond404'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Web_Back_App_Server_Respond.respond404|function} respond404
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            ['TeqFw_Web_Back_App_Server_Respond.respond404']: respond404,
+        }) {
         // FUNCS
 
         /**

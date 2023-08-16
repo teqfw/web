@@ -2,17 +2,19 @@
  * Model to parse web addresses according to TeqFw_Web_Back_Dto_Address structure.
  */
 export default class TeqFw_Web_Back_Mod_Address {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {typeof TeqFw_Web_Back_Plugin_Dto_Desc.ATTR} */
-        const ATTR = spec['TeqFw_Web_Back_Plugin_Dto_Desc.ATTR'];
-        /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-        const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Dto_Address.Factory} */
-        const fAddr = spec['TeqFw_Web_Back_Dto_Address.Factory$'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {typeof TeqFw_Web_Back_Plugin_Dto_Desc.ATTR} ATTR
+     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+     * @param {TeqFw_Web_Back_Dto_Address.Factory} fAddr
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            ['TeqFw_Web_Back_Plugin_Dto_Desc.ATTR']: ATTR,
+            TeqFw_Core_Back_Mod_Init_Plugin_Registry$: registry,
+            ['TeqFw_Web_Back_Dto_Address.Factory$']: fAddr,
+        }) {
         // VARS
         /** @type {String[]} doors used in the app */
         let doors = [];

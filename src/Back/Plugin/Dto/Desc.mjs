@@ -55,18 +55,21 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class TeqFw_Web_Back_Plugin_Dto_Desc {
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
-        const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castObjectsMap|function} */
-        const castObjectsMap = spec['TeqFw_Core_Shared_Util_Cast.castObjectsMap'];
-        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Handler} */
-        const dtoHandler = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Handler$'];
-        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes} */
-        const dtoExcludes = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Excludes$'];
-        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc_Socket} */
-        const dtoSocket = spec['TeqFw_Web_Back_Plugin_Dto_Desc_Socket$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} castArrayOfStr
+     * @param {TeqFw_Core_Shared_Util_Cast.castObjectsMap|function} castObjectsMap
+     * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Handler} dtoHandler
+     * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes} dtoExcludes
+     * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Socket} dtoSocket
+     */
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castArrayOfStr']: castArrayOfStr,
+            ['TeqFw_Core_Shared_Util_Cast.castObjectsMap']: castObjectsMap,
+            TeqFw_Web_Back_Plugin_Dto_Desc_Handler$: dtoHandler,
+            TeqFw_Web_Back_Plugin_Dto_Desc_Excludes$: dtoExcludes,
+            TeqFw_Web_Back_Plugin_Dto_Desc_Socket$: dtoSocket,
+        }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc.Dto} [data]
          * @return {TeqFw_Web_Back_Plugin_Dto_Desc.Dto}

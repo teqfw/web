@@ -13,17 +13,19 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
-export default function Factory(spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_App} */
-    const app = spec['TeqFw_Core_Back_App$'];
-    /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
-    /** @type {TeqFw_Core_Back_Mod_App_Pid} */
-    const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
-
+/**
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Back_App} app
+ * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
+ * @param {TeqFw_Core_Back_Mod_App_Pid} modPid
+ */
+export default function Factory(
+    {
+        TeqFw_Web_Back_Defaults$: DEF,
+        TeqFw_Core_Back_App$: app,
+        ['TeqFw_Core_Back_Api_Dto_Command.Factory$']: fCommand,
+        TeqFw_Core_Back_Mod_App_Pid$: modPid,
+    }) {
     // FUNCS
     /**
      * Stop previously started web server (using PID file).

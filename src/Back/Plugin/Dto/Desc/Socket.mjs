@@ -32,10 +32,13 @@ class Dto {
  * @implements TeqFw_Core_Shared_Api_Factory_Dto
  */
 export default class TeqFw_Web_Back_Plugin_Dto_Desc_Socket {
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} */
-        const castArrayOfStr = spec['TeqFw_Core_Shared_Util_Cast.castArrayOfStr'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castArrayOfStr|function} castArrayOfStr
+     */
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castArrayOfStr']: castArrayOfStr,
+        }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto} [data]
          * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto}
@@ -45,6 +48,6 @@ export default class TeqFw_Web_Back_Plugin_Dto_Desc_Socket {
             res.after = castArrayOfStr(data?.after);
             res.before = castArrayOfStr(data?.before);
             return res;
-        }
+        };
     }
 }

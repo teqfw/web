@@ -16,10 +16,13 @@ class Message {
 }
 
 export default class TeqFw_Web_Front_Mod_Sw_Control {
-    constructor(spec) {
-        /** @type {typeof TeqFw_Web_Front_Mod_Sw_Enum_Message} */
-        const MSG = spec['TeqFw_Web_Front_Mod_Sw_Enum_Message$'];
-
+    /**
+     * @param {typeof TeqFw_Web_Front_Mod_Sw_Enum_Message} MSG
+     */
+    constructor(
+        {
+            TeqFw_Web_Front_Mod_Sw_Enum_Message$: MSG,
+        }) {
         const _queue = {};
 
         const generateMsgId = () => `${(new Date()).getTime()}`;
