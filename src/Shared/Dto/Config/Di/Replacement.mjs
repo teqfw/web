@@ -32,7 +32,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Di_Replacement {
 
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto} [data]

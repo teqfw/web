@@ -18,8 +18,6 @@ export default class TeqFw_Web_Back_Defaults {
 
     /** @type {TeqFw_Core_Back_Defaults} */
     MOD_CORE;
-    /** @type {TeqFw_Di_Back_Defaults} */
-    MOD_DI;
 
     // key names for objects stored in shared objects' registry (related to processing of one HTTP request)
     SHARE_REQ_BODY;
@@ -33,19 +31,16 @@ export default class TeqFw_Web_Back_Defaults {
 
     /**
      * @param {TeqFw_Core_Back_Defaults} MOD_CORE
-     * @param {TeqFw_Di_Back_Defaults} MOD_DI
      * @param {TeqFw_Web_Shared_Defaults} SHARED
      */
     constructor(
         {
             TeqFw_Core_Back_Defaults$: MOD_CORE,
-            TeqFw_Di_Back_Defaults$: MOD_DI,
             TeqFw_Web_Shared_Defaults$: SHARED,
         }
     ) {
         // DEPS
         this.MOD_CORE = MOD_CORE;
-        this.MOD_DI = MOD_DI;
         this.SHARED = SHARED;
 
         // MAIN

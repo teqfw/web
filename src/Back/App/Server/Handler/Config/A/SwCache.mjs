@@ -18,13 +18,13 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache';
 /**
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Back_Util.scanRecursively|function} scanRecursively
- * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+ * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
  */
 export default function (
     {
         TeqFw_Web_Back_Defaults$: DEF,
         ['TeqFw_Core_Back_Util#scanRecursively']: scanRecursively,
-        TeqFw_Core_Back_Mod_Init_Plugin_Registry$: registry,
+        TeqFw_Core_Back_Api_Plugin_Registry$: registry,
     }) {
     // FUNCS
 
@@ -109,7 +109,7 @@ export default function (
         const items = registry.items();
         for (const item of items) {
             /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
-            const desc = item.teqfw[DEF.MOD_DI.NAME];
+            const desc = item.teqfw[DEF.MOD_CORE.SHARED.NAME_DI];
             const autoload = desc.autoload;
             const src = autoload.isAbsolute ? autoload.path : join(item.path, autoload.path);
             res.push(...readSrcFiles(src, item.name));

@@ -5,16 +5,16 @@
  */
 export default class TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory {
     /**
+     * @param {TeqFw_Di_Container} container
      * @param {TeqFw_Web_Back_Defaults} DEF
-     * @param {TeqFw_Di_Shared_Container} container
-     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} modPlugins
+     * @param {TeqFw_Core_Back_Api_Plugin_Registry} modPlugins
      * @param {TeqFw_Web_Back_Plugin_Dto_Desc} dtoDesc
      */
     constructor(
         {
+            container,
             TeqFw_Web_Back_Defaults$: DEF,
-            TeqFw_Di_Shared_Container$: container,
-            TeqFw_Core_Back_Mod_Init_Plugin_Registry$: modPlugins,
+            TeqFw_Core_Back_Api_Plugin_Registry$: modPlugins,
             TeqFw_Web_Back_Plugin_Dto_Desc$: dtoDesc,
         }) {
 

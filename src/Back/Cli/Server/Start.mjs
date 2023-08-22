@@ -25,7 +25,7 @@ const OPT_USE_WS = 'useWs'; // use WebSockets handlers
  * @param {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} castBooleanIfExists
  * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
  * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
- * @param {TeqFw_Di_Shared_Api_IProxy} proxyServer
+ * @param {TeqFw_Web_Back_App_Server} server
  * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
  * @param {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} fOpt
  * @param {TeqFw_Core_Back_Mod_App_Pid} modPid
@@ -37,7 +37,7 @@ export default function Factory(
         ['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists']: castBooleanIfExists,
         ['TeqFw_Core_Shared_Util_Cast.castInt']: castInt,
         ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
-        ['TeqFw_Web_Back_App_Server@']: proxyServer,
+        ['TeqFw_Web_Back_App_Server$']: server,
         ['TeqFw_Core_Back_Api_Dto_Command.Factory$']: fCommand,
         ['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$']: fOpt,
         TeqFw_Core_Back_Mod_App_Pid$: modPid,
@@ -69,7 +69,7 @@ export default function Factory(
             // PID is (not) written => start the server
             // create server from proxy then run it
             /** @type {TeqFw_Web_Back_App_Server} */
-            const server = await proxyServer.create;
+            // const server = await proxyServer.create;
             await server.run({port, useHttp1, cert, key, useWs});
         } catch (e) {
             console.error('%s', e);

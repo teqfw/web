@@ -5,14 +5,14 @@ export default class TeqFw_Web_Back_Mod_Address {
     /**
      * @param {TeqFw_Web_Back_Defaults} DEF
      * @param {typeof TeqFw_Web_Back_Plugin_Dto_Desc.ATTR} ATTR
-     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+     * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
      * @param {TeqFw_Web_Back_Dto_Address.Factory} fAddr
      */
     constructor(
         {
             TeqFw_Web_Back_Defaults$: DEF,
             ['TeqFw_Web_Back_Plugin_Dto_Desc.ATTR']: ATTR,
-            TeqFw_Core_Back_Mod_Init_Plugin_Registry$: registry,
+            TeqFw_Core_Back_Api_Plugin_Registry$: registry,
             ['TeqFw_Web_Back_Dto_Address.Factory$']: fAddr,
         }) {
         // VARS
