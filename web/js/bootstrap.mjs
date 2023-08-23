@@ -32,14 +32,14 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
         /**
          * Import code, create and setup Dependency Injection container for frontend.
          *
-         * @returns {Promise<TeqFw_Di_Shared_Container>}
+         * @returns {Promise<TeqFw_Di_Container>}
          */
         async function initDiContainer() {
             // FUNCS
 
             /**
              * Load DI configuration from local cache and setup container.
-             * @param {TeqFw_Di_Shared_Container} container
+             * @param {TeqFw_Di_Container} container
              */
             function configFromCache(container) {
                 try {
@@ -63,7 +63,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
 
             /**
              * Load DI configuration from server and setup container.
-             * @param {TeqFw_Di_Shared_Container} container
+             * @param {TeqFw_Di_Container} container
              */
             async function configFromServer(container) {
                 const urlWithPath = `${location.origin}${location.pathname}`;
@@ -94,7 +94,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             // MAIN
             // load sources and create DI Container
             const {default: Container} = await import(URL_SRC_DI_CONTAINER);
-            /** @type {TeqFw_Di_Shared_Container} */
+            /** @type {TeqFw_Di_Container} */
             const container = new Container();
             if (navigator.onLine) await configFromServer(container)
             else configFromCache(container);
@@ -114,6 +114,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             log(`Initializing app instance...`);
             await frontApp.init(log);
             log(`Mounting app instance to '${cssApp}'...`);
+            debugger
             await frontApp.mount(selector);
         } catch (e) {
             log(`Error in bootstrap: ${e.message}. ${e.stack}`);

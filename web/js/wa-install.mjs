@@ -55,14 +55,14 @@ export class Install {
             /**
              * Import code, create and setup Dependency Injection container for frontend.
              *
-             * @returns {Promise<TeqFw_Di_Shared_Container>}
+             * @returns {Promise<TeqFw_Di_Container>}
              */
             async function initDiContainer() {
                 // FUNCS
 
                 /**
                  * Load DI configuration from local cache and setup container.
-                 * @param {TeqFw_Di_Shared_Container} container
+                 * @param {TeqFw_Di_Container} container
                  */
                 function configFromCache(container) {
                     try {
@@ -86,7 +86,7 @@ export class Install {
 
                 /**
                  * Load DI configuration from server and setup container.
-                 * @param {TeqFw_Di_Shared_Container} container
+                 * @param {TeqFw_Di_Container} container
                  */
                 async function configFromServer(container) {
                     const urlWithPath = `${location.origin}${location.pathname}`;
@@ -117,7 +117,7 @@ export class Install {
                 // MAIN
                 // load sources and create DI Container
                 const {default: Container} = await import(URL_SRC_DI_CONTAINER);
-                /** @type {TeqFw_Di_Shared_Container} */
+                /** @type {TeqFw_Di_Container} */
                 const container = new Container();
                 if (navigator.onLine) await configFromServer(container)
                 else configFromCache(container);

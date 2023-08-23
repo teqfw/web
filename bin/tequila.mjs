@@ -11,7 +11,7 @@ const root = join(bin, '..'); // project root (./)
 
 try {
     /* Create and setup DI container */
-    /** @type {TeqFw_Di_Shared_Container} */
+    /** @type {TeqFw_Di_Container} */
     const container = new Container();
     const pathDi = join(root, 'node_modules/@teqfw/di/src');
     const pathCore = join(root, 'node_modules/@teqfw/core/src');
