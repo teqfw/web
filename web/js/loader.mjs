@@ -5,7 +5,7 @@
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
-const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Shared/Container.mjs';
+const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
 
 // MODULE'S CLASSES
 export class Bootstrap {

@@ -4,7 +4,8 @@
 // MODULE'S VARS
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
-const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Shared/Container.mjs';
+const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
+const URL_SRC_DI_PARSER_OLD = './src/@teqfw/di/Parser/Old.js';
 
 // MODULE'S FUNCS
 /**
@@ -76,18 +77,37 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
                 // cache to place to local storage
                 const cache = {sources: [], replaces: []}
                 // add namespaces to container
+                const resolver = container.getResolver();
                 if (Array.isArray(configDi?.namespaces))
                     for (const item of configDi.namespaces) {
-                        container.addSourceMapping(item.ns, baseUrl + item.path, true, item.ext);
+                        resolver.addNamespaceRoot(item.ns, baseUrl + item.path, item.ext);
                         cache.sources.push([item.ns, baseUrl + item.path, item.ext]);
                     }
                 // add replaces to container
+                const preProcessor = container.getPreProcessor();
+                const handlers = preProcessor.getHandlers();
+                /** @type {TeqFw_Di_PreProcessor_Replace|function} */
+                const replace = handlers.find((one) => one.name === 'TeqFw_Di_PreProcessor_Replace');
                 if (Array.isArray(configDi?.replacements))
                     for (const item of configDi.replacements) {
-                        container.addModuleReplacement(item.orig, item.alter);
+                        replace.add(item.orig, item.alter);
                         cache.replaces.push([item.orig, item.alter]);
                     }
                 window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
+
+                // set old format parser for TeqFw_
+                const {default: parserOld} = await import(URL_SRC_DI_PARSER_OLD);
+                const validate = function (key) {
+                    return (key.indexOf('TeqFw_Core_') === 0) ||
+                        (key.indexOf('TeqFw_I18n_') === 0) ||
+                        (key.indexOf('TeqFw_Test_') === 0) ||
+                        (key.indexOf('TeqFw_Ui_Quasar_') === 0) ||
+                        (key.indexOf('TeqFw_Vue_') === 0) ||
+                        (key.indexOf('TeqFw_Web_') === 0) ||
+                        (key.indexOf('TeqFw_Web_Api_') === 0);
+                };
+                container.getParser().addParser(validate, parserOld);
+
                 log(`DI container is configured from server. Local cache is updated.`);
             }
 
@@ -96,6 +116,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             const {default: Container} = await import(URL_SRC_DI_CONTAINER);
             /** @type {TeqFw_Di_Container} */
             const container = new Container();
+            container.setDebug(true);
             if (navigator.onLine) await configFromServer(container)
             else configFromCache(container);
             return container;
@@ -114,7 +135,6 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             log(`Initializing app instance...`);
             await frontApp.init(log);
             log(`Mounting app instance to '${cssApp}'...`);
-            debugger
             await frontApp.mount(selector);
         } catch (e) {
             log(`Error in bootstrap: ${e.message}. ${e.stack}`);
