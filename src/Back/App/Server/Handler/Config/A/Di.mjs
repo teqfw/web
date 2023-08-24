@@ -4,7 +4,7 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Config_A_Di
  */
 // MODULE'S IMPORT
-import $path from "path";
+import $path from 'path';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
@@ -14,26 +14,30 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
  * Default export is a factory to create result function in working environment (with deps).
  * @param {TeqFw_Di_Shared_SpecProxy} spec
  */
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-    const registry = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di} */
-    const dtoDi = spec['TeqFw_Web_Shared_Dto_Config_Di$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di_Namespace} */
-    const dtoNs = spec['TeqFw_Web_Shared_Dto_Config_Di_Namespace$'];
-    /** @type {TeqFw_Web_Shared_Dto_Config_Di_Replacement} */
-    const dtoReplace = spec['TeqFw_Web_Shared_Dto_Config_Di_Replacement$'];
-
+/**
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
+ * @param {TeqFw_Web_Shared_Dto_Config_Di} dtoDi
+ * @param {TeqFw_Web_Shared_Dto_Config_Di_Namespace} dtoNs
+ * @param {TeqFw_Web_Shared_Dto_Config_Di_Replacement} dtoReplace
+ * @param {typeof TeqFw_Core_Shared_Enum_Sphere} SPHERE
+ */
+export default function (
+    {
+        TeqFw_Web_Back_Defaults$: DEF,
+        TeqFw_Core_Back_Api_Plugin_Registry$: registry,
+        TeqFw_Web_Shared_Dto_Config_Di$: dtoDi,
+        TeqFw_Web_Shared_Dto_Config_Di_Namespace$: dtoNs,
+        TeqFw_Web_Shared_Dto_Config_Di_Replacement$: dtoReplace,
+        TeqFw_Core_Shared_Enum_Sphere$: SPHERE,
+    }) {
     // FUNCS
 
     /**
      * Loop through all plugins and compose namespace-to-source mapping for DI container on the front.
      * (@see TeqFw_Web_Back_App_Server_Handler_Static)
      *
-     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+     * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
      * @return {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto[]}
      */
     function getNamespaces(registry) {
@@ -41,7 +45,7 @@ export default function (spec) {
         const plugins = registry.items();
         for (const one of plugins) {
             /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
-            const desc = one.teqfw[DEF.MOD_DI.NAME];
+            const desc = one.teqfw[DEF.MOD_CORE.SHARED.NAME_DI];
             const item = dtoNs.createDto();
             item.ext = desc.autoload.ext;
             item.ns = desc.autoload.ns;
@@ -54,45 +58,30 @@ export default function (spec) {
     /**
      * Loop through all plugins and compose replaces for DI container on the front.
      *
-     * @param {TeqFw_Core_Back_Mod_Init_Plugin_Registry} registry
+     * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
      * @return {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto[]}
      */
     function getReplaces(registry) {
         const result = [];
-        const plugins = registry.items();
-        const mapDiDesc = {}; // pluginName => {}
-        plugins.map((a) => {mapDiDesc[a.name] = a.teqfw[DEF.MOD_DI.NAME]});
-        const levels = registry.getLevels();
-        const levelKeys = Object.keys(levels).map(key => parseInt(key)); // get keys as integers
-        levelKeys.sort((a, b) => a - b); // sort as numbers
+        const plugins = registry.getItemsByLevels();
         // run through the levels from bottom to top and apply replaces
-        const mapReplace = {};
-        for (const key of levelKeys) {
-            const level = levels[key];
-            for (const name of level) {
-                /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
-                const desc = mapDiDesc[name];
-                if (Array.isArray(Object.keys(desc?.replace)))
-                    for (const orig of Object.keys(desc.replace)) {
-                        const one = desc.replace[orig];
-                        if (typeof one === 'string') {
-                            mapReplace[orig] = one;
-                        } else if (typeof one === 'object') {
-                            if (typeof one[DEF.AREA] === 'string') {
-                                mapReplace[orig] = one[DEF.AREA];
-                            }
-                        }
+        for (const plugin of plugins) {
+            /** @type {TeqFw_Core_Back_Plugin_Dto_Desc_Di.Dto} */
+            const desc = plugin.teqfw[DEF.MOD_CORE.SHARED.NAME_DI];
+            if (Array.isArray(desc?.replaces)) {
+                for (const one of desc.replaces) {
+                    if (
+                        (one.sphere === SPHERE.FRONT) ||
+                        (one.sphere === SPHERE.SHARED)
+                    ) {
+                        const dto = dtoReplace.createDto();
+                        dto.orig = one.from;
+                        dto.alter = one.to;
+                        result.push(dto);
                     }
+                }
             }
         }
-        // convert object to DTO
-        for (const one of Object.keys(mapReplace)) {
-            const item = dtoReplace.createDto();
-            item.orig = one;
-            item.alter = mapReplace[one];
-            result.push(item);
-        }
-
         return result;
     }
 

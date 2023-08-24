@@ -9,12 +9,15 @@ const IDB_VERSION = 1;
  * @param spec
  * @return {TeqFw_Web_Front_App_Store_IDB}
  */
-export default function (spec) {
-    /** @type {TeqFw_Web_Front_App_Store_IDB} */
-    const idb = spec['TeqFw_Web_Front_App_Store_IDB$$']; // new instance
-    /** @type {TeqFw_Web_Front_Store_Entity_Singleton} */
-    const idbSingleton = spec['TeqFw_Web_Front_Store_Entity_Singleton$'];
-
+/**
+ * @param {TeqFw_Web_Front_App_Store_IDB} idb -  new instance
+ * @param {TeqFw_Web_Front_Store_Entity_Singleton} idbSingleton
+ */
+export default function (
+    {
+        TeqFw_Web_Front_App_Store_IDB$$: idb,
+        TeqFw_Web_Front_Store_Entity_Singleton$: idbSingleton,
+    }) {
     // VARS
     const A_SINGLETON = idbSingleton.getAttributes();
     const E_SINGLETON = idbSingleton.getName();

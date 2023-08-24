@@ -40,12 +40,14 @@ class Dto {
  * @implements TeqFw_Web_Front_Api_Store_IEntity
  */
 export default class TeqFw_Web_Front_Store_Entity_Singleton {
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
 
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+        }) {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Front_Store_Entity_Singleton.Dto} [data]

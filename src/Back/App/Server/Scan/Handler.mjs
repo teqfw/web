@@ -6,23 +6,25 @@
 const NS = 'TeqFw_Web_Back_App_Server_Scan_Handler';
 
 // MODULE'S FUNCTIONS
-export default function (spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Di_Shared_Container} */
-    const container = spec['TeqFw_Di_Shared_Container$'];
-    /** @type {TeqFw_Core_Shared_Api_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-    /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-    const modPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-    /** @type {TeqFw_Web_Back_Plugin_Dto_Desc} */
-    const dtoDesc = spec['TeqFw_Web_Back_Plugin_Dto_Desc$'];
-    /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter} */
-    const BeforeAfter = spec['TeqFw_Core_Shared_Util_BeforeAfter#']; // Class
-    /** @type {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} */
-    const DtoSort = spec['TeqFw_Core_Shared_Util_BeforeAfter.Dto'];
-
+/**
+ * @param {TeqFw_Di_Container} container
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+ * @param {TeqFw_Core_Back_Api_Plugin_Registry} modPlugins
+ * @param {TeqFw_Web_Back_Plugin_Dto_Desc} dtoDesc
+ * @param {typeof TeqFw_Core_Shared_Util_BeforeAfter} BeforeAfter -  Class
+ * @param {typeof TeqFw_Core_Shared_Util_BeforeAfter.Dto} DtoSort
+ */
+export default function (
+    {
+        container,
+        TeqFw_Web_Back_Defaults$: DEF,
+        TeqFw_Core_Shared_Api_Logger$$: logger,
+        TeqFw_Core_Back_Api_Plugin_Registry$: modPlugins,
+        TeqFw_Web_Back_Plugin_Dto_Desc$: dtoDesc,
+        ['TeqFw_Core_Shared_Util_BeforeAfter#']: BeforeAfter,
+        ['TeqFw_Core_Shared_Util_BeforeAfter.Dto']: DtoSort,
+    }) {
     // VARS
     logger.setNamespace(NS);
 

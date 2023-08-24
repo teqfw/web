@@ -19,27 +19,29 @@ const OPT_USE_WS = 'useWs'; // use WebSockets handlers
  * @returns {TeqFw_Core_Back_Api_Dto_Command}
  * @memberOf TeqFw_Web_Back_Cli_Server_Start
  */
-export default function Factory(spec) {
-    // DEPS
-    /** @type {TeqFw_Web_Back_Defaults} */
-    const DEF = spec['TeqFw_Web_Back_Defaults$'];
-    /** @type {TeqFw_Core_Shared_Api_Logger} */
-    const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-    /** @type {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} */
-    const castBooleanIfExists = spec['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists'];
-    /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
-    const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
-    /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-    const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-    /** @type {TeqFw_Di_Shared_Api_IProxy} */
-    const proxyServer = spec['TeqFw_Web_Back_App_Server@'];
-    /** @type {TeqFw_Core_Back_Api_Dto_Command.Factory} */
-    const fCommand = spec['TeqFw_Core_Back_Api_Dto_Command.Factory$'];
-    /** @type {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} */
-    const fOpt = spec['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$'];
-    /** @type {TeqFw_Core_Back_Mod_App_Pid} */
-    const modPid = spec['TeqFw_Core_Back_Mod_App_Pid$'];
-
+/**
+ * @param {TeqFw_Web_Back_Defaults} DEF
+ * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+ * @param {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} castBooleanIfExists
+ * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
+ * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+ * @param {TeqFw_Web_Back_App_Server} server
+ * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
+ * @param {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} fOpt
+ * @param {TeqFw_Core_Back_Mod_App_Pid} modPid
+ */
+export default function Factory(
+    {
+        TeqFw_Web_Back_Defaults$: DEF,
+        TeqFw_Core_Shared_Api_Logger$$: logger,
+        ['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists']: castBooleanIfExists,
+        ['TeqFw_Core_Shared_Util_Cast.castInt']: castInt,
+        ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+        ['TeqFw_Web_Back_App_Server$']: server,
+        ['TeqFw_Core_Back_Api_Dto_Command.Factory$']: fCommand,
+        ['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$']: fOpt,
+        TeqFw_Core_Back_Mod_App_Pid$: modPid,
+    }) {
     // VARS
     logger.setNamespace(NS);
 
@@ -67,7 +69,7 @@ export default function Factory(spec) {
             // PID is (not) written => start the server
             // create server from proxy then run it
             /** @type {TeqFw_Web_Back_App_Server} */
-            const server = await proxyServer.create;
+            // const server = await proxyServer.create;
             await server.run({port, useHttp1, cert, key, useWs});
         } catch (e) {
             console.error('%s', e);

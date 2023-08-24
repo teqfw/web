@@ -42,11 +42,14 @@ class Dto {
  * @deprecated don't use event related functionality in web plugin
  */
 export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     */
 
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castString|function} */
-        const castString = spec['TeqFw_Core_Shared_Util_Cast.castString'];
-
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+        }) {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Shared_Dto_Log_Meta_Event.Dto} [data]

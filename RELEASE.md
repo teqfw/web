@@ -1,29 +1,33 @@
 # @teqfw/web: releases
 
-# 0.11.0
+## 0.20.0
+
+* These changes are related to the new architecture of the `@teqfw/di` package.
+
+## 0.11.0
 
 * Add a list of HTTP request handlers in the order of processing to the log.
 * Fix default value of 'HTTP_STATUS_OK' when page is not found.
 * Allow WebSocket handlers w/o `process()` method.
 
-# 0.10.0
+## 0.10.0
 
 * Remove plugin's init/stop functionality.
 * Add 'useWebSocket' option to local configuration.
 
-# 0.9.0
+## 0.9.0
 
 * `TeqFw_Web_Back_Util_Cookie` is added.
 
-# 0.8.2
+## 0.8.2
 
 * Hotfix for Windows paths in Statics handler.
 
-# 0.8.1
+## 0.8.1
 
 * Hotfix for Windows delimiters.
 
-# 0.8.0
+## 0.8.0
 
 * Restructure directories and files.
 * Add process to monitor online/offline modes.
@@ -32,7 +36,7 @@
 * Renew DTO structures.
 * Add web socket support.
 
-# 0.7.1
+## 0.7.1
 
 * Add shared objects' registry for HTTP request/response.
 * Respond 404 for missed static resource.
@@ -41,7 +45,7 @@
 * Clean up DTO features from 'TeqFw_Web_Back_App_Server_Handler_WAPI_Context'.
 * Restructure directories & files.
 
-# 0.7.0
+## 0.7.0
 
 * Ability to start in HTTP/1.1, HTTP/2 and HTTPS over HTTP/2 modes.
 * Start w/o PID file (for readonly filesystems like Google AppEngine).
@@ -49,7 +53,7 @@
 * SW cache cleaning.
 * IDB store for front objects.
 
-# 0.6.0
+## 0.6.0
 
 * Cast function for DTOs.
 * Bind to DI-plugin areas.
@@ -58,7 +62,7 @@
 * Messaging API to connect SW with app.
 * SW configuration (cache status, etc.).
 
-# 0.5.0
+## 0.5.0
 
 * docs for plugin's teq-descriptor;
 * remove `root` option from teq-descriptor;

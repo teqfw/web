@@ -4,17 +4,19 @@
  * @namespace TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory
  */
 export default class TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Di_Shared_Container} */
-        const container = spec['TeqFw_Di_Shared_Container$'];
-        /** @type {TeqFw_Core_Back_Mod_Init_Plugin_Registry} */
-        const modPlugins = spec['TeqFw_Core_Back_Mod_Init_Plugin_Registry$'];
-        /** @type {TeqFw_Web_Back_Plugin_Dto_Desc} */
-        const dtoDesc = spec['TeqFw_Web_Back_Plugin_Dto_Desc$'];
-
+    /**
+     * @param {TeqFw_Di_Container} container
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Back_Api_Plugin_Registry} modPlugins
+     * @param {TeqFw_Web_Back_Plugin_Dto_Desc} dtoDesc
+     */
+    constructor(
+        {
+            container,
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Back_Api_Plugin_Registry$: modPlugins,
+            TeqFw_Web_Back_Plugin_Dto_Desc$: dtoDesc,
+        }) {
 
         // VARS
 

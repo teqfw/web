@@ -18,21 +18,23 @@ const {
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Config {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_Front|function} */
-        const actApp = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_Front$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_Di|function} */
-        const actDi = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_Di$'];
-        /** @type {TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache|function} */
-        const actSwCache = spec['TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache$'];
-        /** @type {TeqFw_Web_Back_Mod_Address} */
-        const modAddr = spec['TeqFw_Web_Back_Mod_Address$'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_Front|function} actApp
+     * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_Di|function} actDi
+     * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache|function} actSwCache
+     * @param {TeqFw_Web_Back_Mod_Address} modAddr
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Web_Back_App_Server_Handler_Config_A_Front$: actApp,
+            TeqFw_Web_Back_App_Server_Handler_Config_A_Di$: actDi,
+            TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache$: actSwCache,
+            TeqFw_Web_Back_Mod_Address$: modAddr,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         let _storeDi, _storeApp, _storeSwCache;

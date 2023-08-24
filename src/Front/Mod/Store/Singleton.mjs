@@ -2,13 +2,15 @@
  * Simplified access to singletons store in IDB.
  */
 export default class TeqFw_Web_Front_Mod_Store_Singleton {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Front_App_Store_IDB} */
-        const idb = spec['TeqFw_Web_Front_Store_Db$']; // interface & impl
-        /** @type {TeqFw_Web_Front_Store_Entity_Singleton} */
-        const idbSingleton = spec['TeqFw_Web_Front_Store_Entity_Singleton$'];
-
+    /**
+     * @param {TeqFw_Web_Front_App_Store_IDB} idb -  interface & impl
+     * @param {TeqFw_Web_Front_Store_Entity_Singleton} idbSingleton
+     */
+    constructor(
+        {
+            TeqFw_Web_Front_Store_Db$: idb,
+            TeqFw_Web_Front_Store_Entity_Singleton$: idbSingleton,
+        }) {
         // INSTANCE METHODS
         /**
          * Delete some object from the store by key.

@@ -2,9 +2,10 @@
   "@teqfw/di": {
     "autoload": {
       "ns": "TeqFw_Web",
-      "path": "./src"
+      "path": "./src",
+      "ext": "mjs"
     },
-    "replace": {
+    "replaces": {
       "TeqFw_Core_Shared_Api_Util_Codec": {"front": "TeqFw_Web_Front_Util_Codec"},
       "TeqFw_Core_Shared_Api_Util_Crypto": {"front": "TeqFw_Web_Front_Util_Crypto"},
       "TeqFw_Web_Front_Api_Gate_IErrorHandler": {"front": "TeqFw_Web_Front_Mod_Gate_ErrorHandler"},

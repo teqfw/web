@@ -20,8 +20,15 @@ export default class TeqFw_Web_Shared_Defaults {
     SPACE_UPLOAD = 'upload'; // TODO: move to standalone plugin
     SPACE_WEB = 'web'; // sources from './web/' folder as statics
 
-    constructor(spec) {
-        this.MOD_CORE = spec['TeqFw_Core_Shared_Defaults$'];
+    /**
+     * @param {TeqFw_Core_Shared_Defaults} MOD_CORE
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Defaults$: MOD_CORE,
+        }
+    ) {
+        this.MOD_CORE = MOD_CORE;
         Object.freeze(this);
     }
 }

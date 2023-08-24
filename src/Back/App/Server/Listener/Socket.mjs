@@ -4,13 +4,15 @@
  * @namespace TeqFw_Web_Back_App_Server_Listener_Socket
  */
 export default class TeqFw_Web_Back_App_Server_Listener_Socket {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Core_Shared_Api_Logger} */
-        const logger = spec['TeqFw_Core_Shared_Api_Logger$$']; // instance
-        /** @type {TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory} */
-        const aHndlFactory = spec['TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory$'];
-
+    /**
+     * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
+     * @param {TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory} aHndlFactory
+     */
+    constructor(
+        {
+            TeqFw_Core_Shared_Api_Logger$$: logger,
+            TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory$: aHndlFactory,
+        }) {
         // VARS
         logger.setNamespace(this.constructor.name);
         /** @type {WebSocketServer} */

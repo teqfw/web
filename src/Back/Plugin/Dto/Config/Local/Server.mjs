@@ -36,14 +36,18 @@ export default class TeqFw_Web_Back_Plugin_Dto_Config_Local_Server {
 export class Factory {
     static namespace = NS;
 
-    constructor(spec) {
-        /** @type {TeqFw_Core_Shared_Util_Cast.castBoolean|function} */
-        const castBoolean = spec['TeqFw_Core_Shared_Util_Cast.castBoolean'];
-        /** @type {TeqFw_Core_Shared_Util_Cast.castInt|function} */
-        const castInt = spec['TeqFw_Core_Shared_Util_Cast.castInt'];
-        /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory} */
-        const fSecure = spec['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$'];
+    /**
+     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
+     * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
+     * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory} fSecure
+     */
 
+    constructor(
+        {
+            ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
+            ['TeqFw_Core_Shared_Util_Cast.castInt']: castInt,
+            ['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$']: fSecure,
+        }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server|null} data
          * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server}

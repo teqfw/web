@@ -22,13 +22,15 @@ const HEAD_FILENAME = 'teq-upload-filename'; // HTTP header to get uploading fil
  * @implements TeqFw_Web_Back_Api_Dispatcher_IHandler
  */
 export default class TeqFw_Web_Back_App_Server_Handler_Upload {
-    constructor(spec) {
-        // DEPS
-        /** @type {TeqFw_Web_Back_Defaults} */
-        const DEF = spec['TeqFw_Web_Back_Defaults$'];
-        /** @type {TeqFw_Core_Back_Config} */
-        const config = spec['TeqFw_Core_Back_Config$'];
-
+    /**
+     * @param {TeqFw_Web_Back_Defaults} DEF
+     * @param {TeqFw_Core_Back_Config} config
+     */
+    constructor(
+        {
+            TeqFw_Web_Back_Defaults$: DEF,
+            TeqFw_Core_Back_Config$: config,
+        }) {
         // VARS
         const _root = join(config.getPathToRoot(), DEF.DATA_DIR_UPLOAD);
 
