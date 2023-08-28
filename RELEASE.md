@@ -1,5 +1,9 @@
 # @teqfw/web: releases
 
+## 0.20.1
+
+* Fix namespace mapping for offline mode (from the cache).
+
 ## 0.20.0
 
 * These changes are related to the new architecture of the `@teqfw/di` package.

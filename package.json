@@ -1,6 +1,6 @@
 {
   "name": "@teqfw/web",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "TeqFW: web server.",
   "scripts": {
     "help": "node ./bin/tequila.mjs help",

@@ -109,16 +109,24 @@ export class Install {
                         try {
                             const stored = window.localStorage.getItem(KEY_DI_CONFIG);
                             const cache = JSON.parse(stored);
-                            if (Array.isArray(cache?.sources))
+                            // add namespaces to container
+                            if (Array.isArray(cache?.sources)) {
+                                const resolver = container.getResolver();
                                 for (const item of cache.sources) {
                                     const [ns, url, ext] = item;
-                                    container.addSourceMapping(ns, url, true, ext);
+                                    resolver.addNamespaceRoot(ns, url, ext);
                                 }
-                            if (Array.isArray(cache?.replaces))
+                            }
+                            if (Array.isArray(cache?.replaces)) {
+                                const preProcessor = container.getPreProcessor();
+                                const handlers = preProcessor.getHandlers();
+                                /** @type {TeqFw_Di_PreProcessor_Replace|function} */
+                                const replace = handlers.find((one) => one.name === 'TeqFw_Di_PreProcessor_Replace');
                                 for (const item of cache.replaces) {
                                     const [orig, alter] = item;
-                                    container.addModuleReplacement(orig, alter);
+                                    replace.add(orig, alter);
                                 }
+                            }
                             print(`DI container is configured from local cache.`);
                         } catch (e) {
                             print(`Cannot load DI configuration for local storage in offline mode. ${e?.message}`);
@@ -166,7 +174,8 @@ export class Install {
                                 (key.indexOf('TeqFw_Ui_Quasar_') === 0) ||
                                 (key.indexOf('TeqFw_Vue_') === 0) ||
                                 (key.indexOf('TeqFw_Web_') === 0) ||
-                                (key.indexOf('TeqFw_Web_Api_') === 0);
+                                (key.indexOf('TeqFw_Web_Api_') === 0) ||
+                                (key.indexOf('TeqFw_Web_Event_') === 0);
                         };
                         container.getParser().addParser(validate, parserOld);
                         print(`DI container is configured from server. Local cache is updated.`);
