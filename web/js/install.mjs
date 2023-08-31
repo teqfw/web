@@ -1,13 +1,13 @@
 /**
  * Frontend app installer registers Service Worker, loads DI configuration and initializes DI.
  * This es6-module is imported with regular 'import' statement, not with DI container.
- * @deprecated use ./bootstrap.mjs
  */
 // MODULE'S VARS
+const DI_PARSER = 'TeqFw_Core_Back_App_Di_Parser$';
+const DI_REPLACE = 'TeqFw_Di_Container_PreProcessor_Replace';
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
-const URL_SRC_DI_PARSER_OLD = './src/@teqfw/di/Parser/Old.js';
 
 /**
  * @interface
@@ -42,6 +42,7 @@ class InstallInterface {
 // MODULE'S CLASSES
 /**
  * @implements InstallInterface
+ * @deprecated use ./bootstrap.mjs
  */
 export class Install {
     constructor() {
@@ -96,14 +97,14 @@ export class Install {
                 /**
                  * Import code, create and setup Dependency Injection container for frontend.
                  *
-                 * @returns {Promise<TeqFw_Di_Container>}
+                 * @returns {Promise<TeqFw_Di_Api_Container>}
                  */
                 async function initDiContainer() {
                     // FUNCS
 
                     /**
                      * Load DI configuration from local cache and setup container.
-                     * @param {TeqFw_Di_Container} container
+                     * @param {TeqFw_Di_Api_Container} container
                      */
                     function configFromCache(container) {
                         try {
@@ -120,8 +121,8 @@ export class Install {
                             if (Array.isArray(cache?.replaces)) {
                                 const preProcessor = container.getPreProcessor();
                                 const handlers = preProcessor.getHandlers();
-                                /** @type {TeqFw_Di_PreProcessor_Replace|function} */
-                                const replace = handlers.find((one) => one.name === 'TeqFw_Di_PreProcessor_Replace');
+                                /** @type {TeqFw_Di_Container_PreProcessor_Replace|function} */
+                                const replace = handlers.find((one) => one.name === 'TeqFw_Di_Container_PreProcessor_Replace');
                                 for (const item of cache.replaces) {
                                     const [orig, alter] = item;
                                     replace.add(orig, alter);
@@ -135,7 +136,7 @@ export class Install {
 
                     /**
                      * Load DI configuration from server and setup container.
-                     * @param {TeqFw_Di_Container} container
+                     * @param {TeqFw_Di_Api_Container} container
                      */
                     async function configFromServer(container) {
                         const urlWithPath = `${location.origin}${location.pathname}`;
@@ -157,8 +158,8 @@ export class Install {
                         // add replaces to container
                         const preProcessor = container.getPreProcessor();
                         const handlers = preProcessor.getHandlers();
-                        /** @type {TeqFw_Di_PreProcessor_Replace|function} */
-                        const replace = handlers.find((one) => one.name === 'TeqFw_Di_PreProcessor_Replace');
+                        /** @type {TeqFw_Di_Container_PreProcessor_Replace|function} */
+                        const replace = handlers.find((one) => one.name === DI_REPLACE);
                         if (Array.isArray(configDi?.replacements))
                             for (const item of configDi.replacements) {
                                 replace.add(item.orig, item.alter);
@@ -167,24 +168,15 @@ export class Install {
                         window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
 
                         // set old format parser for TeqFw_
-                        const {default: parserOld} = await import(URL_SRC_DI_PARSER_OLD);
-                        const validate = function (key) {
-                            return (key.indexOf('TeqFw_Core_') === 0) ||
-                                (key.indexOf('TeqFw_Test_') === 0) ||
-                                (key.indexOf('TeqFw_Ui_Quasar_') === 0) ||
-                                (key.indexOf('TeqFw_Vue_') === 0) ||
-                                (key.indexOf('TeqFw_Web_') === 0) ||
-                                (key.indexOf('TeqFw_Web_Api_') === 0) ||
-                                (key.indexOf('TeqFw_Web_Event_') === 0);
-                        };
-                        container.getParser().addParser(validate, parserOld);
+                        const parserOld = await container.get(DI_PARSER);
+                        container.getParser().addChunk(parserOld);
                         print(`DI container is configured from server. Local cache is updated.`);
                     }
 
                     // MAIN
                     // load sources and create DI Container
                     const {default: Container} = await import(URL_SRC_DI_CONTAINER);
-                    /** @type {TeqFw_Di_Container} */
+                    /** @type {TeqFw_Di_Api_Container} */
                     const container = new Container();
                     if (navigator.onLine) await configFromServer(container)
                     else configFromCache(container);

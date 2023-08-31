@@ -2,10 +2,11 @@
  * Frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
  */
 // MODULE'S VARS
+const DI_PARSER = 'TeqFw_Core_Back_App_Di_Parser$';
+const DI_REPLACE = 'TeqFw_Di_Container_PreProcessor_Replace';
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
-const URL_SRC_DI_PARSER_OLD = './src/@teqfw/di/Parser/Old.js';
 
 // MODULE'S FUNCS
 /**
@@ -33,14 +34,14 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
         /**
          * Import code, create and setup Dependency Injection container for frontend.
          *
-         * @returns {Promise<TeqFw_Di_Container>}
+         * @returns {Promise<TeqFw_Di_Api_Container>}
          */
         async function initDiContainer() {
             // FUNCS
 
             /**
              * Load DI configuration from local cache and setup container.
-             * @param {TeqFw_Di_Container} container
+             * @param {TeqFw_Di_Api_Container} container
              */
             function configFromCache(container) {
                 try {
@@ -64,7 +65,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
 
             /**
              * Load DI configuration from server and setup container.
-             * @param {TeqFw_Di_Container} container
+             * @param {TeqFw_Di_Api_Container} container
              */
             async function configFromServer(container) {
                 const urlWithPath = `${location.origin}${location.pathname}`;
@@ -86,8 +87,8 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
                 // add replaces to container
                 const preProcessor = container.getPreProcessor();
                 const handlers = preProcessor.getHandlers();
-                /** @type {TeqFw_Di_PreProcessor_Replace|function} */
-                const replace = handlers.find((one) => one.name === 'TeqFw_Di_PreProcessor_Replace');
+                /** @type {TeqFw_Di_Container_PreProcessor_Replace|function} */
+                const replace = handlers.find((one) => one.name === DI_REPLACE);
                 if (Array.isArray(configDi?.replacements))
                     for (const item of configDi.replacements) {
                         replace.add(item.orig, item.alter);
@@ -96,17 +97,8 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
                 window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
 
                 // set old format parser for TeqFw_
-                const {default: parserOld} = await import(URL_SRC_DI_PARSER_OLD);
-                const validate = function (key) {
-                    return (key.indexOf('TeqFw_Core_') === 0) ||
-                        (key.indexOf('TeqFw_I18n_') === 0) ||
-                        (key.indexOf('TeqFw_Test_') === 0) ||
-                        (key.indexOf('TeqFw_Ui_Quasar_') === 0) ||
-                        (key.indexOf('TeqFw_Vue_') === 0) ||
-                        (key.indexOf('TeqFw_Web_') === 0) ||
-                        (key.indexOf('TeqFw_Web_Api_') === 0);
-                };
-                container.getParser().addParser(validate, parserOld);
+                const parserOld = await container.get(DI_PARSER);
+                container.getParser().addChunk(parserOld);
 
                 log(`DI container is configured from server. Local cache is updated.`);
             }
@@ -114,7 +106,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             // MAIN
             // load sources and create DI Container
             const {default: Container} = await import(URL_SRC_DI_CONTAINER);
-            /** @type {TeqFw_Di_Container} */
+            /** @type {TeqFw_Di_Api_Container} */
             const container = new Container();
             container.setDebug(true);
             if (navigator.onLine) await configFromServer(container)
