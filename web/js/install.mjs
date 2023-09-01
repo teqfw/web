@@ -3,8 +3,7 @@
  * This es6-module is imported with regular 'import' statement, not with DI container.
  */
 // MODULE'S VARS
-const DI_PARSER = 'TeqFw_Core_Back_App_Di_Parser$';
-const DI_REPLACE = 'TeqFw_Di_Container_PreProcessor_Replace';
+const DI_PARSER = 'TeqFw_Core_Shared_App_Di_Parser_Chunk$';
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
@@ -106,7 +105,7 @@ export class Install {
                      * Load DI configuration from local cache and setup container.
                      * @param {TeqFw_Di_Api_Container} container
                      */
-                    function configFromCache(container) {
+                    async function configFromCache(container) {
                         try {
                             const stored = window.localStorage.getItem(KEY_DI_CONFIG);
                             const cache = JSON.parse(stored);
@@ -119,14 +118,13 @@ export class Install {
                                 }
                             }
                             if (Array.isArray(cache?.replaces)) {
-                                const preProcessor = container.getPreProcessor();
-                                const handlers = preProcessor.getHandlers();
-                                /** @type {TeqFw_Di_Container_PreProcessor_Replace|function} */
-                                const replace = handlers.find((one) => one.name === 'TeqFw_Di_Container_PreProcessor_Replace');
+                                /** @type {TeqFw_Core_Shared_App_Di_PreProcessor_Replace} */
+                                const replace = await container.get('TeqFw_Core_Shared_App_Di_PreProcessor_Replace$');
                                 for (const item of cache.replaces) {
                                     const [orig, alter] = item;
                                     replace.add(orig, alter);
                                 }
+                                container.getPreProcessor().addChunk(replace);
                             }
                             print(`DI container is configured from local cache.`);
                         } catch (e) {
@@ -155,17 +153,17 @@ export class Install {
                                 resolver.addNamespaceRoot(item.ns, baseUrl + item.path, item.ext);
                                 cache.sources.push([item.ns, baseUrl + item.path, item.ext]);
                             }
+
                         // add replaces to container
-                        const preProcessor = container.getPreProcessor();
-                        const handlers = preProcessor.getHandlers();
-                        /** @type {TeqFw_Di_Container_PreProcessor_Replace|function} */
-                        const replace = handlers.find((one) => one.name === DI_REPLACE);
+                        /** @type {TeqFw_Core_Shared_App_Di_PreProcessor_Replace} */
+                        const replace = await container.get('TeqFw_Core_Shared_App_Di_PreProcessor_Replace$');
                         if (Array.isArray(configDi?.replacements))
                             for (const item of configDi.replacements) {
                                 replace.add(item.orig, item.alter);
                                 cache.replaces.push([item.orig, item.alter]);
                             }
                         window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
+                        container.getPreProcessor().addChunk(replace);
 
                         // set old format parser for TeqFw_
                         const parserOld = await container.get(DI_PARSER);
@@ -179,7 +177,7 @@ export class Install {
                     /** @type {TeqFw_Di_Api_Container} */
                     const container = new Container();
                     if (navigator.onLine) await configFromServer(container)
-                    else configFromCache(container);
+                    else await configFromCache(container);
                     return container;
                 }
 
