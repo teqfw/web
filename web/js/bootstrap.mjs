@@ -2,7 +2,7 @@
  * Frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
  */
 // MODULE'S VARS
-const DI_PARSER = 'TeqFw_Core_Shared_App_Di_Parser_Chunk$';
+const DI_PARSER = 'TeqFw_Core_Shared_App_Di_Parser_Legacy$';
 const KEY_DI_CONFIG = '@teqfw/web/di/cfg';
 const URL_API_DI_NS = './cfg/di';
 const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
