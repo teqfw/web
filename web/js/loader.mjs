@@ -65,14 +65,14 @@ export class Bootstrap {
                 /**
                  * Import code, create and setup Dependency Injection container for frontend.
                  *
-                 * @returns {Promise<TeqFw_Di_Container>}
+                 * @returns {Promise<TeqFw_Di_Api_Container>}
                  */
                 async function initDiContainer() {
                     // FUNCS
 
                     /**
                      * Load DI configuration from local cache and setup container.
-                     * @param {TeqFw_Di_Container} container
+                     * @param {TeqFw_Di_Api_Container} container
                      */
                     function configFromCache(container) {
                         try {
@@ -96,7 +96,7 @@ export class Bootstrap {
 
                     /**
                      * Load DI configuration from server and setup container.
-                     * @param {TeqFw_Di_Container} container
+                     * @param {TeqFw_Di_Api_Container} container
                      */
                     async function configFromServer(container) {
                         const urlWithPath = `${location.origin}${location.pathname}`;
@@ -127,7 +127,7 @@ export class Bootstrap {
                     // MAIN
                     // load sources and create DI Container
                     const {default: Container} = await import(URL_SRC_DI_CONTAINER);
-                    /** @type {TeqFw_Di_Container} */
+                    /** @type {TeqFw_Di_Api_Container} */
                     const container = new Container();
                     if (navigator.onLine) await configFromServer(container)
                     else configFromCache(container);
