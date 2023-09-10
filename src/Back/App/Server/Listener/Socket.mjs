@@ -14,7 +14,6 @@ export default class TeqFw_Web_Back_App_Server_Listener_Socket {
             TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory$: aHndlFactory,
         }) {
         // VARS
-        logger.setNamespace(this.constructor.name);
         /** @type {WebSocketServer} */
         let _wss;
         /** @type {TeqFw_Web_Back_Api_Listener_Socket[]} */

@@ -36,7 +36,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
             TeqFw_Web_Back_Mod_Address$: modAddr,
         }) {
         // VARS
-        logger.setNamespace(this.constructor.name);
         let _storeDi, _storeApp, _storeSwCache;
 
         // FUNCS

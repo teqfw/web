@@ -25,8 +25,6 @@ export default function (
         ['TeqFw_Core_Shared_Util_BeforeAfter#']: BeforeAfter,
         ['TeqFw_Core_Shared_Util_BeforeAfter.Dto']: DtoSort,
     }) {
-    // VARS
-    logger.setNamespace(NS);
 
     // FUNCS
     /**

@@ -42,8 +42,6 @@ export default function Factory(
         ['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$']: fOpt,
         TeqFw_Core_Back_Mod_App_Pid$: modPid,
     }) {
-    // VARS
-    logger.setNamespace(NS);
 
     // FUNCS
     /**
