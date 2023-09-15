@@ -5,7 +5,7 @@
  */
 export default class TeqFw_Web_Back_App_Server_Listener_Socket_A_HndlFactory {
     /**
-     * @param {TeqFw_Di_Container} container
+     * @param {TeqFw_Di_Api_Container} container
      * @param {TeqFw_Web_Back_Defaults} DEF
      * @param {TeqFw_Core_Back_Api_Plugin_Registry} modPlugins
      * @param {TeqFw_Web_Back_Plugin_Dto_Desc} dtoDesc

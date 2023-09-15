@@ -29,7 +29,6 @@ export default class TeqFw_Web_Back_App_Server {
         }) {
         // DEFINE WORKING VARS
         let _serverType; // save type for logs (HTTP/1, HTTP/2, HTTPS)
-        logger.setNamespace(this.constructor.name);
 
         // DEFINE THIS INSTANCE METHODS
         this.run = async function ({port, useHttp1, key, cert, useWs} = {}) {

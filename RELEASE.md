@@ -1,5 +1,11 @@
 # @teqfw/web: releases
 
+## 0.20.2
+
+* The `@teqfw/di` restructure.
+* The modification of the initialization of namespaces for the front.
+* The logger initialization is moved to the post-processor.
+
 ## 0.20.1
 
 * Fix namespace mapping for offline mode (from the cache).

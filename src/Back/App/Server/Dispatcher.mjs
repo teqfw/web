@@ -35,7 +35,6 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             ['TeqFw_Web_Back_App_Server_Respond.respond405']: respond405,
         }) {
         // VARS
-        logger.setNamespace(this.constructor.name);
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
         const handlers = [];
 

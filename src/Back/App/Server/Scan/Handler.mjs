@@ -7,7 +7,7 @@ const NS = 'TeqFw_Web_Back_App_Server_Scan_Handler';
 
 // MODULE'S FUNCTIONS
 /**
- * @param {TeqFw_Di_Container} container
+ * @param {TeqFw_Di_Api_Container} container
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
  * @param {TeqFw_Core_Back_Api_Plugin_Registry} modPlugins
@@ -25,8 +25,6 @@ export default function (
         ['TeqFw_Core_Shared_Util_BeforeAfter#']: BeforeAfter,
         ['TeqFw_Core_Shared_Util_BeforeAfter.Dto']: DtoSort,
     }) {
-    // VARS
-    logger.setNamespace(NS);
 
     // FUNCS
     /**
