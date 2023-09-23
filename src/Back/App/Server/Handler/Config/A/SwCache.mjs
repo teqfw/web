@@ -4,8 +4,8 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache
  */
 // MODULE'S IMPORT
-import {join} from 'path';
-import {existsSync} from 'fs';
+import {join} from 'node:path';
+import {existsSync} from 'node:fs';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache';
@@ -13,9 +13,7 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache';
 // MODULE'S FUNCS
 /**
  * Default export is a factory to create result function in working environment (with deps).
- * @param {TeqFw_Di_Shared_SpecProxy} spec
- */
-/**
+ *
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Back_Util.scanRecursively|function} scanRecursively
  * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
@@ -108,10 +106,10 @@ export default function (
         const appName = registry.getAppName();
         const items = registry.items();
         for (const item of items) {
-            /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
+            /** @type {TeqFw_Core_Back_Plugin_Dto_Desc_Di.Dto} */
             const desc = item.teqfw[DEF.MOD_CORE.SHARED.NAME_DI];
             const autoload = desc.autoload;
-            const src = autoload.isAbsolute ? autoload.path : join(item.path, autoload.path);
+            const src = join(item.path, autoload.path);
             res.push(...readSrcFiles(src, item.name));
 
             if (item.name === appName) {
