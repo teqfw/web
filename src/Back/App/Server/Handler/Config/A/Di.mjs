@@ -91,7 +91,7 @@ export default function (
     function act() {
         const res = dtoDi.createDto();
         res.namespaces = getNamespaces(registry);
-        res.replacementsreplacements = getReplaces(registry);
+        res.replacements = getReplaces(registry);
         return res;
     }
 
