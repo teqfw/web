@@ -1,6 +1,8 @@
 /**
  * Frontend app installer registers Service Worker, loads DI configuration and initializes DI.
  * This es6-module is imported with regular 'import' statement, not with DI container.
+ *
+ * @deprecated use ./bootstrap.mjs
  */
 // MODULE'S VARS
 const DI_PARSER = 'TeqFw_Core_Shared_App_Di_Parser_Legacy$';
