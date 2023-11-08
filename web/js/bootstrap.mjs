@@ -113,7 +113,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             const {default: Container} = await import(URL_SRC_DI_CONTAINER);
             /** @type {TeqFw_Di_Api_Container} */
             const container = new Container();
-            container.setDebug(true);
+            container.setDebug(false);
             if (navigator.onLine) await configFromServer(container)
             else await configFromCache(container);
             return container;
