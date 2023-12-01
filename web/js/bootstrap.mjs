@@ -116,6 +116,14 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             container.setDebug(false);
             if (navigator.onLine) await configFromServer(container)
             else await configFromCache(container);
+            // add post-processor with Factory wrapper & logger setup
+            const post = container.getPostProcessor();
+            /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Factory} */
+            const postFactory = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Factory$');
+            post.addChunk(postFactory);
+            /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Logger} */
+            const postLogger = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Logger$');
+            post.addChunk(postLogger);
             return container;
         }
 
