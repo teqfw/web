@@ -1,5 +1,5 @@
 /**
- * Frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
+ * The frontend bootstrap registers Service Worker, loads DI configuration and initializes DI.
  */
 // MODULE'S VARS
 const DI_PARSER = 'TeqFw_Core_Shared_App_Di_Parser_Legacy$';
@@ -15,9 +15,12 @@ const URL_SRC_DI_CONTAINER = './src/@teqfw/di/Container.js';
  * @param {string} urlSw 'sw.js'
  * @param {string} nsApp 'Project_Front_App'
  * @param {string} cssApp CSS selector to mount Vue root component ('#id')
+ * @param {function} fnFinalize function to clean up the DOM after the app has been mounted
+ *
  * @returns {Promise<void>}
+ * TODO: use fn({...}) notation for arguments
  */
-export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
+export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinalize) {
 
     // FUNCS
 
@@ -141,6 +144,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             await frontApp.init(log);
             log(`Mounting app instance to '${cssApp}'...`);
             await frontApp.mount(selector);
+            if (typeof fnFinalize === 'function') fnFinalize();
         } catch (e) {
             log(`Error in bootstrap: ${e.message}. ${e.stack}`);
         }
@@ -190,6 +194,6 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp) {
             await launchApp(nsApp, cssApp);
         }
     } else {
-        log(`Cannot start PWA. This browser has no Service Workers support.`);
+        log(`Cannot start PWA. This browser does not have a Service Workers support.`);
     }
 }
