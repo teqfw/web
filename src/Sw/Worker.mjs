@@ -228,9 +228,9 @@ function onInstall(event) {
         const entries = zip?.entries;
         if (entries) {
             const cacheStat = await caches.open(CACHE_STATIC);
-            const total = entries.length;
             let processed = 0;
             const keys = Object.keys(entries);
+            const total = keys.length;
             _log(`Total sources in the zip: ${keys.length}.`);
             for (const za of Object.values(entries)) {
                 const url = za.name;
