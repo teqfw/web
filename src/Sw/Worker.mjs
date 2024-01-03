@@ -9,6 +9,7 @@
 // MODULE'S IMPORT
 import Config from './Config.mjs';
 import CFG_MSG from '../Front/Mod/Sw/Enum/Message.mjs';
+import {unzip} from '../../../src/unzipit/unzipit.module.js';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Sw_Worker';
@@ -125,11 +126,13 @@ function onInstall(event) {
     /**
      * Load list of static file's URLs to cache locally.
      * @return {Promise<string[]>}
+     * @deprecated TODO: remove it
      */
-    async function loadFilesToCache() {
+    async function loadFilesToCacheOld() {
         // Get list of static files from the server
         //const data = {door: _door}; // see TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache
-        const req = new Request(`${URL_CFG_SW_CACHE}/${_door}`, {
+        const door = (_door) ?? '';
+        const req = new Request(`${URL_CFG_SW_CACHE}/${door}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -146,8 +149,9 @@ function onInstall(event) {
      * Load urls from server and cache content locally. All URLs are separated to batches up to 10 URLs each.
      * @param {string[]} urls
      * @return {Promise<void>}
+     * @deprecated TODO: remove it
      */
-    async function cacheStatics(urls) {
+    async function cacheStaticsOld(urls) {
         try {
             if (Array.isArray(urls)) {
 
@@ -189,14 +193,64 @@ function onInstall(event) {
         }
     }
 
+    /**
+     * Load zipped sources from the back and place it to the cache.
+     * @return {Promise<void>}
+     */
+    async function loadZipToCache() {
+        // FUNCS
+        /**
+         * Handmade function for the most used types.
+         * @param {string} name
+         * @return {string}
+         */
+        function getMimeByName(name) {
+            const pos = name.lastIndexOf('.');
+            const ext = name.substring(pos + 1).toLowerCase().trim();
+            if ((ext === 'js') || (ext === 'mjs')) return 'application/javascript';
+            else if (ext === 'css') return 'text/css';
+            else if (ext === 'ico') return 'image/x-icon';
+            else if (ext === 'md') return 'text/markdown';
+            else if (ext === 'mp3') return 'audio/mpeg';
+            else if (ext === 'webmanifest') return 'application/manifest+json';
+            else if (ext === 'woff2') return 'font/woff2';
+            else if ((ext === 'gif') || (ext === 'png')) return `image/${ext}`;
+            else if ((ext === 'htm') || (ext === 'html')) return 'text/html';
+            else if ((ext === 'jpeg') || (ext === 'jpg') || (ext === 'jpe')) return 'image/jpg';
+            else return 'unknown';
+        }
+
+        // MAIN
+        // get the first client for the service worker
+        const [firstClient] = await self.clients.matchAll({includeUncontrolled: true});
+        const door = (_door) ?? ''; // TODO: should we ever use the `door` concept?
+        const zip = await unzip(`${URL_CFG_SW_CACHE}/${door}`);
+        const entries = zip?.entries;
+        if (entries) {
+            const cacheStat = await caches.open(CACHE_STATIC);
+            const total = entries.length;
+            let processed = 0;
+            const keys = Object.keys(entries);
+            _log(`Total sources in the zip: ${keys.length}.`);
+            for (const za of Object.values(entries)) {
+                const url = za.name;
+                const type = getMimeByName(url);
+                if (type === 'unknown') _log(url);
+                /** @type {Blob} */
+                const blob = await za.blob(type);
+                const headers = new Headers();
+                headers.set('Content-Length', `${blob.size}`);
+                headers.set('Content-Type', type);
+                const resp = new Response(blob, {status: 200, headers});
+                await cacheStat.put(url, resp);
+                const progress = Math.round(processed++ / total * 100) / 100;
+                firstClient.postMessage({type: MSG.PROGRESS, progress});
+            }
+        }
+    }
+
     // MAIN
-    event.waitUntil(
-        loadFilesToCache()
-            .then(cacheStatics)
-            .catch((e) => {
-                _log(`[TeqFw_Web_Sw_Worker] error: ${e.message}`);
-            })
-    );
+    event.waitUntil(loadZipToCache());
 }
 
 /**

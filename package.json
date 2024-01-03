@@ -28,10 +28,12 @@
   },
   "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
-    "@teqfw/core": "*",
-    "mime-types": "*",
-    "path-to-regexp": "*",
-    "stream-buffers": "*",
-    "ws": "*"
+    "@teqfw/core": "latest",
+    "archiver": "latest",
+    "mime-types": "latest",
+    "path-to-regexp": "latest",
+    "stream-buffers": "latest",
+    "unzipit": "latest",
+    "ws": "latest"
   }
 }
