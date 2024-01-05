@@ -11,6 +11,11 @@ const NS = 'TeqFw_Web_Shared_Dto_Config_Front';
 class Dto {
     static namespace = NS;
     /**
+     * The UUID for the current instance of the backend app (see `TeqFw_Core_Back_Mod_App_Uuid`).
+     * @type {string}
+     */
+    backendUuid;
+    /**
      * Any custom object to use as application configuration on the front.
      * @type {Object}
      */
@@ -27,6 +32,7 @@ class Dto {
     door;
     /**
      * @type {boolean}
+     * @deprecated this is not the responsibility of the web plugin
      */
     frontLogsMonitoring;
     /**
@@ -60,6 +66,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
          */
         this.createDto = function (data) {
             const res = new Dto();
+            res.backendUuid = castString(data?.backendUuid);
             res.custom = data?.custom;
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);

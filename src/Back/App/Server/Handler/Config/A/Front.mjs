@@ -12,14 +12,17 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Front';
  *
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Back_Config} config
- * @param {TeqFw_Web_Shared_Dto_Config_Front} factDto
+ * @param {TeqFw_Core_Back_Mod_App_Uuid} modAppUuid
+ * @param {TeqFw_Web_Shared_Dto_Config_Front} dtoFront
  */
 export default function (
     {
         TeqFw_Web_Back_Defaults$: DEF,
         TeqFw_Core_Back_Config$: config,
-        TeqFw_Web_Shared_Dto_Config_Front$: factDto,
-    }) {
+        TeqFw_Core_Back_Mod_App_Uuid$: modAppUuid,
+        TeqFw_Web_Shared_Dto_Config_Front$: dtoFront,
+    }
+) {
     // FUNCS
 
     /**
@@ -34,11 +37,11 @@ export default function (
         const cfgCore = config.getLocal(DEF.MOD_CORE.SHARED.NAME);
 
         /** @type {TeqFw_Web_Shared_Dto_Config_Front.Dto} */
-        const res = factDto.createDto();
+        const res = dtoFront.createDto();
         if (cfgWeb?.custom) res.custom = cfgWeb.custom;
-        if (cfgWeb?.frontLogsMonitoring) res.frontLogsMonitoring = cfgWeb.frontLogsMonitoring; // 'true' only
         if (cfgWeb?.urlBase) res.urlBase = cfgWeb.urlBase;
         if (cfgCore?.devMode) res.devMode = cfgCore.devMode;
+        res.backendUuid = modAppUuid.get(); // use backend application UUID
         return res;
     }
 
