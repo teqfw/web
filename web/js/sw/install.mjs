@@ -23,6 +23,7 @@ export function getMimeByName(name) {
     else if (ext === 'json') return 'application/json';
     else if (ext === 'md') return 'text/markdown';
     else if (ext === 'mp3') return 'audio/mpeg';
+    else if (ext === 'wav') return 'audio/wav';
     else if (ext === 'webmanifest') return 'application/manifest+json';
     else if (ext === 'woff2') return 'font/woff2';
     else if ((ext === 'gif') || (ext === 'png')) return `image/${ext}`;
