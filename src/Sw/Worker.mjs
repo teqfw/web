@@ -124,78 +124,9 @@ function onInstall(event) {
     // FUNCS
 
     /**
-     * Load list of static file's URLs to cache locally.
-     * @return {Promise<string[]>}
-     * @deprecated TODO: remove it
-     */
-    async function loadFilesToCacheOld() {
-        // Get list of static files from the server
-        //const data = {door: _door}; // see TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache
-        const door = (_door) ?? '';
-        const req = new Request(`${URL_CFG_SW_CACHE}/${door}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const resp = await self.fetch(req);
-        const json = await resp.json();
-        const res = Array.isArray(json) ? json : [];
-        _log(`List of static files to cache is loaded (total items: ${res.length}).`);
-        return res;
-    }
-
-    /**
-     * Load urls from server and cache content locally. All URLs are separated to batches up to 10 URLs each.
-     * @param {string[]} urls
-     * @return {Promise<void>}
-     * @deprecated TODO: remove it
-     */
-    async function cacheStaticsOld(urls) {
-        try {
-            if (Array.isArray(urls)) {
-
-                const allClients = await self.clients.matchAll({
-                    includeUncontrolled: true
-                });
-                const [firstClient] = allClients;
-                let progress = 0;
-                firstClient.postMessage({type: MSG.PROGRESS, progress: 0});
-
-                // ... and load static files to the local cache
-                const cacheStat = await caches.open(CACHE_STATIC);
-                // METHOD 1
-                // await cacheStat.addAll(files);
-                // METHOD 2
-                let total = 0;
-                const SIZE = 10;
-                while (total <= urls.length) {
-                    firstClient.postMessage({type: MSG.PROGRESS, progress});
-                    const slice = urls.slice(total, total + SIZE);
-                    await Promise.all(
-                        slice.map(function (url) {
-                            return cacheStat.add(url).catch(function (reason) {
-                                _log(`SW install error: '${url}' failed, ${String(reason)}`);
-                            });
-                        })
-                    );
-                    total += SIZE;
-                    const cached = total < urls.length ? total : urls.length;
-                    _log(`Total '${cached}' URLs are cached.`);
-                    progress = Math.round(total / urls.length * 100) / 100
-                }
-                // report 100%
-                firstClient.postMessage({type: MSG.PROGRESS, progress: 1});
-            }
-            _log(`Static files are loaded and cached by Service Worker.`);
-        } catch (e) {
-            _log(`SW iInstallation error: ${JSON.stringify(e)}`);
-        }
-    }
-
-    /**
      * Load zipped sources from the back and place it to the cache.
      * @return {Promise<void>}
+     * @deprecated use `@teqfw/web/web/js/sw/cache-front.mjs`
      */
     async function loadZipToCache() {
         // FUNCS

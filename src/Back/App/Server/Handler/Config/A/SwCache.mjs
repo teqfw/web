@@ -82,7 +82,7 @@ export default function (
                 res.push(...urls);
             }
             // scan './Shared/'
-            const pathShared = join(root, DEF.SHARED.DIR_SRC_FRONT);
+            const pathShared = join(root, DEF.SHARED.DIR_SRC_SHARED);
             if (existsSync(pathShared)) {
                 const files = scanRecursively(pathShared);
                 const urls = files.map(entry => entry.replace(root, `./${SPACE_SRC}/${pluginName}`));
