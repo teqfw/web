@@ -31,11 +31,6 @@ class Dto {
      */
     door;
     /**
-     * @type {boolean}
-     * @deprecated this is not the responsibility of the web plugin
-     */
-    frontLogsMonitoring;
-    /**
      * Root for teq-application (empty by default) is configured on the server side (./cfg/local.json).
      * @type {string}
      */
@@ -45,6 +40,11 @@ class Dto {
      * @type {string}
      */
     urlBase;
+    /**
+     * The version for the app (@see `package.json`).
+     * @type {string}
+     */
+    version;
 }
 
 /**
@@ -59,7 +59,8 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
         {
             ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
             ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
-        }) {
+        }
+    ) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Front.Dto} [data]
          * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
@@ -70,9 +71,9 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
             res.custom = data?.custom;
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
-            res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
             res.root = castString(data?.root);
             res.urlBase = castString(data?.urlBase);
+            res.version = castString(data?.version);
             return res;
         }
     }

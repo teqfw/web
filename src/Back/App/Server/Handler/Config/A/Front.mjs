@@ -42,6 +42,7 @@ export default function (
         if (cfgWeb?.urlBase) res.urlBase = cfgWeb.urlBase;
         if (cfgCore?.devMode) res.devMode = cfgCore.devMode;
         res.backendUuid = modAppUuid.get(); // use backend application UUID
+        res.version = config.getVersion();
         return res;
     }
 
