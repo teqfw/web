@@ -254,6 +254,41 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
 
         /**
+         * This is experimental method to get list of objects from store or store index.
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @param {string} [index]
+         * @param {IDBKeyRange} [range]
+         * @param {boolean} [backward]
+         * @param {number} [limit]
+         * @return {Promise<*[]>}
+         */
+        this.list = async function (trx, meta, {index, range, backward, limit} = {}) {
+            const res = [];
+            const storeName = meta.getName();
+            const store = trx.objectStore(storeName);
+            const source = _getSource(store, index);
+            // perform async activity synchronously
+            const direction = (backward) ? 'prev' : 'next';
+            const reqCursor = source.openCursor(range, direction);
+            // perform async activity synchronously
+            await new Promise((resolve, reject) => {
+                let count = 0;
+                reqCursor.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        if ((limit === undefined) || (count++ < limit)) {
+                            res.push(cursor.value);
+                            cursor.continue();
+                        } else resolve();
+                    } else resolve();
+                };
+                reqCursor.onerror = reject;
+            });
+            return res;
+        };
+
+        /**
          * Read values from index or primary key.
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
@@ -264,7 +299,6 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @return {Promise<*[]>}
          */
         this.readKeys = async function (trx, meta, {index, query, backward, limit} = {}) {
-
             const res = [];
             const storeName = meta.getName();
             const store = trx.objectStore(storeName);
