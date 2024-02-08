@@ -172,6 +172,32 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             // create promise and perform operation
             return await createPromise(store, data);
         }
+
+        /**
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @return {Promise<void>}
+         */
+        this.deleteAll = async function (trx, meta) {
+            const storeName = meta.getName();
+            const store = trx.objectStore(storeName);
+            const reqCursor = store.openCursor();
+            // perform async activity synchronously
+            await new Promise((resolve, reject) => {
+                reqCursor.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        store.delete(cursor.key);
+                        cursor.continue();
+                    } else {
+                        // All items have been deleted
+                        resolve();
+                    }
+                };
+                reqCursor.onerror = reject;
+            });
+        };
+
         /**
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
@@ -268,7 +294,6 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             const storeName = meta.getName();
             const store = trx.objectStore(storeName);
             const source = _getSource(store, index);
-            // perform async activity synchronously
             const direction = (backward) ? 'prev' : 'next';
             const reqCursor = source.openCursor(range, direction);
             // perform async activity synchronously
