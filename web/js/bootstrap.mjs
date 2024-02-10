@@ -138,12 +138,13 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
             const container = await initDiContainer();
             log(`Creating new app instance using DI...`);
             // create Vue application and mount it to the page
-            /** @type {TeqFw_Web_Front_Api_IApp} */
+            /** @type {TeqFw_Web_Front_Api_App} */
             const frontApp = await container.get(`${app}$`);
             log(`Initializing app instance...`);
-            await frontApp.init(log);
-            log(`Mounting app instance to '${cssApp}'...`);
-            await frontApp.mount(selector);
+            if (await frontApp.init(log)) {
+                log(`Mounting app instance to '${cssApp}'...`);
+                await frontApp.mount(selector);
+            }
             if (typeof fnFinalize === 'function') fnFinalize();
         } catch (e) {
             log(`Error in bootstrap: ${e.message}. ${e.stack}`);

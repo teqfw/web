@@ -191,7 +191,7 @@ export class Install {
                     const container = await initDiContainer();
                     print(`Creating new app instance using DI...`);
                     // create Vue application and mount it to the page
-                    /** @type {TeqFw_Web_Front_Api_IApp} */
+                    /** @type {TeqFw_Web_Front_Api_App} */
                     const app = await container.get(`${_nsApp}$`);
                     print(`Initializing app instance...`);
                     if (await app.init(print)) {
