@@ -20,7 +20,7 @@ try {
 
     /* Request Container to construct App then run it */
     /** @type {TeqFw_Core_Back_App} */
-    const app = await container.get('TeqFw_Core_Back_App$');
+    const app = await container.get('TeqFw_Core_Back_App2$');
     await app.init({path: root, version: '0.7.0'});
     await app.run();
 } catch (e) {
