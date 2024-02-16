@@ -154,6 +154,11 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                     const req = store.add(data);
                     req.onerror = function () {
                         console.log('IDB Store error:' + req.error);
+                        const id = {};
+                        const pk = meta.getPrimaryKey();
+                        for (const one of pk)
+                            id[one] = data[one];
+                        console.log(`Object key: ${JSON.stringify(id)}`);
                         reject(req.error);
                     }
                     req.onsuccess = function () {
