@@ -1,8 +1,8 @@
 /**
  * Meta information for entities stored in IndexedDB.
  *
- * This interface is very close to `TeqFw_Db_Back_RDb_Meta_IEntity`.
  * @interface
+ * TODO: rename to `TeqFw_Web_Front_Api_Store_Meta`
  */
 export default class TeqFw_Web_Front_Api_Store_IEntity {
     /**

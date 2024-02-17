@@ -13,6 +13,10 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         let _dbVersion;
         /** @type {string} */
         let _dbName;
+        /**
+         * @type {TeqFw_Web_Front_Api_Store_IEntity[]}
+         */
+        let _stores = [];
 
         // FUNCS
         /**
@@ -68,11 +72,18 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             _db = undefined;
         }
 
+        /**
+         * We need this method on the data export.
+         * @return {TeqFw_Web_Front_Api_Store_IEntity[]}
+         */
+        this.getStores = () => _stores;
+
         this.init = function (name, version, fnUpgrade) {
             _dbName = name;
             _dbVersion = version;
             _fnDbUpgrade = fnUpgrade;
         }
+
         this.open = async () => {
 
             // FUNCS
@@ -104,6 +115,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 };
             }
         }
+
         /**
          * @param {TeqFw_Web_Front_Api_Store_IEntity[], TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {boolean} readwrite
@@ -124,6 +136,14 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             const mode = (readwrite) ? 'readwrite' : 'readonly';
             return _db.transaction(stores, mode);
         }
+
+        /**
+         * @param {TeqFw_Web_Front_Api_Store_IEntity[]} stores
+         */
+        this.setStores = function (stores) {
+            _stores.length = 0;
+            _stores.push(...stores);
+        };
 
         /**
          * Clear storage.
