@@ -4,7 +4,7 @@
  * @namespace TeqFw_Web_Back_App_Server_Handler_Config_A_Di
  */
 // MODULE'S IMPORT
-import $path from 'path';
+import {join} from 'node:path';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
@@ -12,9 +12,7 @@ const NS = 'TeqFw_Web_Back_App_Server_Handler_Config_A_Di';
 // MODULE'S FUNCS
 /**
  * Default export is a factory to create result function in working environment (with deps).
- * @param {TeqFw_Di_Shared_SpecProxy} spec
- */
-/**
+ *
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
  * @param {TeqFw_Web_Shared_Dto_Config_Di} dtoDi
@@ -44,12 +42,12 @@ export default function (
         const result = [];
         const plugins = registry.items();
         for (const one of plugins) {
-            /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
+            /** @type {TeqFw_Core_Back_Plugin_Dto_Desc_Di.Dto} */
             const desc = one.teqfw[DEF.MOD_CORE.SHARED.NAME_DI];
             const item = dtoNs.createDto();
             item.ext = desc.autoload.ext;
             item.ns = desc.autoload.ns;
-            item.path = $path.join('/', DEF.SHARED.SPACE_SRC, one.name);
+            item.path = join('/', DEF.SHARED.SPACE_SRC, one.name);
             result.push(item);
         }
         return result;
@@ -91,9 +89,10 @@ export default function (
      * @return {TeqFw_Web_Shared_Dto_Config_Di.Dto}
      */
     function act() {
-        const namespaces = getNamespaces(registry);
-        const replacements = getReplaces(registry);
-        return dtoDi.createDto({namespaces, replacements});
+        const res = dtoDi.createDto();
+        res.namespaces = getNamespaces(registry);
+        res.replacements = getReplaces(registry);
+        return res;
     }
 
     // MAIN

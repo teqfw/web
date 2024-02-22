@@ -12,6 +12,10 @@ This `teq`-plugin adds basic web server functionality to Tequila Framework based
     * `TeqFw_Web_Back_App_Server_Handler_Static`: GET requests for static resources;
     * `TeqFw_Web_Back_App_Server_Handler_Config`: GET requests to load various frontend configurations;
 
+## TODO
+
+* move the IndexedDB functionality to some external plugin (@teqfw/front-idb?)
+
 ## Install
 
 ```shell

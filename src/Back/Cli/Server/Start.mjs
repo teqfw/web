@@ -15,11 +15,6 @@ const OPT_USE_WS = 'useWs'; // use WebSockets handlers
 /**
  * Factory to create CLI command.
  *
- * @param {TeqFw_Di_Shared_SpecProxy} spec
- * @returns {TeqFw_Core_Back_Api_Dto_Command}
- * @memberOf TeqFw_Web_Back_Cli_Server_Start
- */
-/**
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
  * @param {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} castBooleanIfExists
@@ -29,6 +24,8 @@ const OPT_USE_WS = 'useWs'; // use WebSockets handlers
  * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
  * @param {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} fOpt
  * @param {TeqFw_Core_Back_Mod_App_Pid} modPid
+ * @returns {TeqFw_Core_Back_Api_Dto_Command}
+ * @memberOf TeqFw_Web_Back_Cli_Server_Start
  */
 export default function Factory(
     {

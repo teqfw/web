@@ -9,15 +9,12 @@ const NS = 'TeqFw_Web_Back_Cli_Server_Stop';
 /**
  * Factory to create CLI command.
  *
- * @param {TeqFw_Di_Shared_SpecProxy} spec
- * @returns {TeqFw_Core_Back_Api_Dto_Command}
- * @memberOf TeqFw_Web_Back_Cli_Server_Stop
- */
-/**
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Back_App} app
  * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
  * @param {TeqFw_Core_Back_Mod_App_Pid} modPid
+ * @returns {TeqFw_Core_Back_Api_Dto_Command}
+ * @memberOf TeqFw_Web_Back_Cli_Server_Stop
  */
 export default function Factory(
     {

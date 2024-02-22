@@ -160,7 +160,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
             const items = regPlugins.items();
             for (const item of items) {
                 // map URLs to filesystem for ES6/JS sources
-                /** @type {TeqFw_Di_Back_Api_Dto_Plugin_Desc} */
+                /** @type {TeqFw_Core_Back_Plugin_Dto_Desc_Di.Dto} */
                 const desc = item.teqfw?.[DEF.MOD_CORE.SHARED.NAME_DI];
                 if (desc?.autoload && desc.autoload.ns) {
                     const path = join(item.path, desc.autoload.path);

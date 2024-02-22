@@ -11,6 +11,11 @@ const NS = 'TeqFw_Web_Shared_Dto_Config_Front';
 class Dto {
     static namespace = NS;
     /**
+     * The UUID for the current instance of the backend app (see `TeqFw_Core_Back_Mod_App_Uuid`).
+     * @type {string}
+     */
+    backendUuid;
+    /**
      * Any custom object to use as application configuration on the front.
      * @type {Object}
      */
@@ -26,10 +31,6 @@ class Dto {
      */
     door;
     /**
-     * @type {boolean}
-     */
-    frontLogsMonitoring;
-    /**
      * Root for teq-application (empty by default) is configured on the server side (./cfg/local.json).
      * @type {string}
      */
@@ -39,6 +40,11 @@ class Dto {
      * @type {string}
      */
     urlBase;
+    /**
+     * The version for the app (@see `package.json`).
+     * @type {string}
+     */
+    version;
 }
 
 /**
@@ -53,19 +59,21 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
         {
             ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
             ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
-        }) {
+        }
+    ) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Front.Dto} [data]
          * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
+            res.backendUuid = castString(data?.backendUuid);
             res.custom = data?.custom;
             res.devMode = castBoolean(data?.devMode);
             res.door = castString(data?.door);
-            res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
             res.root = castString(data?.root);
             res.urlBase = castString(data?.urlBase);
+            res.version = castString(data?.version);
             return res;
         }
     }

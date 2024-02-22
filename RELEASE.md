@@ -1,4 +1,13 @@
-# @teqfw/web: releases
+# @teqfw/web: Releases
+
+## 0.21.0
+
+* Updates `bin/tequila.mjs`.
+* Adds the zipped cache for the Service Worker.
+* Standardizes the plugin-related code.
+* Improves `TeqFw_Web_Front_App_Store_IDB`.
+* Adds 'upgrade-on-version-change' functionality.
+* Appends CSS style.
 
 ## 0.20.2
 

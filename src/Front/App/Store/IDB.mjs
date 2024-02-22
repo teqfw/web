@@ -13,6 +13,10 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         let _dbVersion;
         /** @type {string} */
         let _dbName;
+        /**
+         * @type {TeqFw_Web_Front_Api_Store_IEntity[]}
+         */
+        let _stores = [];
 
         // FUNCS
         /**
@@ -68,11 +72,18 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             _db = undefined;
         }
 
+        /**
+         * We need this method on the data export.
+         * @return {TeqFw_Web_Front_Api_Store_IEntity[]}
+         */
+        this.getStores = () => _stores;
+
         this.init = function (name, version, fnUpgrade) {
             _dbName = name;
             _dbVersion = version;
             _fnDbUpgrade = fnUpgrade;
         }
+
         this.open = async () => {
 
             // FUNCS
@@ -104,6 +115,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                 };
             }
         }
+
         /**
          * @param {TeqFw_Web_Front_Api_Store_IEntity[], TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {boolean} readwrite
@@ -124,6 +136,14 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             const mode = (readwrite) ? 'readwrite' : 'readonly';
             return _db.transaction(stores, mode);
         }
+
+        /**
+         * @param {TeqFw_Web_Front_Api_Store_IEntity[]} stores
+         */
+        this.setStores = function (stores) {
+            _stores.length = 0;
+            _stores.push(...stores);
+        };
 
         /**
          * Clear storage.
@@ -154,6 +174,11 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                     const req = store.add(data);
                     req.onerror = function () {
                         console.log('IDB Store error:' + req.error);
+                        const id = {};
+                        const pk = meta.getPrimaryKey();
+                        for (const one of pk)
+                            id[one] = data[one];
+                        console.log(`Object key: ${JSON.stringify(id)}`);
                         reject(req.error);
                     }
                     req.onsuccess = function () {
@@ -172,6 +197,32 @@ export default class TeqFw_Web_Front_App_Store_IDB {
             // create promise and perform operation
             return await createPromise(store, data);
         }
+
+        /**
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @return {Promise<void>}
+         */
+        this.deleteAll = async function (trx, meta) {
+            const storeName = meta.getName();
+            const store = trx.objectStore(storeName);
+            const reqCursor = store.openCursor();
+            // perform async activity synchronously
+            await new Promise((resolve, reject) => {
+                reqCursor.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        store.delete(cursor.key);
+                        cursor.continue();
+                    } else {
+                        // All items have been deleted
+                        resolve();
+                    }
+                };
+                reqCursor.onerror = reject;
+            });
+        };
+
         /**
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
@@ -254,6 +305,40 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         }
 
         /**
+         * This is experimental method to get list of objects from store or store index.
+         * @param {IDBTransaction} trx
+         * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
+         * @param {string} [index]
+         * @param {IDBKeyRange} [range]
+         * @param {boolean} [backward]
+         * @param {number} [limit]
+         * @return {Promise<*[]>}
+         */
+        this.list = async function (trx, meta, {index, range, backward, limit} = {}) {
+            const res = [];
+            const storeName = meta.getName();
+            const store = trx.objectStore(storeName);
+            const source = _getSource(store, index);
+            const direction = (backward) ? 'prev' : 'next';
+            const reqCursor = source.openCursor(range, direction);
+            // perform async activity synchronously
+            await new Promise((resolve, reject) => {
+                let count = 0;
+                reqCursor.onsuccess = (event) => {
+                    const cursor = event.target.result;
+                    if (cursor) {
+                        if ((limit === undefined) || (count++ < limit)) {
+                            res.push(cursor.value);
+                            cursor.continue();
+                        } else resolve();
+                    } else resolve();
+                };
+                reqCursor.onerror = reject;
+            });
+            return res;
+        };
+
+        /**
          * Read values from index or primary key.
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
@@ -264,7 +349,6 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @return {Promise<*[]>}
          */
         this.readKeys = async function (trx, meta, {index, query, backward, limit} = {}) {
-
             const res = [];
             const storeName = meta.getName();
             const store = trx.objectStore(storeName);
