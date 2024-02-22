@@ -1,5 +1,7 @@
 # @teqfw/web: releases
 
+TODO: extract archiver & unzipit into external plugin
+
 ## 0.20.2
 
 * The `@teqfw/di` restructure.
