@@ -29,11 +29,9 @@
   "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
     "@teqfw/core": "latest",
-    "archiver": "latest",
     "mime-types": "latest",
     "path-to-regexp": "latest",
     "stream-buffers": "latest",
-    "unzipit": "latest",
     "ws": "latest"
   }
 }

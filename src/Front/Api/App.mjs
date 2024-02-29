@@ -1,5 +1,5 @@
 /**
- * Auth app interface is used by bootstrap loader (see `@teqfw/web/web/js/loader.mjs`).
+ * Auth app interface is used by bootstrap loader (see `@teqfw/web/web/js/bootstrap.mjs`).
  *
  * @interface
  * TODO: rename all `TeqFw_Web_Front_Api_IApp` to `TeqFw_Web_Front_Api_App`

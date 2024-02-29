@@ -20,6 +20,7 @@ class Dto {
      * List of folders to be excluded from SW cache.
      *
      * @type {string[]}
+     * @deprecated use @teqfw/web-source-installer
      */
     swCache;
     /**

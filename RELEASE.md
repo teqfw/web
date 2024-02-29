@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
 
+## 0.22.0
+
+* The sources archive functionality is extracted to `@teqfw/web-source-installer` plugin.
+
 ## 0.21.0
 
 * Updates `bin/tequila.mjs`.
