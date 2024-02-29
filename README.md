@@ -68,8 +68,7 @@ Commands:
   "@teqfw/web": {
     "doors": ["admin", "pub"],
     "excludes": {
-      "handlers": ["Ns_Mod"],
-      "swCache": ["./img/exrc/"]
+      "handlers": ["Ns_Mod"]
     },
     "handlers": {
       "Ns_Mod": {

@@ -10,6 +10,7 @@ export default class TeqFw_Web_Shared_Defaults {
     DIR_SRC_FRONT = 'Front'; // directory with frontend sources
     DIR_SRC_SHARED = 'Shared'; // directory with shared sources (front & back)
 
+    /** @deprecated */
     FILE_SW_CACHE_ZIP = './var/sw_cache.zip';
 
     LOG_META_TYPE = 'type'; // log type in log metadata sent to logs monitor (TODO: move to log plugin)

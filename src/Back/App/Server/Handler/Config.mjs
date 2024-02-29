@@ -5,7 +5,6 @@
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'node:http2';
-import {join} from 'node:path';
 
 // MODULE'S VARS
 const NS = 'TeqFw_Web_Back_App_Server_Handler_Config';
@@ -22,25 +21,21 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
     /**
      * @param {TeqFw_Web_Back_Defaults} DEF
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
-     * @param {TeqFw_Core_Back_Config} config
      * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_Front|function} actFront
      * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_Di|function} actDi
-     * @param {TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache|function} actSwCache
      * @param {TeqFw_Web_Back_Mod_Address} modAddr
      */
     constructor(
         {
             TeqFw_Web_Back_Defaults$: DEF,
             TeqFw_Core_Shared_Api_Logger$$: logger,
-            TeqFw_Core_Back_Config$: config,
             TeqFw_Web_Back_App_Server_Handler_Config_A_Front$: actFront,
             TeqFw_Web_Back_App_Server_Handler_Config_A_Di$: actDi,
-            TeqFw_Web_Back_App_Server_Handler_Config_A_SwCache$: actSwCache,
             TeqFw_Web_Back_Mod_Address$: modAddr,
-        }) {
+        }
+    ) {
         // VARS
-        let _storeDi, _storeFront, _storeSwCache;
-        const ZIP = join(config.getPathToRoot(), DEF.SHARED.FILE_SW_CACHE_ZIP);
+        let _storeDi, _storeFront;
 
         // FUNCS
         /**
@@ -62,10 +57,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
                     // return app config
                     shares[DEF.SHARE_RES_BODY] = JSON.stringify(_storeFront);
                     shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
-                } else if (addr.route.includes(DEF.SHARED.CFG_SW_CACHE)) {
-                    // return SW cache config
-                    shares[DEF.SHARE_RES_FILE] = ZIP;
-                    shares[DEF.SHARE_RES_STATUS] = HTTP_STATUS_OK;
                 }
             }
         }
@@ -79,8 +70,6 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
             logger.info('\tDI container configuration is loaded into handler\'s cache.');
             _storeFront = await actFront();
             logger.info('\tFrontend app configuration is loaded into handler\'s cache.');
-            _storeSwCache = await actSwCache();
-            logger.info('\tSW cache configuration is loaded into handler\'s cache.');
         };
 
         /**

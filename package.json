@@ -1,6 +1,6 @@
 {
   "name": "@teqfw/web",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "TeqFW: web server.",
   "scripts": {
     "help": "node ./bin/tequila.mjs help",
@@ -29,11 +29,9 @@
   "homepage": "https://github.com/teqfw/web#readme",
   "dependencies": {
     "@teqfw/core": "latest",
-    "archiver": "latest",
     "mime-types": "latest",
     "path-to-regexp": "latest",
     "stream-buffers": "latest",
-    "unzipit": "latest",
     "ws": "latest"
   }
 }
