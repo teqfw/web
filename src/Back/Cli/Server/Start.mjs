@@ -76,12 +76,12 @@ export default function Factory(
     const res = fCommand.create();
     res.realm = DEF.CLI_PREFIX;
     res.name = 'server-start';
-    res.desc = 'start web server';
+    res.desc = 'start the web server';
     res.action = action;
     // add option --cert
     const optCert = fOpt.create();
     optCert.flags = `-c, --${OPT_CERT} <path>`;
-    optCert.description = `certificates chain in PEM format to secure HTTP/2 server`;
+    optCert.description = `certificates chain in PEM format to secure the HTTP/2 server`;
     res.opts.push(optCert);
     // add option --http1
     const optHttp1 = fOpt.create();
@@ -91,7 +91,7 @@ export default function Factory(
     // add option --key
     const optKey = fOpt.create();
     optKey.flags = `-k, --${OPT_KEY} <path>`;
-    optKey.description = `private key in PEM format to secure HTTP/2 server`;
+    optKey.description = `private key in PEM format to secure the HTTP/2 server`;
     res.opts.push(optKey);
     // add option --port
     const optPort = fOpt.create();
