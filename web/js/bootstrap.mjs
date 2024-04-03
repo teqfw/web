@@ -107,7 +107,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
                     for (const item of configDi.replacements)
                         cache.replacements.push([item.orig, item.alter]);
                 window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
-                log(`The DI configuration is loaded from the back end and stored locally.`);
+                log(`The DI configuration is loaded from the backend and stored locally.`);
             }
 
             // MAIN
@@ -115,7 +115,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
             /** @type {TeqFw_Di_Api_Container} */
             const container = new Container();
             container.setDebug(false);
-            // load DI configuration from the back end and store it into the localStorage
+            // load DI configuration from the backend and store it into the localStorage
             if (navigator.onLine) await updateConfig();
             // get the DI config from the localStorage and initialize the container
             await configFromStored(container);
