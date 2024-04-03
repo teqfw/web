@@ -29,16 +29,15 @@ class Dto {
  */
 export default class TeqFw_Web_Back_Plugin_Dto_Config_Local {
     /**
-     * @param {TeqFw_Core_Shared_Util_Cast.castBoolean|function} castBoolean
-     * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+     * @param {TeqFw_Core_Shared_Util_Cast} cast
      * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server.Factory} fServer
      */
     constructor(
         {
-            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
-            'TeqFw_Core_Shared_Util_Cast.castString': castString,
+            TeqFw_Core_Shared_Util_Cast$: cast,
             'TeqFw_Web_Back_Plugin_Dto_Config_Local_Server.Factory$': fServer,
-        }) {
+        }
+    ) {
 
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} data
@@ -49,10 +48,10 @@ export default class TeqFw_Web_Back_Plugin_Dto_Config_Local {
             const res = Object.assign(new Dto(), data);
             // cast known attributes
             res.custom = structuredClone(data?.custom);
-            res.frontLogsMonitoring = castBoolean(data?.frontLogsMonitoring);
+            res.frontLogsMonitoring = cast.boolean(data?.frontLogsMonitoring);
             res.server = fServer.create(data?.server);
-            res.urlBase = castString(data?.urlBase);
+            res.urlBase = cast.string(data?.urlBase);
             return res;
-        }
+        };
     }
 }
