@@ -34,7 +34,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
         // FUNCS
 
         /**
-         * Import code, create and setup Dependency Injection container for frontend.
+         * Import the lib code, create and set up the Dependency Injection container for the frontend.
          *
          * @returns {Promise<TeqFw_Di_Api_Container>}
          */
@@ -42,10 +42,10 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
             // FUNCS
 
             /**
-             * Load DI configuration from local cache and setup container.
+             * Load the DI configuration from the local cache and set up the container.
              * @param {TeqFw_Di_Api_Container} container
              */
-            async function configFromCache(container) {
+            async function configFromStored(container) {
                 try {
                     const stored = window.localStorage.getItem(KEY_DI_CONFIG);
                     const cache = JSON.parse(stored);
@@ -57,15 +57,29 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
                             resolver.addNamespaceRoot(ns, url, ext);
                         }
                     }
-                    if (Array.isArray(cache?.replaces)) {
+                    if (Array.isArray(cache?.replacements)) {
                         /** @type {TeqFw_Core_Shared_App_Di_PreProcessor_Replace} */
                         const replace = await container.get('TeqFw_Core_Shared_App_Di_PreProcessor_Replace$');
-                        for (const item of cache.replaces) {
+                        for (const item of cache.replacements) {
                             const [orig, alter] = item;
                             replace.add(orig, alter);
                         }
                         container.getPreProcessor().addChunk(replace);
                     }
+
+                    // set old format parser for TeqFw_
+                    /** @type {TeqFw_Core_Shared_App_Di_Parser_Legacy} */
+                    const parserOld = await container.get(DI_PARSER);
+                    container.getParser().addChunk(parserOld);
+
+                    // add post-processor with Factory wrapper & logger setup
+                    const post = container.getPostProcessor();
+                    /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Factory} */
+                    const postFactory = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Factory$');
+                    post.addChunk(postFactory);
+                    /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Logger} */
+                    const postLogger = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Logger$');
+                    post.addChunk(postLogger);
                     log(`DI container is configured from local cache.`);
                 } catch (e) {
                     log(`Cannot load DI configuration for local storage in offline mode. ${e?.message}`);
@@ -73,60 +87,38 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
             }
 
             /**
-             * Load DI configuration from server and setup container.
-             * @param {TeqFw_Di_Api_Container} container
+             * Load the DI configuration from the back and store the configuration locally.
              */
-            async function configFromServer(container) {
+            async function updateConfig() {
                 const urlWithPath = `${location.origin}${location.pathname}`;
                 const baseUrl = urlWithPath.endsWith('/') ? urlWithPath.slice(0, -1) : urlWithPath;
-
                 // load available namespaces from server
                 const res = await fetch(URL_API_DI_NS);
                 /** @type {TeqFw_Web_Shared_Dto_Config_Di.Dto} */
                 const configDi = await res.json();
-                // cache to place to local storage
-                const cache = {sources: [], replaces: []}
-                // add namespaces to container
-                const resolver = container.getResolver();
+                // the cache object to be placed to the local storage
+                const cache = {sources: [], replacements: []};
+                // add the namespaces to the container
                 if (Array.isArray(configDi?.namespaces))
-                    for (const item of configDi.namespaces) {
-                        resolver.addNamespaceRoot(item.ns, baseUrl + item.path, item.ext);
+                    for (const item of configDi.namespaces)
                         cache.sources.push([item.ns, baseUrl + item.path, item.ext]);
-                    }
-
-                // add replaces to container
-                /** @type {TeqFw_Core_Shared_App_Di_PreProcessor_Replace} */
-                const replace = await container.get('TeqFw_Core_Shared_App_Di_PreProcessor_Replace$');
+                // add the replacements to the container
                 if (Array.isArray(configDi?.replacements))
-                    for (const item of configDi.replacements) {
-                        replace.add(item.orig, item.alter);
-                        cache.replaces.push([item.orig, item.alter]);
-                    }
+                    for (const item of configDi.replacements)
+                        cache.replacements.push([item.orig, item.alter]);
                 window.localStorage.setItem(KEY_DI_CONFIG, JSON.stringify(cache));
-                container.getPreProcessor().addChunk(replace);
-
-                // set old format parser for TeqFw_
-                const parserOld = await container.get(DI_PARSER);
-                container.getParser().addChunk(parserOld);
-                log(`DI container is configured from server. Local cache is updated.`);
+                log(`The DI configuration is loaded from the backend and stored locally.`);
             }
 
             // MAIN
-            // load sources and create DI Container
-            const {default: Container} = await import(URL_SRC_DI_CONTAINER);
+            const {default: Container} = await import(URL_SRC_DI_CONTAINER); // load es6-sources and create the container
             /** @type {TeqFw_Di_Api_Container} */
             const container = new Container();
             container.setDebug(false);
-            if (navigator.onLine) await configFromServer(container)
-            else await configFromCache(container);
-            // add post-processor with Factory wrapper & logger setup
-            const post = container.getPostProcessor();
-            /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Factory} */
-            const postFactory = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Factory$');
-            post.addChunk(postFactory);
-            /** @type {TeqFw_Core_Shared_App_Di_PostProcessor_Logger} */
-            const postLogger = await container.get('TeqFw_Core_Shared_App_Di_PostProcessor_Logger$');
-            post.addChunk(postLogger);
+            // load DI configuration from the backend and store it into the localStorage
+            if (navigator.onLine) await updateConfig();
+            // get the DI config from the localStorage and initialize the container
+            await configFromStored(container);
             return container;
         }
 
@@ -187,7 +179,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
                     await launchApp(nsApp, cssApp);
                 }
             } catch (e) {
-                log(`SW registration is failed: ${e}\n${e.stack}`)
+                log(`SW registration is failed: ${e}\n${e.stack}`);
             }
         } else {
             // SW already installed before (repeated loading of the page).

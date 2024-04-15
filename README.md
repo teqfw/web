@@ -28,8 +28,6 @@ This plugin uses `TeqFw_Web` namespace.
 
 ## CLI commands
 
-These commands are in the `web`-plugin:
-
 ```shell
 $ node ./bin/tequila.mjs help
 Usage: tequila [options] [command]
@@ -38,6 +36,22 @@ Commands:
   web-server-start [options]  Start web server.
   web-server-stop             Stop web server.
 ```
+
+```shell
+$ node ./bin/tequila.mjs help web-server-start
+... 
+Options:
+  -c, --cert <path>  certificates chain in PEM format to secure HTTP/2 server
+  -1, --http1        use HTTP/1 server (default: HTTP/2)
+  -k, --key <path>   private key in PEM format to secure HTTP/2 server
+  -p, --port <port>  port to use (default: 8080)
+  -s, --skipPid      don't save PID file (used for read-only filesystems like Google AppEngine)
+  -w, --useWs        use web sockets with this server
+  -h, --help         display help for command
+
+```
+
+
 
 ## `./cfg/local.json`
 

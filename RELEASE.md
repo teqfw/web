@@ -1,5 +1,11 @@
 # @teqfw/web: Releases
 
+## 0.23.0
+
+* The new format of the cast utils.
+* The improvement of the `web/js/bootstrap.mjs`.
+* The `web/js/loaders.mjs` ia added.
+
 ## 0.22.0
 
 * The sources archive functionality is extracted to `@teqfw/web-source-installer` plugin.
