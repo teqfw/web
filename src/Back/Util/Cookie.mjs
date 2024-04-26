@@ -85,8 +85,17 @@ function get({request, cookie}) {
  * @memberOf TeqFw_Web_Back_Util_Cookie
  */
 function set({response, cookie}) {
-    const cookies = response.getHeader(H2.HTTP2_HEADER_SET_COOKIE);
-    const value = (cookies) ? `${cookies}${cookie}` : cookie;
+    const existing = response.getHeader(H2.HTTP2_HEADER_SET_COOKIE);
+    let value;
+    if (!existing) {
+        value = cookie;
+    } else if (typeof existing === 'string') {
+        value = [existing, cookie];
+    } else if(Array.isArray(existing)) {
+        value = [...existing, cookie];
+    } else {
+        throw new Error(`Unexpected value for existing cookies: ${existing}`);
+    }
     response.setHeader(H2.HTTP2_HEADER_SET_COOKIE, value);
 }
 
