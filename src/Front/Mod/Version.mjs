@@ -1,6 +1,5 @@
 /**
  * The model for the version of the front app.
- * @deprecated we don't need this code, remove it after 2024/06/01
  */
 export default class TeqFw_Web_Front_Mod_Version {
     /**
@@ -30,6 +29,9 @@ export default class TeqFw_Web_Front_Mod_Version {
             }
         };
 
+        this.storeReset = function () {
+            return storeVersion.clear();
+        };
         this.versionInstalled = function () {
             return storeVersion.get();
         };
