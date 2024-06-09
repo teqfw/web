@@ -23,7 +23,9 @@ export default class TeqFw_Web_Front_Mod_Version {
             const installed = this.versionInstalled();
             const onServer = this.versionOnServer();
             if (Boolean(installed)) {
-                return (installed !== onServer);
+                const res = (installed !== onServer);
+                if (res) debugger; // TODO: remove it after debug
+                return res;
             } else {
                 // the first run, save the version and continue
                 storeVersion.set(onServer);
