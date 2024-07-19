@@ -227,10 +227,10 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {IDBValidKey|IDBKeyRange} key JS primitive for simple PK or object/array for complex PK or unique key
-         * @return {*}
+         * @return {Promise<boolean>}
          */
         this.deleteOne = async function (trx, meta, key) {
-            let res = null;
+            let res = false;
             if (key) { // key must be valid object or primitive
                 const storeName = meta.getName();
                 const store = trx.objectStore(storeName);
@@ -239,7 +239,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
                     const norm = typeof key === 'object' ? Object.values(key) : key;
                     const req = store.delete(norm);
                     req.onerror = () => reject(req.error);
-                    req.onsuccess = () => resolve(req.result);
+                    req.onsuccess = () => resolve(req.result === undefined);
                 });
                 res = await promise;
             }
