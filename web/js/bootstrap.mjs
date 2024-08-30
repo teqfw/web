@@ -187,6 +187,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
             await launchApp(nsApp, cssApp);
         }
     } else {
-        log(`Cannot start PWA. This browser does not have a Service Workers support.`);
+        log(`This browser does not have a Service Workers support. Starting app w/o Service Workers.`);
+        await launchApp(nsApp, cssApp);
     }
 }

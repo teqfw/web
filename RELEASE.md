@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
 
+## 0.24.0
+
+* Create a secured server from `node:https` (was: `node:http2`).
+
 ## 0.23.0
 
 * The new format of the cast utils.

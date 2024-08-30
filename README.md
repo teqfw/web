@@ -1,7 +1,14 @@
 # @teqfw/web
 
-|CAUTION: TeqFW is an unstable project w/o backward compatibility. Use it at your own risk.|
-|---|
+## Disclaimer
+
+This package is a part of the [Tequila Framework](https://flancer32.com/what-is-teqfw-f84ab4c66abf) (TeqFW). The TeqFW
+is currently in an early stage of development and should be considered unstable. It may change rapidly, leading to
+breaking changes without prior notice. Use it at your own risk. Please note that contributions to the project are
+welcome, but they should only be made by those who understand and accept the risks of working with an unstable
+framework.
+
+## Overview
 
 This `teq`-plugin adds basic web server functionality to Tequila Framework based projects.
 
@@ -15,6 +22,10 @@ This `teq`-plugin adds basic web server functionality to Tequila Framework based
 ## TODO
 
 * move the IndexedDB functionality to some external plugin (@teqfw/front-idb?)
+
+### Namespace
+
+This plugin uses `TeqFw_Web` namespace.
 
 ## Install
 
@@ -50,8 +61,6 @@ Options:
   -h, --help         display help for command
 
 ```
-
-
 
 ## `./cfg/local.json`
 

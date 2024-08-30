@@ -27,10 +27,11 @@ export default class TeqFw_Web_Back_Mod_Address {
         /**
          * Parser to decompose URL path to the parts.
          *
-         * @param {String} path (/root/door/space/route)
+         * @param {String} url (/root/door/space/route?param=value)
          * @returns {TeqFw_Web_Back_Dto_Address}
          */
-        this.parsePath = function (path) {
+        this.parsePath = function (url) {
+            let path = url.split('?')[0];
             const result = fAddr.create();
             // define root path
             if (path.startsWith(`/${root}`)) {

@@ -14,7 +14,7 @@
  */
 export function bypassCache(req) {
     const CFG = /(.*)(\/cfg\/)(.*)/; // configuration (DI, front app, cache, ...)
-    return ((req.method === 'POST') || req.url.match(CFG));
+    return Boolean((req.method === 'POST') || req.url.match(CFG));
 }
 
 /**
