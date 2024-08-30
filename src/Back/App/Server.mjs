@@ -6,7 +6,8 @@
  */
 // MODULE'S IMPORT
 import {createServer as createHttp1Server} from 'node:http';
-import {createSecureServer, createServer} from 'node:http2';
+import {createServer as createSecureServer} from 'node:https';
+import {createServer} from 'node:http2';
 import {readFileSync} from 'node:fs';
 import {WebSocketServer} from 'ws';
 
