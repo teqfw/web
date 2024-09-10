@@ -28,7 +28,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
     constructor(
         {
             TeqFw_Web_Back_Defaults$: DEF,
-            ['TeqFw_Web_Back_App_Server_Respond.respond404']: respond404,
+            'TeqFw_Web_Back_App_Server_Respond.respond404': respond404,
         }) {
         // FUNCS
 

@@ -46,7 +46,7 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
 
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }) {
         // INSTANCE METHODS
         /**

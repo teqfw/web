@@ -57,8 +57,8 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
      */
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
-            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }
     ) {
         /**

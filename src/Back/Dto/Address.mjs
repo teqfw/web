@@ -31,7 +31,7 @@ export class Factory {
      */
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }
     ) {
         /**

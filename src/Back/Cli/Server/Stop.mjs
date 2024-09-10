@@ -20,7 +20,7 @@ export default function Factory(
     {
         TeqFw_Web_Back_Defaults$: DEF,
         TeqFw_Core_Back_App$: app,
-        ['TeqFw_Core_Back_Api_Dto_Command.Factory$']: fCommand,
+        'TeqFw_Core_Back_Api_Dto_Command.Factory$': fCommand,
         TeqFw_Core_Back_Mod_App_Pid$: modPid,
     }) {
     // FUNCS

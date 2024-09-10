@@ -44,9 +44,9 @@ export class Factory {
 
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castBoolean']: castBoolean,
-            ['TeqFw_Core_Shared_Util_Cast.castInt']: castInt,
-            ['TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$']: fSecure,
+            'TeqFw_Core_Shared_Util_Cast.castBoolean': castBoolean,
+            'TeqFw_Core_Shared_Util_Cast.castInt': castInt,
+            'TeqFw_Web_Back_Plugin_Dto_Config_Local_Server_Secure.Factory$': fSecure,
         }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server|null} data

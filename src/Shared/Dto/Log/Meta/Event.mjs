@@ -48,7 +48,7 @@ export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {
 
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
+            'TeqFw_Core_Shared_Util_Cast.castString': castString,
         }) {
         // INSTANCE METHODS
         /**

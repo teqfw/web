@@ -11,9 +11,9 @@ export default class TeqFw_Web_Back_Mod_Address {
     constructor(
         {
             TeqFw_Web_Back_Defaults$: DEF,
-            ['TeqFw_Web_Back_Plugin_Dto_Desc.ATTR']: ATTR,
+            'TeqFw_Web_Back_Plugin_Dto_Desc.ATTR': ATTR,
             TeqFw_Core_Back_Api_Plugin_Registry$: registry,
-            ['TeqFw_Web_Back_Dto_Address.Factory$']: fAddr,
+            'TeqFw_Web_Back_Dto_Address.Factory$': fAddr,
         }) {
         // VARS
         /** @type {String[]} doors used in the app */

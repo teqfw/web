@@ -32,7 +32,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Back_App_Server_Scan_Handler$: scan,
             TeqFw_Web_Back_Mod_Address$: mAddress,
-            ['TeqFw_Web_Back_App_Server_Respond.respond405']: respond405,
+            'TeqFw_Web_Back_App_Server_Respond.respond405': respond405,
         }) {
         // VARS
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */

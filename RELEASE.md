@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
 
+## 0.24.1
+
+* Remove the legacy format for depIds.
+
 ## 0.24.0
 
 * Create a secured server from `node:https` (was: `node:http2`).

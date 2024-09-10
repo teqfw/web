@@ -22,8 +22,8 @@ export default function (
         TeqFw_Core_Shared_Api_Logger$$: logger,
         TeqFw_Core_Back_Api_Plugin_Registry$: modPlugins,
         TeqFw_Web_Back_Plugin_Dto_Desc$: dtoDesc,
-        ['TeqFw_Core_Shared_Util_BeforeAfter#']: BeforeAfter,
-        ['TeqFw_Core_Shared_Util_BeforeAfter.Dto']: DtoSort,
+        'TeqFw_Core_Shared_Util_BeforeAfter.default': BeforeAfter,
+        'TeqFw_Core_Shared_Util_BeforeAfter.Dto': DtoSort,
     }) {
 
     // FUNCS
