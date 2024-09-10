@@ -28,7 +28,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Di {
 
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castArrayOfObj']: castArrayOfObj,
+            'TeqFw_Core_Shared_Util_Cast.castArrayOfObj': castArrayOfObj,
             TeqFw_Web_Shared_Dto_Config_Di_Namespace$: dtoNs,
             TeqFw_Web_Shared_Dto_Config_Di_Replacement$: dtoReplace,
         }) {

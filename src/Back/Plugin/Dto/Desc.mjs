@@ -64,8 +64,8 @@ export default class TeqFw_Web_Back_Plugin_Dto_Desc {
      */
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castArrayOfStr']: castArrayOfStr,
-            ['TeqFw_Core_Shared_Util_Cast.castObjectsMap']: castObjectsMap,
+            'TeqFw_Core_Shared_Util_Cast.castArrayOfStr': castArrayOfStr,
+            'TeqFw_Core_Shared_Util_Cast.castObjectsMap': castObjectsMap,
             TeqFw_Web_Back_Plugin_Dto_Desc_Handler$: dtoHandler,
             TeqFw_Web_Back_Plugin_Dto_Desc_Excludes$: dtoExcludes,
             TeqFw_Web_Back_Plugin_Dto_Desc_Socket$: dtoSocket,

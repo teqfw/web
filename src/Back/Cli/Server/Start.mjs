@@ -17,9 +17,7 @@ const OPT_USE_WS = 'useWs'; // use WebSockets handlers
  *
  * @param {TeqFw_Web_Back_Defaults} DEF
  * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
- * @param {TeqFw_Core_Shared_Util_Cast.castBooleanIfExists|function} castBooleanIfExists
- * @param {TeqFw_Core_Shared_Util_Cast.castInt|function} castInt
- * @param {TeqFw_Core_Shared_Util_Cast.castString|function} castString
+ * @param {TeqFw_Core_Shared_Util_Cast} cast
  * @param {TeqFw_Web_Back_App_Server} server
  * @param {TeqFw_Core_Back_Api_Dto_Command.Factory} fCommand
  * @param {TeqFw_Core_Back_Api_Dto_Command_Option.Factory} fOpt
@@ -31,12 +29,10 @@ export default function Factory(
     {
         TeqFw_Web_Back_Defaults$: DEF,
         TeqFw_Core_Shared_Api_Logger$$: logger,
-        ['TeqFw_Core_Shared_Util_Cast.castBooleanIfExists']: castBooleanIfExists,
-        ['TeqFw_Core_Shared_Util_Cast.castInt']: castInt,
-        ['TeqFw_Core_Shared_Util_Cast.castString']: castString,
-        ['TeqFw_Web_Back_App_Server$']: server,
-        ['TeqFw_Core_Back_Api_Dto_Command.Factory$']: fCommand,
-        ['TeqFw_Core_Back_Api_Dto_Command_Option.Factory$']: fOpt,
+        TeqFw_Core_Shared_Util_Cast$: cast,
+        'TeqFw_Web_Back_App_Server$': server,
+        'TeqFw_Core_Back_Api_Dto_Command.Factory$': fCommand,
+        'TeqFw_Core_Back_Api_Dto_Command_Option.Factory$': fOpt,
         TeqFw_Core_Back_Mod_App_Pid$: modPid,
     }) {
 
@@ -52,12 +48,12 @@ export default function Factory(
         logger.info('Starting web server.');
         try {
             // collect startup configuration from command option
-            const cert = castString(opts[OPT_CERT]);
-            const key = castString(opts[OPT_KEY]);
-            const port = castInt(opts[OPT_PORT]);
-            const skipPID = castBooleanIfExists(opts[OPT_SKIP_PID]);
-            const useHttp1 = castBooleanIfExists(opts[OPT_HTTP1]);
-            const useWs = castBooleanIfExists(opts[OPT_USE_WS]);
+            const cert = cast.string(opts[OPT_CERT]);
+            const key = cast.string(opts[OPT_KEY]);
+            const port = cast.int(opts[OPT_PORT]);
+            const skipPID = cast.booleanIfExists(opts[OPT_SKIP_PID]);
+            const useHttp1 = cast.booleanIfExists(opts[OPT_HTTP1]);
+            const useWs = cast.booleanIfExists(opts[OPT_USE_WS]);
             if (!skipPID) {
                 await modPid.writePid(DEF.DATA_FILE_PID);
             }

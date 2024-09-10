@@ -37,7 +37,7 @@ export default class TeqFw_Web_Back_Plugin_Dto_Desc_Socket {
      */
     constructor(
         {
-            ['TeqFw_Core_Shared_Util_Cast.castArrayOfStr']: castArrayOfStr,
+            'TeqFw_Core_Shared_Util_Cast.castArrayOfStr': castArrayOfStr,
         }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto} [data]
