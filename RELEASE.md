@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
 
+## 0.24.2
+
+* Enable console logging on startup.
+
 ## 0.24.1
 
 * Remove the legacy format for depIds.
