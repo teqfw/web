@@ -58,13 +58,13 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
              * @param {string} method
              * @param {string[]|IncomingHttpHeaders} headers
              * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
-             * @return {Promise<void>}
+             * @returns {Promise<void>}
              */
             async function parseBody(method, headers, req) {
                 // FUNCS
                 /**
                  * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest}req
-                 * @return {Promise<string>}
+                 * @returns {Promise<string>}
                  */
                 async function readBody(req) {
                     const contentLength = req.headers[HTTP2_HEADER_CONTENT_LENGTH] ?? '';
@@ -123,7 +123,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         // INSTANCE METHODS
         /**
          * Scan plugins, create handlers for 'request' event, order handlers by 'before-after'.
-         * @return {Promise<(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*>}
+         * @returns {Promise<(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*>}
          */
         this.createHandlers = async function () {
             const ordered = await scan({});
@@ -132,7 +132,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
 
         /**
          * Get dispatcher listener for 'request' event.
-         * @return {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}
+         * @returns {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}
          */
         this.getListener = () => onRequest;
 

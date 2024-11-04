@@ -7,7 +7,7 @@ const IDB_VERSION = 1;
 /**
  * Factory to create connector to application level IDB
  * @param spec
- * @return {TeqFw_Web_Front_App_Store_IDB}
+ * @returns {TeqFw_Web_Front_App_Store_IDB}
  */
 /**
  * @param {TeqFw_Web_Front_App_Store_IDB} idb -  new instance
@@ -26,7 +26,7 @@ export default function (
     /**
      * Factory to pin 'db' in the scope and create function to upgrade DB structure on opening.
      * @param {IDBDatabase} db
-     * @return {(function(*): void)|*}
+     * @returns {(function(*): void)|*}
      */
     function fnUpgradeDb(db) {
         // const autoIncrement = true;

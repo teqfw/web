@@ -50,7 +50,7 @@ export class Factory {
         }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server|null} data
-         * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server}
+         * @returns {TeqFw_Web_Back_Plugin_Dto_Config_Local_Server}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Plugin_Dto_Config_Local_Server();

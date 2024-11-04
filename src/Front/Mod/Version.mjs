@@ -17,7 +17,7 @@ export default class TeqFw_Web_Front_Mod_Version {
         // INST METHODS
         /**
          * Return 'true' if the stored version of the app is not equal to the one loaded from the backend.
-         * @return {boolean}
+         * @returns {boolean}
          */
         this.needUpgrade = function () {
             const installed = this.versionInstalled();

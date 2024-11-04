@@ -51,7 +51,7 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Front_Store_Entity_Singleton.Dto} [data]
-         * @return {TeqFw_Web_Front_Store_Entity_Singleton.Dto}
+         * @returns {TeqFw_Web_Front_Store_Entity_Singleton.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();
@@ -62,7 +62,7 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
     }
 
     /**
-     * @return {typeof TeqFw_Web_Front_Store_Entity_Singleton.ATTR}
+     * @returns {typeof TeqFw_Web_Front_Store_Entity_Singleton.ATTR}
      */
     getAttributes = () => ATTR;
 
@@ -73,7 +73,7 @@ export default class TeqFw_Web_Front_Store_Entity_Singleton {
     getName = () => ENTITY;
 
     /**
-     * @return {typeof TeqFw_Web_Front_Store_Entity_Singleton.INDEX}
+     * @returns {typeof TeqFw_Web_Front_Store_Entity_Singleton.INDEX}
      */
     getIndexes = () => INDEX;
 

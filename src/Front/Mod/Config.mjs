@@ -23,7 +23,7 @@ export default class TeqFw_Web_Front_Mod_Config {
          * Cache configuration DTO in this object.
          *
          * @param {string} [door]
-         * @return {Promise<void>}
+         * @returns {Promise<void>}
          */
         this.init = async function ({door} = {}) {
             // FUNCS
@@ -50,7 +50,7 @@ export default class TeqFw_Web_Front_Mod_Config {
         }
 
         /**
-         * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Config_Front.Dto}
          */
         this.get = () => _cache;
 

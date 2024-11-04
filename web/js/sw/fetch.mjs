@@ -10,7 +10,7 @@
 /**
  * Function to detect URLs that always bypass caching for @teqfw/web plugin.
  * @param {Request} req
- * @return {boolean}
+ * @returns {boolean}
  */
 export function bypassCache(req) {
     const CFG = /(.*)(\/cfg\/)(.*)/; // configuration (DI, front app, cache, ...)
@@ -21,7 +21,7 @@ export function bypassCache(req) {
  *
  * @param {Request} req
  * @param {Cache} cache
- * @return {Promise<Response>}
+ * @returns {Promise<Response>}
  */
 export async function getFromCacheOrFetchAndCache(req, cache) {
     const cachedResponse = await cache.match(req);

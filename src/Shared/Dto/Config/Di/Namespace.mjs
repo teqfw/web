@@ -42,7 +42,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Di_Namespace {
         }) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto} [data]
-         * @return {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

@@ -37,7 +37,7 @@ export default class TeqFw_Web_Back_App_Server {
 
             /**
              * Extract server options from local config.
-             * @return {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number, cfgUseWs: boolean}}
+             * @returns {{cfgUseHttp1: boolean, cfgKey: string, cfgCert: string, cfgPort: number, cfgUseWs: boolean}}
              */
             function optionsFromConfig() {
                 /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} */

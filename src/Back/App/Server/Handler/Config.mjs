@@ -75,7 +75,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Config {
         /**
          * @param {string} method
          * @param {TeqFw_Web_Back_Dto_Address} address
-         * @return {boolean}
+         * @returns {boolean}
          */
         this.canProcess = function ({method, address} = {}) {
             return ((method === HTTP2_METHOD_GET) && (address.space === DEF.SHARED.SPACE_CFG));
