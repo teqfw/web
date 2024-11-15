@@ -23,20 +23,51 @@ export default class TeqFw_Web_Front_Mod_Config {
          * Cache configuration DTO in this object.
          *
          * @param {string} [door]
+         * @param {string} [path]
          * @returns {Promise<void>}
          */
-        this.init = async function ({door} = {}) {
+        this.init = async function ({door, path} = {}) {
             // FUNCS
-            async function initFromServer(door) {
+
+            /**
+             * Initialize configuration from the server.
+             *
+             * @param {string} [door] - Optional door identifier.
+             * @param {string} [path] - Optional base path for the configuration URL.
+             * @return {Promise<void>} - Resolves when the configuration is fetched and stored.
+             */
+            async function initFromServer(door, path) {
                 const space = DEF.SHARED.SPACE_CFG;
                 const act = DEF.SHARED.CFG_APP;
+                let result;
+
+                // Construct the URL with optional parameters
                 const param = door ? `/${door}` : '';
-                const url = `./${space}${act}${param}`;
-                const res = await fetch(url);
-                _cache = await res.json();
-                _cache.door = door;
-                window.localStorage.setItem(KEY_CONFIG, JSON.stringify(_cache));
+                const tail = `${space}${act}${param}`;
+                const url = path ? `${path}${tail}` : `./${tail}`;
+
+                try {
+                    // Fetch the configuration from the server
+                    const response = await fetch(url);
+
+                    // Handle errors if the response is not successful
+                    if (!response.ok) {
+                        console.error(`Failed to fetch configuration: ${response.status} ${response.statusText}`);
+                        return;
+                    }
+
+                    // Parse and update the cache
+                    result = await response.json();
+                    result.door = door;
+
+                    // Store the configuration in localStorage
+                    window.localStorage.setItem(KEY_CONFIG, JSON.stringify(result));
+                    _cache = result;
+                } catch (error) {
+                    console.error('Error initializing configuration from server:', error);
+                }
             }
+
 
             function initFromLocalStorage(door) {
                 const stored = window.localStorage.getItem(KEY_CONFIG);
@@ -45,7 +76,7 @@ export default class TeqFw_Web_Front_Mod_Config {
             }
 
             // MAIN
-            if (navigator.onLine) await initFromServer(door)
+            if (navigator.onLine) await initFromServer(door, path);
             else initFromLocalStorage(door);
         }
 
