@@ -15,7 +15,7 @@ export default class TeqFw_Web_Front_Mod_Store_Singleton {
         /**
          * Delete some object from the store by key.
          * @param {string} key
-         * @return {Promise<Object>}
+         * @returns {Promise<Object>}
          */
         this.delete = async function (key) {
             const trx = await idb.startTransaction([idbSingleton]);
@@ -28,7 +28,7 @@ export default class TeqFw_Web_Front_Mod_Store_Singleton {
         /**
          * Get some object from the store by key.
          * @param {string} key
-         * @return {Promise<*>}
+         * @returns {Promise<*>}
          */
         this.get = async function (key) {
             let res;
@@ -44,7 +44,7 @@ export default class TeqFw_Web_Front_Mod_Store_Singleton {
          * Put some object to the store with key.
          * @param {string} key
          * @param {Object} value
-         * @return {Promise<void>}
+         * @returns {Promise<void>}
          */
         this.set = async function (key, value) {
             const trx = await idb.startTransaction([idbSingleton]);

@@ -63,7 +63,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Front {
     ) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Front.Dto} [data]
-         * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Config_Front.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

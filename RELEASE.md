@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
 
+## 0.25.0
+
+- Added try-catch block for safe handling of HTTP request bodies (JSON and plain text).
+
 ## 0.24.2
 
 * Enable console logging on startup.

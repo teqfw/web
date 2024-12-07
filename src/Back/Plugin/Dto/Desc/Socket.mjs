@@ -41,7 +41,7 @@ export default class TeqFw_Web_Back_Plugin_Dto_Desc_Socket {
         }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto} [data]
-         * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto}
+         * @returns {TeqFw_Web_Back_Plugin_Dto_Desc_Socket.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

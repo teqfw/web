@@ -193,7 +193,7 @@ export default class TeqFw_Web_Back_App_Server_Handler_Static {
 
         /**
          * @param {string} method
-         * @return {boolean}
+         * @returns {boolean}
          */
         this.canProcess = function ({method} = {}) {
             // This handler should stay immediately before Final handler and after all other handlers!

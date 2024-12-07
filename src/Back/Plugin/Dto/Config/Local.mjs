@@ -41,7 +41,7 @@ export default class TeqFw_Web_Back_Plugin_Dto_Config_Local {
 
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} data
-         * @return {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto}
+         * @returns {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto}
          */
         this.createDto = function (data) {
             // create new DTO and populate it with initialization data

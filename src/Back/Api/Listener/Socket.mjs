@@ -10,13 +10,13 @@ export default class TeqFw_Web_Back_Api_Listener_Socket {
      * Return 'true' if handler considers it should process the request.
      *
      * @param {module:http.IncomingMessage|module:http2.Http2ServerRequest} req
-     * @return {boolean}
+     * @returns {boolean}
      */
     canProcess(req) {}
 
     /**
      * Initialize working environment for processor (config, loading, ...).
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async init() { }
 

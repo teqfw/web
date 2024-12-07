@@ -45,7 +45,7 @@ export default class TeqFw_Web_Back_Plugin_Dto_Desc_Excludes {
         }) {
         /**
          * @param {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto} [data]
-         * @return {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto}
+         * @returns {TeqFw_Web_Back_Plugin_Dto_Desc_Excludes.Dto}
          */
         this.createDto = function (data) {
             // create new DTO

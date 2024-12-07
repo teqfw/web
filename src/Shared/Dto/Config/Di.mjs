@@ -35,7 +35,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Di {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Di.Dto} [data]
-         * @return {TeqFw_Web_Shared_Dto_Config_Di.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Config_Di.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

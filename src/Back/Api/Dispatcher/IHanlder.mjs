@@ -18,19 +18,19 @@ export default class TeqFw_Web_Back_Api_Dispatcher_IHandler {
      * @param {string} method GET, POST, ...
      * @param {TeqFw_Web_Back_Dto_Address} address
      * @param {Object<string, string>} headers
-     * @return {boolean}
+     * @returns {boolean}
      */
     canProcess({method, address, headers} = {}) {}
 
     /**
      * Return processing function to handle single HTTP request.
-     * @return {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}
+     * @returns {(function((IncomingMessage|Http2ServerRequest), (ServerResponse|Http2ServerResponse)): Promise<void>)|*}
      */
     getProcessor() { }
 
     /**
      * Initialize working environment for processor (config, loading, ...).
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async init() { }
 }

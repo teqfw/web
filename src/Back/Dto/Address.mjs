@@ -36,7 +36,7 @@ export class Factory {
     ) {
         /**
          * @param {TeqFw_Web_Back_Dto_Address|null} data
-         * @return {TeqFw_Web_Back_Dto_Address}
+         * @returns {TeqFw_Web_Back_Dto_Address}
          */
         this.create = function (data = null) {
             const res = new TeqFw_Web_Back_Dto_Address();

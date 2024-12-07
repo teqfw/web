@@ -5,7 +5,7 @@
 export default class TeqFw_Web_Front_Api_Mod_Server_Connect_IState {
     /**
      * 'true' - if connection with server is established and works.
-     * @return {boolean}
+     * @returns {boolean}
      */
     isOnline() {}
 

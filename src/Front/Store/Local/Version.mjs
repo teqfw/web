@@ -20,7 +20,7 @@ export default class TeqFw_Web_Front_Store_Local_Version {
         };
 
         /**
-         * @return {string}
+         * @returns {string}
          */
         this.get = function () {
             return self.window.localStorage.getItem(KEY);

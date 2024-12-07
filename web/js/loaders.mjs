@@ -1,7 +1,7 @@
 /**
  * Load UMD script from the back and execute it.
  * @param {string} url
- * @return {Promise}
+ * @returns {Promise}
  */
 export async function loadUmd(url) {
     return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ export async function loadUmd(url) {
 /**
  * Load CSS script from the back and add it to the DOM.
  * @param url
- * @return {Promise}
+ * @returns {Promise}
  */
 export async function loadCss(url) {
     return new Promise((resolve, reject) => {

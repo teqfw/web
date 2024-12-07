@@ -8,25 +8,25 @@ export default class TeqFw_Web_Front_Api_Store_IEntity {
     /**
      * Create entity DTO from given data.
      * @param [data]
-     * @return {Object}
+     * @returns {Object}
      */
     createDto(data) {}
 
     /**
      * Get codifier for entity attributes.
-     * @return {*}
+     * @returns {*}
      */
     getAttributes() {}
 
     /**
      * Get entity name: '@vnd/plugin/path/to/entity'.
-     * @return {string}
+     * @returns {string}
      */
     getName() {}
 
     /**
      * Get codifier for entity indexes.
-     * @return {*}
+     * @returns {*}
      */
     getIndexes() {}
 
@@ -38,7 +38,7 @@ export default class TeqFw_Web_Front_Api_Store_IEntity {
 
     /**
      * Return array with primary keys for the entity.
-     * @return {string[]}
+     * @returns {string[]}
      */
     getPrimaryKey() {}
 }

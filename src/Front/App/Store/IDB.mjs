@@ -23,7 +23,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * Return index if 'index' is available for given 'store' or store itself.
          * @param {IDBObjectStore} store
          * @param {string} index
-         * @return {IDBObjectStore|IDBIndex}
+         * @returns {IDBObjectStore|IDBIndex}
          */
         function _getSource(store, index) {
             const hasIndex = store.indexNames.contains(index);
@@ -34,7 +34,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
 
         /**
          * Drop current database.
-         * @return {Promise<void>}
+         * @returns {Promise<void>}
          */
         this.dropDb = async () => {
             if (_db) _db.close();
@@ -74,7 +74,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
 
         /**
          * We need this method on the data export.
-         * @return {TeqFw_Web_Front_Api_Store_IEntity[]}
+         * @returns {TeqFw_Web_Front_Api_Store_IEntity[]}
          */
         this.getStores = () => _stores;
 
@@ -119,7 +119,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         /**
          * @param {TeqFw_Web_Front_Api_Store_IEntity[], TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {boolean} readwrite
-         * @return {Promise<IDBTransaction>}
+         * @returns {Promise<IDBTransaction>}
          */
         this.startTransaction = async (meta, readwrite = true) => {
             if (_db === undefined) await this.open();
@@ -201,7 +201,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
         /**
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
-         * @return {Promise<void>}
+         * @returns {Promise<void>}
          */
         this.deleteAll = async function (trx, meta) {
             const storeName = meta.getName();
@@ -227,7 +227,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {IDBValidKey|IDBKeyRange} key JS primitive for simple PK or object/array for complex PK or unique key
-         * @return {Promise<boolean>}
+         * @returns {Promise<boolean>}
          */
         this.deleteOne = async function (trx, meta, key) {
             let res = false;
@@ -251,7 +251,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param {IDBValidKey} key JS primitive for simple PK or object/array for complex PK or unique key
          * @param {string} [indexName] index name to use in lookup
-         * @return {*}
+         * @returns {*}
          */
         this.readOne = async function (trx, meta, key, indexName) {
             // FUNCS
@@ -280,7 +280,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {string} indexName
          * @param {IDBKeyRange} query
          * @param {number} count
-         * @return {Promise<*[]>}
+         * @returns {Promise<*[]>}
          */
         this.readSet = async function (trx, meta, indexName = null, query = null, count = null) {
             const res = [];
@@ -312,7 +312,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {IDBKeyRange} [range]
          * @param {boolean} [backward]
          * @param {number} [limit]
-         * @return {Promise<*[]>}
+         * @returns {Promise<*[]>}
          */
         this.list = async function (trx, meta, {index, range, backward, limit} = {}) {
             const res = [];
@@ -346,7 +346,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {IDBKeyRange} [query]
          * @param {boolean} [backward]
          * @param {number} [limit]
-         * @return {Promise<*[]>}
+         * @returns {Promise<*[]>}
          */
         this.readKeys = async function (trx, meta, {index, query, backward, limit} = {}) {
             const res = [];
@@ -387,7 +387,7 @@ export default class TeqFw_Web_Front_App_Store_IDB {
          * @param {IDBTransaction} trx
          * @param {TeqFw_Web_Front_Api_Store_IEntity} meta
          * @param dto
-         * @return {Promise<*>}
+         * @returns {Promise<*>}
          */
         this.updateOne = async function (trx, meta, dto) {
             const storeName = meta.getName();

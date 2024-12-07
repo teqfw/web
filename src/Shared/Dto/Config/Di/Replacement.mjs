@@ -36,7 +36,7 @@ export default class TeqFw_Web_Shared_Dto_Config_Di_Replacement {
         }) {
         /**
          * @param {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto} [data]
-         * @return {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

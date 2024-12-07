@@ -28,7 +28,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
      * Init DI container, load front application sources, create and run application.
      * @param {string} app
      * @param {string} selector
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     async function launchApp(app, selector) {
         // FUNCS

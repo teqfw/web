@@ -28,7 +28,7 @@ export default function (
 
     // FUNCS
     /**
-     * @return {Promise<*>}
+     * @returns {Promise<*>}
      * @memberOf TeqFw_Web_Back_App_Server_Scan_Handler
      */
     async function act() {
@@ -37,7 +37,7 @@ export default function (
         /**
          * Create handlers and populate sort util with before-after data.
          * @param utilSort
-         * @return {Promise<Object<string, TeqFw_Web_Back_Api_Dispatcher_IHandler>>}
+         * @returns {Promise<Object<string, TeqFw_Web_Back_Api_Dispatcher_IHandler>>}
          */
         async function createHandlers(utilSort) {
             const res = {};

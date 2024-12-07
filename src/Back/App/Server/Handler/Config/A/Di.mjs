@@ -36,7 +36,7 @@ export default function (
      * (@see TeqFw_Web_Back_App_Server_Handler_Static)
      *
      * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
-     * @return {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto[]}
+     * @returns {TeqFw_Web_Shared_Dto_Config_Di_Namespace.Dto[]}
      */
     function getNamespaces(registry) {
         const result = [];
@@ -57,7 +57,7 @@ export default function (
      * Loop through all plugins and compose replaces for DI container on the front.
      *
      * @param {TeqFw_Core_Back_Api_Plugin_Registry} registry
-     * @return {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto[]}
+     * @returns {TeqFw_Web_Shared_Dto_Config_Di_Replacement.Dto[]}
      */
     function getReplaces(registry) {
         const result = [];
@@ -86,7 +86,7 @@ export default function (
     /**
      * Result function.
      * @memberOf TeqFw_Web_Back_App_Server_Handler_Config_A_Di
-     * @return {TeqFw_Web_Shared_Dto_Config_Di.Dto}
+     * @returns {TeqFw_Web_Shared_Dto_Config_Di.Dto}
      */
     function act() {
         const res = dtoDi.createDto();

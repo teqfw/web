@@ -53,7 +53,7 @@ export default class TeqFw_Web_Shared_Dto_Log_Meta_Event {
         // INSTANCE METHODS
         /**
          * @param {TeqFw_Web_Shared_Dto_Log_Meta_Event.Dto} [data]
-         * @return {TeqFw_Web_Shared_Dto_Log_Meta_Event.Dto}
+         * @returns {TeqFw_Web_Shared_Dto_Log_Meta_Event.Dto}
          */
         this.createDto = function (data) {
             const res = new Dto();

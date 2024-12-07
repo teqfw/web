@@ -8,7 +8,7 @@
  * Add style element to the document header. Remove the `style` tags if exist (tags are used for IDEA).
  *
  * @param {string} style
- * @return {boolean} use return value to set `if` flag to prevent double adding
+ * @returns {boolean} use return value to set `if` flag to prevent double adding
  * @memberof TeqFw_Web_Front_Util
  */
 export function addStyle(style) {

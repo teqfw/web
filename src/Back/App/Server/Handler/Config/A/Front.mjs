@@ -28,7 +28,7 @@ export default function (
     /**
      * Result function.
      * @memberOf TeqFw_Web_Back_App_Server_Handler_Config_A_Front
-     * @return {TeqFw_Web_Shared_Dto_Config_Front.Dto}
+     * @returns {TeqFw_Web_Shared_Dto_Config_Front.Dto}
      */
     function act() {
         /** @type {TeqFw_Web_Back_Plugin_Dto_Config_Local.Dto} */
