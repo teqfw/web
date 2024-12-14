@@ -6,10 +6,10 @@
 import {constants as H2} from 'http2';
 
 // MODULE'S VARS
-const NS = 'TeqFw_Web_Back_App_Server_Respond';
 const {
     HTTP2_HEADER_ALLOW,
     HTTP2_HEADER_CONTENT_TYPE,
+    HTTP2_HEADER_LOCATION,
     HTTP2_METHOD_GET,
     HTTP2_METHOD_HEAD,
     HTTP2_METHOD_POST,
@@ -18,111 +18,41 @@ const {
     HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_METHOD_NOT_ALLOWED,
     HTTP_STATUS_NOT_FOUND,
+    HTTP_STATUS_SEE_OTHER,
+    HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
-// MODULE'S FUNCS
-/**
- * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @memberOf TeqFw_Web_Back_App_Server_Respond
- * @deprecated use the class form of the dependency injection
- */
-function respond400(res) {
-    if (!res.headersSent) {
-        res.writeHead(HTTP_STATUS_BAD_REQUEST, {
-            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
-        });
-        res.end('Malformed request syntax.');
-    }
-}
-
-/**
- * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @param {string} err
- * @memberOf TeqFw_Web_Back_App_Server_Respond
- * @deprecated use the class form of the dependency injection
- */
-function respond403(res, err) {
-    if (!res.headersSent) {
-        res.writeHead(HTTP_STATUS_FORBIDDEN, {
-            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
-        });
-        res.write('Access to the resource is forbidden. ');
-        if (typeof err === 'string') res.write(err);
-        res.end();
-    }
-}
-
-/**
- * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @param {string} [err]
- * @memberOf TeqFw_Web_Back_App_Server_Respond
- * @deprecated use the class form of the dependency injection
- */
-function respond404(res, err) {
-    if (!res.headersSent) {
-        res.writeHead(HTTP_STATUS_NOT_FOUND, {
-            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
-        });
-        res.write('Requested resource not found. ');
-        if (typeof err === 'string') res.write(err);
-        res.end();
-    }
-}
-
-/**
- * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @memberOf TeqFw_Web_Back_App_Server_Respond
- * @deprecated use the class form of the dependency injection
- */
-function respond405(res) {
-    if (!res.headersSent) {
-        const allowed = `${HTTP2_METHOD_HEAD}, ${HTTP2_METHOD_GET}, ${HTTP2_METHOD_POST}`;
-        res.writeHead(HTTP_STATUS_METHOD_NOT_ALLOWED, {
-            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
-            [HTTP2_HEADER_ALLOW]: allowed,
-        });
-        res.end(`Requested method is not allowed. Allowed methods: ${allowed}.`);
-    }
-}
-
-/**
- * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
- * @param {string} err
- * @memberOf TeqFw_Web_Back_App_Server_Respond
- * @deprecated use the class form of the dependency injection
- */
-function respond500(res, err) {
-    if (!res.headersSent) {
-        res.writeHead(HTTP_STATUS_INTERNAL_SERVER_ERROR, {
-            [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
-        });
-        res.write('Internal server error. ');
-        if (typeof err === 'string') res.write(err);
-        res.end();
-    }
-}
-
-// MODULE'S CLASSES
 export default class TeqFw_Web_Back_App_Server_Respond {
-    /**
-     * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-     * @memberOf TeqFw_Web_Back_App_Server_Respond
-     */
-    respond400(res) {
+    status303(res, url) {
+        if (!res.headersSent) {
+            res.writeHead(HTTP_STATUS_SEE_OTHER, {
+                [HTTP2_HEADER_LOCATION]: url,
+            });
+            res.end();
+        }
+    }
+
+    status400(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_BAD_REQUEST, {
                 [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
             });
-            res.end('Malformed request syntax.');
+            if (typeof err === 'string') res.write(err);
+            res.end();
         }
     }
 
-    /**
-     * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-     * @param {string} err
-     * @memberOf TeqFw_Web_Back_App_Server_Respond
-     */
-    respond403(res, err) {
+    status401(res, err) {
+        if (!res.headersSent) {
+            res.writeHead(HTTP_STATUS_UNAUTHORIZED, {
+                [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
+            });
+            if (typeof err === 'string') res.write(err);
+            res.end();
+        }
+    }
+
+    status403(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_FORBIDDEN, {
                 [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
@@ -133,12 +63,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
-    /**
-     * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-     * @param {string} [err]
-     * @memberOf TeqFw_Web_Back_App_Server_Respond
-     */
-    respond404(res, err) {
+    status404(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_NOT_FOUND, {
                 [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
@@ -149,11 +74,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
-    /**
-     * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-     * @memberOf TeqFw_Web_Back_App_Server_Respond
-     */
-    respond405(res) {
+    status405(res) {
         if (!res.headersSent) {
             const allowed = `${HTTP2_METHOD_HEAD}, ${HTTP2_METHOD_GET}, ${HTTP2_METHOD_POST}`;
             res.writeHead(HTTP_STATUS_METHOD_NOT_ALLOWED, {
@@ -164,12 +85,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
-    /**
-     * @param {module:http.ServerResponse|module:http2.Http2ServerResponse} res
-     * @param {string} err
-     * @memberOf TeqFw_Web_Back_App_Server_Respond
-     */
-    respond500(res, err) {
+    status500(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_INTERNAL_SERVER_ERROR, {
                 [HTTP2_HEADER_CONTENT_TYPE]: 'text/plain',
@@ -179,22 +95,79 @@ export default class TeqFw_Web_Back_App_Server_Respond {
             res.end();
         }
     }
+
+    // Deprecated methods for backward compatibility
+    /**
+     * @deprecated Use `status400` instead.
+     */
+    respond400(res) {
+        this.status400(res);
+    }
+
+    /**
+     * @deprecated Use `status403` instead.
+     */
+    respond403(res, err) {
+        this.status403(res, err);
+    }
+
+    /**
+     * @deprecated Use `status404` instead.
+     */
+    respond404(res, err) {
+        this.status404(res, err);
+    }
+
+    /**
+     * @deprecated Use `status405` instead.
+     */
+    respond405(res) {
+        this.status405(res);
+    }
+
+    /**
+     * @deprecated Use `status500` instead.
+     */
+    respond500(res, err) {
+        this.status500(res, err);
+    }
 }
 
+// Named exports for backward compatibility (deprecated)
+// Create a single instance of the class for the module
+const instance = new TeqFw_Web_Back_App_Server_Respond();
 
-// MODULE'S FUNCTIONALITY
-// finalize code components for this es6-module
-Object.defineProperty(respond400, 'namespace', {value: NS});
-Object.defineProperty(respond403, 'namespace', {value: NS});
-Object.defineProperty(respond404, 'namespace', {value: NS});
-Object.defineProperty(respond405, 'namespace', {value: NS});
-Object.defineProperty(respond500, 'namespace', {value: NS});
+/**
+ * @deprecated Use `TeqFw_Web_Back_App_Server_Respond#status400` instead.
+ */
+export function respond400(res) {
+    instance.status400(res);
+}
 
+/**
+ * @deprecated Use `TeqFw_Web_Back_App_Server_Respond#status403` instead.
+ */
+export function respond403(res, err) {
+    instance.status403(res, err);
+}
 
-export {
-    respond400,
-    respond403,
-    respond404,
-    respond405,
-    respond500,
-};
+/**
+ * @deprecated Use `TeqFw_Web_Back_App_Server_Respond#status404` instead.
+ */
+export function respond404(res, err) {
+    instance.status404(res, err);
+}
+
+/**
+ * @deprecated Use `TeqFw_Web_Back_App_Server_Respond#status405` instead.
+ */
+export function respond405(res) {
+    instance.status405(res);
+}
+
+/**
+ * @deprecated Use `TeqFw_Web_Back_App_Server_Respond#status500` instead.
+ */
+export function respond500(res, err) {
+    instance.status500(res, err);
+}
