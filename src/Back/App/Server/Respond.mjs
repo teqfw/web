@@ -18,11 +18,19 @@ const {
     HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_METHOD_NOT_ALLOWED,
     HTTP_STATUS_NOT_FOUND,
+    HTTP_STATUS_OK,
     HTTP_STATUS_SEE_OTHER,
     HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
 export default class TeqFw_Web_Back_App_Server_Respond {
+    status200(res, body, headers = {}) {
+        if (!res.headersSent) {
+            res.writeHead(HTTP_STATUS_OK, {...headers});
+            res.end(body);
+        }
+    }
+
     status303(res, url) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_SEE_OTHER, {
