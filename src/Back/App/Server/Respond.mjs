@@ -1,6 +1,9 @@
 /**
  * Library with functions to respond using various HTTP status codes.
  * @namespace TeqFw_Web_Back_App_Server_Respond
+ *
+ * TODO: we need common scheme for all responds: status[Code][Name]({res, body, headers, url, err, ...})
+ *
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
@@ -14,6 +17,7 @@ const {
     HTTP2_METHOD_HEAD,
     HTTP2_METHOD_POST,
     HTTP_STATUS_BAD_REQUEST,
+    HTTP_STATUS_CONFLICT,
     HTTP_STATUS_FORBIDDEN,
     HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_METHOD_NOT_ALLOWED,
@@ -25,6 +29,13 @@ const {
 
 export default class TeqFw_Web_Back_App_Server_Respond {
     status200(res, body, headers = {}) {
+        if (!res.headersSent) {
+            res.writeHead(HTTP_STATUS_OK, {...headers});
+            res.end(body);
+        }
+    }
+
+    status201(res, body, headers = {}) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_OK, {...headers});
             res.end(body);
@@ -90,6 +101,13 @@ export default class TeqFw_Web_Back_App_Server_Respond {
                 [HTTP2_HEADER_ALLOW]: allowed,
             });
             res.end(`Requested method is not allowed. Allowed methods: ${allowed}.`);
+        }
+    }
+
+    status409(res, body, headers = {}) {
+        if (!res.headersSent) {
+            res.writeHead(HTTP_STATUS_CONFLICT, {...headers});
+            res.end(body);
         }
     }
 
