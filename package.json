@@ -1,7 +1,7 @@
 {
   "name": "@teqfw/web",
   "version": "0.26.0",
-  "description": "TeqFW: web server.",
+  "description": "TeqFW: Lightweight web server with HTTP/2 support for building modern web applications.",
   "scripts": {
     "help": "node ./bin/tequila.mjs help",
     "http1": "node ./bin/tequila.mjs web-server-start -1",
@@ -13,25 +13,34 @@
     "url": "git+https://github.com/teqfw/web.git"
   },
   "keywords": [
-    "ecmascript 2015",
-    "es6+",
-    "pwa",
+    "web server",
+    "http2",
     "spa",
-    "teqfw",
+    "pwa",
     "tequila framework",
-    "web applications"
+    "teqfw",
+    "modern web applications",
+    "node.js",
+    "es6"
   ],
   "author": "Alex Gusev <alex@flancer64.com>",
+  "contributors": [
+    "Alex Gusev <alex@flancer64.com> (https://github.com/flancer64)"
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/teqfw/web/issues"
   },
   "homepage": "https://github.com/teqfw/web#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/teqfw"
+  },
   "dependencies": {
-    "@teqfw/core": "latest",
-    "mime-types": "latest",
-    "path-to-regexp": "latest",
-    "stream-buffers": "latest",
-    "ws": "latest"
+    "@teqfw/core": "^0.32.0",
+    "mime-types": "^2.1.35",
+    "path-to-regexp": "^8.2.0",
+    "stream-buffers": "^3.0.3",
+    "ws": "^8.18.0"
   }
 }
