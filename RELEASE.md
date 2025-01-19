@@ -1,4 +1,14 @@
 # @teqfw/web: Releases
+ 
+## 0.26.0 - Refined HTTP Response and Cookie Handling with Class-Based APIs
+
+- Replaced procedural response functions with a class-based approach in `TeqFw_Web_Back_App_Server_Respond`.
+- Added new response methods for HTTP status codes, including `status401`, `status403`, and `status409`.
+- Introduced utility methods for cookies in `TeqFw_Web_Back_Util_Cookie`, refactored as a class.
+- Deprecated old procedural methods for HTTP responses and cookies, replaced by class-based APIs.
+- Updated cookie handling to improve flexibility and security settings, including `SameSite` and `HttpOnly`.
+- Enhanced test coverage for new response and cookie utilities.
+- Simplified API for setting and retrieving cookies with better encapsulation.
 
 ## 0.25.0
 
