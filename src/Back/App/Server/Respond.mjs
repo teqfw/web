@@ -2,8 +2,8 @@
  * Library with functions to respond using various HTTP status codes.
  * @namespace TeqFw_Web_Back_App_Server_Respond
  *
- * TODO: we need common scheme for all responds: status[Code][Name]({res, body, headers, url, err, ...})
- *
+ * @deprecated
+ * @see TeqFw_Web_Back_Help_Respond
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
