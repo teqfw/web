@@ -1,5 +1,9 @@
 # @teqfw/web: Releases
- 
+
+## 0.27.0 - TeqFw_Web_Back_Help_Respond
+
+- New helper is introduced (`TeqFw_Web_Back_Help_Respond`).
+
 ## 0.26.0 - Refined HTTP Response and Cookie Handling with Class-Based APIs
 
 - Replaced procedural response functions with a class-based approach in `TeqFw_Web_Back_App_Server_Respond`.

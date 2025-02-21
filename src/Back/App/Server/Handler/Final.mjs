@@ -23,13 +23,14 @@ const {
 export default class TeqFw_Web_Back_App_Server_Handler_Final {
     /**
      * @param {TeqFw_Web_Back_Defaults} DEF
-     * @param {TeqFw_Web_Back_App_Server_Respond.respond404|function} respond404
+     * @param {TeqFw_Web_Back_Help_Respond} respond
      */
     constructor(
         {
             TeqFw_Web_Back_Defaults$: DEF,
-            'TeqFw_Web_Back_App_Server_Respond.respond404': respond404,
-        }) {
+            TeqFw_Web_Back_Help_Respond$: respond,
+        }
+    ) {
         // FUNCS
 
         /**
@@ -56,16 +57,16 @@ export default class TeqFw_Web_Back_App_Server_Handler_Final {
                         res.writeHead(statusCode, headers);
                         // TODO: add error hndl
                         pipeline(readStream, res, (err) => {
-                            const bp = true;
+                            const breakPoint = true;
                         });
-                    } else respond404(res);
+                    } else respond.code404_NotFound({res});
                 } else if (body) {
                     res.writeHead(statusCode, headers);
                     res.end(body);
                 } else if (statusCode === HTTP_STATUS_OK) {
                     res.writeHead(statusCode, headers);
                     res.end();
-                } else respond404(res);
+                } else respond.code404_NotFound({res});
             }
         }
 

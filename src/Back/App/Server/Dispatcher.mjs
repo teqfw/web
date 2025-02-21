@@ -23,7 +23,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
      * @param {TeqFw_Core_Shared_Api_Logger} logger -  instance
      * @param {TeqFw_Web_Back_App_Server_Scan_Handler.act|function} scan
      * @param {TeqFw_Web_Back_Mod_Address} mAddress
-     * @param {TeqFw_Web_Back_App_Server_Respond.respond405|function} respond405
+     * @param {TeqFw_Web_Back_Help_Respond} respond
      */
 
     constructor(
@@ -32,7 +32,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
             TeqFw_Core_Shared_Api_Logger$$: logger,
             TeqFw_Web_Back_App_Server_Scan_Handler$: scan,
             TeqFw_Web_Back_Mod_Address$: mAddress,
-            'TeqFw_Web_Back_App_Server_Respond.respond405': respond405,
+            TeqFw_Web_Back_Help_Respond$: respond,
         }) {
         // VARS
         /** @type {TeqFw_Web_Back_Api_Dispatcher_IHandler[]} */
@@ -121,7 +121,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
                         logger.error(`Error in processor '${one?.namespace}': ` + e);
                     }
                 }
-            } else respond405(res);
+            } else respond.code405_MethodNotAllowed({res});
         }
 
         // INSTANCE METHODS
@@ -132,7 +132,7 @@ export default class TeqFw_Web_Back_App_Server_Dispatcher {
         this.createHandlers = async function () {
             const ordered = await scan({});
             handlers.push(...ordered);
-        }
+        };
 
         /**
          * Get dispatcher listener for 'request' event.
