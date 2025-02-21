@@ -2,8 +2,8 @@
  * Library with functions to respond using various HTTP status codes.
  * @namespace TeqFw_Web_Back_App_Server_Respond
  *
- * TODO: we need common scheme for all responds: status[Code][Name]({res, body, headers, url, err, ...})
- *
+ * @deprecated
+ * @see TeqFw_Web_Back_Help_Respond
  */
 // MODULE'S IMPORT
 import {constants as H2} from 'http2';
@@ -27,7 +27,12 @@ const {
     HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
+/**
+ * @deprecated
+ * @see TeqFw_Web_Back_Help_Respond
+ */
 export default class TeqFw_Web_Back_App_Server_Respond {
+    /** @deprecated */
     status200(res, body, headers = {}) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_OK, {...headers});
@@ -35,6 +40,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status201(res, body, headers = {}) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_OK, {...headers});
@@ -42,6 +48,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status303(res, url) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_SEE_OTHER, {
@@ -51,6 +58,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status400(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_BAD_REQUEST, {
@@ -61,6 +69,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status401(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_UNAUTHORIZED, {
@@ -71,6 +80,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status403(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_FORBIDDEN, {
@@ -82,6 +92,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status404(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_NOT_FOUND, {
@@ -93,6 +104,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status405(res) {
         if (!res.headersSent) {
             const allowed = `${HTTP2_METHOD_HEAD}, ${HTTP2_METHOD_GET}, ${HTTP2_METHOD_POST}`;
@@ -104,6 +116,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status409(res, body, headers = {}) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_CONFLICT, {...headers});
@@ -111,6 +124,7 @@ export default class TeqFw_Web_Back_App_Server_Respond {
         }
     }
 
+    /** @deprecated */
     status500(res, err) {
         if (!res.headersSent) {
             res.writeHead(HTTP_STATUS_INTERNAL_SERVER_ERROR, {

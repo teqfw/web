@@ -1,6 +1,6 @@
 {
   "name": "@teqfw/web",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "TeqFW: Lightweight web server with HTTP/2 support for building modern web applications.",
   "scripts": {
     "help": "node ./bin/tequila.mjs help",
