@@ -2,22 +2,23 @@ import {constants as H2} from 'http2';
 
 const {
     HTTP2_HEADER_ALLOW,
-    HTTP_STATUS_OK,
-    HTTP_STATUS_CREATED,
-    HTTP_STATUS_NO_CONTENT,
-    HTTP_STATUS_MOVED_PERMANENTLY,
-    HTTP_STATUS_FOUND,
-    HTTP_STATUS_SEE_OTHER,
-    HTTP_STATUS_NOT_MODIFIED,
-    HTTP_STATUS_BAD_REQUEST,
-    HTTP_STATUS_UNAUTHORIZED,
-    HTTP_STATUS_FORBIDDEN,
-    HTTP_STATUS_NOT_FOUND,
-    HTTP_STATUS_METHOD_NOT_ALLOWED,
-    HTTP_STATUS_CONFLICT,
-    HTTP_STATUS_INTERNAL_SERVER_ERROR,
     HTTP_STATUS_BAD_GATEWAY,
+    HTTP_STATUS_BAD_REQUEST,
+    HTTP_STATUS_CONFLICT,
+    HTTP_STATUS_CREATED,
+    HTTP_STATUS_FORBIDDEN,
+    HTTP_STATUS_FOUND,
+    HTTP_STATUS_INTERNAL_SERVER_ERROR,
+    HTTP_STATUS_METHOD_NOT_ALLOWED,
+    HTTP_STATUS_MOVED_PERMANENTLY,
+    HTTP_STATUS_NOT_FOUND,
+    HTTP_STATUS_NOT_MODIFIED,
+    HTTP_STATUS_NO_CONTENT,
+    HTTP_STATUS_OK,
+    HTTP_STATUS_PAYMENT_REQUIRED,
+    HTTP_STATUS_SEE_OTHER,
     HTTP_STATUS_SERVICE_UNAVAILABLE,
+    HTTP_STATUS_UNAUTHORIZED,
 } = H2;
 
 /**
@@ -87,6 +88,11 @@ export default class TeqFw_Web_Back_Help_Respond {
     }
 
     /** @see send */
+    code402_PaymentRequired({res, headers = {}, body = ''}) {
+        return this.send({res, headers, body}, HTTP_STATUS_PAYMENT_REQUIRED);
+    }
+
+    /** @see send */
     code403_Forbidden({res, headers = {}, body = ''}) {
         return this.send({res, headers, body}, HTTP_STATUS_FORBIDDEN);
     }
@@ -97,11 +103,11 @@ export default class TeqFw_Web_Back_Help_Respond {
     }
 
     /** @see send */
-    code405_MethodNotAllowed({res, headers = {}, body = ''}) {
+    code405_MethodNotAllowed({res, headers = {}, body = '', allowed = 'HEAD, GET, POST'}) {
         return this.send(
             {
                 res,
-                headers: {...headers, [HTTP2_HEADER_ALLOW]: 'HEAD, GET, POST'},
+                headers: {...headers, [HTTP2_HEADER_ALLOW]: allowed},
                 body,
             },
             HTTP_STATUS_METHOD_NOT_ALLOWED

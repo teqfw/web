@@ -1,5 +1,10 @@
 # @teqfw/web: Releases
 
+## 0.27.1 - Improved Response Status Handling
+
+- Added new status: `402 Payment Required`.
+- Enhanced `405 Method Not Allowed` function with additional configuration options.
+
 ## 0.27.0 - TeqFw_Web_Back_Help_Respond
 
 - New helper is introduced (`TeqFw_Web_Back_Help_Respond`).
