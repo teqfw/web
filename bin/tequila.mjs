@@ -16,10 +16,10 @@ const path = join(bin, '..');
 /**
  * Create and manually set up the DI container.
  * @param {string} root - The root folder of the app (where the `node_modules` folder is located).
- * @returns {Promise<TeqFw_Di_Api_Container>}
+ * @returns {Promise<TeqFw_Di_Container>}
  */
 async function initContainer(root) {
-    /** @type {TeqFw_Di_Api_Container} */
+    /** @type {TeqFw_Di_Container} */
     const res = new Container();
     res.setDebug(false);
     // add path mapping for @teqfw/core to the DI resolver

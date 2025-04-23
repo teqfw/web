@@ -36,14 +36,14 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
         /**
          * Import the lib code, create and set up the Dependency Injection container for the frontend.
          *
-         * @returns {Promise<TeqFw_Di_Api_Container>}
+         * @returns {Promise<TeqFw_Di_Container>}
          */
         async function initDiContainer() {
             // FUNCS
 
             /**
              * Load the DI configuration from the local cache and set up the container.
-             * @param {TeqFw_Di_Api_Container} container
+             * @param {TeqFw_Di_Container} container
              */
             async function configFromStored(container) {
                 try {
@@ -112,7 +112,7 @@ export async function bootstrap(fnLog, fnProgress, urlSw, nsApp, cssApp, fnFinal
 
             // MAIN
             const {default: Container} = await import(URL_SRC_DI_CONTAINER); // load es6-sources and create the container
-            /** @type {TeqFw_Di_Api_Container} */
+            /** @type {TeqFw_Di_Container} */
             const container = new Container();
             container.setDebug(false);
             // load DI configuration from the backend and store it into the localStorage
