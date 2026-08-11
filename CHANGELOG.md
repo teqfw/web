@@ -1,5 +1,45 @@
 # Changelog
 
+## [2.0.0] - 2026-08-11 - Agent-built TeqFW v2 web runtime
+
+This is the first `@teqfw/web` release implemented by an agent under human
+architectural direction and acceptance.
+
+### Added
+
+- Rebuilt the package as the TeqFW v2 web runtime with a Node.js transport,
+  ordered handler pipeline, and the `INIT -> PROCESS -> FINALIZE` lifecycle.
+- Added runtime configuration for HTTP, HTTP/2, and HTTPS; static-file delivery;
+  request logging; response helpers; and the `web:start` CLI command.
+- Added unit and integration coverage, JSDoc type checking, public type aliases,
+  and the version-matched `skills/teqfw-web/` consumer Agent Skill.
+- Added package-local project skills, including project conventions and links to
+  installed TeqFW dependency skills.
+
+### Changed
+
+- Migrated package metadata and DI registration to the TeqFW v2 `fw.di` and
+  `fw.cli` descriptors, with Node.js `>=20` as the supported runtime.
+- Replaced the previous web-server plugin model with the current server,
+  pipeline, handler, and runtime-configuration contracts.
+- Reworked the README as the human-facing overview and kept detailed integration
+  guidance in the published consumer skill.
+
+### Removed
+
+- Removed the legacy `teqfw.json` descriptor, old CLI start/stop commands,
+  browser-side modules, and obsolete runtime implementation.
+- Removed the unpublished `ai/` documentation surface and legacy release
+  scripts.
+
+### Compatibility
+
+- This is a major release. Consumers must migrate to the TeqFW v2 DI,
+  configuration, logging, and CLI dependencies and use the `TeqFw_Web_`
+  namespace declaration.
+- Migrate custom handlers to the `context.completed` completion contract and
+  mount `skills/teqfw-web/` instead of the removed `ai/` directory.
+
 ## [0.16.0] - 2026-08-06 - CLI startup and published agent interface
 
 ### Added

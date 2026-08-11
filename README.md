@@ -70,8 +70,8 @@ ln -s ../../node_modules/@teqfw/web/skills/teqfw-web \
 
 Each TeqFW package is both a practical software component and a working demonstration of human-governed, agent-driven development. This work follows the Agent-Driven Software Management (ADSM) approach: human intent, architectural authority, acceptance, and responsibility remain authoritative; agents act as implementation and reasoning partners.
 
-- [Tequila Framework](https://teqfw.com/?from=github-flancer32-teq-web)
-- [Agent-Driven Software Management: A Practical Guide](http://fly.wiredgeese.com/flancer/leanpub/adsm-en/?from=github-flancer32-teq-web)
+- [Tequila Framework](https://teqfw.com/?from=github-teqfw-web)
+- [Agent-Driven Software Management: A Practical Guide](http://fly.wiredgeese.com/flancer/leanpub/adsm-en/?from=github-teqfw-web)
 - [Alex Gusev](https://github.com/flancer64)
 
 ## License
