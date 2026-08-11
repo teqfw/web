@@ -1,0 +1,4 @@
+interface:
+  display_name: "TeqFW Web"
+  short_description: "Integrate @teqfw/web safely"
+  default_prompt: "Use $teqfw-web to integrate @teqfw/web in this project."

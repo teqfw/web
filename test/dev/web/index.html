@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>teq-web smoke test</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #f4f4f0;
+            color: #1d1d1b;
+        }
+
+        main {
+            max-width: 40rem;
+            padding: 2rem;
+            border: 1px solid #1d1d1b;
+            background: #fffef8;
+        }
+
+        code {
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>teq-web smoke test</h1>
+    <p>If you can read this page, <code>TeqFw_Web_Back_Server</code> and the built-in static handler are working together.</p>
+    <p>Requested path: <code id="path"></code></p>
+</main>
+<script>
+    document.getElementById('path').textContent = window.location.pathname;
+</script>
+</body>
+</html>

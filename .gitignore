@@ -1,8 +1,10 @@
-/**/*.pid
+/.codex
 /.idea/
-/.nyc_output/
-/cfg/local.*
-/jsdoc/
-/node_modules/
+/.vscode/
+/**/.env
+/**/node_modules/
 /package-lock.json
-/tmp/
+/**/output*.md
+/**/output*.zip
+/**/tmp/
+/ctx/

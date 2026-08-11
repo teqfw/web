@@ -1,46 +1,88 @@
 {
   "name": "@teqfw/web",
-  "version": "0.27.1",
-  "description": "TeqFW: Lightweight web server with HTTP/2 support for building modern web applications.",
-  "scripts": {
-    "help": "node ./bin/tequila.mjs help",
-    "http1": "node ./bin/tequila.mjs web-server-start -1",
-    "http2": "node ./bin/tequila.mjs web-server-start",
-    "stop": "node ./bin/tequila.mjs web-server-stop"
+  "version": "2.0.0",
+  "description": "Server-side web request coordination infrastructure for TeqFW modular monolith applications.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Alex Gusev",
+    "email": "alex@flancer64.com",
+    "url": "https://github.com/flancer64"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/teqfw/web.git"
   },
-  "keywords": [
-    "web server",
-    "http2",
-    "spa",
-    "pwa",
-    "tequila framework",
-    "teqfw",
-    "modern web applications",
-    "node.js",
-    "es6"
-  ],
-  "author": "Alex Gusev <alex@flancer64.com>",
-  "contributors": [
-    "Alex Gusev <alex@flancer64.com> (https://github.com/flancer64)"
-  ],
-  "license": "Apache-2.0",
+  "homepage": "https://github.com/teqfw/web",
   "bugs": {
     "url": "https://github.com/teqfw/web/issues"
   },
-  "homepage": "https://github.com/teqfw/web#readme",
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/teqfw"
+  "keywords": [
+    "teqfw",
+    "tequila-framework",
+    "web",
+    "dispatcher",
+    "request-pipeline",
+    "dependency-injection",
+    "modular-monolith",
+    "nodejs"
+  ],
+  "types": "types.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
+  "teqfw": {
+    "fw": {
+      "di": {
+        "namespaces": [
+          {
+            "prefix": "TeqFw_Web_",
+            "path": "./src",
+            "ext": ".mjs"
+          }
+        ]
+      },
+      "cli": {
+        "commands": [
+          {
+            "id": "web:start",
+            "summary": "Start the web server.",
+            "component": "TeqFw_Web_Cli_Command_Start$"
+          }
+        ],
+        "command": {
+          "default": "web:start"
+        }
+      }
+    }
   },
   "dependencies": {
-    "@teqfw/core": "^0.32.0",
-    "mime-types": "^2.1.35",
-    "path-to-regexp": "^8.2.0",
-    "stream-buffers": "^3.0.3",
-    "ws": "^8.18.0"
-  }
+    "@teqfw/cfg": ">=2.0.0",
+    "@teqfw/cli": ">=2.0.0",
+    "@teqfw/di": ">=2.9.0",
+    "@teqfw/log": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "markdownlint-cli2": "^0.23.2",
+    "typescript": "^5.9.3",
+    "typescript-language-server": "^5.3.0"
+  },
+  "scripts": {
+    "start": "teq web:start",
+    "test:unit": "find test/unit -name '*.test.mjs' -print0 | xargs -0 node --test",
+    "test:integration": "find test/integration -name '*.test.mjs' -print0 | xargs -0 node --test",
+    "test": "npm run test:unit && npm run test:integration",
+    "typecheck": "tsc -p jsconfig.json",
+    "lint:md": "markdownlint-cli2 \"skills/**/*.md\" \"*.md\""
+  },
+  "files": [
+    "skills/",
+    "jsconfig.json",
+    "src/",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "types.d.ts"
+  ]
 }
