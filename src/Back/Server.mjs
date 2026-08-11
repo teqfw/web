@@ -25,7 +25,7 @@ export default class Server {
 
         // MAIN
         /**
-         * @returns {import("node:http").Server|import("node:http2").Http2Server|import("node:http2").Http2SecureServer|undefined}
+         * @returns {TeqFw_Web_Back_Server_Instance|undefined}
          */
         this.getInstance = () => _instance;
 
