@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.1] - 2026-09-17 - Complete MIME content-type support
+
+### Added
+
+- Added the default `charset=utf-8` parameter for built-in textual content
+  types and support for valid custom Content-Type parameters.
+- Added `overrideTypes()` for explicit per-instance replacement of built-in
+  MIME mappings.
+- Documented MIME charset and override behavior for package consumers.
+
 ## [2.1.0] - 2026-09-17 - Align CLI components with the backend namespace
 
 ### Changed
