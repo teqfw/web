@@ -8,7 +8,7 @@ handler, the built-in Node.js server, and a request returning `200 OK`.
 - Node.js `>=20`.
 - A host application with a TeqFW DI composition root.
 - The host application's namespace metadata includes its own source tree and the
-  published `TeqFw_Web_` namespace from `@teqfw/web`.
+  published `TeqFw_Web_Back_` namespace from `@teqfw/web`.
 
 ## Install and mount the skill
 

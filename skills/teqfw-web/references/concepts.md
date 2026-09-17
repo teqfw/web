@@ -9,7 +9,7 @@ application architecture.
 
 ## Consumer Model
 
-The package participates in TeqFW runtime composition through the `TeqFw_Web_` namespace.
+The package participates in TeqFW runtime composition through the `TeqFw_Web_Back_` namespace.
 Consumer modules declare the package values they need through `__deps__`; a composition
 root resolves an application entry service through the DI container. Prefer public,
 consumer-facing tokens such as:

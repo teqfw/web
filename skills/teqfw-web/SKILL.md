@@ -16,7 +16,7 @@ authoritative.
 
 1. For a new integration, start with [Quick start](references/quick-start.md); use the
    specialized references below for the selected integration path.
-2. Resolve web infrastructure through `TeqFw_Web_` DI tokens; application modules declare
+2. Resolve web infrastructure through `TeqFw_Web_Back_` DI tokens; application modules declare
    dependencies through `__deps__` and do not construct DI-managed services directly.
 3. Register every handler before `lockHandlers()` or `server.start()`. The lifecycle is
    fixed as `INIT -> PROCESS -> FINALIZE` for the runtime instance.

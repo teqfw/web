@@ -6,8 +6,9 @@
 
 - Moved the `web:start` command to `TeqFw_Web_Back_Cli_Command_Start` under
   `src/Back/Cli/Command/Start.mjs` for consistency with the backend runtime.
-- Added an explicit `TeqFw_Web_Back_ -> ./src/Back` namespace mapping while
-  retaining the package-level `TeqFw_Web_ -> ./src` fallback.
+- Made `TeqFw_Web_Back_ -> ./src/Back` the package's sole namespace mapping.
+- Placed the package-specific `teqfw` manifest node after the standard npm
+  metadata nodes.
 - Updated public type aliases, integration coverage, unit-test layout, and
   project documentation to use the backend CLI namespace.
 
