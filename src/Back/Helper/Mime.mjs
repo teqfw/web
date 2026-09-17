@@ -3,11 +3,79 @@
 /**
  * @namespace TeqFw_Web_Back_Helper_Mime
  * @description MIME type helper with built-in mapping for common file extensions.
- * Consumers may provide additional per-instance mappings through addTypes().
+ * Consumers may provide additional or explicit per-instance mappings through
+ * addTypes() and overrideTypes().
  */
 
 const FALLBACK_TYPE = 'application/octet-stream';
 const MIME_TYPE_PATTERN = /^[^\s/;]+\/[^\s/;]+$/;
+const PARAMETER_NAME_PATTERN = /^[^\s"=;]+$/;
+const CHARSET_PATTERN = /^[^\s"=;]+$/;
+
+/**
+ * Validate a complete HTTP Content-Type value.
+ *
+ * @param {*} value
+ * @returns {TeqFw_Web_Back_Helper_Mime__ContentType}
+ */
+function parseContentType(value) {
+    if (typeof value !== 'string') {
+        throw new TypeError('MIME type must be a string');
+    }
+
+    const parts = value.split(';');
+    const mediaType = parts.shift()?.trim();
+    if (!mediaType || !MIME_TYPE_PATTERN.test(mediaType)) {
+        throw new TypeError(`Invalid MIME type: ${value}`);
+    }
+
+    let hasCharset = false;
+    for (const rawParameter of parts) {
+        const parameter = rawParameter.trim();
+        const separator = parameter.indexOf('=');
+        if (separator < 1) {
+            throw new TypeError(`Invalid MIME parameter: ${value}`);
+        }
+
+        const name = parameter.slice(0, separator).trim();
+        let parameterValue = parameter.slice(separator + 1).trim();
+        if (!PARAMETER_NAME_PATTERN.test(name) || !parameterValue) {
+            throw new TypeError(`Invalid MIME parameter: ${value}`);
+        }
+
+        if (parameterValue.startsWith('"')) {
+            if (!parameterValue.endsWith('"') || parameterValue.length < 2) {
+                throw new TypeError(`Invalid MIME parameter: ${value}`);
+            }
+            parameterValue = parameterValue.slice(1, -1);
+        } else if (/[\s"]/.test(parameterValue)) {
+            throw new TypeError(`Invalid MIME parameter: ${value}`);
+        }
+
+        if (name.toLowerCase() === 'charset') {
+            if (hasCharset || !CHARSET_PATTERN.test(parameterValue)) {
+                throw new TypeError(`Invalid MIME charset: ${value}`);
+            }
+            hasCharset = true;
+        }
+    }
+
+    return {value: value.trim(), mediaType, hasCharset};
+}
+
+/**
+ * Apply the default charset policy to a complete content type.
+ *
+ * @param {string} value
+ * @returns {string}
+ */
+function toResponseContentType(value) {
+    const parsed = parseContentType(value);
+    if (parsed.mediaType.toLowerCase().startsWith('text/') && !parsed.hasCharset) {
+        return `${parsed.value}; charset=utf-8`;
+    }
+    return parsed.value;
+}
 
 /**
  * Normalize an extension to the lower-case, leading-dot convention.
@@ -21,33 +89,30 @@ function normalizeExtension(ext) {
 }
 
 /**
- * Validate and copy custom MIME mappings so callers cannot mutate helper state.
+ * Validate and copy MIME mappings so callers cannot mutate helper state.
  *
- * @param {*} customTypes
+ * @param {*} types
  * @returns {Readonly<Record<string, string>>}
  */
-function normalizeCustomTypes(customTypes) {
-    if (customTypes === undefined) {
+function normalizeTypes(types) {
+    if (types === undefined) {
         return Object.freeze({});
     }
-    if (typeof customTypes !== 'object' || customTypes === null || Array.isArray(customTypes)) {
-        throw new TypeError('customTypes must be a non-null object');
+    if (typeof types !== 'object' || types === null || Array.isArray(types)) {
+        throw new TypeError('types must be a non-null object');
     }
 
     /** @type {Record<string, string>} */
     const normalized = {};
-    for (const [extension, mimeType] of Object.entries(customTypes)) {
+    for (const [extension, mimeType] of Object.entries(types)) {
         const key = normalizeExtension(extension);
         if (!/^\.[^\s/]+$/.test(key)) {
-            throw new TypeError(`Invalid custom MIME extension: ${extension}`);
+            throw new TypeError(`Invalid MIME extension: ${extension}`);
         }
         if (Object.hasOwn(normalized, key)) {
-            throw new TypeError(`Duplicate custom MIME extension: ${extension}`);
+            throw new TypeError(`Duplicate MIME extension: ${extension}`);
         }
-        if (typeof mimeType !== 'string' || !MIME_TYPE_PATTERN.test(mimeType)) {
-            throw new TypeError(`Invalid custom MIME type for ${extension}`);
-        }
-        normalized[key] = mimeType;
+        normalized[key] = parseContentType(mimeType).value;
     }
 
     return Object.freeze(normalized);
@@ -146,26 +211,47 @@ export default class Mime {
     constructor() {
         /** @type {Readonly<Record<string, string>>} */
         let custom = Object.freeze({});
+        /** @type {Readonly<Record<string, string>>} */
+        let overrides = Object.freeze({});
 
         /**
-         * Add application-specific extension-to-MIME mappings.
-         * Keys may use or omit the leading dot.
+         * Add application-specific extension-to-Content-Type mappings.
+         * Keys may use or omit the leading dot. Built-in mappings retain
+         * precedence; textual custom values receive the default UTF-8 charset.
          *
          * @param {TeqFw_Web_Back_Helper_Mime__CustomTypes} types
          */
         this.addTypes = function (types) {
-            custom = Object.freeze({...custom, ...normalizeCustomTypes(types)});
+            custom = Object.freeze({...custom, ...normalizeTypes(types)});
         };
 
         /**
-         * Returns the MIME type for the given extension.
+         * Explicitly replace built-in MIME mappings for this helper instance.
+         * Only extensions present in the built-in mapping can be overridden.
+         *
+         * @param {TeqFw_Web_Back_Helper_Mime__OverrideTypes} types
+         */
+        this.overrideTypes = function (types) {
+            const normalized = normalizeTypes(types);
+            for (const extension of Object.keys(normalized)) {
+                if (!Object.hasOwn(BUILTIN_TYPES, extension)) {
+                    throw new TypeError(`Cannot override unknown built-in MIME extension: ${extension}`);
+                }
+            }
+            overrides = Object.freeze({...overrides, ...normalized});
+        };
+
+        /**
+         * Returns the complete HTTP Content-Type for the given extension.
+         * Textual values receive charset=utf-8 unless a charset is already
+         * present; binary and non-textual values are returned without one.
          *
          * @param {string} ext - File extension, with or without a leading dot.
-         * @returns {string} MIME type if known, otherwise 'application/octet-stream'.
+         * @returns {string} Content-Type if known, otherwise 'application/octet-stream'.
          */
         this.getByExt = function (ext) {
             const key = normalizeExtension(ext);
-            return BUILTIN_TYPES[key] || custom[key] || FALLBACK_TYPE;
+            return toResponseContentType(overrides[key] || BUILTIN_TYPES[key] || custom[key] || FALLBACK_TYPE);
         };
     }
 }

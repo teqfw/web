@@ -44,14 +44,30 @@ Add application-specific types to the DI-managed helper during application boots
 const mime = await container.get("TeqFw_Web_Back_Helper_Mime$");
 mime.addTypes({
     report: "application/vnd.example.report",
+    ".custom": "text/x-custom; charset=utf-8",
     ".legacy": "application/x-legacy-format",
 });
 
+mime.overrideTypes({
+    ".json": "application/ld+json",
+});
+
 mime.getByExt(".REPORT"); // application/vnd.example.report
+mime.getByExt(".html"); // text/html; charset=utf-8
+mime.getByExt(".json"); // application/ld+json
 ```
+
+`getByExt()` returns the complete HTTP `Content-Type` value. Built-in `text/*`
+types receive `charset=utf-8` by default; an existing charset is preserved and
+binary or non-`text/*` types receive no charset automatically.
 
 `addTypes()` validates and copies each map into the helper instance. Custom keys
 are trimmed, normalized to lower case, and stored with a leading dot. Lookup is
-case-insensitive and accepts extensions with or without the dot. Built-in types
-always take precedence over custom mappings, unknown extensions return
-`application/octet-stream`, and invalid custom maps throw `TypeError`.
+case-insensitive and accepts extensions with or without the dot. Custom values
+may include valid Content-Type parameters, including an explicit charset.
+
+`overrideTypes()` is the explicit escape hatch for replacing a built-in value.
+It accepts only extensions already present in the built-in table, so it cannot
+silently add an unknown extension. Both maps are instance-local and have this
+precedence: `overrideTypes()` > built-in > `addTypes()` >
+`application/octet-stream`. Invalid maps throw `TypeError`.

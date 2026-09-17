@@ -55,7 +55,10 @@ declare global {
   type TeqFw_Web_Back_Helper_Cast_Enum_Options = {lower?: boolean; upper?: boolean};
   type TeqFw_Web_Back_Helper_Cast__Class = typeof import("./src/Back/Helper/Cast.mjs").default;
   type TeqFw_Web_Back_Helper_Mime = import("./src/Back/Helper/Mime.mjs").default;
-  type TeqFw_Web_Back_Helper_Mime__CustomTypes = {[key: string]: string};
+  type TeqFw_Web_Back_Helper_Mime__ContentType = {value: string; mediaType: string; hasCharset: boolean};
+  type TeqFw_Web_Back_Helper_Mime__Types = {[key: string]: string};
+  type TeqFw_Web_Back_Helper_Mime__CustomTypes = TeqFw_Web_Back_Helper_Mime__Types;
+  type TeqFw_Web_Back_Helper_Mime__OverrideTypes = TeqFw_Web_Back_Helper_Mime__Types;
   type TeqFw_Web_Back_Helper_Mime__Class = typeof import("./src/Back/Helper/Mime.mjs").default;
   type TeqFw_Web_Back_Helper_Order_Kahn = import("./src/Back/Helper/Order/Kahn.mjs").default;
   type TeqFw_Web_Back_Helper_Order_Kahn__Class = typeof import("./src/Back/Helper/Order/Kahn.mjs").default;
