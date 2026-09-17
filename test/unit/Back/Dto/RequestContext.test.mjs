@@ -1,6 +1,6 @@
 import {describe, test} from 'node:test';
 import assert from 'node:assert/strict';
-import TeqFw_Web_Back_Dto_RequestContext, {Factory as TeqFw_Web_Back_Dto_RequestContext_Factory} from '../../../../../src/Back/Dto/RequestContext.mjs';
+import TeqFw_Web_Back_Dto_RequestContext, {Factory as TeqFw_Web_Back_Dto_RequestContext_Factory} from '../../../../src/Back/Dto/RequestContext.mjs';
 
 describe('TeqFw_Web_Back_Dto_RequestContext', () => {
     test('creates base request context with default mutable state', () => {

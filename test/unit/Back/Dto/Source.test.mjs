@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {Factory as TeqFw_Web_Back_Dto_Source_Factory} from '../../../../../src/Back/Dto/Source.mjs';
+import {Factory as TeqFw_Web_Back_Dto_Source_Factory} from '../../../../src/Back/Dto/Source.mjs';
 
 test.describe('TeqFw_Web_Back_Dto_Source', () => {
   test('should create valid config DTO with casted fields', async () => {
@@ -15,12 +15,12 @@ test.describe('TeqFw_Web_Back_Dto_Source', () => {
     const dto = factory.create({
       root: '/abs/path',
       prefix: '/src/',
-      allow: { vue: ['dist/vue.global.js'] },
+      allow: {vue: ['dist/vue.global.js']},
       defaults: ['index.html'],
     });
     assert.strictEqual(dto.root, '/abs/path');
     assert.strictEqual(dto.prefix, '/src/');
-    assert.deepStrictEqual(dto.allow, { vue: ['dist/vue.global.js'] });
+    assert.deepStrictEqual(dto.allow, {vue: ['dist/vue.global.js']});
     assert.deepStrictEqual(dto.defaults, ['index.html']);
     assert.equal(Object.isFrozen(dto), true);
   });

@@ -20,6 +20,8 @@ consumer-facing tokens such as:
 - `TeqFw_Web_Back_Dto_Info__Factory$` — handler registration metadata factory.
 - `TeqFw_Web_Back_Dto_Source__Factory$` and `TeqFw_Web_Back_Handler_Static$` — static-file
   source and handler.
+- `TeqFw_Web_Back_Helper_Mime$` — built-in and application-specific MIME lookup used by
+  static-file delivery.
 
 Use package tokens rather than deep implementation paths as the integration boundary.
 

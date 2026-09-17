@@ -1,8 +1,8 @@
 import {describe, test} from 'node:test';
 import assert from 'node:assert/strict';
-import {Factory as TeqFw_Web_Back_Dto_Info_Factory} from '../../../../../src/Back/Dto/Info.mjs';
-import TeqFw_Web_Back_Helper_Cast from '../../../../../src/Back/Helper/Cast.mjs';
-import TeqFw_Web_Back_Enum_Stage from '../../../../../src/Back/Enum/Stage.mjs';
+import {Factory as TeqFw_Web_Back_Dto_Info_Factory} from '../../../../src/Back/Dto/Info.mjs';
+import TeqFw_Web_Back_Helper_Cast from '../../../../src/Back/Helper/Cast.mjs';
+import TeqFw_Web_Back_Enum_Stage from '../../../../src/Back/Enum/Stage.mjs';
 
 describe('TeqFw_Web_Back_Dto_Info', () => {
     test('creates normalized handler registration dto', () => {
