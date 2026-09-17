@@ -14,6 +14,32 @@ export class Data {
     key;
 }
 
+const FIELD_NAMES = Object.freeze(new Set(['ca', 'cert', 'key']));
+
+/**
+ * Validate the raw TLS configuration shape before reading its fields.
+ *
+ * @param {unknown} params
+ * @returns {Partial<TeqFw_Web_Back_Config_Runtime_Tls__Data>}
+ */
+function assertParams(params) {
+    if ((params === null) || (typeof params !== 'object') || Array.isArray(params)) {
+        throw new TypeError(
+            'Invalid TLS configuration: expected an object with optional ca, cert, and key string fields.'
+        );
+    }
+
+    for (const name of Object.keys(params)) {
+        if (!FIELD_NAMES.has(name)) {
+            throw new TypeError(
+                `Invalid TLS configuration field "${name}": expected ca, cert, or key.`
+            );
+        }
+    }
+
+    return /** @type {Partial<TeqFw_Web_Back_Config_Runtime_Tls__Data>} */ (params);
+}
+
 /** @type {TeqFw_Web_Back_Config_Runtime_Tls__Data} */
 const cfg = new Data();
 let frozen = false;
@@ -55,18 +81,31 @@ export class Factory {
      */
     constructor({cast}) {
         /**
-         * @param {Partial<TeqFw_Web_Back_Config_Runtime_Tls__Data>} params
+         * @param {unknown} params
          */
         this.configure = function (params = {}) {
+            const values = assertParams(params);
             if (frozen) throw new Error('Runtime configuration is frozen.');
-            if (cfg.ca === undefined && params.ca !== undefined) {
-                cfg.ca = cast.string(params.ca);
+            if (values.ca !== undefined) {
+                const value = cast.string(values.ca);
+                if (value === undefined) {
+                    throw new TypeError('Invalid TLS configuration field "ca": expected a string.');
+                }
+                if (cfg.ca === undefined) cfg.ca = value;
             }
-            if (cfg.cert === undefined && params.cert !== undefined) {
-                cfg.cert = cast.string(params.cert);
+            if (values.cert !== undefined) {
+                const value = cast.string(values.cert);
+                if (value === undefined) {
+                    throw new TypeError('Invalid TLS configuration field "cert": expected a string.');
+                }
+                if (cfg.cert === undefined) cfg.cert = value;
             }
-            if (cfg.key === undefined && params.key !== undefined) {
-                cfg.key = cast.string(params.key);
+            if (values.key !== undefined) {
+                const value = cast.string(values.key);
+                if (value === undefined) {
+                    throw new TypeError('Invalid TLS configuration field "key": expected a string.');
+                }
+                if (cfg.key === undefined) cfg.key = value;
             }
         };
 

@@ -32,4 +32,23 @@ describe('TeqFw_Web_Back_Config_Runtime_Tls', () => {
         assert.throws(() => factory.configure({key: 'next'}), /frozen/);
         assert.equal(factory.freeze(), tls);
     });
+
+    test('rejects incompatible configuration shapes and fields', async () => {
+        const {Factory} = await loadTlsModule();
+        const {default: Cast} = await import('../../../../../src/Back/Helper/Cast.mjs');
+        const factory = new Factory({cast: new Cast()});
+
+        assert.throws(
+            () => factory.configure('not-an-object'),
+            /Invalid TLS configuration: expected an object/
+        );
+        assert.throws(
+            () => factory.configure({cert: null}),
+            /Invalid TLS configuration field "cert": expected a string/
+        );
+        assert.throws(
+            () => factory.configure({passphrase: 'secret'}),
+            /Invalid TLS configuration field "passphrase": expected ca, cert, or key/
+        );
+    });
 });

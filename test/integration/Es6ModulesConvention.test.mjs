@@ -94,7 +94,10 @@ describe('TeqFW ES6 module convention integration', () => {
         await cfgLoader.load([cfgObject.create({
             TEQFW_WEB__HOST: '127.0.0.1',
             TEQFW_WEB__PORT: '3001',
-            TEQFW_WEB__TYPE: 'http',
+            TEQFW_WEB__TYPE: 'https',
+            TEQFW_WEB__TLS_CA: 'ca-from-cfg',
+            TEQFW_WEB__TLS_CERT: 'cert-from-cfg',
+            TEQFW_WEB__TLS_KEY: 'key-from-cfg',
         })]);
         const runtimeConfigFactory = await container.get('TeqFw_Web_Back_Config_Runtime__Factory$');
         const runtimeConfig = await container.get('TeqFw_Web_Back_Config_Runtime$');
@@ -112,8 +115,11 @@ describe('TeqFW ES6 module convention integration', () => {
         assert.equal(runtimeFromFactory, undefined);
         assert.equal(runtimeConfig.host, '127.0.0.1');
         assert.equal(runtimeConfig.port, 3001);
-        assert.equal(runtimeConfig.type, 'http');
+        assert.equal(runtimeConfig.type, 'https');
         assert.equal(typeof runtimeConfig.tls, 'object');
+        assert.equal(runtimeConfig.tls.ca, 'ca-from-cfg');
+        assert.equal(runtimeConfig.tls.cert, 'cert-from-cfg');
+        assert.equal(runtimeConfig.tls.key, 'key-from-cfg');
         assert.equal(STAGE.PROCESS, 'PROCESS');
         assert.equal(Object.isFrozen(STAGE), true);
         assert.equal(SERVER_TYPE.HTTPS, 'https');

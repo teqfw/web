@@ -88,7 +88,14 @@ export class Factory {
                 host: values.HOST,
                 port: values.PORT,
                 type: values.TYPE,
-                tls: values.TLS,
+            });
+            if (values.TLS !== undefined) this.configure({tls: values.TLS});
+            this.configure({
+                tls: {
+                    ca: values.TLS_CA,
+                    cert: values.TLS_CERT,
+                    key: values.TLS_KEY,
+                },
             });
             if (cfg.port === undefined) cfg.port = 3000;
             if (cfg.type === undefined) cfg.type = SERVER_TYPE.HTTP;

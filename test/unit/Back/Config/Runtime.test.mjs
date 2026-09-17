@@ -138,6 +138,87 @@ describe('TeqFw_Web_Back_Config_Runtime', () => {
         assert.equal(Object.isFrozen(runtime), true);
     });
 
+    test('projects flat TLS values from the TEQFW_WEB configuration namespace', async () => {
+        const {default: RuntimeConfig, Factory} = await loadRuntimeModule();
+        const {default: Cast} = await import('../../../../src/Back/Helper/Cast.mjs');
+        const {default: ServerType} = await import('../../../../src/Back/Enum/Server/Type.mjs');
+        const {Factory: TlsFactory} = await loadRuntimeTlsModule();
+
+        const cast = new Cast();
+        const runtime = new RuntimeConfig();
+        const factory = new Factory({
+            cast,
+            SERVER_TYPE: new ServerType(),
+            reader: createReader({
+                TYPE: 'https',
+                TLS_CA: 'ca-from-env',
+                TLS_CERT: 'cert-from-env',
+                TLS_KEY: 'key-from-env',
+            }),
+            tlsFactory: new TlsFactory({cast}),
+        });
+
+        factory.freeze();
+
+        assert.equal(runtime.type, 'https');
+        assert.equal(runtime.tls.ca, 'ca-from-env');
+        assert.equal(runtime.tls.cert, 'cert-from-env');
+        assert.equal(runtime.tls.key, 'key-from-env');
+    });
+
+    test('prefers typed TLS cfg values and keeps programmatic values first', async () => {
+        const {default: RuntimeConfig, Factory} = await loadRuntimeModule();
+        const {default: Cast} = await import('../../../../src/Back/Helper/Cast.mjs');
+        const {default: ServerType} = await import('../../../../src/Back/Enum/Server/Type.mjs');
+        const {Factory: TlsFactory} = await loadRuntimeTlsModule();
+
+        const cast = new Cast();
+        const runtime = new RuntimeConfig();
+        const factory = new Factory({
+            cast,
+            SERVER_TYPE: new ServerType(),
+            reader: createReader({
+                TYPE: 'https',
+                TLS: {cert: 'cert-from-typed-cfg'},
+                TLS_CA: 'ca-from-flat-cfg',
+                TLS_CERT: 'cert-from-flat-cfg',
+                TLS_KEY: 'key-from-flat-cfg',
+            }),
+            tlsFactory: new TlsFactory({cast}),
+        });
+
+        factory.configure({tls: {key: 'key-from-code'}});
+        factory.freeze();
+
+        assert.equal(runtime.tls.ca, 'ca-from-flat-cfg');
+        assert.equal(runtime.tls.cert, 'cert-from-typed-cfg');
+        assert.equal(runtime.tls.key, 'key-from-code');
+    });
+
+    test('rejects malformed typed and flat TLS configuration', async () => {
+        const {Factory} = await loadRuntimeModule();
+        const {default: Cast} = await import('../../../../src/Back/Helper/Cast.mjs');
+        const {default: ServerType} = await import('../../../../src/Back/Enum/Server/Type.mjs');
+        const {Factory: TlsFactory} = await loadRuntimeTlsModule();
+
+        const cast = new Cast();
+        const createFactory = (/** @type {Record<string, unknown>} */ values) => new Factory({
+            cast,
+            SERVER_TYPE: new ServerType(),
+            reader: createReader(values),
+            tlsFactory: new TlsFactory({cast}),
+        });
+
+        assert.throws(
+            () => createFactory({TLS: 'certificate=not-an-object'}).freeze(),
+            /Invalid TLS configuration: expected an object/
+        );
+        assert.throws(
+            () => createFactory({TLS_CERT: null}).freeze(),
+            /Invalid TLS configuration field "cert": expected a string/
+        );
+    });
+
     test('reads transport settings from the TEQFW_WEB configuration namespace', async () => {
         const {default: RuntimeConfig, Factory} = await loadRuntimeModule();
         const {default: Cast} = await import('../../../../src/Back/Helper/Cast.mjs');
