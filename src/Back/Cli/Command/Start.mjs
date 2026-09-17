@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * @namespace TeqFw_Web_Cli_Command_Start
+ * @namespace TeqFw_Web_Back_Cli_Command_Start
  * @description CLI command to start the web server as a long-running process.
  */
 export default class Start {
@@ -33,7 +33,7 @@ export default class Start {
          *
          * @param {object} context
          * @param {AbortSignal} context.signal
-         * @returns {Promise<TeqFw_Web_Cli_Command_Start_Handle>}
+         * @returns {Promise<TeqFw_Web_Back_Cli_Command_Start_Handle>}
          */
         this.start = async function (context) {
             configFactory.freeze();

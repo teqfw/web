@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.1.0] - 2026-09-17 - Align CLI components with the backend namespace
+
+### Changed
+
+- Moved the `web:start` command to `TeqFw_Web_Back_Cli_Command_Start` under
+  `src/Back/Cli/Command/Start.mjs` for consistency with the backend runtime.
+- Added an explicit `TeqFw_Web_Back_ -> ./src/Back` namespace mapping while
+  retaining the package-level `TeqFw_Web_ -> ./src` fallback.
+- Updated public type aliases, integration coverage, unit-test layout, and
+  project documentation to use the backend CLI namespace.
+
+### Compatibility
+
+- The published CLI command id remains `web:start`.
+- Consumers that resolve the former `TeqFw_Web_Cli_Command_Start` token must
+  migrate to `TeqFw_Web_Back_Cli_Command_Start`.
+
 ## [2.0.0] - 2026-08-11 - Agent-built TeqFW v2 web runtime
 
 This is the first `@teqfw/web` release implemented by an agent under human

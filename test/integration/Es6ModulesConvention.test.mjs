@@ -19,6 +19,7 @@ import {__deps__ as staticResolverDeps} from '../../src/Back/Handler/Static/A/Re
 import {__deps__ as respondDeps} from '../../src/Back/Helper/Respond.mjs';
 import {__deps__ as pipelineEngineDeps} from '../../src/Back/PipelineEngine.mjs';
 import {__deps__ as serverDeps} from '../../src/Back/Server.mjs';
+import {__deps__ as cliStartDeps} from '../../src/Back/Cli/Command/Start.mjs';
 
 const APP_ROOT = path.resolve(import.meta.dirname, '../..');
 const DEP_DESCRIPTORS = [
@@ -36,6 +37,7 @@ const DEP_DESCRIPTORS = [
     respondDeps,
     pipelineEngineDeps,
     serverDeps,
+    cliStartDeps,
 ];
 const MANAGED_MODULE_IDS = [
     'TeqFw_Web_Back_Enum_Stage$',
@@ -58,6 +60,7 @@ const MANAGED_MODULE_IDS = [
     'TeqFw_Web_Back_Handler_Pre_Log$',
     'TeqFw_Web_Back_Handler_Static$',
     'TeqFw_Web_Back_PipelineEngine$',
+    'TeqFw_Web_Back_Cli_Command_Start$',
 ];
 
 async function createContainer() {

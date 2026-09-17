@@ -1,9 +1,9 @@
 import {describe, test, beforeEach} from 'node:test';
 import assert from 'node:assert/strict';
-import TeqFw_Web_Cli_Command_Start from '../../../../src/Cli/Command/Start.mjs';
+import TeqFw_Web_Back_Cli_Command_Start from '../../../../../src/Back/Cli/Command/Start.mjs';
 
-describe('TeqFw_Web_Cli_Command_Start (mocked)', () => {
-    /** @type {TeqFw_Web_Cli_Command_Start} */
+describe('TeqFw_Web_Back_Cli_Command_Start (mocked)', () => {
+    /** @type {TeqFw_Web_Back_Cli_Command_Start} */
     let command;
     /** @type {Array<*>} */
     let log;
@@ -35,7 +35,7 @@ describe('TeqFw_Web_Cli_Command_Start (mocked)', () => {
             },
         };
 
-        command = new TeqFw_Web_Cli_Command_Start({
+        command = new TeqFw_Web_Back_Cli_Command_Start({
             server: /** @type {*} */ (mockServer),
             configFactory: /** @type {*} */ (mockConfigFactory),
         });

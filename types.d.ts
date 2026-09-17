@@ -81,9 +81,9 @@ declare global {
   type TeqFw_Web_Back_Server = import("./src/Back/Server.mjs").default;
   type TeqFw_Web_Back_Server_Instance = import("node:http").Server | import("node:http2").Http2Server | import("node:http2").Http2SecureServer;
   type TeqFw_Web_Back_Server__Class = typeof import("./src/Back/Server.mjs").default;
-  type TeqFw_Web_Cli_Command_Start = import("./src/Cli/Command/Start.mjs").default;
-  type TeqFw_Web_Cli_Command_Start_Handle = {done: Promise<void>; stop: () => Promise<void>};
-  type TeqFw_Web_Cli_Command_Start__Class = typeof import("./src/Cli/Command/Start.mjs").default;
+  type TeqFw_Web_Back_Cli_Command_Start = import("./src/Back/Cli/Command/Start.mjs").default;
+  type TeqFw_Web_Back_Cli_Command_Start_Handle = {done: Promise<void>; stop: () => Promise<void>};
+  type TeqFw_Web_Back_Cli_Command_Start__Class = typeof import("./src/Back/Cli/Command/Start.mjs").default;
 
 }
 

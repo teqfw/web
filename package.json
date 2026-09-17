@@ -1,6 +1,6 @@
 {
   "name": "@teqfw/web",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Server-side web request coordination infrastructure for TeqFW modular monolith applications.",
   "type": "module",
   "license": "Apache-2.0",
@@ -39,6 +39,11 @@
             "prefix": "TeqFw_Web_",
             "path": "./src",
             "ext": ".mjs"
+          },
+          {
+            "prefix": "TeqFw_Web_Back_",
+            "path": "./src/Back",
+            "ext": ".mjs"
           }
         ]
       },
@@ -47,7 +52,7 @@
           {
             "id": "web:start",
             "summary": "Start the web server.",
-            "component": "TeqFw_Web_Cli_Command_Start$"
+            "component": "TeqFw_Web_Back_Cli_Command_Start$"
           }
         ],
         "command": {
