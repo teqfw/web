@@ -19,7 +19,7 @@ export default class Registry {
          * Add configurations ensuring unique prefixes.
          * Existing entries are not modified.
          *
-         * @param {TeqFw_Web_Back_Dto_Source[]} dtoList
+         * @param {Array<TeqFw_Web_Back_Dto_Source>} dtoList
          */
         this.addConfigs = function (dtoList = []) {
             const list = dtoList.map(dto => configFactory.create(dto));
@@ -37,7 +37,7 @@ export default class Registry {
          * Find configuration by matching URL prefix.
          *
          * @param {string} url
-         * @returns {TeqFw_Web_Back_Handler_Static_A_Registry__Match|null}
+         * @returns {TeqFw_Web_Back_Handler_Static_A_Registry_OptionalMatch}
          */
         this.find = function (url) {
             for (const cfg of _configs) {

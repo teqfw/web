@@ -26,7 +26,7 @@ export class Factory {
         }
     ) {
         /**
-         * @param {*} data
+         * @param {any} data
          * @returns {TeqFw_Web_Back_Dto_Source}
          */
         this.create = function (data) {

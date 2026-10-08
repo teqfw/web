@@ -16,7 +16,7 @@ export default class Resolver {
          *
          * @param {TeqFw_Web_Back_Handler_Static_A_Config__Value} config
          * @param {string} rel
-         * @returns {string|null}
+         * @returns {TeqFw_Web_Back_Handler_Static_OptionalPath}
          * @throws {Error} On traversal or absolute rel paths.
          */
         this.resolve = (config, rel) => {

@@ -15,7 +15,7 @@ const CHARSET_PATTERN = /^[^\s"=;]+$/;
 /**
  * Validate a complete HTTP Content-Type value.
  *
- * @param {*} value
+ * @param {any} value
  * @returns {TeqFw_Web_Back_Helper_Mime__ContentType}
  */
 function parseContentType(value) {
@@ -91,7 +91,7 @@ function normalizeExtension(ext) {
 /**
  * Validate and copy MIME mappings so callers cannot mutate helper state.
  *
- * @param {*} types
+ * @param {any} types
  * @returns {Readonly<Record<string, string>>}
  */
 function normalizeTypes(types) {

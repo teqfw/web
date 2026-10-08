@@ -60,7 +60,7 @@ export class Factory {
      */
     constructor({cast, SERVER_TYPE, reader, tlsFactory}) {
         /**
-         * @param {Partial<TeqFw_Web_Back_Config_Runtime__Data>} params
+         * @param {TeqFw_Web_Back_Config_Runtime_Options} params
          */
         this.configure = function (params = {}) {
             if (frozen) throw new Error('Runtime configuration is frozen.');

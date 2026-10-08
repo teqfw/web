@@ -12,8 +12,8 @@ export default class Kahn {
         /**
          * Topologically sorts handlers with `name`, `before`, `after` fields.
          *
-         * @param {TeqFw_Web_Back_Api_Handler[]} handlers - Handlers to sort.
-         * @returns {TeqFw_Web_Back_Api_Handler[]} - Sorted list.
+         * @param {Array<TeqFw_Web_Back_Api_Handler>} handlers - Handlers to sort.
+         * @returns {Array<TeqFw_Web_Back_Api_Handler>} - Sorted list.
          * @throws {Error} - If circular dependency is detected.
          */
         this.sort = function (handlers) {

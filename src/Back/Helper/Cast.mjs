@@ -13,9 +13,9 @@ export default class Cast {
          * Cast input data into an array. Ensures the result is always an array.
          * Optionally casts each item using the provided itemCast function.
          *
-         * @param {*} data - Input data to be cast to array.
-         * @param {*} itemCast - Optional function to cast each item.
-         * @returns {Array<*>}
+         * @param {any} data - Input data to be cast to array.
+         * @param {any} itemCast - Optional function to cast each item.
+         * @returns {Array<any>}
          */
         this.array = function (data, itemCast) {
             let arr = [];
@@ -33,8 +33,8 @@ export default class Cast {
 
         /**
          * Cast input data into decimal 'number' data type.
-         * @param {*} data
-         * @returns {number|undefined}
+         * @param {any} data
+         * @returns {TeqFw_Web_Back_Helper_Cast_OptionalNumber}
          */
         this.decimal = function (data) {
             const res = Number.parseFloat(data);
@@ -46,10 +46,10 @@ export default class Cast {
          * Supports case normalization (upper/lower).
          * If both `upper` and `lower` are true, `upper` takes precedence.
          *
-         * @param {*} data - The input to cast.
+         * @param {any} data - The input to cast.
          * @param {object} enu - Object whose values represent valid enum values.
          * @param {TeqFw_Web_Back_Helper_Cast_Enum_Options} [options]
-         * @returns {string|undefined}
+         * @returns {TeqFw_Web_Back_Helper_Cast_OptionalString}
          */
         this.enum = function (data, enu, options = {}) {
             const {lower, upper} = options;
@@ -66,8 +66,8 @@ export default class Cast {
 
         /**
          * Cast input data into integer 'number' data type.
-         * @param {*} data - Input data to be cast to integer.
-         * @returns {number|undefined}
+         * @param {any} data - Input data to be cast to integer.
+         * @returns {TeqFw_Web_Back_Helper_Cast_OptionalNumber}
          */
         this.int = function (data) {
             const norm = (typeof data === 'string') ? data.trim() : data;
@@ -77,8 +77,8 @@ export default class Cast {
 
         /**
          * Cast input data into 'string' data type.
-         * @param {*} data - Input data to be cast to string.
-         * @returns {string|undefined}
+         * @param {any} data - Input data to be cast to string.
+         * @returns {TeqFw_Web_Back_Helper_Cast_OptionalString}
          */
         this.string = function (data) {
             if (typeof data === 'string') {
@@ -95,15 +95,15 @@ export default class Cast {
          * Cast an object to a map with string keys and array-of-string values.
          * Throws error on invalid structure or values.
          *
-         * @param {*} data - Raw input to cast.
-         * @returns {Record<string, string[]>}
+         * @param {any} data - Raw input to cast.
+         * @returns {TeqFw_Web_Back_Helper_Cast_StringArrayMap}
          */
         this.stringArrayMap = function (data) {
             if (data === undefined) return {};
             if (typeof data !== 'object' || data === null || Array.isArray(data)) {
                 throw new Error('Invalid value for allow');
             }
-            /** @type {Record<string, string[]>} */
+            /** @type {TeqFw_Web_Back_Helper_Cast_StringArrayMap} */
             const res = {};
             for (const [key, arr] of Object.entries(data)) {
                 if (!Array.isArray(arr)) throw new Error(`Invalid allow list for ${key}`);

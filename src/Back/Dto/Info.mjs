@@ -40,7 +40,7 @@ export class Factory {
     constructor({cast, STAGE}) {
 
         /**
-         * @param {*} data
+         * @param {any} data
          * @returns {TeqFw_Web_Back_Dto_Info}
          */
         this.create = function (data) {

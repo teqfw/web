@@ -16,8 +16,8 @@ export default class Fallback {
          * Apply default index fallback for directories.
          *
          * @param {string} fsPath
-         * @param {string[]} defaults
-         * @returns {Promise<string|null>} Path to existing file or null.
+         * @param {Array<string>} defaults
+         * @returns {Promise<TeqFw_Web_Back_Handler_Static_OptionalPath>} Path to existing file or null.
          */
         this.apply = async (fsPath, defaults) => {
             let stat;

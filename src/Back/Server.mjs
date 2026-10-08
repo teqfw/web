@@ -25,7 +25,7 @@ export default class Server {
 
         // MAIN
         /**
-         * @returns {TeqFw_Web_Back_Server_Instance|undefined}
+         * @returns {TeqFw_Web_Back_Server_OptionalInstance}
          */
         this.getInstance = () => _instance;
 

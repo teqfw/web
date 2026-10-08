@@ -20,7 +20,7 @@ const FIELD_NAMES = Object.freeze(new Set(['ca', 'cert', 'key']));
  * Validate the raw TLS configuration shape before reading its fields.
  *
  * @param {unknown} params
- * @returns {Partial<TeqFw_Web_Back_Config_Runtime_Tls__Data>}
+ * @returns {TeqFw_Web_Back_Config_Runtime_Tls_Options}
  */
 function assertParams(params) {
     if ((params === null) || (typeof params !== 'object') || Array.isArray(params)) {
@@ -37,7 +37,7 @@ function assertParams(params) {
         }
     }
 
-    return /** @type {Partial<TeqFw_Web_Back_Config_Runtime_Tls__Data>} */ (params);
+    return /** @type {TeqFw_Web_Back_Config_Runtime_Tls_Options} */ (params);
 }
 
 /** @type {TeqFw_Web_Back_Config_Runtime_Tls__Data} */
