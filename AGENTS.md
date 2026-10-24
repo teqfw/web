@@ -2,7 +2,7 @@
 
 - Path: `AGENTS.md`
 - Template Version: `20260720`
-- Changed: `20260917`
+- Changed: `YYYYMMDD`
 
 ## Purpose
 
@@ -34,6 +34,8 @@ An ADSM project consists of two interconnected spaces:
 The cognitive context is the long-term textual memory of the project.
 
 The cognitive context is the primary communication medium between Humans and Agents working on the project.
+
+The cognitive context is the authoritative knowledge source used by Agents when modifying the project.
 
 The software product is the implementation that must be kept consistent with the cognitive context.
 
@@ -111,7 +113,7 @@ Violation of this rule constitutes an execution error.
 
 ## Secret Handling
 
-The Agent must never read, load, print, search for, or expose secret-bearing project files, including `.env` and `.env.*` files, credentials, private keys, tokens, or secret stores. This rule applies even when a file is Git-ignored and includes broad search or command output that could reveal their contents.
+The Agent must never read, load, print, search for, or expose secret-bearing project files, including `.env` and `.env.*` files, credentials, private keys, tokens, or secret stores. This rule applies even when a file is Git-ignored and includes broad search or command output that could reveal its contents.
 
 The Agent may use a non-secret example template such as `.env.example` only to learn the configuration shape. It must not infer or request the value of any secret.
 
