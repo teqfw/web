@@ -85,6 +85,7 @@ async function main() {
         logger,
         pipelineEngine,
         SERVER_TYPE,
+        lifecycle: await container.get('TeqFw_Web_Back_ServerLifecycle__Controller$'),
     });
 
     await server.start();

@@ -1,54 +1,16 @@
-import {describe, test} from 'node:test';
+import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import path from 'node:path';
-import {pathToFileURL} from 'node:url';
+import Wrapper, {Factory} from '../../../../../src/Back/Config/Runtime/Tls.mjs';
 
-async function loadTlsModule() {
-    const href = pathToFileURL(path.resolve(import.meta.dirname, '../../../../../src/Back/Config/Runtime/Tls.mjs')).href;
-    return import(`${href}?case=${Math.random()}`);
-}
-
-describe('TeqFw_Web_Back_Config_Runtime_Tls', () => {
-    test('keeps first write wins and freezes configuration', async () => {
-        const {default: RuntimeTls, Factory} = await loadTlsModule();
-        const {default: Cast} = await import('../../../../../src/Back/Helper/Cast.mjs');
-
-        const tls = new RuntimeTls();
-        const factory = new Factory({cast: new Cast()});
-        assert.throws(() => tls.key, /not initialized/);
-        Object.freeze(tls);
-        assert.equal(Object.isFrozen(tls), true);
-
-        factory.configure({key: 'key-1', cert: 'cert-1'});
-        factory.configure({key: 'key-2', cert: 'cert-2', ca: 'ca-1'});
-        factory.freeze();
-
-        assert.equal(tls.key, 'key-1');
-        assert.equal(tls.cert, 'cert-1');
-        assert.equal(tls.ca, 'ca-1');
-        assert.throws(() => {
-            tls.key = 'next';
-        }, /immutable/);
-        assert.throws(() => factory.configure({key: 'next'}), /frozen/);
-        assert.equal(factory.freeze(), tls);
-    });
-
-    test('rejects incompatible configuration shapes and fields', async () => {
-        const {Factory} = await loadTlsModule();
-        const {default: Cast} = await import('../../../../../src/Back/Helper/Cast.mjs');
-        const factory = new Factory({cast: new Cast()});
-
-        assert.throws(
-            () => factory.configure('not-an-object'),
-            /Invalid TLS configuration: expected an object/
-        );
-        assert.throws(
-            () => factory.configure({cert: null}),
-            /Invalid TLS configuration field "cert": expected a string/
-        );
-        assert.throws(
-            () => factory.configure({passphrase: 'secret'}),
-            /Invalid TLS configuration field "passphrase": expected ca, cert, or key/
-        );
-    });
+test('TLS wrapper and factory delegate to the shared transaction', () => {
+    /** @type {unknown[]} */
+    const calls = [];
+    const tls = {key: 'key'};
+    const state = /** @type {*} */ ({tls, configure: (/** @type {*} */ value) => calls.push(value), reset: () => calls.push('reset'), freeze: () => calls.push('freeze')});
+    assert.equal(/** @type {*} */ (new Wrapper({state})), tls);
+    const factory = new Factory({state});
+    factory.configure({key: 'key'});
+    factory.reset();
+    assert.equal(factory.freeze(), tls);
+    assert.deepEqual(calls, [{tls: {key: 'key'}}, 'reset', 'freeze']);
 });

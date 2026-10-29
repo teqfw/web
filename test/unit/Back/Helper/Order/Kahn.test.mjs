@@ -74,4 +74,13 @@ describe('TeqFw_Web_Back_Helper_Order_Kahn', () => {
             assert.deepStrictEqual(names.sort(), ['a', 'b']); // Order can vary, but no crash
         });
     });
+    test('selects earliest available registration and deduplicates edges', () => {
+        const sorter = new TeqFw_Web_Back_Helper_Order_Kahn();
+        const handler = (/** @type {string} */ name, /** @type {string[]} */ after = [], /** @type {string[]} */ before = []) => /** @type {*} */ ({getRegistrationInfo: () => ({name, after, before})});
+        const a = handler('A', ['C']);
+        const b = handler('B');
+        const c = handler('C', [], ['A']);
+        assert.deepEqual(sorter.sort([a, b, c]).map(h => h.getRegistrationInfo().name), ['B', 'C', 'A']);
+    });
+
 });

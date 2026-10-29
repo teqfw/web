@@ -1,132 +1,117 @@
-import {describe, test, beforeEach} from 'node:test';
+import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import TeqFw_Web_Back_Server from '../../../src/Back/Server.mjs';
-import TeqFw_Web_Back_Enum_Server_Type from '../../../src/Back/Enum/Server/Type.mjs';
+import * as http from 'node:http';
+import * as http2 from 'node:http2';
+import Server from '../../../src/Back/Server.mjs';
 
-/**
- * @param {Array<*>} log
- * @returns {*}
- */
-function createLoggerProvider(log) {
-    return {
-        forSource: () => ({
-            info: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['info', ...args]); },
-            error: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['error', ...args]); },
-            warn: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['warn', ...args]); },
-        }),
-    };
+function make() {
+    const controller = new AbortController();
+    const lifecycle = {shutdownSignal: controller.signal};
+    const server = new Server({http, http2, config: /** @type {*} */ ({host: '127.0.0.1', port: 0, type: 'http', shutdownTimeout: 30}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {}, error() {}, warn() {}})}),
+        pipelineEngine: /** @type {*} */ ({lockHandlers() {}, handleRequest() {}}),
+        SERVER_TYPE: /** @type {*} */ ({HTTP: 'http', HTTP2: 'http2', HTTPS: 'https'}), lifecycle: {beginShutdown: () => controller.abort()}});
+    return {server, lifecycle};
 }
 
-describe('TeqFw_Web_Back_Server (mocked)', () => {
+test('stopping before start announces shutdown and prevents start', async () => {
+    const {server, lifecycle} = make();
+    await server.stop();
+    assert.equal(lifecycle.shutdownSignal.aborted, true);
+    await server.stop();
+    await assert.rejects(server.start(), /once/);
+});
 
-    /** @type {Array<*>} */
-    const log = [];
-    /** @type {*} */
-    let logger;
-    /** @type {*} */
-    let pipelineEngine;
-    /** @type {*} */
-    let server;
+test('awaits readiness, rejects a second start and shares stop', async () => {
+    const {server, lifecycle} = make();
+    await server.start();
+    assert.equal(server.getInstance()?.listening, true);
+    await assert.rejects(server.start(), /once/);
+    assert.equal(lifecycle.shutdownSignal.aborted, false);
+    await Promise.all([server.stop(), server.stop()]);
+    assert.equal(lifecycle.shutdownSignal.aborted, true);
+    await assert.rejects(server.start(), /once/);
+});
 
-    // Mocks for HTTP/1 and HTTP/2 servers
-    /** @type {*} */
-    const mockHttp = {
-        createServer: () => ({
-            listen: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['http.listen', ...args]); },
-            on: () => { log.push('http.on'); },
-            close: (/** @type {*} */ cb) => { log.push('http.close'); cb && cb(); },
-        }),
-    };
+test('stop racing startup cancels readiness without leaving a listener', async () => {
+    const {server, lifecycle} = make();
+    const starting = server.start();
+    const stopping = server.stop();
+    await assert.rejects(starting, /cancelled/);
+    await stopping;
+    assert.equal(lifecycle.shutdownSignal.aborted, true);
+    assert.equal(server.getInstance(), undefined);
+});
 
-    /** @type {*} */
-    const mockHttp2 = {
-        createServer: () => ({
-            listen: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['http2.listen', ...args]); },
-            on: () => { log.push('http2.on'); },
-            close: (/** @type {*} */ cb) => { log.push('http2.close'); cb && cb(); },
-        }),
-        createSecureServer: (/** @type {*} */ tlsOpts) => ({
-            listen: /** @type {(...args: unknown[]) => void} */ (...args) => { log.push(['http2s.listen', ...args]); },
-            on: () => { log.push('http2s.on'); },
-            close: (/** @type {*} */ cb) => { log.push('http2s.close'); cb && cb(); },
-        })
-    };
-
-    beforeEach(() => {
-        log.length = 0;
-        logger = createLoggerProvider(log);
-        pipelineEngine = {
-            lockHandlers: () => log.push('pipeline.lockHandlers'),
-            handleRequest: () => {},
-        };
-        server = new TeqFw_Web_Back_Server({
-            http: mockHttp,
-            http2: mockHttp2,
-            config: /** @type {TeqFw_Web_Back_Config_Runtime} */ (Object.freeze({port: 3000, type: 'http'})),
-            logger,
-            pipelineEngine,
-            SERVER_TYPE: new TeqFw_Web_Back_Enum_Server_Type(),
-        });
-    });
-
-    test('should start in HTTP/1 mode by default', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await server.start(); // default mode is HTTP/1
-        assert.deepStrictEqual(log, [
-            'pipeline.lockHandlers',
-            ['info', 'Starting server in HTTP/1 mode on port 3000...'],
-            'http.on',
-            ['http.listen', 3000],
-        ]);
-    });
-
-    test('should start in HTTP/2 mode on the specified host and port', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await server.start({host: '127.0.0.1', type: 'http2', port: 8080});
-        assert.deepStrictEqual(log, [
-            'pipeline.lockHandlers',
-            ['info', 'Starting server in HTTP/2 mode on host 127.0.0.1 and port 8080...'],
-            'http2.on',
-            ['http2.listen', 8080, '127.0.0.1'],
-        ]);
-    });
-
-    test('should start in HTTPS/2 mode with TLS config', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await server.start({host: '::1', type: 'https', port: 8443, tls: {key: 'a', cert: 'b'}});
-        assert.deepStrictEqual(log, [
-            'pipeline.lockHandlers',
-            ['info', 'Starting server in HTTPS (HTTP/2 + TLS) mode on host ::1 and port 8443...'],
-            'http2s.on',
-            ['http2s.listen', 8443, '::1'],
-        ]);
-    });
-
-    test('should throw error if TLS config is missing in HTTPS mode', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await assert.rejects(
-            () => server.start({type: 'https', port: 1234}),
-            /TLS key and certificate are required/
-        );
-        assert.deepStrictEqual(log.at(-1), ['error', 'HTTPS server requires TLS key and certificate']);
-    });
-
-    test('should throw error on unsupported server type', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await assert.rejects(
-            () => server.start({type: 'ftp', port: 21}),
-            /not supported/
-        );
-        assert.deepStrictEqual(log.at(-1), ['error', 'Unsupported server type: ftp']);
-    });
-
-    test('should stop the server', async () => {
-        /** @type {TeqFw_Web_Back_Server} */
-        await server.start();
+test('bind failure rejects start and activates the lifecycle signal', async () => {
+    const occupied = http.createServer();
+    await new Promise(resolve => occupied.listen(0, '127.0.0.1', () => resolve(undefined)));
+    const address = /** @type {import('node:net').AddressInfo} */ (occupied.address());
+    const {server, lifecycle} = make();
+    try {
+        await assert.rejects(server.start(/** @type {*} */ ({port: address.port})), /EADDRINUSE/);
+        assert.equal(lifecycle.shutdownSignal.aborted, true);
         await server.stop();
-        assert.deepStrictEqual(log.slice(-2), [
-            'http.close',
-            ['info', 'Server stopped'],
-        ]);
-    });
+        await assert.rejects(server.start(), /once/);
+    } finally {
+        await new Promise(resolve => occupied.close(resolve));
+    }
+});
+
+test('secure transport receives TLS values from a configuration facade', async () => {
+    const controller = new AbortController();
+    let options;
+    const facade = new Proxy({}, {get: (_target, key) => ({key: 'test-key', cert: 'test-cert', ca: 'test-ca'})[/** @type {'key'|'cert'|'ca'} */ (key)]});
+    const fakeHttp2 = /** @type {*} */ ({createSecureServer: (/** @type {*} */ params) => { options = params; throw new Error('captured'); }});
+    const server = new Server({http, http2: fakeHttp2, config: /** @type {*} */ ({host: '127.0.0.1', port: 0, type: 'https', tls: facade}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {}, error() {}, warn() {}})}),
+        pipelineEngine: /** @type {*} */ ({lockHandlers() {}, handleRequest() {}}),
+        SERVER_TYPE: /** @type {*} */ ({HTTP: 'http', HTTP2: 'http2', HTTPS: 'https'}), lifecycle: {beginShutdown: () => controller.abort()}});
+    await assert.rejects(server.start(), /captured/);
+    assert.deepEqual(options, {key: 'test-key', cert: 'test-cert', ca: 'test-ca', allowHTTP1: true});
+});
+
+test('close failure is retained across concurrent and later stop calls', async () => {
+    const {EventEmitter} = await import('node:events');
+    const native = /** @type {*} */ (new EventEmitter());
+    native.listen = () => queueMicrotask(() => native.emit('listening'));
+    let attempts = 0;
+    native.close = (/** @type {(err: Error) => void} */ callback) => { attempts++; queueMicrotask(() => callback(new Error('close failed'))); };
+    const transport = /** @type {*} */ ({createServer: () => native});
+    const controller = new AbortController();
+    const server = new Server({http: transport, http2, config: /** @type {*} */ ({port: 0, type: 'http', shutdownTimeout: 10}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {}, error() {}, warn() {}})}),
+        pipelineEngine: /** @type {*} */ ({lockHandlers() {}, handleRequest() {}}),
+        SERVER_TYPE: /** @type {*} */ ({HTTP: 'http', HTTP2: 'http2', HTTPS: 'https'}), lifecycle: {beginShutdown: () => controller.abort()}});
+    await server.start();
+    const first = server.stop();
+    const second = server.stop();
+    assert.equal(first, second);
+    await assert.rejects(first, /close failed/);
+    await assert.rejects(server.stop(), /close failed/);
+    assert.equal(attempts, 1);
+});
+
+test('request admission stops before shutdown listeners run', async () => {
+    const {EventEmitter} = await import('node:events');
+    const native = /** @type {*} */ (new EventEmitter());
+    native.listen = () => queueMicrotask(() => native.emit('listening'));
+    /** @type {(() => void)|undefined} */
+    let finishClose;
+    native.close = (/** @type {() => void} */ cb) => { finishClose = cb; };
+    let handled = 0;
+    let status = 0;
+    const response = {writeHead: (/** @type {number} */ value) => { status = value; }, end() {}};
+    const server = new Server({http: /** @type {*} */ ({createServer: () => native}), http2,
+        config: /** @type {*} */ ({port: 0, type: 'http', shutdownTimeout: 500}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {}, error() {}, warn() {}})}),
+        pipelineEngine: /** @type {*} */ ({lockHandlers() {}, handleRequest() { handled++; }}),
+        SERVER_TYPE: /** @type {*} */ ({HTTP: 'http', HTTP2: 'http2', HTTPS: 'https'}),
+        lifecycle: {beginShutdown: () => native.emit('request', {}, response)}});
+    await server.start();
+    const stopping = server.stop();
+    assert.equal(status, 503);
+    assert.equal(handled, 0);
+    finishClose?.();
+    await stopping;
 });

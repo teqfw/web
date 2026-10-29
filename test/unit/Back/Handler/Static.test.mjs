@@ -1,13 +1,10 @@
 import {beforeEach, describe, test} from 'node:test';
 import assert from 'node:assert/strict';
 import TeqFw_Web_Back_Handler_Static from '../../../../src/Back/Handler/Static.mjs';
-import {Factory as TeqFw_Web_Back_Dto_Info_Factory} from '../../../../src/Back/Dto/Info.mjs';
-import TeqFw_Web_Back_Helper_Cast from '../../../../src/Back/Helper/Cast.mjs';
-import TeqFw_Web_Back_Enum_Stage from '../../../../src/Back/Enum/Stage.mjs';
 
 describe('TeqFw_Web_Back_Handler_Static', () => {
-    const STAGE = new TeqFw_Web_Back_Enum_Stage();
-    const dtoInfoFactory = new TeqFw_Web_Back_Dto_Info_Factory({cast: new TeqFw_Web_Back_Helper_Cast(), STAGE});
+    const STAGE = /** @type {*} */ ({PROCESS: 'PROCESS'});
+    const dtoInfoFactory = /** @type {*} */ ({create: (/** @type {*} */ info) => info});
     /** @type {*} */
     let registry;
     /** @type {*} */
@@ -47,7 +44,7 @@ describe('TeqFw_Web_Back_Handler_Static', () => {
         registry.find = () => /** @type {*} */ ({config: {}, rel: 'file.txt'});
         fileService.serve = async () => true;
         const context = /** @type {*} */ ({
-            request: {url: '/file.txt'},
+            request: {method: 'GET', url: '/file.txt'},
             response: {},
             completed: false,
         });
@@ -59,7 +56,7 @@ describe('TeqFw_Web_Back_Handler_Static', () => {
 
     test('does nothing when no source matches request', async () => {
         const context = /** @type {*} */ ({
-            request: {url: '/missing'},
+            request: {method: 'GET', url: '/missing'},
             response: {},
             completed: false,
         });
@@ -68,4 +65,22 @@ describe('TeqFw_Web_Back_Handler_Static', () => {
 
         assert.strictEqual(context.completed, false);
     });
+    test('other methods pass through before malformed URL processing', async () => {
+        registry.find = () => { throw new Error('must not look up'); };
+        const context = /** @type {*} */ ({request: {method: 'POST', url: '/%zz'}, response: {}, completed: false});
+        await handler.handle(context);
+        assert.equal(context.completed, false);
+    });
+
+    test('malformed encoding and decoded NUL produce 400 with no HEAD body', async () => {
+        for (const url of ['/%zz', '/%ff', '/%00']) {
+            const res = /** @type {*} */ ({writeHead(/** @type {number} */ status) { this.status = status; }, end(/** @type {string|undefined} */ body) { this.body = body; }});
+            const context = /** @type {*} */ ({request: {method: 'HEAD', url}, response: res, completed: false});
+            await handler.handle(context);
+            assert.equal(res.status, 400);
+            assert.equal(res.body, undefined);
+            assert.equal(context.completed, true);
+        }
+    });
+
 });

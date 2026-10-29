@@ -48,10 +48,7 @@ describe('TeqFw_Web_Back_Handler_Static_A_Resolver', () => {
             defaults: []
         };
 
-        assert.throws(
-            () => resolver.resolve(config, '../x'),
-            /Static access denied/
-        );
+        assert.equal(resolver.resolve(config, '../x'), null);
     });
 
     test('throws on absolute rel paths', async () => {
@@ -66,9 +63,6 @@ describe('TeqFw_Web_Back_Handler_Static_A_Resolver', () => {
             defaults: []
         };
 
-        assert.throws(
-            () => resolver.resolve(config, '/etc/passwd'),
-            /Static access denied/
-        );
+        assert.equal(resolver.resolve(config, '/etc/passwd'), null);
     });
 });

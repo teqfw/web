@@ -26,9 +26,13 @@ The request context exposes `request`, `response`, mutable request-scoped `data`
 monotonic `completed` flag. Do not replace the context object.
 
 Only `PROCESS` handlers may set `context.completed = true`. Completion stops later normal
-PROCESS handlers, while FINALIZE handlers still run. INIT and FINALIZE handlers must never
+PROCESS handlers and fallback responses, while FINALIZE handlers still run after the handler returns. Completion does not close a response or await a stream. INIT and FINALIZE handlers must never
 complete a request.
 
 If no PROCESS handler completes a writable response, the pipeline sends `404 Not Found`.
 If a PROCESS handler throws while the response is writable, it sends `500 Internal Server
 Error` and stops further PROCESS handlers. INIT and FINALIZE exceptions are isolated.
+
+Duplicate handler names, cross-stage ordering references, and ordering cycles are errors.
+Missing ordering targets are ignored. Metadata is snapshotted at registration and the
+earliest registered available handler is selected at each ordering step.

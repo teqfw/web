@@ -37,10 +37,14 @@ export default class FileService {
                 fsPath = await fallback.apply(fsPath, config.defaults);
                 if (!fsPath) return false;
 
+                const root = await fs.promises.realpath(config.root);
+                const actual = await fs.promises.realpath(fsPath);
+                const relative = path.relative(root, actual);
+                if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) return false;
+                fsPath = actual;
                 const stat = await fs.promises.stat(fsPath);
                 if (!stat.isFile()) return false;
 
-                const stream = fs.createReadStream(fsPath);
                 const ext = path.extname(fsPath).toLowerCase();
                 const headers = {
                     [H2.HTTP2_HEADER_CONTENT_LENGTH]: stat.size,
@@ -50,12 +54,24 @@ export default class FileService {
                 /** @type {TeqFw_Web_Back_Response_Target & {writeHead(status: number, headers?: Record<string, string|number>): void}} */
                 const target = /** @type {*} */ (res);
                 target.writeHead(H2.HTTP_STATUS_OK, headers);
+                if (req.method === 'HEAD') { res.end(); return true; }
+                const stream = fs.createReadStream(fsPath);
+                /** @returns {void} */
+                const cleanup = () => { res.off('close', disconnect); };
+                /** @returns {void} */
+                const disconnect = () => { stream.destroy(); cleanup(); };
+                res.once('close', disconnect);
+                stream.once('close', cleanup);
+                stream.once('error', error => {
+                    log.error('Static stream failed', {err: error, requestUrl: req.url});
+                    /** @type {*} */ (res).destroy(error);
+                });
                 stream.pipe(res);
                 return true;
             } catch (e) {
                 /** @type {{code?: string}} */
                 const err = /** @type {*} */ (e);
-                if (err.code === 'ENOENT') {
+                if (err.code === 'ENOENT' || err.code === 'ENOTDIR') {
                     log.info(`File not found: ${fsPath}`);
                 } else if (err.code === 'EACCES' || err.code === 'EPERM') {
                     log.warn(`Access denied: ${fsPath}`);
@@ -66,7 +82,10 @@ export default class FileService {
                         requestUrl: req?.url,
                     });
                 }
-                return false;
+                if (err.code === 'ENOENT' || err.code === 'ENOTDIR' || err.code === 'EACCES' || err.code === 'EPERM') return false;
+                if (!res.headersSent && !res.writableEnded) { /** @type {*} */ (res).writeHead(500); res.end(req.method === 'HEAD' ? undefined : 'Internal Server Error'); }
+                else /** @type {*} */ (res).destroy();
+                return true;
             }
         };
     }

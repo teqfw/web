@@ -20,7 +20,7 @@ authoritative.
    dependencies through `__deps__` and do not construct DI-managed services directly.
 3. Register every handler before `lockHandlers()` or `server.start()`. The lifecycle is
    fixed as `INIT -> PROCESS -> FINALIZE` for the runtime instance.
-4. In a `PROCESS` handler, end the response and set `context.completed = true`. Do not use
+4. In a `PROCESS` handler, set `context.completed = true` when taking responsibility for the response. Do not use
    removed `context.complete()` or `context.isCompleted()` helpers.
 5. Configure runtime transport during bootstrap, including `@teqfw/cfg` loading when its
    `TEQFW_WEB` projection is used; treat frozen runtime configuration as read-only.

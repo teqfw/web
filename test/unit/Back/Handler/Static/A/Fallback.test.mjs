@@ -15,7 +15,7 @@ describe('TeqFw_Web_Back_Handler_Static_A_Fallback', () => {
                 stat: async (/** @type {string} */ p) => {
                     // normalize path: backslashes → slashes, remove duplicate and trailing slash
                     const key = p.replace(/\\/g, '/').replace(/\/+/g, '/').replace(/\/$/, '');
-                    if (!storage.has(key)) throw new Error('ENOENT');
+                    if (!storage.has(key)) throw Object.assign(new Error('ENOENT'), {code: 'ENOENT'});
                     return storage.get(key);
                 }
             },

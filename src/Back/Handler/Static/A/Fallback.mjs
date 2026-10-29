@@ -21,7 +21,10 @@ export default class Fallback {
          */
         this.apply = async (fsPath, defaults) => {
             let stat;
-            try { stat = await fs.promises.stat(fsPath); } catch { return null; }
+            try { stat = await fs.promises.stat(fsPath); } catch (error) {
+                if (['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM'].includes(/** @type {NodeJS.ErrnoException} */ (error).code ?? '')) return null;
+                throw error;
+            }
 
             if (stat.isDirectory()) {
                 for (const file of defaults) {
@@ -29,7 +32,9 @@ export default class Fallback {
                     try {
                         const s = await fs.promises.stat(candidate);
                         if (s.isFile()) return candidate;
-                    } catch { /* ignore */ }
+                    } catch (error) {
+                        if (!['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM'].includes(/** @type {NodeJS.ErrnoException} */ (error).code ?? '')) throw error;
+                    }
                 }
                 return null;
             }

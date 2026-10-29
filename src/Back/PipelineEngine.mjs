@@ -57,7 +57,7 @@ export default class PipelineEngine {
                     if (value === false && completed) {
                         throw new Error('Request completion flag cannot be reset');
                     }
-                    if (value === true && !completed) {
+                    if (value === true) {
                         if (context[KEY_STAGE] !== STAGE.PROCESS) {
                             throw new Error('Only PROCESS handlers may complete request processing');
                         }
@@ -84,12 +84,17 @@ export default class PipelineEngine {
          * @returns {void}
          */
         this.orderHandlers = function () {
+            if (isLocked) return;
             const init = [];
             const process = [];
             const finalize = [];
 
             for (const handler of handlers.values()) {
                 const info = handler.getRegistrationInfo();
+                for (const target of [...(info.before ?? []), ...(info.after ?? [])]) {
+                    const other = handlers.get(target);
+                    if (other && other.getRegistrationInfo().stage !== info.stage) throw new Error('Ordering target belongs to another stage');
+                }
                 if (info.stage === STAGE.INIT) {
                     init.push(handler);
                 } else if (info.stage === STAGE.PROCESS) {
@@ -124,7 +129,9 @@ export default class PipelineEngine {
             if (!info?.name) {
                 throw new Error('Handler registration requires a non-empty name');
             }
-            handlers.set(info.name, handler);
+            if (handlers.has(info.name)) throw new Error(`Duplicate handler name: ${info.name}`);
+            const snapshot = Object.freeze({...info, before: Object.freeze([...(info.before ?? [])]), after: Object.freeze([...(info.after ?? [])])});
+            handlers.set(info.name, /** @type {*} */ ({getRegistrationInfo: () => snapshot, handle: (/** @type {*} */ ctx) => handler.handle(ctx)}));
         };
 
         /**
@@ -158,12 +165,13 @@ export default class PipelineEngine {
                     }
                 }
 
+                let terminated = false;
                 for (const handler of processHandlers) {
                     if (context.completed) {
                         break;
                     }
                     if (!respond.isWritable(res)) {
-                        context.completed = true;
+                        terminated = true;
                         break;
                     }
                     try {
@@ -177,12 +185,12 @@ export default class PipelineEngine {
                         if (respond.isWritable(res)) {
                             respond.code500_InternalServerError({res, body: 'Internal Server Error'});
                         }
-                        context.completed = true;
+                        terminated = true;
                         break;
                     }
                 }
 
-                if (!context.completed && respond.isWritable(res)) {
+                if (!terminated && !context.completed && respond.isWritable(res)) {
                     log.error(`404 Not Found: ${req.url}`);
                     respond.code404_NotFound({res});
                 }

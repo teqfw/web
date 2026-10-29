@@ -29,7 +29,7 @@ await staticHandler.init({sources: [source]});
 pipeline.addHandler(staticHandler);
 ```
 
-When a static file is served successfully, the handler completes the request.
+The handler serves GET and HEAD; other methods pass through. HEAD sends headers without a body. Malformed URL encoding produces 400. Missing, denied, or non-file targets pass through. Symlinks are served only when their canonical targets remain under the canonical root. The source directory must be trusted against concurrent replacement. When the handler accepts delivery, it marks processing complete without waiting for the transfer to finish.
 
 ## MIME Types
 

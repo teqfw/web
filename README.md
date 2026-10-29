@@ -26,7 +26,7 @@ Each request passes through three stages:
 INIT -> PROCESS -> FINALIZE
 ```
 
-Handlers are registered before the runtime starts. The Pipeline Engine derives their effective order from registration metadata and coordinates execution. A `PROCESS` handler completes a request by ending the response and setting `context.completed = true`; `FINALIZE` still runs afterward.
+Handlers are registered before the runtime starts. The Pipeline Engine derives their effective order from registration metadata and coordinates execution. A `PROCESS` handler sets `context.completed = true` when it takes responsibility for the response. This stops later PROCESS handlers and fallback responses; it does not close the response. `FINALIZE` runs when handlers return, even if a stream remains open.
 
 ## Quick Start
 
@@ -47,6 +47,8 @@ await server.start({
   type: "http",
 });
 ```
+
+The server listens on `127.0.0.1:3000` by default. On shutdown it stops admitting requests, aborts `TeqFw_Web_Back_ServerLifecycle$.shutdownSignal`, and allows active connections to finish for `shutdownTimeout` milliseconds (default 5000) before forcing closure. Stream owners should observe that signal, close their responses, and remove listeners on client disconnect.
 
 The package requires Node.js `>=20` and a configured TeqFW DI container. See the Agent Skill for the complete composition and configuration contract.
 

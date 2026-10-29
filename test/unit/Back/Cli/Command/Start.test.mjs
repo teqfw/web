@@ -71,12 +71,13 @@ describe('TeqFw_Web_Back_Cli_Command_Start (mocked)', () => {
         assert.deepStrictEqual(log, ['config.freeze', 'server.start', 'server.stop']);
     });
 
-    test('start: done resolves on abort signal', async () => {
+    test('start: done resolves when the host stops the server', async () => {
         const controller = new AbortController();
         const context = {signal: controller.signal};
 
         const runtime = await command.start(context);
         controller.abort();
+        await runtime.stop();
         await runtime.done;
 
         assert.deepStrictEqual(serverState.started, true);
@@ -89,8 +90,8 @@ describe('TeqFw_Web_Back_Cli_Command_Start (mocked)', () => {
         const runtime = await command.start(context);
 
         controller.abort();
-        await runtime.done;
         await runtime.stop();
+        await runtime.done;
 
         assert.deepStrictEqual(serverState.stopped, true);
     });

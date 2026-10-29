@@ -5,7 +5,9 @@ declare global {
   type TeqFw_Web_Back_Cli_Command_Start_Handle = {done: Promise<void>; stop: () => Promise<void>};
   type TeqFw_Web_Back_Cli_Command_Start__Class = typeof import("./src/Back/Cli/Command/Start.mjs").default;
   type TeqFw_Web_Back_Config_Runtime = import("./src/Back/Config/Runtime.mjs").Data;
-  type TeqFw_Web_Back_Config_Runtime_Options = {host?: string; port?: number; type?: string; tls?: TeqFw_Web_Back_Config_Runtime_Tls};
+  type TeqFw_Web_Back_Config_Runtime_Options = {host?: string; port?: number; type?: string; shutdownTimeout?: number; tls?: TeqFw_Web_Back_Config_Runtime_Tls};
+  type TeqFw_Web_Back_Config_Runtime_State = import("./src/Back/Config/Runtime/State.mjs").default;
+  type TeqFw_Web_Back_Config_Runtime_State__Class = typeof import("./src/Back/Config/Runtime/State.mjs").default;
   type TeqFw_Web_Back_Config_Runtime_Tls = import("./src/Back/Config/Runtime/Tls.mjs").Data;
   type TeqFw_Web_Back_Config_Runtime_Tls_Options = {ca?: string; cert?: string; key?: string};
   type TeqFw_Web_Back_Config_Runtime_Tls__Class = typeof import("./src/Back/Config/Runtime/Tls.mjs").default;
@@ -88,6 +90,12 @@ declare global {
     writableEnded: boolean;
   };
   type TeqFw_Web_Back_Server = import("./src/Back/Server.mjs").default;
+  type TeqFw_Web_Back_ServerLifecycle = import("./src/Back/ServerLifecycle.mjs").default;
+  type TeqFw_Web_Back_ServerLifecycle_State = import("./src/Back/ServerLifecycle/State.mjs").default;
+  type TeqFw_Web_Back_ServerLifecycle_State__Class = typeof import("./src/Back/ServerLifecycle/State.mjs").default;
+  type TeqFw_Web_Back_ServerLifecycle__Class = typeof import("./src/Back/ServerLifecycle.mjs").default;
+  type TeqFw_Web_Back_ServerLifecycle__Controller = import("./src/Back/ServerLifecycle.mjs").Controller;
+  type TeqFw_Web_Back_ServerLifecycle__Controller__Class = typeof import("./src/Back/ServerLifecycle.mjs").Controller;
   type TeqFw_Web_Back_Server_Instance = import("node:http").Server | import("node:http2").Http2Server | import("node:http2").Http2SecureServer;
   type TeqFw_Web_Back_Server_OptionalInstance = TeqFw_Web_Back_Server_Instance | undefined;
   type TeqFw_Web_Back_Server__Class = typeof import("./src/Back/Server.mjs").default;

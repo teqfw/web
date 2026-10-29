@@ -42,8 +42,18 @@ export default class Static {
             const req = context.request;
             const res = context.response;
             if (!respond.isWritable(res)) return;
+            if (req.method !== 'GET' && req.method !== 'HEAD') return;
             if (req.url === undefined) return;
-            const urlPath = decodeURIComponent(req.url.split('?')[0]);
+            let urlPath;
+            try {
+                urlPath = decodeURIComponent(req.url.split('?')[0]);
+                if (urlPath.includes('\0')) throw new Error('NUL in path');
+            } catch {
+                /** @type {*} */ (res).writeHead(400);
+                res.end(req.method === 'HEAD' ? undefined : 'Bad Request');
+                context.completed = true;
+                return;
+            }
             const match = registry.find(urlPath);
             if (!match) return;
             const served = await fileService.serve(match.config, match.rel, req, res);

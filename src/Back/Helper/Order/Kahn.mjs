@@ -36,14 +36,12 @@ export default class Kahn {
 
                 for (const dep of after) {
                     if (!graph.has(dep)) continue;
-                    graph.get(dep).add(name);
-                    inDegree.set(name, inDegree.get(name) + 1);
+                    if (!graph.get(dep).has(name)) { graph.get(dep).add(name); inDegree.set(name, inDegree.get(name) + 1); }
                 }
 
                 for (const dep of before) {
                     if (!graph.has(dep)) continue;
-                    graph.get(name).add(dep);
-                    inDegree.set(dep, inDegree.get(dep) + 1);
+                    if (!graph.get(name).has(dep)) { graph.get(name).add(dep); inDegree.set(dep, inDegree.get(dep) + 1); }
                 }
             }
 
@@ -55,6 +53,7 @@ export default class Kahn {
 
             const sorted = [];
             while (queue.length > 0) {
+                queue.sort((a, b) => [...nameToHandler.keys()].indexOf(a) - [...nameToHandler.keys()].indexOf(b));
                 const name = queue.shift();
                 sorted.push(nameToHandler.get(name));
                 for (const neighbor of graph.get(name)) {

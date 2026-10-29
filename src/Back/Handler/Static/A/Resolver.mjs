@@ -21,9 +21,7 @@ export default class Resolver {
          */
         this.resolve = (config, rel) => {
             // disallow path‐traversal or absolute rel
-            if (rel.includes('..') || path.isAbsolute(rel)) {
-                throw new Error('Static access denied');
-            }
+            if (path.isAbsolute(rel) || rel.split(/[\\/]/).includes('..')) return null;
 
             let pkgName;
             let subPath = '';
@@ -33,9 +31,8 @@ export default class Resolver {
                 if (/[\\/]$/.test(fsPath) && fsPath.length > 1) {
                     fsPath = fsPath.replace(/[\\/]+$/, '');
                 }
-                if (!fsPath.startsWith(config.root)) {
-                    throw new Error('Resolved path is outside the root');
-                }
+                const relative = path.relative(config.root, fsPath);
+                if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) return null;
                 return fsPath;
             }
 
@@ -76,9 +73,8 @@ export default class Resolver {
             if (/[\\/]$/.test(fsPath) && fsPath.length > 1) {
                 fsPath = fsPath.replace(/[\\/]+$/, '');
             }
-            if (!fsPath.startsWith(config.root)) {
-                throw new Error('Resolved path is outside the root');
-            }
+            const relative = path.relative(config.root, fsPath);
+            if (relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) return null;
 
             return fsPath;
         };

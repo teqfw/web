@@ -1,8 +1,6 @@
 import {beforeEach, describe, test} from 'node:test';
 import assert from 'node:assert/strict';
 import TeqFw_Web_Back_PipelineEngine from '../../../src/Back/PipelineEngine.mjs';
-import {Factory as TeqFw_Web_Back_Dto_RequestContext_Factory} from '../../../src/Back/Dto/RequestContext.mjs';
-import TeqFw_Web_Back_Enum_Stage from '../../../src/Back/Enum/Stage.mjs';
 
 /**
  * @param {{errors: string[], exceptions: string[]}} sources
@@ -40,7 +38,7 @@ function createResponse() {
 }
 
 describe('TeqFw_Web_Back_PipelineEngine', () => {
-    const STAGE = new TeqFw_Web_Back_Enum_Stage();
+    const STAGE = {INIT: 'INIT', PROCESS: 'PROCESS', FINALIZE: 'FINALIZE'};
     /** @type {string[]} */
     let log;
     /** @type {string[]} */
@@ -73,7 +71,7 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
         };
         logger = createLoggerProvider({errors, exceptions});
         helpOrder = {sort: (items) => items};
-        dtoRequestContextFactory = new TeqFw_Web_Back_Dto_RequestContext_Factory();
+        dtoRequestContextFactory = /** @type {*} */ ({create: () => ({})});
     });
 
     /**
@@ -183,4 +181,46 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
             /must be locked before request execution/
         );
     });
+    test('rejects duplicate names and cross-stage constraints', () => {
+        const engine = new TeqFw_Web_Back_PipelineEngine({dtoRequestContextFactory, logger, respond, helpOrder, STAGE});
+        engine.addHandler(mkHandler('init', STAGE.INIT, async () => {}));
+        assert.throws(() => engine.addHandler(mkHandler('init', STAGE.PROCESS, async () => {})), /Duplicate/);
+        engine.addHandler({getRegistrationInfo: () => ({name: 'process', stage: STAGE.PROCESS, before: [], after: ['init']}), handle: async () => {}});
+        assert.throws(() => engine.lockHandlers(), /another stage/);
+    });
+
+    test('terminates safely when INIT has started the response', async () => {
+        const engine = new TeqFw_Web_Back_PipelineEngine({dtoRequestContextFactory, logger, respond, helpOrder, STAGE});
+        engine.addHandler(mkHandler('init', STAGE.INIT, async ctx => { ctx.response.writeHead(200); }));
+        engine.addHandler(mkHandler('process', STAGE.PROCESS, async () => { log.push('unexpected'); }));
+        engine.addHandler(mkHandler('final', STAGE.FINALIZE, async () => { log.push('final'); }));
+        engine.lockHandlers();
+        await engine.handleRequest(/** @type {*} */ ({url: '/'}), /** @type {*} */ (createResponse()));
+        assert.deepEqual(log, ['final']);
+    });
+
+    test('overlapping requests keep data isolated and finalize before streams end', async () => {
+        const engine = new TeqFw_Web_Back_PipelineEngine({dtoRequestContextFactory, logger, respond, helpOrder, STAGE});
+        /** @type {Array<() => void>} */
+        const release = [];
+        /** @type {Array<{url: string, value: unknown, ended: boolean}>} */
+        const seen = [];
+        engine.addHandler(mkHandler('stream', STAGE.PROCESS, async ctx => {
+            ctx.data.value = ctx.request.url;
+            ctx.completed = true;
+            await new Promise(resolve => release.push(() => resolve(undefined)));
+        }));
+        engine.addHandler(mkHandler('final', STAGE.FINALIZE, async ctx => {
+            seen.push({url: ctx.request.url, value: ctx.data.value, ended: ctx.response.writableEnded});
+        }));
+        engine.lockHandlers();
+        const first = engine.handleRequest(/** @type {*} */ ({url: '/a'}), /** @type {*} */ (createResponse()));
+        const second = engine.handleRequest(/** @type {*} */ ({url: '/b'}), /** @type {*} */ (createResponse()));
+        assert.equal(release.length, 2);
+        release[1]();
+        release[0]();
+        await Promise.all([first, second]);
+        assert.deepEqual(seen, [{url: '/b', value: '/b', ended: false}, {url: '/a', value: '/a', ended: false}]);
+    });
+
 });

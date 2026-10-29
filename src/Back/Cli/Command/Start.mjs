@@ -29,7 +29,7 @@ export default class Start {
 
         /**
          * Start the web server. Freezes runtime configuration, then binds and listens.
-         * Returns a runtime handle for graceful shutdown via AbortSignal.
+         * Returns a runtime handle that settles after the host stops the server.
          *
          * @param {object} context
          * @param {AbortSignal} context.signal
@@ -38,12 +38,14 @@ export default class Start {
         this.start = async function (context) {
             configFactory.freeze();
             await server.start();
+            /** @type {any} */
+            let complete = () => {};
+            const done = new Promise(resolve => { complete = () => resolve(undefined); });
             return {
-                done: /** @type {Promise<void>} */ (new Promise((resolve) => {
-                    context.signal.addEventListener('abort', () => resolve(), {once: true});
-                })),
+                done,
                 stop: async () => {
-                    await server.stop();
+                    try { await server.stop(); }
+                    finally { complete(); }
                 },
             };
         };
