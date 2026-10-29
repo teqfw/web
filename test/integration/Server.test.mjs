@@ -9,8 +9,8 @@ import {once} from 'node:events';
 import Container from '@teqfw/di';
 import NamespaceRegistry from '@teqfw/di/node/registry/namespace';
 
-/** @param {import('node:test').TestContext} t @param {number} timeout @param {string} [type] */
-async function setup(t, timeout, type = 'http') {
+/** @param {import('node:test').TestContext} t @param {number} timeout @param {string} [type] @param {boolean} [deferFreeze] */
+async function setup(t, timeout, type = 'http', deferFreeze = false) {
     const container = new Container();
     const registry = new NamespaceRegistry({fs: /** @type {*} */ (fs), path, appRoot: path.resolve(import.meta.dirname, '../..')});
     for (const {prefix, dirAbs, ext} of await registry.build()) container.addNamespaceRoot(prefix, dirAbs, ext);
@@ -24,7 +24,7 @@ async function setup(t, timeout, type = 'http') {
     const factory = await container.get('TeqFw_Web_Back_Config_Runtime__Factory$');
     const tls = type === 'https' ? {key: await fs.readFile(path.resolve(import.meta.dirname, '../certs/key.pem'), 'utf8'), cert: await fs.readFile(path.resolve(import.meta.dirname, '../certs/cert.pem'), 'utf8')} : undefined;
     factory.configure({port: 0, type, shutdownTimeout: timeout, tls});
-    factory.freeze();
+    if (!deferFreeze) factory.freeze();
     const lifecycle = await container.get('TeqFw_Web_Back_ServerLifecycle$');
     const pipeline = await container.get('TeqFw_Web_Back_PipelineEngine$');
     const stage = await container.get('TeqFw_Web_Back_Enum_Stage$');
@@ -36,7 +36,7 @@ async function setup(t, timeout, type = 'http') {
     });
     const host = await container.get('TeqFw_Cli_Host$');
     const command = await container.get('TeqFw_Web_Back_Cli_Command_Start$');
-    return {server, lifecycle, pipeline, stage, host, command, signal: () => notifySignal?.('SIGTERM')};
+    return {server, lifecycle, pipeline, stage, host, command, factory, signal: () => notifySignal?.('SIGTERM')};
 }
 
 test('live SSE receives shutdown signal and closes before the deadline', {timeout: 5000}, async (t) => {
@@ -284,4 +284,96 @@ test('zero timeout closes an open cleartext HTTP/2 session after notification', 
     await Promise.all([server.stop(), closed]);
     assert.equal(notifications, 1);
     assert.ok(client.closed || client.destroyed);
+});
+
+test('CLI plugin configures HTTP parser before the standard command starts', {timeout: 5000}, async t => {
+    const {server, host, command, factory, signal} = await setup(t, 50, 'http', true);
+    const run = host.open({argv: [], version: 'test', commands: [], launch: {}});
+    t.after(() => run.close());
+    await run.start({onStartup: async () => factory.configureTransport({http: {maxHeaderSize: 1024, headersTimeout: 10000, requestTimeout: 10000}}), onShutdown: async () => {}});
+    const execution = run.execute({args: [], options: {}}, command);
+    const deadline = performance.now() + 2000;
+    while (!server.getInstance()?.listening) {
+        if (performance.now() > deadline) throw new Error('CLI server did not become ready');
+        await new Promise(resolve => setTimeout(resolve, 1));
+    }
+    const instance = /** @type {import('node:http').Server} */ (server.getInstance());
+    assert.equal(instance.headersTimeout, 10000);
+    assert.equal(instance.requestTimeout, 10000);
+    const address = /** @type {import('node:net').AddressInfo} */ (instance.address());
+    const request = http.get({host: '127.0.0.1', port: address.port, headers: {'x-large': 'x'.repeat(1500)}});
+    t.after(() => request.destroy());
+    const [response] = /** @type {[import('node:http').IncomingMessage]} */ (await once(request, 'response'));
+    assert.equal(response.statusCode, 431);
+    response.resume();
+    signal();
+    await execution;
+    assert.equal(await run.close(), 143);
+});
+
+for (const type of ['http2', 'https']) {
+    test(`${type} applies its own HTTP/2 settings`, {timeout: 5000}, async t => {
+        const {server, factory} = await setup(t, 50, type, true);
+        factory.configureTransport({http: {maxHeaderSize: 2048}, http2: {settings: {maxConcurrentStreams: 7}}, https: {settings: {maxConcurrentStreams: 13}}});
+        factory.freeze();
+        await server.start();
+        const address = /** @type {import('node:net').AddressInfo} */ (server.getInstance().address());
+        if (type === 'https') {
+            const request = https.get({host: '127.0.0.1', port: address.port, rejectUnauthorized: false});
+            t.after(() => request.destroy());
+            const [response] = /** @type {[import('node:http').IncomingMessage]} */ (await once(request, 'response'));
+            assert.equal(response.httpVersion, '1.1');
+            assert.equal(response.statusCode, 404);
+            response.resume();
+        }
+        const client = http2.connect(`${type === 'https' ? 'https' : 'http'}://127.0.0.1:${address.port}`, type === 'https' ? {rejectUnauthorized: false, servername: 'localhost'} : {});
+        client.on('error', () => {});
+        t.after(() => client.destroy());
+        const [settings] = /** @type {[import('node:http2').Settings]} */ (await once(client, 'remoteSettings'));
+        assert.equal(settings.maxConcurrentStreams, type === 'https' ? 13 : 7);
+        client.close();
+        await server.stop();
+    });
+}
+
+test('omitted HTTP options keep defaults from the current Node runtime', {timeout: 5000}, async t => {
+    const {server} = await setup(t, 50);
+    const baseline = http.createServer((_req, res) => res.end());
+    await new Promise(resolve => baseline.listen(0, '127.0.0.1', () => resolve(undefined)));
+    t.after(() => new Promise(resolve => baseline.close(() => resolve(undefined))));
+    await server.start();
+    const instance = /** @type {import('node:http').Server} */ (server.getInstance());
+    const baselineAddress = /** @type {import('node:net').AddressInfo} */ (baseline.address());
+    const actualAddress = /** @type {import('node:net').AddressInfo} */ (instance.address());
+    for (const [port, expected] of [[baselineAddress.port, 200], [actualAddress.port, 404]]) {
+        const req = http.get({host: '127.0.0.1', port, headers: {'x-large': 'x'.repeat(9000)}});
+        const [res] = /** @type {[import('node:http').IncomingMessage]} */ (await once(req, 'response'));
+        assert.equal(res.statusCode, expected);
+        res.resume();
+    }
+    assert.equal(instance.headersTimeout, baseline.headersTimeout);
+    assert.equal(instance.requestTimeout, baseline.requestTimeout);
+    await server.stop();
+});
+
+test('invalid native values fail startup and preserve single-start semantics', {timeout: 5000}, async t => {
+    const {server, factory, lifecycle} = await setup(t, 50, 'http', true);
+    factory.configureTransport({http: {maxHeaderSize: -1}});
+    factory.freeze();
+    await assert.rejects(server.start(), /maxHeaderSize|range/i);
+    assert.equal(lifecycle.shutdownSignal.aborted, true);
+    await assert.rejects(server.start(), /once/);
+});
+
+test('native options are isolated in separate DI containers', {timeout: 5000}, async t => {
+    const first = await setup(t, 50, 'http', true);
+    const second = await setup(t, 50, 'http', true);
+    first.factory.configureTransport({http: {headersTimeout: 1200}});
+    second.factory.configureTransport({http: {headersTimeout: 1800}});
+    first.factory.freeze();
+    second.factory.freeze();
+    await Promise.all([first.server.start(), second.server.start()]);
+    assert.equal(/** @type {import('node:http').Server} */ (first.server.getInstance()).headersTimeout, 1200);
+    assert.equal(/** @type {import('node:http').Server} */ (second.server.getInstance()).headersTimeout, 1800);
+    await Promise.all([first.server.stop(), second.server.stop()]);
 });

@@ -47,11 +47,12 @@ export default class Server {
                 const type = cfg?.type ?? config.type;
                 const tls = cfg?.tls ?? config.tls;
                 timeout = cfg?.shutdownTimeout ?? config.shutdownTimeout ?? 5000;
-                if (type === SERVER_TYPE.HTTP) instance = http.createServer();
-                else if (type === SERVER_TYPE.HTTP2) instance = http2.createServer();
+                const transport = config.transport;
+                if (type === SERVER_TYPE.HTTP) instance = http.createServer(transport?.http ?? {});
+                else if (type === SERVER_TYPE.HTTP2) instance = http2.createServer(transport?.http2 ?? {});
                 else if (type === SERVER_TYPE.HTTPS) {
                     if (!tls?.key || !tls?.cert) throw new Error('TLS key and certificate are required for HTTPS server');
-                    instance = http2.createSecureServer({key: tls.key, cert: tls.cert, ca: tls.ca, allowHTTP1: true});
+                    instance = http2.createSecureServer({...transport?.https, key: tls.key, cert: tls.cert, ca: tls.ca, allowHTTP1: true});
                 } else throw new Error(`Server type '${type}' is not supported`);
                 const server = instance;
                 server.on('connection', socket => {

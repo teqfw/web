@@ -6,6 +6,7 @@ declare global {
   type TeqFw_Web_Back_Cli_Command_Start__Class = typeof import("./src/Back/Cli/Command/Start.mjs").default;
   type TeqFw_Web_Back_Config_Runtime = import("./src/Back/Config/Runtime.mjs").Data;
   type TeqFw_Web_Back_Config_Runtime_Options = {host?: string; port?: number; type?: string; shutdownTimeout?: number; tls?: TeqFw_Web_Back_Config_Runtime_Tls};
+  type TeqFw_Web_Back_Config_Runtime_ReservedTransportOption = "allowHTTP1" | "key" | "cert" | "ca" | "pfx" | "passphrase" | "secureContext" | "SNICallback" | "ALPNProtocols" | "ALPNCallback";
   type TeqFw_Web_Back_Config_Runtime_State = import("./src/Back/Config/Runtime/State.mjs").default;
   type TeqFw_Web_Back_Config_Runtime_State__Class = typeof import("./src/Back/Config/Runtime/State.mjs").default;
   type TeqFw_Web_Back_Config_Runtime_Tls = import("./src/Back/Config/Runtime/Tls.mjs").Data;
@@ -15,6 +16,7 @@ declare global {
   type TeqFw_Web_Back_Config_Runtime_Tls__Data__Class = typeof import("./src/Back/Config/Runtime/Tls.mjs").Data;
   type TeqFw_Web_Back_Config_Runtime_Tls__Factory = import("./src/Back/Config/Runtime/Tls.mjs").Factory;
   type TeqFw_Web_Back_Config_Runtime_Tls__Factory__Class = typeof import("./src/Back/Config/Runtime/Tls.mjs").Factory;
+  type TeqFw_Web_Back_Config_Runtime_TransportOptions = {http?: Omit<import("node:http").ServerOptions, TeqFw_Web_Back_Config_Runtime_ReservedTransportOption>; http2?: Omit<import("node:http2").ServerOptions, TeqFw_Web_Back_Config_Runtime_ReservedTransportOption>; https?: Omit<import("node:http2").SecureServerOptions, TeqFw_Web_Back_Config_Runtime_ReservedTransportOption>};
   type TeqFw_Web_Back_Config_Runtime__Class = typeof import("./src/Back/Config/Runtime.mjs").default;
   type TeqFw_Web_Back_Config_Runtime__Data = import("./src/Back/Config/Runtime.mjs").Data;
   type TeqFw_Web_Back_Config_Runtime__Data__Class = typeof import("./src/Back/Config/Runtime.mjs").Data;

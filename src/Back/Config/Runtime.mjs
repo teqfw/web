@@ -10,6 +10,7 @@ export class Data {
     /** @type {string|undefined} */ type;
     /** @type {number|undefined} */ shutdownTimeout;
     /** @type {TeqFw_Web_Back_Config_Runtime_Tls|undefined} */ tls;
+    /** @type {TeqFw_Web_Back_Config_Runtime_TransportOptions|undefined} */ transport;
 }
 export default class Wrapper {
     /**
@@ -25,6 +26,7 @@ export class Factory {
      */
     constructor({state}) {
         this.configure = state.configure;
+        this.configureTransport = state.configureTransport;
         this.reset = state.reset;
         this.freeze = state.freeze;
     }

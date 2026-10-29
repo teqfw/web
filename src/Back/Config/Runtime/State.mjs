@@ -74,6 +74,55 @@ function runtimeValues(input) {
     return result;
 }
 
+const transportNames = new Set(['http', 'http2', 'https']);
+const reservedOptions = new Set(['allowHTTP1', 'key', 'cert', 'ca', 'pfx', 'passphrase', 'secureContext', 'SNICallback', 'ALPNProtocols', 'ALPNCallback']);
+
+/**
+ * Copy the supported native option graph without preserving mutable references.
+ * Functions retain their identity and remain owned by the application.
+ * @param {any} value
+ * @param {any} path
+ * @returns {any}
+ */
+function copyOption(value, path = new Set()) {
+    if (value === null || typeof value !== 'object') return value;
+    if (Buffer.isBuffer(value)) return Buffer.from(value);
+    if (path.has(value)) throw new TypeError('Cyclic transport option');
+    const proto = Object.getPrototypeOf(value);
+    if (!Array.isArray(value) && proto !== Object.prototype && proto !== null) throw new TypeError('Unsupported transport option object');
+    if (Object.getOwnPropertySymbols(value).length) throw new TypeError('Symbol transport option keys are unsupported');
+    path.add(value);
+    const result = Array.isArray(value) ? [] : {};
+    for (const key of Object.getOwnPropertyNames(value)) {
+        if (Array.isArray(value) && key === 'length') continue;
+        const desc = Object.getOwnPropertyDescriptor(value, key);
+        if (!desc || !('value' in desc)) throw new TypeError('Transport option accessors are unsupported');
+        if (!desc.enumerable) continue;
+        Object.defineProperty(result, key, {value: copyOption(desc.value, path), enumerable: true, writable: true, configurable: true});
+    }
+    if (Array.isArray(value)) /** @type {any[]} */ (result).length = value.length;
+    path.delete(value);
+    return result;
+}
+
+/**
+ * @param {unknown} input
+ * @returns {Record<string, Record<string, any>>}
+ */
+function transportValues(input) {
+    if (!input || typeof input !== 'object' || Array.isArray(input)) throw new TypeError('Invalid transport options');
+    const copied = copyOption(input, new Set());
+    for (const [name, set] of Object.entries(copied)) {
+        if (!transportNames.has(name)) throw new TypeError(`Unknown transport option set: ${name}`);
+        if (!set || typeof set !== 'object' || Array.isArray(set) || Buffer.isBuffer(set)) throw new TypeError(`Invalid transport option set: ${name}`);
+        for (const key of Object.keys(set)) {
+            if (reservedOptions.has(key)) throw new TypeError(`Reserved transport option: ${key}`);
+            if (set[key] === undefined) delete set[key];
+        }
+    }
+    return copied;
+}
+
 /** One draft and publication transaction per DI container. */
 export default class State {
     /**
@@ -85,6 +134,8 @@ export default class State {
         let draft = {};
         /** @type {Record<string, any>} */
         let tls = {};
+        /** @type {Record<string, Record<string, any>>} */
+        let transport = {};
         /** @type {Record<string, any>|undefined} */
         let published;
         /** @type {Record<string, any>|undefined} */
@@ -94,7 +145,8 @@ export default class State {
             get(_target, prop) {
                 if (prop === 'then' || typeof prop === 'symbol') return undefined;
                 if (!published) throw new Error('Runtime configuration is not initialized.');
-                return /** @type {Record<string, any>} */ (nested ? publishedTls : published)[prop];
+                const result = /** @type {Record<string, any>} */ (nested ? publishedTls : published)[prop];
+                return !nested && prop === 'transport' ? copyOption(result, new Set()) : result;
             },
             set() { throw new Error('Runtime configuration is immutable.'); },
             deleteProperty() { throw new Error('Runtime configuration is immutable.'); },
@@ -112,8 +164,19 @@ export default class State {
                 else if (draft[key] === undefined) draft[key] = value;
             }
         };
+        /** @param {TeqFw_Web_Back_Config_Runtime_TransportOptions} [values] @returns {void} */
+        this.configureTransport = (values = {}) => {
+            ensureDraft();
+            const parsed = transportValues(values);
+            for (const [name, set] of Object.entries(parsed)) {
+                transport[name] ??= {};
+                for (const [key, value] of Object.entries(set)) {
+                    if (!Object.hasOwn(transport[name], key)) Object.defineProperty(transport[name], key, {value, enumerable: true, writable: true, configurable: true});
+                }
+            }
+        };
         /** @returns {void} */
-        this.reset = () => { ensureDraft(); draft = {}; tls = {}; };
+        this.reset = () => { ensureDraft(); draft = {}; tls = {}; transport = {}; };
         /** @returns {TeqFw_Web_Back_Config_Runtime} */
         this.freeze = () => {
             if (published) return this.runtime;
@@ -137,6 +200,7 @@ export default class State {
             if (candidate.type === 'https' && (!selectedTls.key || !selectedTls.cert)) throw new Error('TLS key and certificate are required for HTTPS');
             publishedTls = Object.freeze(selectedTls);
             candidate.tls = this.tls;
+            candidate.transport = copyOption(transport, new Set());
             published = Object.freeze(candidate);
             return this.runtime;
         };

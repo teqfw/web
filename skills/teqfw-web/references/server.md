@@ -66,3 +66,56 @@ context.completed = true;
 Configure before startup with `runtimeFactory.configure({shutdownTimeout: 5000})`
 or `TEQFW_WEB__SHUTDOWN_TIMEOUT`. `reset()` clears the complete programmatic
 runtime and TLS draft before publication; `freeze()` commits both atomically.
+
+## Native transport options
+
+The runtime factory accepts programmatic Node.js server creation options before
+`freeze()`. Set them from the host's CLI lifecycle plugin `onStartup()` or during
+non-CLI assembly before calling `freeze()` and `server.start()`:
+
+```js
+export default class Plugin {
+    constructor({runtimeFactory}) {
+        this.onStartup = async () => {
+            runtimeFactory.configureTransport({
+                http: {
+                    maxHeaderSize: 8192,
+                    headersTimeout: 10000,
+                    requestTimeout: 10000,
+                },
+                http2: {settings: {maxConcurrentStreams: 100}},
+                https: {settings: {maxConcurrentStreams: 100}},
+            });
+        };
+        this.onShutdown = async () => {};
+    }
+}
+
+export const __deps__ = Object.freeze({
+    default: {runtimeFactory: "TeqFw_Web_Back_Config_Runtime__Factory$"},
+});
+```
+
+`http` is passed to `http.createServer`, `http2` to `http2.createServer`, and
+`https` to `http2.createSecureServer`. Only the chosen set is applied. The `https`
+server also accepts HTTP/1.1; consult the Node.js version's API for whether an
+option affects that protocol. Unspecified options retain the Node.js defaults.
+
+The first write for each top-level option in each set wins; nested values such as
+`settings` are one option. The factory copies plain objects, arrays and Buffers.
+Functions keep their identity and application-owned state. Cycles, accessors,
+symbol keys and other object instances are rejected. `reset()` clears the entire
+programmatic configuration draft; `freeze()` commits it together with runtime and
+TLS. Configuration changes are rejected after publication.
+
+Declare the plugin in the host package's `teqfw.fw.cli.plugin` metadata so the
+CLI starts it before `web:start`. Without CLI, call `configureTransport()` on the
+DI-resolved factory during assembly, then call `freeze()` and `server.start()`.
+
+The following names are reserved in every set: `allowHTTP1`, `key`, `cert`, `ca`,
+`pfx`, `passphrase`, `secureContext`, `SNICallback`, `ALPNProtocols` and
+`ALPNCallback`. Configure the supported TLS fields through the runtime factory.
+The host is responsible for selecting Node.js options compatible with its Node.js
+version and protocol. Node.js may ignore unknown options; passing a value alone
+is not proof of effect. Native callbacks and classes remain trusted application
+code and can affect native-server behavior.

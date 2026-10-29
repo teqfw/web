@@ -48,6 +48,8 @@ await server.start({
 });
 ```
 
+Before startup, applications can use `runtimeFactory.configureTransport()` to supply native HTTP or HTTP/2 server creation options. See [server configuration](skills/teqfw-web/references/server.md#native-transport-options) for protocol boundaries and reserved fields.
+
 The server listens on `127.0.0.1:3000` by default. On shutdown it stops admitting requests, aborts `TeqFw_Web_Back_ServerLifecycle$.shutdownSignal`, and allows active connections to finish for `shutdownTimeout` milliseconds (default 5000) before forcing closure. Stream owners should observe that signal, close their responses, and remove listeners on client disconnect.
 
 The package requires Node.js `>=20` and a configured TeqFW DI container. See the Agent Skill for the complete composition and configuration contract.

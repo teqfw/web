@@ -59,3 +59,47 @@ poll also has its own deadline.
 The platform validator checks topology, not test semantics. The added HTTP/2 admission, stream-error, client disconnect, zero-timeout,
 filesystem error and request-overlap checks are recorded above. The full verification
 specifications still include additional combinations beyond the selected cases.
+
+## Programmatic native transport options
+
+The runtime factory now accepts `configureTransport({http, http2, https})` before
+publication. The selected option set reaches the corresponding Node.js server;
+other sets remain unused. First writes win per top-level field, the full option graph
+is copied before mutation, and runtime/TLS/native options are committed and reset
+together. Package-owned TLS credentials and protocol selection remain reserved.
+The consumer reference describes the supported snapshot shapes and the limits of
+native option validation.
+
+Evidence acquired on Node.js v22.12.0 with `@teqfw/cli` 2.1.0, `@teqfw/di` 2.9.0
+and `@teqfw/cfg` 2.0.0:
+
+- Unit checks cover first-write precedence, all-or-nothing validation, TLS commit
+  retry, reset, frozen facades, detached nested arrays/objects and Buffers, callback
+  identity, reserved names, cycles, accessors and unsupported object instances.
+- The real CLI Host initializes the factory in plugin startup and runs `web:start`;
+  a configured header-size limit rejects an oversized request with 431 and both
+  configured timeout values reach the native HTTP server.
+- Real h2c and secure HTTP/2 clients observe independent `maxConcurrentStreams`
+  settings; the secure server also serves an HTTP/1.1 request. Test certificate
+  authentication is disabled for this transport test.
+- A native HTTP server on the same Node.js version is used for default comparison;
+  separate DI containers retain different settings; an invalid native value fails
+  startup. Existing streaming shutdown tests are included in the integration run.
+
+Node.js can silently ignore unknown option names. This mechanism does not assert
+that every native option takes effect for every protocol or Node.js release. Callable
+options retain application-owned identity and mutable closed-over state. The current
+snapshot contract rejects object instances other than Buffers and plain containers;
+applications requiring additional native object types need a separately specified
+extension. The known package-root ESM type-map and runtime-profile findings recorded
+above remain out of scope for this change. Package-root ESM validation also reports
+two additional type-map diagnostics for the new native option type: its structural
+grammar does not support `Omit` and Node.js `import()` types. TypeScript validates
+the actual published Node.js option types; the alias remains to preserve them.
+
+The evidence above was acquired against package revision
+`30d2aa689e61275281ea8d464df3d1167f1f54de` and context revision
+`dffb100e5614cc02eec03a3d66529d42f9c5f541`, plus the uncommitted changes for this
+feature in both repositories. Commands: `npm run test:unit`,
+`npm run test:integration`, `npm run typecheck`, `npm run lint:md`,
+`teqfw-platform .`, `teqfw-esm-validator src`, and `adsm-ctx validate .`.
