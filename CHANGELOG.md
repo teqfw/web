@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.2.0] - 2026-10-29 - Streaming shutdown and transport configuration
+
+### Added
+
+- Added `TeqFw_Web_Back_ServerLifecycle$` to notify application-owned streams
+  before transport shutdown, with bounded drain and forced connection closure.
+- Added `shutdownTimeout`, defaulting to 5000 ms, including the
+  `TEQFW_WEB__SHUTDOWN_TIMEOUT` configuration projection.
+- Added `runtimeFactory.configureTransport()` for programmatic native HTTP,
+  HTTP/2 and secure transport creation options.
+- Added container-local atomic runtime and TLS configuration, draft reset, and
+  integration coverage for the CLI host and native streaming transports.
+
+### Changed
+
+- The default listening host is now `127.0.0.1`. Configure an explicit host to
+  accept connections on another interface.
+- Server startup waits for listening readiness, and a Server allows one start
+  attempt. Shutdown notifies streams and forcibly closes remaining connections
+  after the configured deadline.
+- Runtime configuration rejects invalid supplied values instead of silently
+  falling back. TLS factory `freeze()` publishes runtime and TLS together.
+- Handler registration rejects duplicate names and cross-stage ordering
+  references, and snapshots metadata when handlers are registered.
+- The static handler serves GET and HEAD, validates decoded paths and canonical
+  file targets, and handles stream errors and client disconnects.
+
+### Compatibility
+
+- The loopback default changes externally reachable deployments that relied on
+  Node.js choosing a wildcard listen address; set `TEQFW_WEB__HOST` explicitly.
+- Applications relying on permissive configuration coercion, duplicate handler
+  registration, or independent TLS publication must update their setup.
+- Long-lived responses should observe `ServerLifecycle.shutdownSignal` and close
+  their resources on shutdown. They may otherwise be forcibly closed at the deadline.
+
 ## [2.1.1] - 2026-09-17 - Complete MIME content-type support
 
 ### Added
