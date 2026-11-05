@@ -41,15 +41,17 @@
     "@types/node": "^25.4.0",
     "markdownlint-cli2": "^0.23.2",
     "typescript": "^5.9.3",
-    "typescript-language-server": "^5.3.0"
+    "typescript-language-server": "^5.3.0",
+    "@flancer32/skill-teqfw-esm-validator": "^0.15.2"
   },
   "scripts": {
     "start": "teq web:start",
     "test:unit": "find test/unit -name '*.test.mjs' -print0 | xargs -0 node --test",
     "test:integration": "find test/integration -name '*.test.mjs' -print0 | xargs -0 node --test",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "npm run check:esm && npm run test:unit && npm run test:integration",
     "typecheck": "tsc -p jsconfig.json",
-    "lint:md": "markdownlint-cli2 \"skills/**/*.md\" \"*.md\""
+    "lint:md": "markdownlint-cli2 \"skills/**/*.md\" \"*.md\"",
+    "check:esm": "teqfw-esm-validator src --profile base"
   },
   "files": [
     "skills/",
