@@ -80,6 +80,14 @@ export default class PipelineEngine {
             await handler.handle(context);
         }
 
+        /** @param {string} [url] @returns {string} */
+        const routeOf = url => {
+            try {return new URL(url ?? '/', 'http://localhost').pathname;}
+            catch {return '/<invalid-url>';}
+        };
+        /** @param {any} error @returns {string} */
+        const safeErrorCode = error => typeof error?.code === 'string' && /^[A-Z0-9_]{1,64}$/.test(error.code) ? error.code : 'HANDLER_FAILED';
+
         /**
          * @returns {void}
          */
@@ -158,9 +166,11 @@ export default class PipelineEngine {
                         await runHandler(handler, STAGE.INIT, context);
                     } catch (error) {
                         log.error('INIT handler failed', {
-                            err: error,
+                            err: new Error(safeErrorCode(error)),
+                            code: safeErrorCode(error),
                             handler: handler.getRegistrationInfo()?.name,
-                            url: req.url,
+                            route: routeOf(req.url),
+                            requestId: context.data.requestId,
                         });
                     }
                 }
@@ -178,9 +188,11 @@ export default class PipelineEngine {
                         await runHandler(handler, STAGE.PROCESS, context);
                     } catch (error) {
                         log.error('PROCESS handler failed', {
-                            err: error,
+                            err: new Error(safeErrorCode(error)),
+                            code: safeErrorCode(error),
                             handler: handler.getRegistrationInfo()?.name,
-                            url: req.url,
+                            route: routeOf(req.url),
+                            requestId: context.data.requestId,
                         });
                         if (respond.isWritable(res)) {
                             respond.code500_InternalServerError({res, body: 'Internal Server Error'});
@@ -191,7 +203,7 @@ export default class PipelineEngine {
                 }
 
                 if (!terminated && !context.completed && respond.isWritable(res)) {
-                    log.error(`404 Not Found: ${req.url}`);
+                    log.warn('HTTP route not found', {route: routeOf(req.url), requestId: context.data.requestId, status:404});
                     respond.code404_NotFound({res});
                 }
             } finally {
@@ -200,9 +212,11 @@ export default class PipelineEngine {
                         await runHandler(handler, STAGE.FINALIZE, context);
                     } catch (error) {
                         log.error('FINALIZE handler failed', {
-                            err: error,
+                            err: new Error(safeErrorCode(error)),
+                            code: safeErrorCode(error),
                             handler: handler.getRegistrationInfo()?.name,
-                            url: req.url,
+                            route: routeOf(req.url),
+                            requestId: context.data.requestId,
                         });
                     }
                 }

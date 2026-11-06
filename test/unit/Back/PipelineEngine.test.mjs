@@ -3,16 +3,18 @@ import assert from 'node:assert/strict';
 import TeqFw_Web_Back_PipelineEngine from '../../../src/Back/PipelineEngine.mjs';
 
 /**
- * @param {{errors: string[], exceptions: string[]}} sources
+ * @param {{errors: string[], exceptions: string[], warnings: string[], errorData: object[], warningData: object[]}} sources
  * @returns {*}
  */
-function createLoggerProvider({errors, exceptions}) {
+function createLoggerProvider({errors, exceptions, warnings, errorData, warningData}) {
     return {
         forSource: () => ({
             error(/** @type {string} */ message, /** @type {*} */ data) {
                 errors.push(message);
+                errorData.push(data);
                 if (data?.err) exceptions.push(String(data.err.message ?? data.err));
             },
+            warn(/** @type {string} */ message, /** @type {*} */ data) {warnings.push(message); warningData.push(data);},
         }),
     };
 }
@@ -45,6 +47,12 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
     let errors;
     /** @type {string[]} */
     let exceptions;
+    /** @type {string[]} */
+    let warnings;
+    /** @type {object[]} */
+    let errorData;
+    /** @type {object[]} */
+    let warningData;
     /** @type {*} */
     let respond;
     /** @type {*} */
@@ -58,6 +66,9 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
         log = [];
         errors = [];
         exceptions = [];
+        warnings = [];
+        errorData = [];
+        warningData = [];
         respond = {
             isWritable: (/** @type {*} */ res) => !res.headersSent && !res.writableEnded,
             code404_NotFound: (/** @type {{res: *}} */ {res}) => {
@@ -69,7 +80,7 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
                 res.end(body);
             },
         };
-        logger = createLoggerProvider({errors, exceptions});
+        logger = createLoggerProvider({errors, exceptions, warnings, errorData, warningData});
         helpOrder = {sort: (items) => items};
         dtoRequestContextFactory = /** @type {*} */ ({create: () => ({})});
     });
@@ -109,13 +120,14 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
             dtoRequestContextFactory, logger, respond, helpOrder, STAGE
         });
         engine.addHandler(mkHandler('process', STAGE.PROCESS, async () => { log.push('process'); }));
+        engine.addHandler(mkHandler('trace', STAGE.INIT, async context => {context.data.requestId = 'req-404';}));
         engine.orderHandlers();
-
         const res = /** @type {*} */ (createResponse());
-        await engine.onEventRequest(/** @type {*} */ ({url: '/missing'}), res);
+        await engine.onEventRequest(/** @type {*} */ ({url: '/missing?secret=hidden'}), res);
 
         assert.strictEqual(res.statusCode, 404);
-        assert.match(errors[0], /404 Not Found/);
+        assert.equal(warnings[0], 'HTTP route not found');
+        assert.deepStrictEqual(warningData[0], {route:'/missing',requestId:'req-404',status:404});
     });
 
     test('returns 500 and still runs FINALIZE on process error', async () => {
@@ -125,15 +137,18 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
         engine.addHandler(mkHandler('process', STAGE.PROCESS, async () => {
             throw new Error('boom');
         }));
+        engine.addHandler(mkHandler('trace', STAGE.INIT, async context => {context.data.requestId = 'req-500';}));
         engine.addHandler(mkHandler('finalize', STAGE.FINALIZE, async () => { log.push('finalize'); }));
         engine.orderHandlers();
 
         const res = /** @type {*} */ (createResponse());
-        await engine.onEventRequest(/** @type {*} */ ({url: '/err'}), res);
+        await engine.onEventRequest(/** @type {*} */ ({url: '/err?secret=hidden'}), res);
 
         assert.strictEqual(res.statusCode, 500);
         assert.deepStrictEqual(log, ['finalize']);
-        assert.deepStrictEqual(exceptions, ['boom']);
+        assert.deepStrictEqual(exceptions, ['HANDLER_FAILED']);
+        assert.deepStrictEqual(errorData[0], {err:new Error('HANDLER_FAILED'),code:'HANDLER_FAILED',handler:'process',route:'/err',requestId:'req-500'});
+        assert.doesNotMatch(JSON.stringify(errorData),/hidden/);
     });
 
     test('isolates INIT handler errors and continues processing', async () => {
@@ -153,7 +168,7 @@ describe('TeqFw_Web_Back_PipelineEngine', () => {
         await engine.onEventRequest(/** @type {*} */ ({url: '/ok'}), res);
 
         assert.deepStrictEqual(log, ['process']);
-        assert.deepStrictEqual(exceptions, ['Only PROCESS handlers may complete request processing']);
+        assert.deepStrictEqual(exceptions, ['HANDLER_FAILED']);
         assert.strictEqual(res.statusCode, undefined);
     });
 
