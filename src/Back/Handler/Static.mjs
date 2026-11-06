@@ -56,7 +56,7 @@ export default class Static {
             }
             const match = registry.find(urlPath);
             if (!match) return;
-            const served = await fileService.serve(match.config, match.rel, req, res);
+            const served = await fileService.serve(match.config, match.rel, req, res, context.data.requestId);
             if (served) {
                 context.completed = true;
             }

@@ -26,9 +26,16 @@ export default class FileService {
          * @param {string} rel
          * @param {TeqFw_Web_Back_Request_Target} req
          * @param {TeqFw_Web_Back_Response_Target} res
+         * @param {string} [requestId]
          * @returns {Promise<boolean>} true if served
          */
-        this.serve = async (config, rel, req, res) => {
+        this.serve = async (config, rel, req, res, requestId) => {
+            const route = (() => {
+                try {return new URL(req.url ?? '/', 'http://localhost').pathname;}
+                catch {return '/<invalid-url>';}
+            })();
+            /** @param {any} error @returns {string} */
+            const errorCode = error => typeof error?.code === 'string' && /^[A-Z0-9_]{1,64}$/.test(error.code) ? error.code : 'STATIC_FILE_FAILED';
             let fsPath;
             try {
                 fsPath = resolver.resolve(config, rel);
@@ -63,7 +70,8 @@ export default class FileService {
                 res.once('close', disconnect);
                 stream.once('close', cleanup);
                 stream.once('error', error => {
-                    log.error('Static stream failed', {err: error, requestUrl: req.url});
+                    const code = errorCode(error);
+                    log.error('Static stream failed', {requestId,route,stage:'static.stream',code,err:new Error(code)});
                     /** @type {*} */ (res).destroy(error);
                 });
                 stream.pipe(res);
@@ -72,14 +80,12 @@ export default class FileService {
                 /** @type {{code?: string}} */
                 const err = /** @type {*} */ (e);
                 if (err.code === 'ENOENT' || err.code === 'ENOTDIR') {
-                    log.info(`File not found: ${fsPath}`);
+                    log.info('Static file not found',{requestId,route,stage:'static.resolve',code:'STATIC_FILE_NOT_FOUND'});
                 } else if (err.code === 'EACCES' || err.code === 'EPERM') {
-                    log.warn(`Access denied: ${fsPath}`);
+                    log.warn('Static file access denied',{requestId,route,stage:'static.resolve',code:'STATIC_FILE_ACCESS_DENIED'});
                 } else {
                     log.error('Static file service failed', {
-                        err: e,
-                        path: fsPath,
-                        requestUrl: req?.url,
+                        requestId,route,stage:'static.resolve',code:'STATIC_FILE_FAILED',err:new Error(errorCode(e)),
                     });
                 }
                 if (err.code === 'ENOENT' || err.code === 'ENOTDIR' || err.code === 'EACCES' || err.code === 'EPERM') return false;

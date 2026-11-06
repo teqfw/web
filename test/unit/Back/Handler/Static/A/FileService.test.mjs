@@ -28,3 +28,31 @@ test('missing and denied filesystem errors pass through without a response', asy
         assert.equal(replied, false);
     }
 });
+
+test('static file diagnostics include safe route and request ID without filesystem paths or query', async () => {
+    const records = [];
+    const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
+        logger: /** @type {*} */ ({forSource: () => ({info: (message, data) => records.push({level:'info',message,data}),
+            warn: (message, data) => records.push({level:'warn',message,data}),error: (message, data) => records.push({level:'error',message,data})})}),
+        helpMime: /** @type {*} */ ({}), resolver: /** @type {*} */ ({resolve: () => {throw Object.assign(new Error('/private/root?token=secret'),{code:'EACCES'});}}),
+        fallback: /** @type {*} */ ({})});
+    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead() {},end() {}});
+    assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method:'GET',url:'/assets/file?token=secret'},response,'req-42'),false);
+    assert.deepStrictEqual(records[0],{level:'warn',message:'Static file access denied',data:{requestId:'req-42',route:'/assets/file',stage:'static.resolve',code:'STATIC_FILE_ACCESS_DENIED'}});
+    assert.doesNotMatch(JSON.stringify(records),/secret|private\/root/);
+});
+
+test('unexpected static file errors expose a safe code without the original exception', async () => {
+    const records = [];
+    const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {},warn() {},error: (message, data) => records.push({message,data})})}),
+        helpMime: /** @type {*} */ ({}), resolver: /** @type {*} */ ({resolve: () => {throw new Error('private path');}}),
+        fallback: /** @type {*} */ ({})});
+    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead() {},end() {}});
+    await service.serve(/** @type {*} */ ({}),'file',{method:'GET',url:'/assets/file?secret=hidden'},response,'req-500');
+    assert.equal(records[0].data.code,'STATIC_FILE_FAILED');
+    assert.equal(records[0].data.err.message,'STATIC_FILE_FAILED');
+    assert.equal(records[0].data.route,'/assets/file');
+    assert.equal(records[0].data.requestId,'req-500');
+    assert.doesNotMatch(JSON.stringify(records),/private path|hidden/);
+});

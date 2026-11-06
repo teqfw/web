@@ -42,10 +42,11 @@ describe('TeqFw_Web_Back_Handler_Static', () => {
 
     test('marks request completed when file is served', async () => {
         registry.find = () => /** @type {*} */ ({config: {}, rel: 'file.txt'});
-        fileService.serve = async () => true;
+        fileService.serve = async (...args) => {assert.equal(args[4],'req-static'); return true;};
         const context = /** @type {*} */ ({
             request: {method: 'GET', url: '/file.txt'},
             response: {},
+            data: {requestId:'req-static'},
             completed: false,
         });
 
