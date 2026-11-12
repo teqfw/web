@@ -16,8 +16,8 @@ test('unexpected resolution errors produce a generic HEAD-safe error', async () 
     assert.equal(logs.length, 2);
 });
 
-test('missing and denied filesystem errors pass through without a response', async () => {
-    for (const code of ['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM']) {
+test('missing filesystem errors pass through without a response', async () => {
+    for (const code of ['ENOENT', 'ENOTDIR']) {
         const failure = Object.assign(new Error('injected'), {code});
         const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
             logger: /** @type {*} */ ({forSource: () => ({info() {}, warn() {}, error() {}})}), helpMime: /** @type {*} */ ({}),
@@ -29,6 +29,22 @@ test('missing and denied filesystem errors pass through without a response', asy
     }
 });
 
+test('permission failures become sanitized 500 responses for GET and HEAD', async () => {
+    const records = [];
+    for (const code of ['EACCES','EPERM']) for (const method of ['GET','HEAD']) {
+        const failure = Object.assign(new Error('/private/root?secret=yes'), {code});
+        const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
+            logger: /** @type {*} */ ({forSource: () => ({info() {},warn:(message,data)=>records.push({message,data}),error() {}})}),
+            helpMime: /** @type {*} */ ({}),resolver: /** @type {*} */ ({resolve: () => {throw failure;}}),fallback: /** @type {*} */ ({})});
+        const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(status) {this.status=status;},end(body) {this.body=body;}});
+        assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method,url:'/assets/file?secret=yes'},response,'req-denied'),true);
+        assert.equal(response.status,500);
+        assert.equal(response.body,method==='HEAD'?undefined:'Internal Server Error');
+    }
+    assert.equal(records.length,4);
+    assert.doesNotMatch(JSON.stringify(records),/private|secret/);
+});
+
 test('static file diagnostics include safe route and request ID without filesystem paths or query', async () => {
     const records = [];
     const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
@@ -36,8 +52,9 @@ test('static file diagnostics include safe route and request ID without filesyst
             warn: (message, data) => records.push({level:'warn',message,data}),error: (message, data) => records.push({level:'error',message,data})})}),
         helpMime: /** @type {*} */ ({}), resolver: /** @type {*} */ ({resolve: () => {throw Object.assign(new Error('/private/root?token=secret'),{code:'EACCES'});}}),
         fallback: /** @type {*} */ ({})});
-    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead() {},end() {}});
-    assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method:'GET',url:'/assets/file?token=secret'},response,'req-42'),false);
+    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(status) {this.status=status;},end() {}});
+    assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method:'GET',url:'/assets/file?token=secret'},response,'req-42'),true);
+    assert.equal(response.status,500);
     assert.deepStrictEqual(records[0],{level:'warn',message:'Static file access denied',data:{requestId:'req-42',route:'/assets/file',stage:'static.resolve',code:'STATIC_FILE_ACCESS_DENIED'}});
     assert.doesNotMatch(JSON.stringify(records),/secret|private\/root/);
 });

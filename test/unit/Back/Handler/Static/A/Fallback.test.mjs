@@ -57,4 +57,22 @@ describe('TeqFw_Web_Back_Handler_Static_A_Fallback', () => {
         const result = await fb.apply('/x', ['a.html']);
         assert.strictEqual(result, null);
     });
+
+    test('keeps permission failures distinct from missing paths', async () => {
+        const failure = Object.assign(new Error('private filesystem path'), {code:'EACCES'});
+        mockFs.promises.stat = async () => {throw failure;};
+        const fb = await getFallback();
+        await assert.rejects(fb.apply('/private/root', []), error => error === failure);
+    });
+
+    test('does not hide permission failures while searching directory defaults', async () => {
+        const failure = Object.assign(new Error('private filesystem path'), {code:'EPERM'});
+        mockFs._add('/private/root', false);
+        mockFs.promises.stat = async path => {
+            if (path === '/private/root') return {isDirectory:() => true};
+            throw failure;
+        };
+        const fb = await getFallback();
+        await assert.rejects(fb.apply('/private/root', ['index.html']), error => error === failure);
+    });
 });

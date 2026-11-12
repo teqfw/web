@@ -88,7 +88,7 @@ export default class FileService {
                         requestId,route,stage:'static.resolve',code:'STATIC_FILE_FAILED',err:new Error(errorCode(e)),
                     });
                 }
-                if (err.code === 'ENOENT' || err.code === 'ENOTDIR' || err.code === 'EACCES' || err.code === 'EPERM') return false;
+                if (err.code === 'ENOENT' || err.code === 'ENOTDIR') return false;
                 if (!res.headersSent && !res.writableEnded) { /** @type {*} */ (res).writeHead(500); res.end(req.method === 'HEAD' ? undefined : 'Internal Server Error'); }
                 else /** @type {*} */ (res).destroy();
                 return true;
