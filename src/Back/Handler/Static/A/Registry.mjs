@@ -8,29 +8,24 @@ export default class Registry {
     /**
      * @param {object} deps
      * @param {TeqFw_Web_Back_Handler_Static_A_Config} deps.configFactory
-     * @param {TeqFw_Log_Provider} deps.logger
      */
-    constructor({configFactory, logger}) {
-        const log = logger.forSource('TeqFw_Web_Back_Handler_Static_A_Registry');
+    constructor({configFactory}) {
         /** @type {TeqFw_Web_Back_Handler_Static_A_Config__Value[]} */
         let _configs = [];
 
         /**
-         * Add configurations ensuring unique prefixes.
-         * Existing entries are not modified.
+         * Add a batch atomically, rejecting duplicate normalized prefixes.
          *
          * @param {Array<TeqFw_Web_Back_Dto_Source>} dtoList
          */
         this.addConfigs = function (dtoList = []) {
             const list = dtoList.map(dto => configFactory.create(dto));
+            const prefixes = new Set(_configs.map(cfg => cfg.prefix));
             for (const cfg of list) {
-                if (!_configs.some(c => c.prefix === cfg.prefix)) {
-                    _configs.push(cfg);
-                } else {
-                    log.warn(`Static config with prefix ${cfg.prefix} already exists`);
-                }
+                if (prefixes.has(cfg.prefix)) throw new Error(`Duplicate static source prefix: ${cfg.prefix}`);
+                prefixes.add(cfg.prefix);
             }
-            _configs.sort((a, b) => b.prefix.length - a.prefix.length);
+            _configs = [..._configs, ...list].sort((a, b) => b.prefix.length - a.prefix.length);
         };
 
         /**
@@ -64,6 +59,5 @@ export class Match {
 export const __deps__ = Object.freeze({
     default: {
         configFactory: 'TeqFw_Web_Back_Handler_Static_A_Config$',
-        logger: 'TeqFw_Log_Provider$',
     },
 });

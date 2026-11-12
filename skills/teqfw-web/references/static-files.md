@@ -39,9 +39,11 @@ Symlinks are served only when their canonical targets remain under the canonical
 
 ## Source registration
 
-Currently each `init` normalizes source prefixes by appending a trailing slash if absent. The Registry keeps the first source for a duplicate normalized prefix and logs a warning; other sources in the same call can still be registered. Distinct prefixes are matched longest first.
-
-The target open-composition contract is to reject explicitly any duplicate normalized prefix within a call or against prior registrations. A conflicting call must apply none of its sources, leaving the previously registered sources unchanged. This target is not implemented yet; consumers must not rely on it until the Registry is updated and verified.
+Each `init` normalizes source prefixes by appending a trailing slash if absent: `/foo` and
+`/foo/` therefore conflict. A duplicate normalized prefix within a call or against a prior
+registration rejects the call with an error. Invalid or conflicting batches are atomic: no
+source in the batch is registered and previous sources remain unchanged. Distinct prefixes
+are matched longest first.
 
 ## MIME Types
 
