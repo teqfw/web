@@ -17,7 +17,9 @@
     "src",
     "test",
     "types.d.ts",
-    "node_modules/@flancer32",
-    "node_modules/@teqfw"
+    "node_modules/@flancer32/**/*.mjs",
+    "node_modules/@flancer32/**/types.d.ts",
+    "node_modules/@teqfw/**/*.mjs",
+    "node_modules/@teqfw/**/types.d.ts"
   ]
 }
