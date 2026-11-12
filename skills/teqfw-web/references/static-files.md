@@ -29,7 +29,19 @@ await staticHandler.init({sources: [source]});
 pipeline.addHandler(staticHandler);
 ```
 
-The handler serves GET and HEAD; other methods pass through. HEAD sends headers without a body. Malformed URL encoding produces 400. Missing, denied, or non-file targets pass through. Symlinks are served only when their canonical targets remain under the canonical root. The source directory must be trusted against concurrent replacement. When the handler accepts delivery, it marks processing complete without waiting for the transfer to finish.
+The handler serves GET and HEAD; other methods pass through. HEAD sends headers without a body. Malformed URL encoding produces 400. The current behavior and intended contract distinguish these cases:
+
+- A path excluded by `allow` is not published by this handler and passes through to later handlers. Traversal, a canonical target outside the root, and non-file targets also pass through.
+- A missing path (`ENOENT` or `ENOTDIR`), including a missing default file, passes through; later handlers decide the response.
+- Filesystem permission errors (`EACCES` or `EPERM`) are handled failures, not missing files: before headers, the handler returns a sanitized 500 (without a body for HEAD), logs a warning with the request ID when available, and marks processing complete. If a response has started, it is destroyed instead of sending a second response. Other unexpected filesystem errors use the same response boundary and are logged as errors. Stream errors after headers destroy the response.
+
+Symlinks are served only when their canonical targets remain under the canonical root. The source directory must be trusted against concurrent replacement. When the handler accepts delivery, it marks processing complete without waiting for the transfer to finish.
+
+## Source registration
+
+Currently each `init` normalizes source prefixes by appending a trailing slash if absent. The Registry keeps the first source for a duplicate normalized prefix and logs a warning; other sources in the same call can still be registered. Distinct prefixes are matched longest first.
+
+The target open-composition contract is to reject explicitly any duplicate normalized prefix within a call or against prior registrations. A conflicting call must apply none of its sources, leaving the previously registered sources unchanged. This target is not implemented yet; consumers must not rely on it until the Registry is updated and verified.
 
 ## MIME Types
 
