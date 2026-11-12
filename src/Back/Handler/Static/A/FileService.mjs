@@ -26,7 +26,7 @@ export default class FileService {
          * @param {string} rel
          * @param {TeqFw_Web_Back_Request_Target} req
          * @param {TeqFw_Web_Back_Response_Target} res
-         * @param {string} [requestId]
+         * @param {unknown} [requestId]
          * @returns {Promise<boolean>} true if served
          */
         this.serve = async (config, rel, req, res, requestId) => {

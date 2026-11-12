@@ -30,13 +30,14 @@ test('missing filesystem errors pass through without a response', async () => {
 });
 
 test('permission failures become sanitized 500 responses for GET and HEAD', async () => {
+    /** @type {{message: string, data: object}[]} */
     const records = [];
     for (const code of ['EACCES','EPERM']) for (const method of ['GET','HEAD']) {
         const failure = Object.assign(new Error('/private/root?secret=yes'), {code});
         const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
-            logger: /** @type {*} */ ({forSource: () => ({info() {},warn:(message,data)=>records.push({message,data}),error() {}})}),
+            logger: /** @type {*} */ ({forSource: () => ({info() {},warn:(/** @type {string} */ message, /** @type {object} */ data)=>records.push({message,data}),error() {}})}),
             helpMime: /** @type {*} */ ({}),resolver: /** @type {*} */ ({resolve: () => {throw failure;}}),fallback: /** @type {*} */ ({})});
-        const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(status) {this.status=status;},end(body) {this.body=body;}});
+        const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(/** @type {number} */ status) {this.status=status;},end(/** @type {string|undefined} */ body) {this.body=body;}});
         assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method,url:'/assets/file?secret=yes'},response,'req-denied'),true);
         assert.equal(response.status,500);
         assert.equal(response.body,method==='HEAD'?undefined:'Internal Server Error');
@@ -46,13 +47,14 @@ test('permission failures become sanitized 500 responses for GET and HEAD', asyn
 });
 
 test('static file diagnostics include safe route and request ID without filesystem paths or query', async () => {
+    /** @type {{level: string, message: string, data: object}[]} */
     const records = [];
     const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
-        logger: /** @type {*} */ ({forSource: () => ({info: (message, data) => records.push({level:'info',message,data}),
-            warn: (message, data) => records.push({level:'warn',message,data}),error: (message, data) => records.push({level:'error',message,data})})}),
+        logger: /** @type {*} */ ({forSource: () => ({info: (/** @type {string} */ message, /** @type {object} */ data) => records.push({level:'info',message,data}),
+            warn: (/** @type {string} */ message, /** @type {object} */ data) => records.push({level:'warn',message,data}),error: (/** @type {string} */ message, /** @type {object} */ data) => records.push({level:'error',message,data})})}),
         helpMime: /** @type {*} */ ({}), resolver: /** @type {*} */ ({resolve: () => {throw Object.assign(new Error('/private/root?token=secret'),{code:'EACCES'});}}),
         fallback: /** @type {*} */ ({})});
-    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(status) {this.status=status;},end() {}});
+    const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead(/** @type {number} */ status) {this.status=status;},end() {}});
     assert.equal(await service.serve(/** @type {*} */ ({}),'file',{method:'GET',url:'/assets/file?token=secret'},response,'req-42'),true);
     assert.equal(response.status,500);
     assert.deepStrictEqual(records[0],{level:'warn',message:'Static file access denied',data:{requestId:'req-42',route:'/assets/file',stage:'static.resolve',code:'STATIC_FILE_ACCESS_DENIED'}});
@@ -60,9 +62,10 @@ test('static file diagnostics include safe route and request ID without filesyst
 });
 
 test('unexpected static file errors expose a safe code without the original exception', async () => {
+    /** @type {{message: string, data: {code: string, err: Error, route: string, requestId: string}}[]} */
     const records = [];
     const service = new FileService({fs: /** @type {*} */ ({}), http2: /** @type {*} */ ({constants: {}}), path: /** @type {*} */ ({}),
-        logger: /** @type {*} */ ({forSource: () => ({info() {},warn() {},error: (message, data) => records.push({message,data})})}),
+        logger: /** @type {*} */ ({forSource: () => ({info() {},warn() {},error: (/** @type {string} */ message, /** @type {{code: string, err: Error, route: string, requestId: string}} */ data) => records.push({message,data})})}),
         helpMime: /** @type {*} */ ({}), resolver: /** @type {*} */ ({resolve: () => {throw new Error('private path');}}),
         fallback: /** @type {*} */ ({})});
     const response = /** @type {*} */ ({headersSent:false,writableEnded:false,writeHead() {},end() {}});

@@ -68,7 +68,7 @@ describe('TeqFw_Web_Back_Handler_Static_A_Fallback', () => {
     test('does not hide permission failures while searching directory defaults', async () => {
         const failure = Object.assign(new Error('private filesystem path'), {code:'EPERM'});
         mockFs._add('/private/root', false);
-        mockFs.promises.stat = async path => {
+        mockFs.promises.stat = async (/** @type {string} */ path) => {
             if (path === '/private/root') return {isDirectory:() => true};
             throw failure;
         };
