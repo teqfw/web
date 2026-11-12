@@ -58,6 +58,16 @@ The package requires Node.js `>=20` and a configured TeqFW DI container. See the
 
 The package distributes a version-matched consumer skill at [`skills/teqfw-web/`](skills/teqfw-web/). Its `SKILL.md` and references cover lifecycle semantics, handlers, server configuration, static files, distribution, and TeqFW integration.
 
+## Development checks
+
+Install the ESM validator globally before running `npm test` or `npm run check:esm`:
+
+```sh
+npm install --global @flancer32/skill-teqfw-esm-validator
+npm install
+npm test
+```
+
 ## Agent-Driven Development
 
 TeqFW is built through the same development model that it is designed to enable: one human defines the intent, architecture, constraints, and acceptance criteria; coding agents implement and maintain the products; other agents use those products in different combinations to create applications.
