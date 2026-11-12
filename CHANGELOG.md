@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.2.1] - 2026-11-12 - Static registration and diagnostics
+
+### Changed
+
+- Reject duplicate normalized static source prefixes atomically within a batch
+  and across registrations, preserving prior sources when registration fails.
+- Include request IDs and sanitized route details in HTTP pipeline and static
+  file diagnostics without exposing filesystem paths or query strings.
+- Treat filesystem permission errors as handled failures instead of missing
+  files; allow-list denials and missing files still pass through.
+- Update the static-file consumer guidance and development validation setup.
+
+### Compatibility
+
+- Applications that register the same normalized static prefix more than once
+  must remove the conflict; registration now fails instead of keeping the first
+  source and logging a warning.
+- Filesystem `EACCES` and `EPERM` errors produce a handled HTTP 500 before
+  headers instead of passing the request to later handlers.
+
 ## [2.2.0] - 2026-10-29 - Streaming shutdown and transport configuration
 
 ### Added
