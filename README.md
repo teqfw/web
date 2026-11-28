@@ -60,12 +60,12 @@ The package distributes a version-matched consumer skill at [`skills/teqfw-web/`
 
 ## Development checks
 
-Install the ESM validator globally before running `npm test` or `npm run check:esm`:
+Run the package tests and typecheck with:
 
 ```sh
-npm install --global @flancer32/skill-teqfw-esm-validator
 npm install
 npm test
+npm run typecheck
 ```
 
 ## Agent-Driven Development

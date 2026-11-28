@@ -11,9 +11,9 @@ import NamespaceRegistry from '@teqfw/di/node/registry/namespace';
 
 /** @param {import('node:test').TestContext} t @param {number} timeout @param {string} [type] @param {boolean} [deferFreeze] */
 async function setup(t, timeout, type = 'http', deferFreeze = false) {
-    const container = new Container();
     const registry = new NamespaceRegistry({fs: /** @type {*} */ (fs), path, appRoot: path.resolve(import.meta.dirname, '../..')});
-    for (const {prefix, dirAbs, ext} of await registry.build()) container.addNamespaceRoot(prefix, dirAbs, ext);
+    const namespaces = (await registry.build()).map(({prefix, dirAbs, ext}) => ({prefix, target: dirAbs, defaultExt: ext}));
+    const container = new Container({namespaces});
     container.enableTestMode();
     /** @type {((signal: 'SIGTERM') => void)|undefined} */
     let notifySignal;

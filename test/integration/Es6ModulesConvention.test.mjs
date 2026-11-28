@@ -64,11 +64,9 @@ const MANAGED_MODULE_IDS = [
 ];
 
 async function createContainer() {
-    const container = new Container();
     const registry = new NamespaceRegistry({fs, path, appRoot: APP_ROOT});
-    for (const {prefix, dirAbs, ext} of await registry.build()) {
-        container.addNamespaceRoot(prefix, dirAbs, ext);
-    }
+    const namespaces = (await registry.build()).map(({prefix, dirAbs, ext}) => ({prefix, target: dirAbs, defaultExt: ext}));
+    const container = new Container({namespaces});
     container.enableTestMode();
     return container;
 }

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.2] - 2026-11-28 - Development and dependency maintenance
+
+### Changed
+
+- Require `@teqfw/di >=2.12.1` and align integration tests and the development
+  bootstrap with the Container namespace configuration contract.
+- Limit TypeScript checking to runtime code and published declarations; tests
+  continue to run through the Node.js test runner.
+
+### Removed
+
+- Remove the unused Markdown linter and TypeScript language server development
+  dependencies, along with Markdown lint and ESM validation npm scripts.
+
 ## [2.2.1] - 2026-11-12 - Static registration and diagnostics
 
 ### Changed
